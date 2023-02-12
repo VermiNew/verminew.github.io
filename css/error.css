@@ -1,0 +1,104 @@
+@keyframes anim {
+    0% {
+        background: #ffb7b7
+    }
+
+    12.5% {
+        background: #ffb7b7
+    }
+
+    12.625% {
+        background: #ffb7b7
+    }
+
+    100% {
+        background: red
+    }
+}
+
+.pic div {
+    position: absolute;
+    width: 54.2px;
+    height: 54.2px;
+    background: #e99393;
+    animation: anim 0.5555555555555556s linear infinite;
+}
+
+.loader {
+    width: 271px;
+    height: 271px;
+    display: inline-block;
+    overflow: hidden;
+    background: #a40087;
+}
+
+.pic {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateZ(0) scale(1);
+    backface-visibility: hidden;
+    transform-origin: 0 0;
+}
+
+.pic div {
+    box-sizing: content-box;
+}
+
+#main {
+    background: #a40087;
+}
+
+body {
+    background: #a40087;
+}
+
+#loader {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#errortext {
+    text-align: center;
+    font-size: 145%;
+    font-family: Montserrat;
+    color: rgb(109, 184, 255);
+}
+
+#symbol {
+    font-size: 80px;
+    font-family: 'Consolas';
+}
+
+#red {
+    color: rgb(0, 153, 170);
+}
+
+#custom-button {
+    background-color: #4cafaf;
+    /* zielony kolor tła */
+    color: white;
+    /* biały kolor tekstu */
+    padding: 15px 32px;
+    /* padding wewnętrzny */
+    text-align: center;
+    /* wyśrodkowanie tekstu */
+    text-decoration: none;
+    /* brak podkreślenia */
+    display: inline-block;
+    /* wyświetlanie jako blok */
+    font-size: 16px;
+    /* rozmiar czcionki */
+    border-radius: 5px;
+    /* zaokrąglenie rogów */
+    border: none;
+    /* brak ramki */
+    cursor: pointer;
+    /* wygląd kursora jako dłoń */
+    font-family: Consolas;
+    /* customowa czcionka */
+}
+
+#custom-button:hover {
+    background-color: rgb(0, 170, 170);
+}
