@@ -1,10 +1,10 @@
 @keyframes anim {
     0% {
-        background: #689cc5
+        background: #ffffff
     }
 
     12.5% {
-        background: #689cc5
+        background: #ffffff
     }
 
     12.625% {
@@ -12,7 +12,7 @@
     }
 
     100% {
-        background: #93dbe9
+        background: #ffffff
     }
 }
 
