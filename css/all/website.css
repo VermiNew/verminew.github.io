@@ -48368,6 +48368,7 @@ li.active>a.u-button-style.u-text-custom-color-1[class*="u-border-"],
 a.u-button-style.u-text-custom-color-1,
 a.u-button-style.u-text-custom-color-1[class*="u-border-"] {
   color: #db54d0 !important;
+  opacity: 0.3;
 }
 
 a.u-button-style.u-text-custom-color-1:hover,
@@ -48379,6 +48380,7 @@ a.u-button-style.u-button-style.u-text-custom-color-1[class*="u-border-"]:active
 a.u-button-style.u-button-style.u-text-custom-color-1.active,
 a.u-button-style.u-button-style.u-text-custom-color-1[class*="u-border-"].active {
   color: #d63bc9 !important;
+  opacity: 0.3;
 }
 
 a.u-button-style:hover>.u-text-hover-custom-color-1,
@@ -48413,10 +48415,12 @@ a.u-button-style.u-button-style.active>.u-text-active-custom-color-1[class*="u-b
 .u-button-style.u-button-style.active>.u-text-active-custom-color-1 .u-svg-link,
 .u-text-hover-custom-color-1:focus .u-svg-link {
   fill: #db54d0;
+  opacity: 0.3;
 }
 
 .u-link.u-text-custom-color-1:hover {
   color: #d63bc9 !important;
+  opacity: 0.3;
 }
 
 a.u-link.u-text-hover-custom-color-1:hover {
@@ -48616,6 +48620,7 @@ li.active>a.u-button-style.u-text-custom-color-5[class*="u-border-"],
 a.u-button-style.u-text-custom-color-5,
 a.u-button-style.u-text-custom-color-5[class*="u-border-"] {
   color: #ffd4ff !important;
+  opacity: 0.25;
 }
 
 a.u-button-style.u-text-custom-color-5:hover,
@@ -48627,6 +48632,7 @@ a.u-button-style.u-button-style.u-text-custom-color-5[class*="u-border-"]:active
 a.u-button-style.u-button-style.u-text-custom-color-5.active,
 a.u-button-style.u-button-style.u-text-custom-color-5[class*="u-border-"].active {
   color: #ffa5ff !important;
+  opacity: 0.25;
 }
 
 a.u-button-style:hover>.u-text-hover-custom-color-5,
@@ -48661,14 +48667,17 @@ a.u-button-style.u-button-style.active>.u-text-active-custom-color-5[class*="u-b
 .u-button-style.u-button-style.active>.u-text-active-custom-color-5 .u-svg-link,
 .u-text-hover-custom-color-5:focus .u-svg-link {
   fill: #ffd4ff;
+  opacity: 0.25;
 }
 
 .u-link.u-text-custom-color-5:hover {
   color: #ffa5ff !important;
+  opacity: 0.25;
 }
 
 a.u-link.u-text-hover-custom-color-5:hover {
   color: #ffd4ff !important;
+  opacity: 0.25;
 }
 
 
