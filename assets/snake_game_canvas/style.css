@@ -1,35 +1,37 @@
+/* Reset styles for the body */
 body {
     font-family: 'Lato', sans-serif;
     background-color: #282c35;
     color: #ffffff;
     margin: 0;
-    /* Usunięcie domyślnych marginesów */
+    /* Remove default margins */
     padding: 0;
-    /* Usunięcie domyślnego wewnętrznego odstępu */
+    /* Remove default inner spacing */
     overflow-y: hidden;
     min-height: 100vh;
-    /* Minimalna wysokość na całą wysokość widoku */
+    /* Minimum height to cover the entire viewport */
     display: flex;
     flex-direction: column;
 }
 
+/* Container styles */
 .container {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
 }
 
+/* Blink animation keyframes */
 @keyframes blinkAnimation {
     from {
         opacity: 1;
     }
-
     to {
         opacity: 9.5;
     }
 }
 
-/* Animacja obramowania dla canvas */
+/* Canvas styling with animation */
 #gameCanvas {
     border: 2px solid #ffffff;
     transition: border 0.3s ease-in-out;
@@ -42,11 +44,11 @@ body {
     border: 2px solid #3498db;
 }
 
-/* Środkowanie canvas na środku ekranu */
+/* Center the canvas on the screen */
 main {
     display: flex;
     flex: 1;
-    /* Rozciągnij główną część, aby wypełnić dostępną przestrzeń */
+    /* Stretch main part to fill available space */
     flex-direction: column;
     /* Stack child elements vertically */
     justify-content: center;
@@ -59,7 +61,7 @@ main {
     text-align: center;
 }
 
-/* Dodatkowe style dla stopki */
+/* Additional styles for the footer */
 footer {
     font-size: 16px;
     color: white;
@@ -70,12 +72,12 @@ footer {
     box-sizing: border-box;
     /* Include padding and border in width */
     margin-top: auto;
-    /* Ustaw stopkę na samym dole ekranu */
+    /* Set the footer at the bottom of the screen */
     margin-bottom: 20px;
-    /* Dodaj dodatkowy odstęp od dołu */
+    /* Add extra spacing from the bottom */
 }
 
-/* Styl dla elementu input typu range */
+/* Range input styling */
 input[type="range"] {
     appearance: none;
     width: 100%;
@@ -91,7 +93,7 @@ input[type="range"]:hover {
     opacity: 1;
 }
 
-/* Kolorowy pasek dla input typu range */
+/* Colored track for range input */
 input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     width: 15px;
@@ -109,17 +111,22 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 50%;
 }
 
-/* Kolorowy pasek dla input typu range w Firefox */
+/* Colored track for range input in Firefox */
 input[type="range"]::-moz-range-progress {
     background-color: #ffffff;
 }
 
+/* Canvas styling */
 canvas {
     background-color: #ffffff;
     z-index: 9999;
+    width: 100%; /* 100% of container width */
+    height: 100%; /* 100% of container height */
+    transform-origin: top left;
+    transform: scale(1); /* Default scaling (no change) */
 }
 
-/* Styl dla elementu a */
+/* Styles for anchor (a) and button elements */
 a,
 button {
     text-decoration: none;
@@ -138,7 +145,7 @@ button {
     opacity: 1;
 }
 
-/* CSS dla popup'u */
+/* Popup styling */
 .popup {
     display: none;
     position: fixed;
@@ -164,14 +171,13 @@ button {
     from {
         color: orange;
     }
-
     to {
         color: red;
     }
 }
 
 .exclamation-mark {
-    font-size: 60px;
+    font-size: 50px;
     color: #f00;
     animation: informationAnimation 0.5s infinite alternate;
 }
@@ -200,7 +206,6 @@ button {
         transform: translate(-50%, -70%);
         opacity: 0;
     }
-
     to {
         transform: translate(-50%, -50%);
         opacity: 1;
@@ -212,9 +217,13 @@ button {
         transform: translate(-50%, -50%);
         opacity: 1;
     }
-
     to {
         transform: translate(-50%, -70%);
         opacity: 0;
     }
+}
+
+/* Media query for screens with width less than or equal to 768px */
+@media screen and (max-width: 768px) {
+    transform: scale(0.5); /* Scale down by 50% for smaller screens */
 }
