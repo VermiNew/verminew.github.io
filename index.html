@@ -24,12 +24,9 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/config.css" />
-    <link rel="stylesheet" href="assets/css/all/website.css" media="screen" />
-    <link rel="stylesheet" href="assets/css/main.css" media="screen" />
 
     <!-- JavaScript -->
     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script defer src="assets/js/all/website.js"></script>
 
     <!-- Open Graph Meta Tags -->
     <meta
@@ -57,79 +54,155 @@
     <!-- Website Style -->
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Nova+Square&display=swap");
+      @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-      body {
-        font-family: "Nova Square", sans-serif;
+      :root {
+        --primary-color: #3a4052;
+      }
+
+      * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: linear-gradient(180deg, #1e1e1e, #000000);
-        color: #ffffff;
+      }
+
+      body,
+      html {
+        height: 100%;
         overflow: hidden;
       }
 
-      button {
-        border: 2px solid transparent;
-        transition: border 0.3s ease-in-out, 0.5s;
-        background-color: #2e2e2e;
-        color: #ffffff;
-        padding: 10px 20px;
-        margin: 10px;
-        cursor: pointer;
-        font-size: 16px;
+      body {
+        font-family: "Lato", sans-serif;
+        line-height: 1.5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000;
       }
 
-      button:hover {
-        border-image: linear-gradient(
-          45deg,
-          rgba(255, 0, 102, 0.5),
-          rgba(153, 255, 102, 0.5)
-        );
-        border-image-slice: 1;
-        border-width: 2px;
-        color: gray;
-      }
-
-      .gradient-background {
+      .showcase {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-align: center;
+        color: #fff;
       }
 
-      @keyframes fadeIn {
+      .video-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .video-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .content {
+        max-width: 90%;
+      }
+
+      h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        font-family: "Nova Square", sans-serif;
+        font-size: 16px;
+        display: inline-block;
+        padding: 10px 30px;
+        background: var(--primary-color);
+        color: #fff;
+        border-radius: 5px;
+        border: solid #fff 1px;
+        margin-top: 25px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #3a40ff;
+        transform: translate(-5%, 5%);
+      }
+
+      .typing {
+        letter-spacing: 2px;
+      }
+
+      .cursor {
+        display: inline-block;
+        margin-left: 5px;
+        animation: blink 0.7s steps(2, start) infinite;
+        opacity: 0;
+      }
+
+      @keyframes blink {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 32px;
+        }
+
+        h3 {
+          font-size: 18px;
+        }
+
+        .btn {
+          padding: 10px 20px;
+        }
+      }
+
+      @keyframes FadeInOutInfinite {
         0% {
-          opacity: 0;
+          opacity: 0.5;
         }
         50% {
           opacity: 1;
         }
         100% {
-          opacity: 0;
+          opacity: 0.5;
         }
       }
 
-      h1 {
-        font-family: "Nova Square";
-        color: #ffffff;
-        margin-bottom: 20px;
-        font-size: 32px;
-        animation: fadeIn 5s infinite;
-      }
-
-      @media (max-width: 600px) {
-        h1 {
-          font-size: 24px;
-        }
-
-        button {
-          font-size: 14px;
-        }
+      .animation_FadeInOutInfinite {
+        animation: FadeInOutInfinite 5s infinite;
       }
     </style>
   </head>
 
   <body>
+    <!-- Content -->
     <section class="showcase">
       <div class="video-container">
         <video
@@ -139,26 +212,41 @@
           loop="loop"
           class="video-background"
         >
-          <source src="assets/twojeWideo.mp4" type="video/mp4" />
+          <source src="assets/mp4/background.mp4" type="video/mp4" />
+          <p>Your browser does not support the video tag.</p>
         </video>
       </div>
       <div class="content">
-        <h1>Shoot For The Stars</h1>
-        <h3>Full screen video landing page</h3>
-        <a href="#about" class="btn">Read More</a>
+        <h1 class="animation_FadeInOutInfinite typing">
+          <div class="typing">
+            <span id="text"></span><span class="cursor">_</span>
+          </div>
+        </h1>
+        <button
+          onclick="changeLanguage('pl')"
+          title="Wybierz Polski"
+          class="animation_FadeInOutInfinite btn"
+        >
+          Polski
+        </button>
+        <button
+          onclick="changeLanguage('en')"
+          title="Choose English"
+          class="animation_FadeInOutInfinite btn"
+        >
+          English
+        </button>
+        <br />
+        <button
+          href="https://github.com/VermiNew/verminew.github.io/blob/main/LICENSE"
+          class="animation_FadeInOutInfinite btn"
+        >
+          Project licence
+        </button>
       </div>
     </section>
 
-    <div class="gradient-background">
-      <h1>Choose Your Language / Wybierz Jezyk</h1>
-      <button onclick="changeLanguage('pl')" title="Wybierz Polski">
-        Polski
-      </button>
-      <button onclick="changeLanguage('en')" title="Choose English">
-        English
-      </button>
-    </div>
-
+    <!-- Language selection script -->
     <script>
       function changeLanguage(language) {
         if (language === "pl") {
@@ -167,6 +255,48 @@
           window.location.href = "main_en.html";
         }
       }
+    </script>
+
+    <!-- Typing animation script -->
+    <script>
+      const phrases = ["Wybierz język", "Choose language"];
+      let currentPhrase = 0;
+      let currentLetter = 0;
+      let typingSpeed = 100;
+      let deleteSpeed = 50;
+
+      function type() {
+        if (currentPhrase >= phrases.length) {
+          currentPhrase = 0;
+        }
+
+        let displayText = phrases[currentPhrase];
+        if (currentLetter < displayText.length) {
+          document.getElementById("text").textContent +=
+            displayText.charAt(currentLetter);
+          currentLetter++;
+          setTimeout(type, typingSpeed);
+        } else {
+          setTimeout(erase, 2000);
+        }
+      }
+
+      function erase() {
+        if (currentLetter > 0) {
+          let displayText = phrases[currentPhrase].substring(
+            0,
+            currentLetter - 1
+          );
+          document.getElementById("text").textContent = displayText;
+          currentLetter--;
+          setTimeout(erase, deleteSpeed);
+        } else {
+          currentPhrase++;
+          setTimeout(type, typingSpeed);
+        }
+      }
+
+      type();
     </script>
   </body>
 </html>
