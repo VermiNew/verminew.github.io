@@ -1,96 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Meta Tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="keywords" content="VermiNew, Michael, Web Development, Portfolio, GitHub Pages">
-    <meta name="description"
-        content="Explore the world of web development with VermiNew (Michael). This is my portfolio and first full-fledged website journey hosted on GitHub Pages.">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <meta
+      name="keywords"
+      content="VermiNew, Michael, Web Development, Portfolio, GitHub Pages"
+    />
+    <meta
+      name="description"
+      content="Explore the world of web development with VermiNew (Michael). This is my portfolio and first full-fledged website journey hosted on GitHub Pages."
+    />
 
     <!-- Page Title -->
     <title>Snake But Harder</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image" href="assets/images/icon/icon.png">
+    <link rel="icon" type="image" href="assets/images/icon/icon.png" />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="VermiNew - Michael's Web Development Journey">
-    <meta property="og:description"
-        content="Explore the world of web development with VermiNew (Michael). This is my portfolio and first full-fledged website journey hosted on GitHub Pages.">
-    <meta property="og:image" content="images/Logo_0.png">
-    <meta property="og:url" content="https://verminew.github.io/">
-    <meta property="og:type" content="website">
+    <meta
+      property="og:title"
+      content="VermiNew - Michael's Web Development Journey"
+    />
+    <meta
+      property="og:description"
+      content="Explore the world of web development with VermiNew (Michael). This is my portfolio and first full-fledged website journey hosted on GitHub Pages."
+    />
+    <meta property="og:image" content="images/Logo_0.png" />
+    <meta property="og:url" content="https://verminew.github.io/" />
+    <meta property="og:type" content="website" />
 
     <!-- Canonical Tag -->
-    <link rel="canonical" href="https://verminew.github.io/">
+    <link rel="canonical" href="https://verminew.github.io/" />
 
     <!-- Załaduj czcionkę Lato z Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap" rel="stylesheet">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <!-- Popup -->
     <div class="popup" id="darkModePopup">
-        <div class="popup-header">
-            <span class="exclamation-mark">WARNING!</span>
-        </div>
-        <div class="popup-content">
-            <p>Kindly note that the game canvas currently features a white background. Enabling forced dark mode may
-                result in text becoming unreadable, affecting your gaming experience.<br><br>We strongly recommend
-                reading the instructions thoroughly before initiating gameplay. This ensures a smoother and more
-                enjoyable gaming session.<br><br>In order to maintain the integrity of the game, we kindly request
-                players not to modify the underlying code. This helps guarantee optimal functionality and an immersive
-                gaming environment.<br><br>Your cooperation is greatly appreciated!<br><br>Thank you for understanding
-                and enjoy the game!</p>
-            <button class="popup-button" onclick="closePopup()">Okay</button>
-        </div>
+      <div class="popup-header">
+        <span class="exclamation-mark">WARNING!</span>
+      </div>
+      <div class="popup-content">
+        <p>
+          Kindly note that the game canvas currently features a white
+          background. Enabling forced dark mode may result in text becoming
+          unreadable, affecting your gaming experience.<br /><br />We strongly
+          recommend reading the instructions thoroughly before initiating
+          gameplay. This ensures a smoother and more enjoyable gaming
+          session.<br /><br />In order to maintain the integrity of the game, we
+          kindly request players not to modify the underlying code. This helps
+          guarantee optimal functionality and an immersive gaming
+          environment.<br /><br />Your cooperation is greatly appreciated!<br /><br />Thank
+          you for understanding and enjoy the game!
+        </p>
+        <button class="popup-button" onclick="closePopup()">Okay</button>
+      </div>
     </div>
 
     <header>
-        <div class="container">
-            <h1>SNAKE BUT HARDER</h1>
-        </div>
+      <div class="container">
+        <h1>SNAKE BUT HARDER</h1>
+      </div>
     </header>
 
     <nav>
-        <div class="container" style="margin-bottom: 50px;">
-            <a href="instructions.html">View Game Instructions</a>
-        </div>
+      <div class="container" style="margin-bottom: 50px">
+        <a href="instructions.html">View Game Instructions</a>
+      </div>
     </nav>
 
     <main>
-        <div class="container">
-            <canvas id="gameCanvas" width="650" height="650"></canvas>
-        </div>
+      <div class="container">
+        <canvas id="gameCanvas" width="650" height="650"></canvas>
+      </div>
     </main>
 
     <div id="options">
-        <label for="volumeControl"
-            style="display: block; width: 100px; position: absolute; top: 480px; left: 10px;">Volume</label>
-        <input type="range" id="volumeControl" min="0" max="100" value="20"
-            style="width: 100px; position: absolute; top: 500px; left: 10px;">
-        <button id="showDebugLogButton" class="animated-button" style="position: absolute; top: 550px; left: 10px;"
-            onclick="debugGame();">Show Debug Log</button>
+      <label
+        for="volumeControl"
+        style="
+          display: block;
+          width: 100px;
+          position: absolute;
+          top: 480px;
+          left: 10px;
+        "
+        >Volume</label
+      >
+      <input
+        type="range"
+        id="volumeControl"
+        min="0"
+        max="100"
+        value="20"
+        style="width: 100px; position: absolute; top: 500px; left: 10px"
+      />
+      <button
+        id="showDebugLogButton"
+        class="animated-button"
+        style="position: absolute; top: 550px; left: 10px"
+        onclick="debugGame();"
+      >
+        Show Debug Log
+      </button>
     </div>
 
     <footer>
-        <div class="container">
-            <p>&copy; <span id="currentYear"></span> Snake But Harder</p>
-        </div>
+      <div class="container">
+        <p>&copy; <span id="currentYear"></span> Snake But Harder</p>
+      </div>
     </footer>
 
     <script src="script.js"></script>
     <script src="show_popup.js"></script>
     <script>
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
     </script>
-</body>
-
+  </body>
 </html>

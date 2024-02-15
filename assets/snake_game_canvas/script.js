@@ -16,7 +16,14 @@ const pauseSound = new Audio("pause.mp3");
 const gameMusic = new Audio("ingamemusic.mp3");
 
 const volumeControl = document.getElementById("volumeControl");
-const sounds = [startSound, dieSound, pauseSound, gameMusic, shootSound, scoreSound];
+const sounds = [
+  startSound,
+  dieSound,
+  pauseSound,
+  gameMusic,
+  shootSound,
+  scoreSound,
+];
 
 // Funkcja ustawiająca głośność na podstawie wartości suwaka
 function setVolume() {
@@ -158,7 +165,9 @@ function moveEnemyBullet() {
 
 function generatePowerup() {
   const isGoldenApple = Math.random() < 0.1;
-  const timeToLive = isGoldenApple ? goldenAppleDuration : Math.floor(Math.random() * 26) + 5;
+  const timeToLive = isGoldenApple
+    ? goldenAppleDuration
+    : Math.floor(Math.random() * 26) + 5;
 
   return {
     x: Math.floor(Math.random() * gridWidth),
@@ -218,7 +227,11 @@ function activateGoldenApple() {
 }
 
 function handleBulletCollision() {
-  if (enemyBullet && enemyBullet.x === snake[0].x && enemyBullet.y === snake[0].y) {
+  if (
+    enemyBullet &&
+    enemyBullet.x === snake[0].x &&
+    enemyBullet.y === snake[0].y
+  ) {
     health -= 50;
     enemyBullet = null;
     if (health <= 0) {
@@ -377,7 +390,12 @@ function draw() {
 
   ctx.fillStyle = snakeColor;
   for (let segment of snake) {
-    ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+    ctx.fillRect(
+      segment.x * gridSize,
+      segment.y * gridSize,
+      gridSize,
+      gridSize
+    );
   }
 
   ctx.font = "16px Consolas";
@@ -386,7 +404,11 @@ function draw() {
   ctx.fillText(`High Score: ${highScore}`, 10, 60);
   ctx.fillText(`Health: ${health}%`, 10, 80);
   ctx.fillText(`Deaths: ${deaths}`, 10, 100);
-  ctx.fillText(`Level: ${level} (${Math.round((targetFPS / 30) * 100)}%)`, 10, 120);
+  ctx.fillText(
+    `Level: ${level} (${Math.round((targetFPS / 30) * 100)}%)`,
+    10,
+    120
+  );
 
   ctx.fillStyle = "blue";
   ctx.fillRect(5, 640, timeLeft, 3);
@@ -410,7 +432,11 @@ function draw() {
   handleBulletCollision();
 
   ctx.fillStyle = "#000000";
-  ctx.fillText(`Time left (Blue bar value): ${Math.round(timeLeft / 8)} s`, 10, 620);
+  ctx.fillText(
+    `Time left (Blue bar value): ${Math.round(timeLeft / 8)} s`,
+    10,
+    620
+  );
   ctx.fillText(`In-game time:`, 530, 20);
   ctx.fillText(`${Math.round(ingameTime)} s`, 530, 40);
 
@@ -437,7 +463,11 @@ function draw() {
     moveEnemyBullet();
   }
 
-  if (enemyBullet && enemyBullet.x === snake[0].x && enemyBullet.y === snake[0].y) {
+  if (
+    enemyBullet &&
+    enemyBullet.x === snake[0].x &&
+    enemyBullet.y === snake[0].y
+  ) {
     health -= 50;
     enemyBullet = null;
     if (health <= 0) {
@@ -581,77 +611,78 @@ window.addEventListener("keydown", handleKeydown);
 
 function openModal() {
   // Tworzymy nowe elementy modalu
-  var modalContainer = document.createElement('div');
-  modalContainer.id = 'modal-container';
-  modalContainer.style.display = 'flex';
-  modalContainer.style.position = 'fixed';
-  modalContainer.style.top = '0';
-  modalContainer.style.left = '0';
-  modalContainer.style.width = '100%';
-  modalContainer.style.height = '100%';
-  modalContainer.style.background = 'rgba(0, 0, 0, 0.85)';
-  modalContainer.style.alignItems = 'center';
-  modalContainer.style.justifyContent = 'center';
+  var modalContainer = document.createElement("div");
+  modalContainer.id = "modal-container";
+  modalContainer.style.display = "flex";
+  modalContainer.style.position = "fixed";
+  modalContainer.style.top = "0";
+  modalContainer.style.left = "0";
+  modalContainer.style.width = "100%";
+  modalContainer.style.height = "100%";
+  modalContainer.style.background = "rgba(0, 0, 0, 0.85)";
+  modalContainer.style.alignItems = "center";
+  modalContainer.style.justifyContent = "center";
   document.body.appendChild(modalContainer);
 
-  var modalContent = document.createElement('div');
-  modalContent.id = 'modal-content';
-  modalContent.style.background = '#000';
-  modalContent.style.color = '#fff';
-  modalContent.style.padding = '20px';
-  modalContent.style.fontSize = '20px';
-  modalContent.style.borderRadius = '15px';
-  modalContent.style.textAlign = 'center';
+  var modalContent = document.createElement("div");
+  modalContent.id = "modal-content";
+  modalContent.style.background = "#000";
+  modalContent.style.color = "#fff";
+  modalContent.style.padding = "20px";
+  modalContent.style.fontSize = "20px";
+  modalContent.style.borderRadius = "15px";
+  modalContent.style.textAlign = "center";
   modalContainer.appendChild(modalContent);
 
-  var closeButton = document.createElement('span');
-  closeButton.id = 'close-btn';
-  closeButton.innerHTML = '&times;';
-  closeButton.style.cursor = 'pointer';
-  closeButton.style.position = 'absolute';
-  closeButton.style.top = '10px';
-  closeButton.style.right = '10px';
-  closeButton.style.fontSize = '18px';
+  var closeButton = document.createElement("span");
+  closeButton.id = "close-btn";
+  closeButton.innerHTML = "&times;";
+  closeButton.style.cursor = "pointer";
+  closeButton.style.position = "absolute";
+  closeButton.style.top = "10px";
+  closeButton.style.right = "10px";
+  closeButton.style.fontSize = "18px";
   closeButton.onclick = function () {
     closeModal(false);
   };
   modalContent.appendChild(closeButton);
 
-  var modalTitle = document.createElement('div');
-  modalTitle.id = 'modal-title';
-  modalTitle.innerHTML = 'Mobile Support';
-  modalTitle.style.fontSize = '48px';
-  modalTitle.style.marginBottom = '10px';
-  modalTitle.style.color = '#E91E63';
+  var modalTitle = document.createElement("div");
+  modalTitle.id = "modal-title";
+  modalTitle.innerHTML = "Mobile Support";
+  modalTitle.style.fontSize = "48px";
+  modalTitle.style.marginBottom = "10px";
+  modalTitle.style.color = "#E91E63";
   modalContent.appendChild(modalTitle);
 
-  var modalText = document.createElement('p');
-  modalText.innerHTML = 'It appears that you are using a mobile device. Would you like to proceed to the mobile version of the Snake game?';
+  var modalText = document.createElement("p");
+  modalText.innerHTML =
+    "It appears that you are using a mobile device. Would you like to proceed to the mobile version of the Snake game?";
   modalContent.appendChild(modalText);
 
-  var modalButtons = document.createElement('div');
-  modalButtons.id = 'modal-buttons';
-  modalButtons.style.marginTop = '20px';
+  var modalButtons = document.createElement("div");
+  modalButtons.id = "modal-buttons";
+  modalButtons.style.marginTop = "20px";
   modalContent.appendChild(modalButtons);
 
-  var closeButtonDynamic = document.createElement('button');
-  closeButtonDynamic.className = 'modal-btn';
-  closeButtonDynamic.innerHTML = 'Close';
-  closeButtonDynamic.style.fontSize = '18px';
-  closeButtonDynamic.style.padding = '10px 20px';
-  closeButtonDynamic.style.backgroundColor = '#EFAE95';
-  closeButtonDynamic.style.marginRight = '5px';
+  var closeButtonDynamic = document.createElement("button");
+  closeButtonDynamic.className = "modal-btn";
+  closeButtonDynamic.innerHTML = "Close";
+  closeButtonDynamic.style.fontSize = "18px";
+  closeButtonDynamic.style.padding = "10px 20px";
+  closeButtonDynamic.style.backgroundColor = "#EFAE95";
+  closeButtonDynamic.style.marginRight = "5px";
   closeButtonDynamic.onclick = function () {
     closeModal(false);
   };
   modalButtons.appendChild(closeButtonDynamic);
 
-  var okButton = document.createElement('button');
-  okButton.className = 'modal-btn';
-  okButton.innerHTML = 'OK';
-  okButton.style.fontSize = '18px';
-  okButton.style.padding = '10px 20px';
-  okButton.style.backgroundColor = '#2196F3';
+  var okButton = document.createElement("button");
+  okButton.className = "modal-btn";
+  okButton.innerHTML = "OK";
+  okButton.style.fontSize = "18px";
+  okButton.style.padding = "10px 20px";
+  okButton.style.backgroundColor = "#2196F3";
   okButton.onclick = function () {
     closeModal(true);
   };
@@ -659,17 +690,17 @@ function openModal() {
 }
 
 function closeModal(result) {
-  var modalContainer = document.getElementById('modal-container');
+  var modalContainer = document.getElementById("modal-container");
   modalContainer.parentNode.removeChild(modalContainer);
   console.log("Modal result:", result);
   if (result == true) {
-    window.location.href = window.location.href + '?device=mobile';
+    window.location.href = window.location.href + "?device=mobile";
   }
 }
 
 // Check if the 'device' parameter is present in the URL
 const urlParams = new URLSearchParams(window.location.search);
-const isMobileParam = urlParams.get('device') === 'mobile';
+const isMobileParam = urlParams.get("device") === "mobile";
 
 // Check if the screen width is below a certain threshold to consider it a mobile device
 const isMobileResolution = window.innerWidth <= 768;
@@ -687,7 +718,7 @@ if (isMobileParam || isMobileResolution) {
   document.addEventListener("touchend", handleTouchEnd);
 
   // Remove the 'options' div if it exists
-  const optionsDiv = document.getElementById('options');
+  const optionsDiv = document.getElementById("options");
   if (optionsDiv) {
     optionsDiv.remove();
   }
@@ -722,19 +753,21 @@ function handleTouchEnd(e) {
 }
 
 if (!isMobileParam && !isMobileResolution) {
-  document.getElementById('showDebugLogButton').addEventListener('click', function () {
-    let temp = prompt("Do you seriously want to show the debug log? (Y/N)");
-    while (true) {
-      if (temp == "N") {
-        console.log("Debug broken.")
-        break;
-      } else {
-        console.log("Debug show enabled.")
-        ShowDebugLog();
-        break;
+  document
+    .getElementById("showDebugLogButton")
+    .addEventListener("click", function () {
+      let temp = prompt("Do you seriously want to show the debug log? (Y/N)");
+      while (true) {
+        if (temp == "N") {
+          console.log("Debug broken.");
+          break;
+        } else {
+          console.log("Debug show enabled.");
+          ShowDebugLog();
+          break;
+        }
       }
-    }
-  });
+    });
 }
 
 function debugGame() {

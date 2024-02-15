@@ -1,229 +1,229 @@
 /* Reset styles for the body */
 body {
-    font-family: 'Lato', sans-serif;
-    background-color: #282c35;
-    color: #ffffff;
-    margin: 0;
-    /* Remove default margins */
-    padding: 0;
-    /* Remove default inner spacing */
-    overflow-y: hidden;
-    min-height: 100vh;
-    /* Minimum height to cover the entire viewport */
-    display: flex;
-    flex-direction: column;
+  font-family: "Lato", sans-serif;
+  background-color: #282c35;
+  color: #ffffff;
+  margin: 0;
+  /* Remove default margins */
+  padding: 0;
+  /* Remove default inner spacing */
+  overflow-y: hidden;
+  min-height: 100vh;
+  /* Minimum height to cover the entire viewport */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Container styles */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 /* Blink animation keyframes */
 @keyframes blinkAnimation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 9.5;
-    }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 9.5;
+  }
 }
 
 /* Canvas styling with animation */
 #gameCanvas {
-    border: 2px solid #ffffff;
-    transition: border 0.3s ease-in-out;
-    animation: blinkAnimation 0.5s infinite alternate;
-    border-radius: 0.5rem;
-    border-width: 5px;
+  border: 2px solid #ffffff;
+  transition: border 0.3s ease-in-out;
+  animation: blinkAnimation 0.5s infinite alternate;
+  border-radius: 0.5rem;
+  border-width: 5px;
 }
 
 #gameCanvas:hover {
-    border: 2px solid #3498db;
+  border: 2px solid #3498db;
 }
 
 /* Center the canvas on the screen */
 main {
-    display: flex;
-    flex: 1;
-    /* Stretch main part to fill available space */
-    flex-direction: column;
-    /* Stack child elements vertically */
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    /* Adjusted height for full viewport height */
-    width: 100%;
-    margin: 0;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex: 1;
+  /* Stretch main part to fill available space */
+  flex-direction: column;
+  /* Stack child elements vertically */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* Adjusted height for full viewport height */
+  width: 100%;
+  margin: 0;
+  align-items: center;
+  text-align: center;
 }
 
 /* Additional styles for the footer */
 footer {
-    font-size: 16px;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-    /* Full width */
-    box-sizing: border-box;
-    /* Include padding and border in width */
-    margin-top: auto;
-    /* Set the footer at the bottom of the screen */
-    margin-bottom: 20px;
-    /* Add extra spacing from the bottom */
+  font-size: 16px;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  /* Full width */
+  box-sizing: border-box;
+  /* Include padding and border in width */
+  margin-top: auto;
+  /* Set the footer at the bottom of the screen */
+  margin-bottom: 20px;
+  /* Add extra spacing from the bottom */
 }
 
 /* Range input styling */
 input[type="range"] {
-    appearance: none;
-    width: 100%;
-    height: 10px;
-    background: #333;
-    outline: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    margin-top: 5px;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: #333;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  margin-top: 5px;
 }
 
 input[type="range"]:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* Colored track for range input */
 input[type="range"]::-webkit-slider-thumb {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    background: #ffffff;
-    cursor: pointer;
-    border-radius: 50%;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    background: #ffffff;
-    cursor: pointer;
-    border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 /* Colored track for range input in Firefox */
 input[type="range"]::-moz-range-progress {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 /* Canvas styling */
 canvas {
-    background-color: #ffffff;
-    z-index: 9999;
-    width: 100%; /* 100% of container width */
-    height: 100%; /* 100% of container height */
-    transform-origin: top left;
-    transform: scale(1); /* Default scaling (no change) */
+  background-color: #ffffff;
+  z-index: 9999;
+  width: 100%; /* 100% of container width */
+  height: 100%; /* 100% of container height */
+  transform-origin: top left;
+  transform: scale(1); /* Default scaling (no change) */
 }
 
 /* Styles for anchor (a) and button elements */
 a,
 button {
-    text-decoration: none;
-    color: #3498db;
-    transition: color 0.3s ease-in-out;
-    background-color: transparent;
+  text-decoration: none;
+  color: #3498db;
+  transition: color 0.3s ease-in-out;
+  background-color: transparent;
 }
 
 a:hover,
 button {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 #showDebugLogButton:hover {
-    color: yellow;
-    opacity: 1;
+  color: yellow;
+  opacity: 1;
 }
 
 /* Popup styling */
 .popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 999;
-    max-width: 60%;
-    text-align: center;
-    animation: slideUpDown 0.5s ease-in-out;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  max-width: 60%;
+  text-align: center;
+  animation: slideUpDown 0.5s ease-in-out;
 }
 
 .popup-header {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 @keyframes informationAnimation {
-    from {
-        color: orange;
-    }
-    to {
-        color: red;
-    }
+  from {
+    color: orange;
+  }
+  to {
+    color: red;
+  }
 }
 
 .exclamation-mark {
-    font-size: 50px;
-    color: #f00;
-    animation: informationAnimation 0.5s infinite alternate;
+  font-size: 50px;
+  color: #f00;
+  animation: informationAnimation 0.5s infinite alternate;
 }
 
 .popup-content {
-    text-align: center;
+  text-align: center;
 }
 
 .popup-button {
-    background-color: #f00;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .popup-button:hover {
-    background-color: white;
-    color: blue;
+  background-color: white;
+  color: blue;
 }
 
 @keyframes slideUpDown {
-    from {
-        transform: translate(-50%, -70%);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, -50%);
-        opacity: 1;
-    }
+  from {
+    transform: translate(-50%, -70%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-    from {
-        transform: translate(-50%, -50%);
-        opacity: 1;
-    }
-    to {
-        transform: translate(-50%, -70%);
-        opacity: 0;
-    }
+  from {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -70%);
+    opacity: 0;
+  }
 }
 
 /* Media query for screens with width less than or equal to 768px */
 @media screen and (max-width: 768px) {
-    transform: scale(0.5); /* Scale down by 50% for smaller screens */
+  transform: scale(0.5); /* Scale down by 50% for smaller screens */
 }
