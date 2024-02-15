@@ -45,17 +45,24 @@
     <link rel="canonical" href="https://verminew.github.io/" />
 
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
       id="u-theme-google-font"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Website Style -->
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Nova+Square&display=swap");
-      @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
       :root {
         --primary-color: #3a4052;
       }
@@ -73,7 +80,7 @@
       }
 
       body {
-        font-family: "Lato", sans-serif;
+        font-family: "Poppins", sans-serif;
         line-height: 1.5;
         display: flex;
         justify-content: center;
@@ -150,6 +157,7 @@
       .btn:hover {
         background-color: #3a40ff;
         transform: translate(-5%, 5%);
+        cursor: pointer;
       }
 
       .typing {
@@ -161,6 +169,7 @@
         margin-left: 5px;
         animation: blink 0.7s steps(2, start) infinite;
         opacity: 0;
+        font-family: "Nova Square", sans-serif;
       }
 
       @keyframes blink {
@@ -179,7 +188,7 @@
         }
 
         .btn {
-          padding: 10px 20px;
+          padding: 20px 30px;
         }
       }
 
@@ -218,9 +227,7 @@
       </div>
       <div class="content">
         <h1 class="animation_FadeInOutInfinite typing">
-          <div class="typing">
-            <span id="text"></span><span class="cursor">_</span>
-          </div>
+          <span id="text"></span><span class="cursor">_</span>
         </h1>
         <button
           onclick="changeLanguage('pl')"
@@ -259,7 +266,7 @@
 
     <!-- Typing animation script -->
     <script>
-      const phrases = ["Wybierz język", "Choose language"];
+      const phrases = ["Proszę wybierz język", "Please choose language"];
       let currentPhrase = 0;
       let currentLetter = 0;
       let typingSpeed = 100;
