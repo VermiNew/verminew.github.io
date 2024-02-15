@@ -30,6 +30,15 @@ This project is open for contributions, and you are welcome to edit the code to 
 
 4. Your contributions are highly appreciated!
 
+## Badges
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![HTML](https://img.shields.io/badge/Language-HTML-orange.svg)](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+[![CSS](https://img.shields.io/badge/Language-CSS-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/Language-JavaScript-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![GitHub issues](https://img.shields.io/github/issues/verminew/verminew.github.io.svg)](https://github.com/verminew/verminew.github.io/issues)
+[![GitHub stars](https://img.shields.io/github/stars/verminew/verminew.github.io.svg?style=social&label=Stars)](https://github.com/verminew/verminew.github.io/stargazers)
+[![Contributions welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)](https://github.com/verminew/verminew.github.io/blob/master/CONTRIBUTING.md)
+
 ## License 📄
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
