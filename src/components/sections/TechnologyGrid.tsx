@@ -121,7 +121,6 @@ const technologies = {
 export const TechnologyGrid: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
 
   return (
     <Container
@@ -138,7 +137,7 @@ export const TechnologyGrid: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <CategoryTitle>
+          <CategoryTitle $isDark={themeMode === 'dark'}>
             {t(`about.skills.categories.${category}.title`)}
           </CategoryTitle>
           <CategoryDescription>

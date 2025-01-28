@@ -27,7 +27,7 @@ const PopupContent = styled(motion.div)<{ $isDark: boolean }>`
   text-align: center;
   max-width: 400px;
   width: 90%;
-  border: 1px solid ${({ theme, $isDark }) =>
+  border: 1px solid ${({ $isDark }) =>
     $isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
   };
 `;

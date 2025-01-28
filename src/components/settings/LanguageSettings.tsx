@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { changeLanguageWithReload } from '../../i18n';
 
 const Container = styled.div`
   display: flex;

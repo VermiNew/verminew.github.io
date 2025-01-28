@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'small' | 'medium' | 'large';
   children: React.ReactNode;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
-const StyledButton = styled(motion.button)<{
+const StyledButton = styled.button<{
   $variant?: 'primary' | 'secondary' | 'outline';
   $size?: 'small' | 'medium' | 'large';
   $isDark?: boolean;
@@ -86,6 +89,8 @@ const StyledButton = styled(motion.button)<{
   }
 `;
 
+const MotionButton = motion(StyledButton);
+
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'medium',
@@ -96,7 +101,7 @@ export const Button: React.FC<ButtonProps> = ({
   const isDark = themeMode === 'dark';
 
   return (
-    <StyledButton
+    <MotionButton
       $variant={variant}
       $size={size}
       $isDark={isDark}
@@ -105,6 +110,6 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {children}
-    </StyledButton>
+    </MotionButton>
   );
 }; 

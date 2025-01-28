@@ -6,7 +6,6 @@ import { Button } from '../ui/Button';
 import { HeroBackground } from './HeroBackground';
 import { useTheme } from '../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { useAnimation as useFramerAnimation } from 'framer-motion';
 import { useAnimation as useReducedMotion } from '../../context/AnimationContext';
 
 const HeroContainer = styled(motion.div)`
@@ -127,23 +126,6 @@ const itemVariants: Variants = {
       ease: 'easeOut',
     },
   },
-};
-
-const glowVariants: Variants = {
-  initial: {
-    scale: 1,
-    opacity: 0.5
-  },
-  animate: {
-    scale: [1, 1.2, 1],
-    opacity: [0.5, 0.8, 0.5],
-    transition: {
-      duration: 2,
-      ease: "easeInOut",
-      repeat: Infinity,
-      repeatType: "reverse" as const
-    }
-  }
 };
 
 export const HeroSection: React.FC = () => {

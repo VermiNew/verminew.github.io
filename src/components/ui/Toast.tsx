@@ -67,7 +67,7 @@ export const Toast: React.FC<ToastProps> = ({
   duration = 3000,
   onClose
 }) => {
-  const [progress, setProgress] = useState(0);
+  const [_, setProgress] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(onClose, duration);

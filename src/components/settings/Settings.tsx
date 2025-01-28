@@ -89,34 +89,6 @@ const CloseButton = styled(motion.button)`
   }
 `;
 
-const Section = styled.div`
-  margin-bottom: 1.5rem;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const SectionTitle = styled.h4`
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  font-family: 'Space Grotesk', sans-serif;
-`;
-
-const Option = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-`;
-
-const OptionLabel = styled.label`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 0.9rem;
-  cursor: pointer;
-`;
-
 const panelVariants = {
   hidden: {
     opacity: 0,
@@ -149,19 +121,6 @@ const panelVariants = {
     }
   }
 };
-
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-`;
 
 const PanelContent = styled.div`
   overflow: hidden;

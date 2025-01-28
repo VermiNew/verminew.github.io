@@ -40,8 +40,7 @@ i18n
     detection: {
       order: ['localStorage', 'navigator'],
       lookupLocalStorage: 'i18nextLng',
-      caches: ['localStorage'],
-      convertLanguageOnRead: (lng: string) => normalizeLanguage(lng)
+      caches: ['localStorage']
     },
     interpolation: {
       escapeValue: false

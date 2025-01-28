@@ -6,14 +6,10 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  base: './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
     }
-  },
-  base: './',
-  build: {
-    outDir: 'dist',
-    sourcemap: true
   }
 })
