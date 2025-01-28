@@ -14,12 +14,6 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist',
-    sourcemap: true,
-    assetsDir: 'assets',
-  },
-  server: {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
+    sourcemap: true
+  }
 })
