@@ -1,309 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
-    <!-- Meta Tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
-    />
-    <meta
-      name="keywords"
-      content="VermiNew, Michael, Web Development, Portfolio, GitHub Pages"
-    />
-    <meta
-      name="description"
-      content="Explore the world of web development with VermiNew (Michael). This is my portfolio and first full-fledged website journey hosted on GitHub Pages."
-    />
-
-    <!-- Page Title -->
-    <title>VermiNew - Michael's Web Development Journey</title>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image" href="assets/images/icon/icon.png" />
-
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="assets/css/config.css" />
-
-    <!-- JavaScript -->
-    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/src/assets/images/favicon/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Portfolio and personal website of VermiNew - Exploring programming, AI, and web development" />
+    <meta name="keywords" content="VermiNew, Portfolio, Programming, AI, Web Development, Python, Java, C++, TypeScript" />
+    <meta name="author" content="VermiNew" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark light" />
+    
     <!-- Open Graph Meta Tags -->
-    <meta
-      property="og:title"
-      content="VermiNew - Michael's Web Development Journey"
-    />
-    <meta
-      property="og:description"
-      content="Explore the world of web development with VermiNew (Michael). This is my portfolio and first full-fledged website journey hosted on GitHub Pages."
-    />
-    <meta property="og:image" content="images/Logo_0.png" />
-    <meta property="og:url" content="https://verminew.github.io/" />
+    <meta property="og:title" content="VermiNew - Portfolio" />
+    <meta property="og:description" content="Portfolio and personal website of VermiNew - Exploring programming, AI, and web development" />
+    <meta property="og:image" content="/src/assets/images/logo/logo-social.png" />
+    <meta property="og:url" content="https://verminew.github.io" />
     <meta property="og:type" content="website" />
-
-    <!-- Canonical Tag -->
-    <link rel="canonical" href="https://verminew.github.io/" />
-
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="VermiNew - Portfolio" />
+    <meta name="twitter:description" content="Portfolio and personal website of VermiNew" />
+    <meta name="twitter:image" content="/src/assets/images/logo/logo-social.png" />
+    
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
-      id="u-theme-google-font"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Website Style -->
-    <style>
-      :root {
-        --primary-color: #3a4052;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body,
-      html {
-        height: 100%;
-        overflow: hidden;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        line-height: 1.5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #000;
-      }
-
-      .showcase {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: #fff;
-      }
-
-      .video-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      .video-container::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-      }
-
-      .video-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .content {
-        max-width: 90%;
-      }
-
-      h1 {
-        font-size: 48px;
-        margin-bottom: 10px;
-      }
-
-      h3 {
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      .btn {
-        font-family: "Nova Square", sans-serif;
-        font-size: 16px;
-        display: inline-block;
-        padding: 10px 30px;
-        background: var(--primary-color);
-        color: #fff;
-        border-radius: 5px;
-        border: solid #fff 1px;
-        margin-top: 25px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-      }
-
-      .btn:hover {
-        background-color: #3a40ff;
-        transform: translate(-5%, 5%);
-        cursor: pointer;
-      }
-
-      .typing {
-        letter-spacing: 2px;
-      }
-
-      .cursor {
-        display: inline-block;
-        margin-left: 5px;
-        animation: blink 0.7s steps(2, start) infinite;
-        opacity: 0;
-        font-family: "Nova Square", sans-serif;
-      }
-
-      @keyframes blink {
-        to {
-          opacity: 1;
-        }
-      }
-
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 32px;
-        }
-
-        h3 {
-          font-size: 18px;
-        }
-
-        .btn {
-          padding: 20px 30px;
-        }
-      }
-
-      @keyframes FadeInOutInfinite {
-        0% {
-          opacity: 0.5;
-        }
-        50% {
-          opacity: 1;
-        }
-        100% {
-          opacity: 0.5;
-        }
-      }
-
-      .animation_FadeInOutInfinite {
-        animation: FadeInOutInfinite 5s infinite;
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <title>VermiNew - Portfolio</title>
   </head>
-
   <body>
-    <!-- Content -->
-    <section class="showcase">
-      <div class="video-container">
-        <video
-          playsinline="playsinline"
-          autoplay="autoplay"
-          muted="muted"
-          loop="loop"
-          class="video-background"
-        >
-          <source src="assets/mp4/background.mp4" type="video/mp4" />
-          <p>Your browser does not support the video tag.</p>
-        </video>
-      </div>
-      <div class="content">
-        <h1 class="animation_FadeInOutInfinite typing">
-          <span id="text"></span><span class="cursor">_</span>
-        </h1>
-        <button
-          onclick="changeLanguage('pl')"
-          title="Wybierz Polski"
-          class="animation_FadeInOutInfinite btn"
-        >
-          Polski
-        </button>
-        <button
-          onclick="changeLanguage('en')"
-          title="Choose English"
-          class="animation_FadeInOutInfinite btn"
-        >
-          English
-        </button>
-        <br />
-        <button
-          onclick="location.href='https://github.com/VermiNew/verminew.github.io/blob/main/LICENSE';"
-          class="animation_FadeInOutInfinite btn"
-        >
-          Project licence
-        </button>
-      </div>
-    </section>
-
-    <!-- Language selection script -->
-    <script>
-      function changeLanguage(language) {
-        if (language === "pl") {
-          window.location.href = "main_pl.html";
-        } else if (language === "en") {
-          window.location.href = "main_en.html";
-        }
-      }
-    </script>
-
-    <!-- Typing animation script -->
-    <script>
-      const phrases = ["Proszę wybierz język", "Please choose language"];
-      let currentPhrase = 0;
-      let currentLetter = 0;
-      let typingSpeed = 100;
-      let deleteSpeed = 50;
-
-      function type() {
-        if (currentPhrase >= phrases.length) {
-          currentPhrase = 0;
-        }
-
-        let displayText = phrases[currentPhrase];
-        if (currentLetter < displayText.length) {
-          document.getElementById("text").textContent +=
-            displayText.charAt(currentLetter);
-          currentLetter++;
-          setTimeout(type, typingSpeed);
-        } else {
-          setTimeout(erase, 2000);
-        }
-      }
-
-      function erase() {
-        if (currentLetter > 0) {
-          let displayText = phrases[currentPhrase].substring(
-            0,
-            currentLetter - 1
-          );
-          document.getElementById("text").textContent = displayText;
-          currentLetter--;
-          setTimeout(erase, deleteSpeed);
-        } else {
-          currentPhrase++;
-          setTimeout(type, typingSpeed);
-        }
-      }
-
-      type();
-    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

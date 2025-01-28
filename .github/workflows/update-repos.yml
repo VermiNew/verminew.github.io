@@ -1,0 +1,45 @@
+name: Update Repository Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Raz dziennie o północy
+  workflow_dispatch:  # Pozwala na ręczne uruchomienie
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - '.github/scripts/**'
+  repository_dispatch:
+    types: [update_projects]  # Można wywołać przez GitHub API
+  watch:
+    types: [started]  # Aktualizuje gdy ktoś doda gwiazdkę
+
+jobs:
+  update-repos:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install @octokit/rest
+
+      - name: Fetch repository data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node .github/scripts/fetch-repos.js
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add public/data/repos.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update repository data [skip ci]" && git push) 

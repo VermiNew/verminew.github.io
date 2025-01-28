@@ -1,0 +1,213 @@
+{
+  "navigation": {
+    "start": "Start",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "brand": {
+    "logo": "VermiNew Logo",
+    "name": "VermiNew"
+  },
+  "hero": {
+    "title": "Programming, AI and technology development enthusiast",
+    "cta": {
+      "about": "Get to know me",
+      "projects": "View projects"
+    }
+  },
+  "about": {
+    "title": "About me",
+    "intro": "I am a programming enthusiast who combines a passion for software development with a fascination for artificial intelligence.",
+    "focus": "I focus on developing in web development and artificial intelligence, constantly expanding my knowledge and skills.",
+    "nameOrigin": {
+      "title": "Where does the name VermiNew come from?",
+      "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for development and continuous improvement."
+    },
+    "birthInfo": "Born in 2006",
+    "profiles": {
+      "title": "Profiles",
+      "github": "GitHub",
+      "discord": "Discord",
+      "email": "Email"
+    },
+    "currentLearning": {
+      "title": "Currently Learning",
+      "technologies": {
+        "react": "React",
+        "typescript": "TypeScript",
+        "python": "Python",
+        "tensorflow": "TensorFlow",
+        "pytorch": "PyTorch",
+        "docker": "Docker",
+        "googleColab": "Google Colab",
+        "kaggle": "Kaggle"
+      }
+    },
+    "skills": {
+      "title": "Skills",
+      "description": "My technical skills cover a wide range of technologies and tools",
+      "levels": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "learning": "Learning"
+      },
+      "categories": {
+        "webDev": {
+          "title": "Web Technologies",
+          "description": "Technologies related to web and application development",
+          "skills": {
+            "html5": {
+              "name": "HTML5"
+            },
+            "css3": {
+              "name": "CSS3"
+            },
+            "javascript": {
+              "name": "JavaScript"
+            },
+            "typescript": {
+              "name": "TypeScript"
+            },
+            "react": {
+              "name": "React"
+            },
+            "angular": {
+              "name": "Angular"
+            },
+            "bootstrap": {
+              "name": "Bootstrap"
+            }
+          }
+        },
+        "programming": {
+          "title": "Programming Languages",
+          "description": "Core programming languages and technologies",
+          "skills": {
+            "cpp": {
+              "name": "C++"
+            },
+            "csharp": {
+              "name": "C#"
+            },
+            "java": {
+              "name": "Java"
+            },
+            "python": {
+              "name": "Python"
+            }
+          }
+        },
+        "aiMl": {
+          "title": "AI & Machine Learning",
+          "description": "Artificial Intelligence and Machine Learning tools",
+          "skills": {
+            "tensorflow": {
+              "name": "TensorFlow"
+            },
+            "pytorch": {
+              "name": "PyTorch"
+            }
+          }
+        },
+        "other": {
+          "title": "Other Technologies",
+          "description": "Additional tools and technologies",
+          "skills": {
+            "androidStudio": {
+              "name": "Android Studio"
+            },
+            "mysql": {
+              "name": "MySQL"
+            },
+            "docker": {
+              "name": "Docker"
+            }
+          }
+        }
+      }
+    }
+  },
+  "projects": {
+    "title": "My Projects",
+    "filters": {
+      "all": "All",
+      "web": "Web",
+      "ai": "AI",
+      "desktop": "Desktop"
+    },
+    "viewGithub": "View on GitHub",
+    "visitLive": "Visit Live",
+    "tags": {
+      "archived": "Archived",
+      "visibility": {
+        "public": "Public",
+        "private": "Private"
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "tabs": {
+      "language": "Language",
+      "preferences": "Preferences"
+    },
+    "theme": {
+      "title": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "preferences": {
+      "reducedMotion": "Reduced Motion"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "social": {
+      "title": "Social Media & Contact",
+      "description": "Feel free to reach out through any of these platforms"
+    },
+    "info": {
+      "title": "Additional Information",
+      "description": "More ways to connect and collaborate",
+      "location": "Poland, Europe",
+      "availability": "Available for interesting projects and collaborations"
+    },
+    "email": "Email",
+    "discord": "Discord",
+    "github": "GitHub"
+  },
+  "theme": {
+    "toggleDark": "Switch to dark mode",
+    "toggleLight": "Switch to light mode"
+  },
+  "language": {
+    "switchTo": "Switch to Polish",
+    "reloadMessage": "Reloading page to apply language changes...",
+    "settings": {
+      "title": "Language Settings",
+      "select": "Select Language",
+      "en": "English",
+      "pl": "Polish",
+      "current": "Current Language"
+    }
+  },
+  "notifications": {
+    "languageChanged": "Language changed to English",
+    "themeChanged": "Theme changed",
+    "preferencesUpdated": "Preferences updated",
+    "language": {
+      "available": "Polish language version available!",
+      "detected": "We noticed you're using a browser with Polish language. Our site is also available in Polish!",
+      "settingsHint": "Click the settings icon in the bottom right corner to change the language to Polish.",
+      "dontShowAgain": "Don't show again",
+      "understand": "I understand"
+    }
+  },
+  "sections": {
+    "contact": "Contact"
+  }
+}

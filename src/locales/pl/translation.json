@@ -1,0 +1,213 @@
+{
+  "navigation": {
+    "start": "Start",
+    "about": "O mnie",
+    "projects": "Projekty",
+    "contact": "Kontakt"
+  },
+  "brand": {
+    "logo": "VermiNew Logo",
+    "name": "VermiNew"
+  },
+  "hero": {
+    "title": "Pasjonat programowania, AI i rozwoju technologii",
+    "cta": {
+      "about": "Poznaj mnie",
+      "projects": "Zobacz projekty"
+    }
+  },
+  "about": {
+    "title": "O mnie",
+    "intro": "Jestem pasjonatem programowania, który łączy zamiłowanie do tworzenia oprogramowania z fascynacją sztuczną inteligencją.",
+    "focus": "Skupiam się na rozwoju w obszarach web developmentu i sztucznej inteligencji, nieustannie poszerzając swoją wiedzę i umiejętności.",
+    "nameOrigin": {
+      "title": "Skąd wzięła się nazwa VermiNew?",
+      "description": "Ver - Version (Wersja), Mi - Michał, New - nieustanne uczenie się nowych rzeczy. To połączenie odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia się."
+    },
+    "birthInfo": "Urodzony w 2006 roku",
+    "profiles": {
+      "title": "Profile",
+      "github": "GitHub",
+      "discord": "Discord",
+      "email": "Email"
+    },
+    "currentLearning": {
+      "title": "Obecnie uczę się",
+      "technologies": {
+        "react": "React",
+        "typescript": "TypeScript",
+        "python": "Python",
+        "tensorflow": "TensorFlow",
+        "pytorch": "PyTorch",
+        "docker": "Docker",
+        "googleColab": "Google Colab",
+        "kaggle": "Kaggle"
+      }
+    },
+    "skills": {
+      "title": "Umiejętności",
+      "description": "Moje umiejętności techniczne obejmują szeroki zakres technologii i narzędzi",
+      "levels": {
+        "beginner": "Początkujący",
+        "intermediate": "Średnio-zaawansowany",
+        "advanced": "Zaawansowany",
+        "learning": "Uczę się"
+      },
+      "categories": {
+        "webDev": {
+          "title": "Technologie webowe",
+          "description": "Technologie związane z tworzeniem stron i aplikacji internetowych",
+          "skills": {
+            "html5": {
+              "name": "HTML5"
+            },
+            "css3": {
+              "name": "CSS3"
+            },
+            "javascript": {
+              "name": "JavaScript"
+            },
+            "typescript": {
+              "name": "TypeScript"
+            },
+            "react": {
+              "name": "React"
+            },
+            "angular": {
+              "name": "Angular"
+            },
+            "bootstrap": {
+              "name": "Bootstrap"
+            }
+          }
+        },
+        "programming": {
+          "title": "Języki programowania",
+          "description": "Podstawowe języki programowania i technologie",
+          "skills": {
+            "cpp": {
+              "name": "C++"
+            },
+            "csharp": {
+              "name": "C#"
+            },
+            "java": {
+              "name": "Java"
+            },
+            "python": {
+              "name": "Python"
+            }
+          }
+        },
+        "aiMl": {
+          "title": "AI i uczenie maszynowe",
+          "description": "Narzędzia i biblioteki do sztucznej inteligencji",
+          "skills": {
+            "tensorflow": {
+              "name": "TensorFlow"
+            },
+            "pytorch": {
+              "name": "PyTorch"
+            }
+          }
+        },
+        "other": {
+          "title": "Pozostałe technologie",
+          "description": "Inne narzędzia i technologie",
+          "skills": {
+            "androidStudio": {
+              "name": "Android Studio"
+            },
+            "mysql": {
+              "name": "MySQL"
+            },
+            "docker": {
+              "name": "Docker"
+            }
+          }
+        }
+      }
+    }
+  },
+  "projects": {
+    "title": "Moje projekty",
+    "filters": {
+      "all": "Wszystkie",
+      "web": "Web",
+      "ai": "AI",
+      "desktop": "Desktop"
+    },
+    "viewGithub": "Zobacz na GitHub",
+    "visitLive": "Zobacz na żywo",
+    "tags": {
+      "archived": "Zarchiwizowane",
+      "visibility": {
+        "public": "Publiczne",
+        "private": "Prywatne"
+      }
+    }
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "language": "Język",
+    "tabs": {
+      "language": "Język",
+      "preferences": "Preferencje"
+    },
+    "theme": {
+      "title": "Motyw",
+      "light": "Jasny",
+      "dark": "Ciemny",
+      "system": "Systemowy"
+    },
+    "preferences": {
+      "reducedMotion": "Zredukowane animacje"
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "social": {
+      "title": "Media społecznościowe i kontakt",
+      "description": "Możesz się ze mną skontaktować przez dowolną z tych platform"
+    },
+    "info": {
+      "title": "Dodatkowe informacje",
+      "description": "Więcej sposobów na nawiązanie współpracy",
+      "location": "Polska, Europa",
+      "availability": "Otwarty na ciekawe projekty i współpracę"
+    },
+    "email": "Email",
+    "discord": "Discord",
+    "github": "GitHub"
+  },
+  "theme": {
+    "toggleDark": "Przełącz na tryb ciemny",
+    "toggleLight": "Przełącz na tryb jasny"
+  },
+  "language": {
+    "switchTo": "Przełącz na angielski",
+    "reloadMessage": "Odświeżanie strony, aby zastosować zmiany języka...",
+    "settings": {
+      "title": "Ustawienia języka",
+      "select": "Wybierz język",
+      "en": "Angielski",
+      "pl": "Polski",
+      "current": "Aktualny język"
+    }
+  },
+  "notifications": {
+    "languageChanged": "Zmieniono język na polski",
+    "themeChanged": "Zmieniono motyw",
+    "preferencesUpdated": "Zaktualizowano preferencje",
+    "language": {
+      "available": "Dostępna polska wersja językowa!",
+      "detected": "Zauważyliśmy, że używasz przeglądarki z polskim językiem. Nasza strona jest dostępna również po polsku!",
+      "settingsHint": "Kliknij ikonę ustawień w prawym dolnym rogu, aby zmienić język na polski.",
+      "dontShowAgain": "Nie pokazuj więcej",
+      "understand": "Rozumiem"
+    }
+  },
+  "sections": {
+    "contact": "Kontakt"
+  }
+}
