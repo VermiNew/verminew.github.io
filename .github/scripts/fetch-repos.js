@@ -1,6 +1,10 @@
-const { Octokit } = require('@octokit/rest');
-const fs = require('fs').promises;
-const path = require('path');
+import { Octokit } from '@octokit/rest';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Predefiniowane tagi dla kategorii
 const categoryTags = {
@@ -92,10 +96,10 @@ async function fetchRepos() {
     };
 
     // Upewnij się, że katalog istnieje
-    await fs.mkdir(path.join(process.cwd(), 'public', 'data'), { recursive: true });
+    await fs.promises.mkdir(path.join(process.cwd(), 'public', 'data'), { recursive: true });
 
     // Zapisz dane do pliku
-    await fs.writeFile(
+    await fs.promises.writeFile(
       path.join(process.cwd(), 'public', 'data', 'repos.json'),
       JSON.stringify(data, null, 2)
     );
