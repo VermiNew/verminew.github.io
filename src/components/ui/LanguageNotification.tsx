@@ -10,11 +10,17 @@ const pulse = keyframes`
   100% { transform: scale(1); }
 `;
 
-const NotificationContainer = styled(motion.div)<{ $isDark: boolean }>`
+const NotificationOverlay = styled(motion.div)`
   position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+`;
+
+const NotificationContainer = styled(motion.div)<{ $isDark: boolean }>`
   background: ${({ theme, $isDark }) => 
     $isDark ? theme.colors.surface : theme.colors.background
   };
@@ -23,11 +29,9 @@ const NotificationContainer = styled(motion.div)<{ $isDark: boolean }>`
   box-shadow: ${({ theme }) => theme.shadows.large};
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
   width: min(400px, 90%);
-  margin: 0 auto;
-  z-index: 100;
+  position: relative;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    bottom: 120px;
     width: min(85%, 350px);
     padding: 1.25rem;
   }
@@ -119,6 +123,16 @@ const Button = styled(motion.button)<{ $variant?: 'primary' | 'secondary' }>`
   }
 `;
 
+const highlight = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(var(--primary-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
+`;
+
+const IUnderstandButton = styled(Button)`
+  animation: ${highlight} 2s infinite;
+`;
+
 const CloseButton = styled(motion.button)`
   position: absolute;
   top: 1rem;
@@ -175,47 +189,75 @@ export const LanguageNotification: React.FC = () => {
     localStorage.setItem('hasSeenLangNotification', 'true');
   };
 
+  const handleIUnderstand = () => {
+    // Symulacja kliknięcia przycisku ustawień
+    const settingsButton = document.querySelector('[aria-label="Open Settings"]') as HTMLButtonElement;
+    if (settingsButton) {
+      settingsButton.click();
+      // Daj czas na otwarcie menu
+      setTimeout(() => {
+        // Znajdź i kliknij zakładkę języka
+        const languageTab = document.querySelector('[aria-label="Language"]') as HTMLButtonElement;
+        if (languageTab) {
+          languageTab.click();
+        }
+      }, 100);
+    }
+    handleClose();
+  };
+
   return (
     <AnimatePresence>
       {isVisible && (
-        <NotificationContainer
-          $isDark={isDark}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          transition={{ type: 'spring', damping: 20 }}
+        <NotificationOverlay
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
-          <Title>
-            <span>🌍</span> {t('notifications.language.available')}
-          </Title>
-          <Message>
-            {t('notifications.language.detected')}
-          </Message>
-          <Tutorial>
-            <Step>
-              <PulsingIconWrapper>
-                <FiSettings />
-              </PulsingIconWrapper>
-              <span>{t('notifications.language.settingsHint')}</span>
-            </Step>
-          </Tutorial>
-          <ButtonsContainer>
-            <Button onClick={handleDontShowAgain}>
-              <FiXCircle />
-              {t('notifications.language.dontShowAgain')}
-            </Button>
-            <Button $variant="primary" onClick={handleClose}>
-              {t('notifications.language.understand')}
-            </Button>
-          </ButtonsContainer>
-          <CloseButton
-            onClick={handleClose}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+          <NotificationContainer
+            $isDark={isDark}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: 'spring', damping: 20 }}
           >
-            <FiX />
-          </CloseButton>
-        </NotificationContainer>
+            <Title>
+              <span>🌍</span> {t('notifications.language.available')}
+            </Title>
+            <Message>
+              {t('notifications.language.detected')}
+            </Message>
+            <Tutorial>
+              <Step>
+                <PulsingIconWrapper>
+                  <FiSettings />
+                </PulsingIconWrapper>
+                <span>{t('notifications.language.settingsHint')}</span>
+              </Step>
+            </Tutorial>
+            <ButtonsContainer>
+              <Button onClick={handleDontShowAgain}>
+                <FiXCircle />
+                {t('notifications.language.dontShowAgain')}
+              </Button>
+              <IUnderstandButton 
+                $variant="primary" 
+                onClick={handleIUnderstand}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {t('notifications.language.understand')}
+              </IUnderstandButton>
+            </ButtonsContainer>
+            <CloseButton
+              onClick={handleClose}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <FiX />
+            </CloseButton>
+          </NotificationContainer>
+        </NotificationOverlay>
       )}
     </AnimatePresence>
   );

@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSettings, FiX, FiGlobe, FiZap } from 'react-icons/fi';
-import { useTheme } from '../../context/ThemeContext';
-import { LanguageSettings } from './LanguageSettings';
+import { useTheme } from '@/context/ThemeContext';
+import { LanguageSettings } from '@/components/settings/LanguageSettings';
 import { useTranslation } from 'react-i18next';
-import { useAnimation } from '../../context/AnimationContext';
+import { useAnimation } from '@/context/AnimationContext';
 
 const SettingsButton = styled(motion.button)`
   position: fixed;
@@ -324,6 +324,7 @@ const Settings: React.FC = () => {
                   $isActive={activeTab === 'language'}
                   onClick={() => setActiveTab('language')}
                   whileTap={{ scale: 0.95 }}
+                  aria-label="Language"
                 >
                   <FiGlobe />
                   {t('settings.tabs.language')}
