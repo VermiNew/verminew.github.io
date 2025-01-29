@@ -18,18 +18,48 @@
   },
   "about": {
     "title": "O mnie",
-    "intro": "Jestem entuzjastą programowania, który łączy pasję do tworzenia oprogramowania z fascynacją sztuczną inteligencją.",
-    "focus": "Skupiam się na rozwoju w zakresie tworzenia stron internetowych i sztucznej inteligencji, stale poszerzając swoją wiedzę i umiejętności.",
+    "name": "Michał Oślizło",
+    "intro": "Jestem Michał, entuzjasta programowania z Podkarpacia. Urodziłem się w październiku 2006 roku i obecnie uczę się w technikum na kierunku programistycznym.",
+    "focus": "Skupiam się na rozwoju w zakresie tworzenia stron internetowych i sztucznej inteligencji, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i przygotowuje się do INF.04, znajduję największą satysfakcję w oglądaniu efektów mojej pracy.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
-      "description": "Ver - Version, Mi - Michael, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
+      "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
     },
-    "birthInfo": "Urodzony w 2006",
+    "birthInfo": "Urodzony w październiku 2006",
     "profiles": {
       "title": "Profile",
       "github": "GitHub",
       "discord": "Discord",
       "email": "Email"
+    },
+    "background": {
+      "title": "O sobie",
+      "education": {
+        "title": "Edukacja",
+        "current": "Uczeń technikum, kierunek: programista",
+        "achievements": "Ukończona kwalifikacja INF.03, przygotowania do INF.04"
+      },
+      "languages": {
+        "title": "Języki",
+        "native": "Polski (ojczysty)",
+        "other": "Angielski (komunikatywny)"
+      },
+      "interests": {
+        "title": "Zainteresowania i technologie",
+        "list": [
+          "Montaż wideo",
+          "Programowanie w Pythonie",
+          "Eksploracja nowych technologii (Node, React, Vue, TypeScript, Angular)"
+        ]
+      },
+      "strengths": {
+        "title": "Co mnie napędza",
+        "description": "Największą satysfakcję czerpię z obserwowania, jak mój kod działa i przynosi realne efekty. Programowanie to dla mnie nie tylko nauka, ale przede wszystkim droga ciągłego rozwoju i doskonalenia umiejętności."
+      },
+      "growth": {
+        "title": "Obszary rozwoju",
+        "description": "Otwarcie przyznaję, że mam obszary wymagające doskonalenia: praca pod presją, działanie w bardzo dużych zespołach oraz niektóre aspekty matematyki. Traktuję te wyzwania jako możliwości do rozwoju i aktywnie nad nimi pracuję."
+      }
     },
     "skills": {
       "title": "Umiejętności",

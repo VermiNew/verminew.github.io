@@ -135,6 +135,57 @@ const ProfileLink = styled.a`
   }
 `;
 
+const Background = styled(motion.div)`
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const BackgroundSection = styled(motion.div)`
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: ${({ theme }) => `${theme.colors.surface}80`};
+  backdrop-filter: blur(8px);
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+`;
+
+const BackgroundTitle = styled.h3`
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 1rem;
+  font-weight: 600;
+`;
+
+const List = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const ListItem = styled.li`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: "•";
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const Name = styled(motion.h2)`
+  font-size: 1.8rem;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 1rem;
+  font-weight: 600;
+`;
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -181,6 +232,9 @@ export const AboutSection: React.FC = () => {
 
           <TextContent>
             <Description>
+              <Name variants={!reducedMotion ? itemVariants : undefined}>
+                {t('about.name')}
+              </Name>
               <Paragraph variants={!reducedMotion ? itemVariants : undefined}>
                 {t('about.intro')}
               </Paragraph>
@@ -198,6 +252,44 @@ export const AboutSection: React.FC = () => {
               <BirthInfo variants={!reducedMotion ? itemVariants : undefined}>
                 {t('about.birthInfo')}
               </BirthInfo>
+
+              <Background variants={!reducedMotion ? itemVariants : undefined}>
+                <BackgroundSection>
+                  <BackgroundTitle>{t('about.background.education.title')}</BackgroundTitle>
+                  <List>
+                    <ListItem>{t('about.background.education.current')}</ListItem>
+                    <ListItem>{t('about.background.education.achievements')}</ListItem>
+                  </List>
+                </BackgroundSection>
+
+                <BackgroundSection>
+                  <BackgroundTitle>{t('about.background.languages.title')}</BackgroundTitle>
+                  <List>
+                    <ListItem>{t('about.background.languages.native')}</ListItem>
+                    <ListItem>{t('about.background.languages.other')}</ListItem>
+                  </List>
+                </BackgroundSection>
+
+                <BackgroundSection>
+                  <BackgroundTitle>{t('about.background.interests.title')}</BackgroundTitle>
+                  <List>
+                    {(t('about.background.interests.list', { returnObjects: true }) as any[])
+                      .map((interest, index) => (
+                        <ListItem key={index}>{String(interest)}</ListItem>
+                      ))}
+                  </List>
+                </BackgroundSection>
+
+                <BackgroundSection>
+                  <BackgroundTitle>{t('about.background.strengths.title')}</BackgroundTitle>
+                  <p>{t('about.background.strengths.description')}</p>
+                </BackgroundSection>
+
+                <BackgroundSection>
+                  <BackgroundTitle>{t('about.background.growth.title')}</BackgroundTitle>
+                  <p>{t('about.background.growth.description')}</p>
+                </BackgroundSection>
+              </Background>
 
               <Profiles variants={!reducedMotion ? itemVariants : undefined}>
                 <ProfilesTitle>{t('about.profiles.title')}</ProfilesTitle>

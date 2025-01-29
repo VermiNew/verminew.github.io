@@ -10,26 +10,56 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Programming, AI and technology development enthusiast",
+    "title": "Programming Enthusiast, AI & Tech Development Passionate",
     "cta": {
       "about": "Get to know me",
       "projects": "View projects"
     }
   },
   "about": {
-    "title": "About me",
-    "intro": "I am a programming enthusiast who combines a passion for software development with a fascination for artificial intelligence.",
-    "focus": "I focus on developing in web development and artificial intelligence, constantly expanding my knowledge and skills.",
+    "title": "About Me",
+    "name": "Michael Oslizlo",
+    "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
+    "focus": "I focus on developing in web development and artificial intelligence, constantly expanding my knowledge and skills. As a technical school student who has already passed the INF.03 qualification and is preparing for INF.04, I find the greatest satisfaction in seeing the results of my work.",
     "nameOrigin": {
-      "title": "Where does the name VermiNew come from?",
-      "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for development and continuous improvement."
+      "title": "What's behind the name VermiNew?",
+      "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for growth and constant improvement."
     },
-    "birthInfo": "Born in 2006",
+    "birthInfo": "Born in October 2006",
     "profiles": {
       "title": "Profiles",
       "github": "GitHub",
       "discord": "Discord",
       "email": "Email"
+    },
+    "background": {
+      "title": "About Me",
+      "education": {
+        "title": "Education",
+        "current": "Technical school student, specialization: programmer",
+        "achievements": "Completed INF.03 qualification, preparing for INF.04"
+      },
+      "languages": {
+        "title": "Languages",
+        "native": "Polish (Native)",
+        "other": "English (Communicative)"
+      },
+      "interests": {
+        "title": "Interests & Technologies",
+        "list": [
+          "Video editing",
+          "Programming in Python",
+          "Exploring new technologies (Node, React, Vue, TypeScript, Angular)"
+        ]
+      },
+      "strengths": {
+        "title": "What Drives Me",
+        "description": "I find my greatest satisfaction in seeing my code work and deliver real results. Programming for me is not just learning, but above all a path of continuous development and skill improvement."
+      },
+      "growth": {
+        "title": "Growth Areas",
+        "description": "I openly acknowledge areas that need improvement: working under pressure, operating in very large teams, and certain aspects of mathematics. I treat these challenges as opportunities for growth and actively work on them."
+      }
     },
     "skills": {
       "title": "Skills",
