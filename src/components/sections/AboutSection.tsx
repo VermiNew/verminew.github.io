@@ -273,7 +273,7 @@ export const AboutSection: React.FC = () => {
                 <BackgroundSection>
                   <BackgroundTitle>{t('about.background.interests.title')}</BackgroundTitle>
                   <List>
-                    {(t('about.background.interests.list', { returnObjects: true }) as any[])
+                    {(t('about.background.interests.list', { returnObjects: true }) as string[])
                       .map((interest, index) => (
                         <ListItem key={index}>{String(interest)}</ListItem>
                       ))}
