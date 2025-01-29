@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
   workflow_dispatch:
 
 permissions:
@@ -12,7 +16,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -31,9 +35,31 @@ jobs:
         run: |
           npm install
           npm install terser --save-dev
+          npm install sharp --save-dev
+
+      - name: Generate PWA Assets
+        run: node scripts/convert-images.js
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type Check
+        run: npm run typecheck
 
       - name: Build
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
+
+      - name: Optimize Images
+        run: |
+          find dist -type f -name "*.png" -exec convert {} -strip -quality 85 {} \;
+          find dist -type f -name "*.jpg" -exec convert {} -strip -quality 85 {} \;
+          find dist -type f -name "*.jpeg" -exec convert {} -strip -quality 85 {} \;
+
+      - name: Optimize SVGs
+        run: |
+          find dist -type f -name "*.svg" -exec svgo {} \;
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -42,6 +68,14 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
+      - name: Save Cache
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            dist
+            node_modules
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
   deploy:
     environment:
@@ -53,3 +87,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Create Deployment Status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = ${{ job.status == 'success' }} ? '✅ Deploy successful' : '❌ Deploy failed';
+            const url = '${{ steps.deployment.outputs.page_url }}';
+            const message = `${status}\nEnvironment: github-pages\nURL: ${url}`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              issue_number: context.issue.number,
+              body: message
+            });
