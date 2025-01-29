@@ -12,9 +12,11 @@ const SIZES = {
     sm: 400        // Small size - 400px width
 };
 
+const PWA_SIZES = [16, 32, 64, 192, 512];
 const FORMATS = ['webp', 'avif'];
 const INPUT_DIR = 'src/assets/images';
 const OUTPUT_DIR = 'public/assets/images';
+const FAVICON_OUTPUT_DIR = 'public/assets/favicons';
 
 async function ensureDirectoryExists(directory) {
     try {
@@ -24,10 +26,45 @@ async function ensureDirectoryExists(directory) {
     }
 }
 
+async function generatePWAIcons(logoPath) {
+    try {
+        await ensureDirectoryExists(FAVICON_OUTPUT_DIR);
+        const image = sharp(logoPath);
+
+        // Generate favicon.ico (multi-size ICO file)
+        const faviconSizes = [16, 32, 64];
+        const icoBuffers = await Promise.all(
+            faviconSizes.map(size => 
+                image
+                    .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                    .toFormat('png')
+                    .toBuffer()
+            )
+        );
+
+        // Use sharp to create individual PNG files for PWA
+        for (const size of PWA_SIZES) {
+            const outputPath = path.join(FAVICON_OUTPUT_DIR, `logo${size}.png`);
+            await image
+                .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .png()
+                .toFile(outputPath);
+            console.log(`Generated PWA icon: ${outputPath}`);
+        }
+    } catch (error) {
+        console.error('Error generating PWA icons:', error);
+    }
+}
+
 async function convertImage(inputPath, fileName) {
     const fileNameWithoutExt = path.parse(fileName).name;
     const image = sharp(inputPath);
     const metadata = await image.metadata();
+
+    // If this is the logo, generate PWA icons
+    if (fileNameWithoutExt.toLowerCase() === 'logo') {
+        await generatePWAIcons(inputPath);
+    }
 
     // Process each size
     for (const [sizeName, targetWidth] of Object.entries(SIZES)) {
@@ -61,8 +98,9 @@ async function convertImage(inputPath, fileName) {
 
 async function processImages() {
     try {
-        // Ensure output directory exists
+        // Ensure output directories exist
         await ensureDirectoryExists(OUTPUT_DIR);
+        await ensureDirectoryExists(FAVICON_OUTPUT_DIR);
 
         // Get all files from input directory
         const files = await fs.readdir(INPUT_DIR);
