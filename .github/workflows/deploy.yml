@@ -51,6 +51,12 @@ jobs:
           VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
 
+      - name: Install Image Optimization Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          npm install -g svgo
+
       - name: Optimize Images
         run: |
           find dist -type f -name "*.png" -exec convert {} -strip -quality 85 {} \;
