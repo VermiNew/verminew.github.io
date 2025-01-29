@@ -43,11 +43,12 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
   }
 `;
 
-const ProjectsGrid = styled.div`
+const ProjectsGrid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   padding: 1rem;
+  min-height: 100px;
 `;
 
 const LoadingContainer = styled.div`
@@ -62,7 +63,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2
+      staggerChildren: 0.1
     }
   }
 };
@@ -73,41 +74,90 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.3,
       ease: 'easeOut'
     }
   }
 };
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const EXCLUDED_TECHNOLOGIES = ['unknown', 'config', 'github-config'];
+
+const filterValidTechnology = (tech: string) => 
+  !EXCLUDED_TECHNOLOGIES.includes(tech.toLowerCase());
+
 export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
   const { data, isLoading, error } = useRepos();
   const { reducedMotion } = useAnimation();
+  const [animateKey, setAnimateKey] = useState(0);
 
-  const getAvailableLanguages = () => {
+  const getAvailableTechnologies = () => {
     if (!data?.repos) return [];
-    const languages = new Set<string>();
+    const technologies = new Set<string>();
+    
     data.repos.forEach(project => {
-      if (project.language) {
-        languages.add(project.language);
+      if (project.language && filterValidTechnology(project.language)) {
+        technologies.add(project.language);
       }
+      project.technologies.forEach((tech: string) => {
+        if (filterValidTechnology(tech)) {
+          technologies.add(tech);
+        }
+      });
     });
-    return Array.from(languages).sort();
+    
+    return Array.from(technologies).sort();
   };
 
   const filters = [
     { id: 'all', label: t('projects.filters.all') },
-    ...getAvailableLanguages().map(lang => ({
-      id: lang.toLowerCase(),
-      label: lang
+    ...getAvailableTechnologies().map(tech => ({
+      id: tech.toLowerCase(),
+      label: tech
     }))
   ];
 
-  const filteredProjects = data?.repos.filter(project => 
-    activeFilter === 'all' || 
-    (project.language && project.language.toLowerCase() === activeFilter)
-  );
+  const handleFilterClick = (filterId: string) => {
+    if (filterId === 'all') {
+      setActiveFilters(['all']);
+    } else {
+      const newFilters = activeFilters.includes('all') 
+        ? [filterId]
+        : activeFilters.includes(filterId)
+          ? activeFilters.filter(f => f !== filterId)
+          : [...activeFilters, filterId];
+      
+      setActiveFilters(newFilters.length === 0 ? ['all'] : newFilters);
+    }
+    setAnimateKey(prev => prev + 1);
+  };
+
+  const filteredProjects = data?.repos
+    ? data.repos.filter(project => {
+        if (activeFilters.includes('all')) return true;
+        
+        const projectTechnologies = [
+          ...(project.language ? [project.language] : []),
+          ...project.technologies
+        ].map(tech => tech.toLowerCase());
+        
+        return activeFilters.some(filter => 
+          projectTechnologies.includes(filter.toLowerCase())
+        );
+      })
+    : [];
 
   return (
     <Section id="projects">
@@ -117,14 +167,16 @@ export const ProjectsSection: React.FC = () => {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>{t('projects.title')}</SectionTitle>
+        <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>
+          {t('projects.title')}
+        </SectionTitle>
         
         <FilterContainer variants={!reducedMotion ? itemVariants : undefined}>
           {filters.map((filter) => (
             <FilterButton
               key={filter.id}
-              $isActive={activeFilter === filter.id}
-              onClick={() => setActiveFilter(filter.id)}
+              $isActive={activeFilters.includes(filter.id)}
+              onClick={() => handleFilterClick(filter.id)}
             >
               {filter.label}
             </FilterButton>
@@ -138,17 +190,22 @@ export const ProjectsSection: React.FC = () => {
         ) : error ? (
           <ErrorMessage message={error.message} />
         ) : (
-          <motion.div variants={!reducedMotion ? itemVariants : undefined}>
-            <ProjectsGrid>
-              {filteredProjects?.map((project) => (
-                <motion.div key={project.id} variants={!reducedMotion ? itemVariants : undefined}>
-                  <ProjectCard
-                    project={project}
-                  />
-                </motion.div>
-              ))}
-            </ProjectsGrid>
-          </motion.div>
+          <ProjectsGrid
+            key={animateKey}
+            variants={!reducedMotion ? gridVariants : undefined}
+            initial="hidden"
+            animate="visible"
+          >
+            {filteredProjects?.map((project) => (
+              <motion.div
+                key={project.id}
+                variants={!reducedMotion ? itemVariants : undefined}
+                layout
+              >
+                <ProjectCard project={project} />
+              </motion.div>
+            ))}
+          </ProjectsGrid>
         )}
       </Content>
     </Section>
