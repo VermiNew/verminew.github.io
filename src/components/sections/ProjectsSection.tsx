@@ -81,19 +81,32 @@ const itemVariants = {
 
 export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<'all' | 'web' | 'ai' | 'desktop'>('all');
+  const [activeFilter, setActiveFilter] = useState<string>('all');
   const { data, isLoading, error } = useRepos();
   const { reducedMotion } = useAnimation();
 
+  const getAvailableLanguages = () => {
+    if (!data?.repos) return [];
+    const languages = new Set<string>();
+    data.repos.forEach(project => {
+      if (project.language) {
+        languages.add(project.language);
+      }
+    });
+    return Array.from(languages).sort();
+  };
+
   const filters = [
     { id: 'all', label: t('projects.filters.all') },
-    { id: 'web', label: t('projects.filters.web') },
-    { id: 'ai', label: t('projects.filters.ai') },
-    { id: 'desktop', label: t('projects.filters.desktop') }
-  ] as const;
+    ...getAvailableLanguages().map(lang => ({
+      id: lang.toLowerCase(),
+      label: lang
+    }))
+  ];
 
   const filteredProjects = data?.repos.filter(project => 
-    activeFilter === 'all' || project.type === activeFilter
+    activeFilter === 'all' || 
+    (project.language && project.language.toLowerCase() === activeFilter)
   );
 
   return (

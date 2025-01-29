@@ -6,7 +6,6 @@ import { SectionTitle } from '../ui/SectionTitle';
 import { SiGithub, SiDiscord } from 'react-icons/si';
 import { MdEmail } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
-import { TechnologyGrid } from './TechnologyGrid';
 import { useTheme } from '../../context/ThemeContext';
 import { useAnimation } from '../../context/AnimationContext';
 import { getSocialUrl } from '../../config/social';
@@ -161,7 +160,7 @@ const itemVariants = {
 export const AboutSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const { reducedMotion } = useAnimation(); // Use reducedMotion to respect this function in all code in this project.
+  const { reducedMotion } = useAnimation();
 
   return (
     <Section id="about">
@@ -177,7 +176,7 @@ export const AboutSection: React.FC = () => {
             $isDark={themeMode === 'dark'}
             variants={!reducedMotion ? itemVariants : undefined}
           >
-            <Image src="/assets/images/ava.jpg" alt="VermiNew" />
+            <Image src="/assets/images/avatar.webp" alt="VermiNew" />
           </ImageContainer>
 
           <TextContent>
@@ -228,8 +227,6 @@ export const AboutSection: React.FC = () => {
                 </ProfilesList>
               </Profiles>
             </Description>
-
-            <TechnologyGrid />
           </TextContent>
         </Content>
       </motion.div>

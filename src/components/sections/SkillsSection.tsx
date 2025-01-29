@@ -24,6 +24,12 @@ const Description = styled(motion.p)`
   line-height: 1.6;
 `;
 
+const GridContainer = styled(motion.div)`
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+`;
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -59,11 +65,15 @@ export const SkillsSection: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>{t('about.skills.title')}</SectionTitle>
+          <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>
+            {t('about.skills.title')}
+          </SectionTitle>
           <Description variants={!reducedMotion ? itemVariants : undefined}>
             {t('about.skills.description')}
           </Description>
-          <TechnologyGrid />
+          <GridContainer variants={!reducedMotion ? itemVariants : undefined}>
+            <TechnologyGrid />
+          </GridContainer>
         </motion.div>
       </Content>
     </Section>

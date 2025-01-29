@@ -307,7 +307,7 @@ export const Header: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           onClick={() => scrollToSection('#home')}
         >
-          <Logo src="./assets/images/Logo.png" alt="VermiNew Logo" />
+          <Logo src="/assets/images/Logo.webp" alt="VermiNew Logo" />
           <LogoText>VermiNew</LogoText>
         </LogoContainer>
 

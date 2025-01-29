@@ -6,55 +6,89 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context/ThemeContext';
 import { useAnimation } from '@/context/AnimationContext';
 import {
-  // Web Development
+  // Frontend Core
   SiHtml5,
   SiCss3,
   SiJavascript,
   SiTypescript,
+  // Frontend Frameworks & Libraries
   SiReact,
+  SiVuedotjs,
+  SiNextdotjs,
   SiAngular,
   SiBootstrap,
+  SiTailwindcss,
+  // Backend & Databases
+  SiPhp,
+  SiMysql,
+  SiFastapi,
   // Programming Languages
   SiCplusplus,
   SiSharp,
-  SiFastapi as SiJava,
   SiPython,
+  SiFastapi as SiJava,
   // AI/ML
   SiTensorflow,
   SiPytorch,
-  // Other
+  // Development Tools
+  SiGit,
+  SiDocker,
+  SiJest,
+  SiMarkdown,
+  // System & DevOps
+  SiGnubash,
   SiAndroidstudio,
-  SiMysql,
-  SiDocker
+  // Future Plans
+  SiRedis,
+  SiFirebase,
+  SiAuth0,
+  SiJsonwebtokens,
+  SiRust,
+  SiGo
 } from 'react-icons/si';
+import { IoTerminal } from "react-icons/io5";
 
 const Container = styled(motion.div)`
-  margin-top: 2rem;
+  display: grid;
+  gap: 3rem;
 `;
 
 const CategorySection = styled(motion.div)`
-  margin-bottom: 2rem;
+  background: ${({ theme }) => `${theme.colors.surface}40`};
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}10`};
+  transition: all ${({ theme }) => theme.transitions.default};
+
+  &:hover {
+    border-color: ${({ theme }) => `${theme.colors.primary}30`};
+    transform: translateY(-2px);
+  }
 `;
 
 const CategoryTitle = styled.h3<{ $isDark: boolean }>`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
-  opacity: ${({ $isDark }) => $isDark ? 0.9 : 1};
 `;
 
 const CategoryDescription = styled.p`
-  margin-bottom: 1rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
 `;
 
 const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 `;
 
@@ -63,7 +97,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.15
     }
   }
 };
@@ -75,47 +109,59 @@ const categoryVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.3,
       ease: 'easeOut'
     }
   }
 };
 
 const technologies = {
-  webDev: [
+  frontendCore: [
     { id: 'html5', icon: <SiHtml5 />, level: 'advanced' as const },
     { id: 'css3', icon: <SiCss3 />, level: 'advanced' as const },
-    { id: 'javascript', icon: <SiJavascript />, level: 'intermediate' as const },
-    { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const },
+    { id: 'javascript', icon: <SiJavascript />, level: 'advanced' as const },
+    { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const }
+  ],
+  frontendFrameworks: [
     { id: 'react', icon: <SiReact />, level: 'learning' as const },
-    { id: 'angular', icon: <SiAngular />, level: 'intermediate' as const },
-    { id: 'bootstrap', icon: <SiBootstrap />, level: 'intermediate' as const }
+    { id: 'vuejs', icon: <SiVuedotjs />, level: 'learning' as const },
+    { id: 'nextjs', icon: <SiNextdotjs />, level: 'learning' as const },
+    { id: 'angular', icon: <SiAngular />, level: 'beginner' as const },
+    { id: 'bootstrap', icon: <SiBootstrap />, level: 'intermediate' as const },
+    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'beginner' as const }
+  ],
+  backendDb: [
+    { id: 'php', icon: <SiPhp />, level: 'advanced' as const },
+    { id: 'mysql', icon: <SiMysql />, level: 'intermediate' as const },
+    { id: 'fastapi', icon: <SiFastapi />, level: 'learning' as const }
   ],
   programming: [
     { id: 'cpp', icon: <SiCplusplus />, level: 'advanced' as const },
     { id: 'csharp', icon: <SiSharp />, level: 'intermediate' as const },
-    { id: 'java', icon: <SiJava />, level: 'intermediate' as const },
-    { id: 'python', icon: <SiPython />, level: 'intermediate' as const }
+    { id: 'python', icon: <SiPython />, level: 'intermediate' as const },
+    { id: 'java', icon: <SiJava />, level: 'beginner' as const }
   ],
   aiMl: [
     { id: 'tensorflow', icon: <SiTensorflow />, level: 'learning' as const },
     { id: 'pytorch', icon: <SiPytorch />, level: 'learning' as const }
   ],
-  other: [
-    { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'intermediate' as const },
-    { id: 'mysql', icon: <SiMysql />, level: 'intermediate' as const },
-    { id: 'docker', icon: <SiDocker />, level: 'learning' as const }
+  devTools: [
+    { id: 'git', icon: <SiGit />, level: 'advanced' as const },
+    { id: 'docker', icon: <SiDocker />, level: 'learning' as const },
+    { id: 'jest', icon: <SiJest />, level: 'learning' as const },
+    { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const }
+  ],
+  systemDevops: [
+    { id: 'bash', icon: <SiGnubash />, level: 'learning' as const },
+    { id: 'batch', icon: <IoTerminal />, level: 'intermediate' as const },
+    { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'intermediate' as const }
+  ],
+  futurePlans: [
+    { id: 'redis', icon: <SiRedis />, level: 'planned' as const },
+    { id: 'firebase', icon: <SiFirebase />, level: 'planned' as const },
+    { id: 'oauth', icon: <SiAuth0 />, level: 'planned' as const },
+    { id: 'jwt', icon: <SiJsonwebtokens />, level: 'planned' as const },
+    { id: 'rust', icon: <SiRust />, level: 'planned' as const },
+    { id: 'go', icon: <SiGo />, level: 'planned' as const }
   ]
 };
 
@@ -135,9 +181,6 @@ export const TechnologyGrid: React.FC = () => {
         <CategorySection
           key={category}
           variants={!reducedMotion ? categoryVariants : undefined}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
         >
           <CategoryTitle $isDark={themeMode === 'dark'}>
             {t(`about.skills.categories.${category}.title`)}
@@ -146,14 +189,13 @@ export const TechnologyGrid: React.FC = () => {
             {t(`about.skills.categories.${category}.description`)}
           </CategoryDescription>
           <Grid>
-            {techs.map((tech, index) => (
+            {techs.map((tech) => (
               <TechnologyIcon
                 key={tech.id}
                 name={t(`about.skills.categories.${category}.skills.${tech.id}.name`)}
+                description={t(`about.skills.categories.${category}.skills.${tech.id}.description`)}
                 icon={tech.icon}
                 level={tech.level}
-                variants={!reducedMotion ? itemVariants : undefined}
-                custom={index}
               />
             ))}
           </Grid>

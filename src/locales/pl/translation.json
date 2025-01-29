@@ -35,81 +35,190 @@
       "title": "Umiejętności",
       "description": "Moje umiejętności techniczne obejmują szeroki zakres technologii i narzędzi",
       "levels": {
+        "planned": "Planowane",
         "beginner": "Początkujący",
         "intermediate": "Średnio-zaawansowany",
         "advanced": "Zaawansowany",
+        "expert": "Ekspert",
+        "master": "Mistrz",
+        "hobby": "Hobbystycznie",
+        "professional": "Zawodowo",
         "learning": "Uczę się"
       },
       "categories": {
-        "webDev": {
-          "title": "Technologie webowe",
-          "description": "Technologie związane z tworzeniem stron i aplikacji internetowych",
+        "frontendCore": {
+          "title": "Frontend - Podstawy",
+          "description": "Fundamentalne technologie frontendowe",
           "skills": {
             "html5": {
-              "name": "HTML5"
+              "name": "HTML5",
+              "description": "Kwalifikacja INF.03, tworzenie semantycznych i dostępnych stron"
             },
             "css3": {
-              "name": "CSS3"
+              "name": "CSS3",
+              "description": "Kwalifikacja INF.03, stylowanie i responsywny design"
             },
             "javascript": {
-              "name": "JavaScript"
+              "name": "JavaScript",
+              "description": "Kwalifikacja INF.03, interaktywność i dynamiczne funkcje"
             },
             "typescript": {
-              "name": "TypeScript"
-            },
+              "name": "TypeScript",
+              "description": "Aktualnie uczę się przy tworzeniu projektów React i Vue"
+            }
+          }
+        },
+        "frontendFrameworks": {
+          "title": "Frontend - Frameworki i Biblioteki",
+          "description": "Zaawansowane narzędzia do tworzenia interfejsów",
+          "skills": {
             "react": {
-              "name": "React"
+              "name": "React",
+              "description": "Aktywna nauka poprzez tworzenie projektów"
+            },
+            "vuejs": {
+              "name": "Vue.js",
+              "description": "Aktywna nauka poprzez tworzenie projektów"
+            },
+            "nextjs": {
+              "name": "Next.js",
+              "description": "Framework React do tworzenia aplikacji"
             },
             "angular": {
-              "name": "Angular"
+              "name": "Angular",
+              "description": "Podstawowa znajomość frameworka"
             },
             "bootstrap": {
-              "name": "Bootstrap"
+              "name": "Bootstrap",
+              "description": "Tworzenie responsywnych interfejsów"
+            },
+            "tailwindcss": {
+              "name": "Tailwind CSS",
+              "description": "Podstawy utility-first CSS"
+            }
+          }
+        },
+        "backendDb": {
+          "title": "Backend i Bazy Danych",
+          "description": "Technologie serwerowe i bazodanowe",
+          "skills": {
+            "php": {
+              "name": "PHP",
+              "description": "Kwalifikacja INF.03, tworzenie aplikacji serwerowych"
+            },
+            "mysql": {
+              "name": "MySQL",
+              "description": "Kwalifikacja INF.03, projektowanie i zarządzanie bazami danych"
+            },
+            "fastapi": {
+              "name": "FastAPI",
+              "description": "Tworzenie API w Pythonie"
             }
           }
         },
         "programming": {
-          "title": "Języki programowania",
-          "description": "Podstawowe języki programowania i technologie",
+          "title": "Języki Programowania",
+          "description": "Główne języki programowania",
           "skills": {
             "cpp": {
-              "name": "C++"
+              "name": "C++",
+              "description": "Zaawansowane programowanie, algorytmy i struktury danych"
             },
             "csharp": {
-              "name": "C#"
-            },
-            "java": {
-              "name": "Java"
+              "name": "C#",
+              "description": "Tworzenie aplikacji desktopowych"
             },
             "python": {
-              "name": "Python"
+              "name": "Python",
+              "description": "Skrypty, automatyzacja i projekty AI"
+            },
+            "java": {
+              "name": "Java",
+              "description": "Podstawy programowania obiektowego"
             }
           }
         },
         "aiMl": {
-          "title": "AI i uczenie maszynowe",
-          "description": "Narzędzia i biblioteki do sztucznej inteligencji",
+          "title": "AI i Machine Learning",
+          "description": "Narzędzia do sztucznej inteligencji i uczenia maszynowego",
           "skills": {
             "tensorflow": {
-              "name": "TensorFlow"
+              "name": "TensorFlow",
+              "description": "Uczenie maszynowe i sieci neuronowe"
             },
             "pytorch": {
-              "name": "PyTorch"
+              "name": "PyTorch",
+              "description": "Eksperymentowanie z modelami AI"
             }
           }
         },
-        "other": {
-          "title": "Pozostałe technologie",
-          "description": "Inne narzędzia i technologie",
+        "devTools": {
+          "title": "Narzędzia Programistyczne",
+          "description": "Narzędzia wspierające proces rozwoju oprogramowania",
           "skills": {
-            "androidStudio": {
-              "name": "Android Studio"
-            },
-            "mysql": {
-              "name": "MySQL"
+            "git": {
+              "name": "Git",
+              "description": "Kontrola wersji i praca zespołowa"
             },
             "docker": {
-              "name": "Docker"
+              "name": "Docker",
+              "description": "Konteneryzacja aplikacji"
+            },
+            "jest": {
+              "name": "Jest",
+              "description": "Testowanie aplikacji JavaScript"
+            },
+            "markdown": {
+              "name": "Markdown",
+              "description": "Dokumentacja i formatowanie tekstu"
+            }
+          }
+        },
+        "systemDevops": {
+          "title": "System i DevOps",
+          "description": "Narzędzia systemowe i operacyjne",
+          "skills": {
+            "bash": {
+              "name": "Bash",
+              "description": "Skrypty powłoki Linux"
+            },
+            "batch": {
+              "name": "Batch",
+              "description": "Skrypty Windows i automatyzacja"
+            },
+            "androidStudio": {
+              "name": "Android Studio",
+              "description": "Podstawy tworzenia aplikacji mobilnych"
+            }
+          }
+        },
+        "futurePlans": {
+          "title": "Plany na Przyszłość",
+          "description": "Technologie, których planuję się nauczyć",
+          "skills": {
+            "redis": {
+              "name": "Redis",
+              "description": "Baza danych w pamięci RAM"
+            },
+            "firebase": {
+              "name": "Firebase",
+              "description": "Platforma do tworzenia aplikacji mobilnych i webowych"
+            },
+            "oauth": {
+              "name": "OAuth 2.0",
+              "description": "Protokół autoryzacji"
+            },
+            "jwt": {
+              "name": "JWT",
+              "description": "Tokeny uwierzytelniania"
+            },
+            "rust": {
+              "name": "Rust",
+              "description": "Wydajne i bezpieczne programowanie systemowe"
+            },
+            "go": {
+              "name": "Go",
+              "description": "Programowanie współbieżne i mikrousługi"
             }
           }
         }
@@ -119,10 +228,7 @@
   "projects": {
     "title": "Moje projekty",
     "filters": {
-      "all": "Wszystkie",
-      "web": "Web",
-      "ai": "AI",
-      "desktop": "Desktop"
+      "all": "Wszystkie"
     },
     "viewGithub": "Zobacz na GitHub",
     "visitLive": "Zobacz na żywo",

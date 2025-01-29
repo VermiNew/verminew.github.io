@@ -146,7 +146,7 @@ export const HeroSection: React.FC = () => {
           <LogoContainer>
             <Logo 
               $isDark={isDark}
-              src="/src/assets/images/Logo.png" 
+              src="/assets/images/Logo.webp" 
               alt={t('brand.logo')}
               variants={!reducedMotion ? logoVariants : undefined}
               initial="hidden"

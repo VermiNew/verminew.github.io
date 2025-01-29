@@ -1,16 +1,9 @@
-export interface RepoCategories {
-  web: string[];
-  ai: string[];
-  desktop: string[];
-}
-
 export interface Repo {
   id: string;
   title: string;
   description: string;
-  image: string;
   technologies: string[];
-  type: 'web' | 'ai' | 'desktop';
+  language: string;
   githubUrl: string;
   liveUrl: string;
   featured: boolean;
@@ -24,6 +17,5 @@ export interface Repo {
 
 export interface ReposData {
   lastUpdated: string;
-  categories: RepoCategories;
   repos: Repo[];
 } 

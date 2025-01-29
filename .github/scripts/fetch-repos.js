@@ -6,29 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Predefiniowane tagi dla kategorii
-const categoryTags = {
-  web: [
-    'web', 'website', 'frontend', 'backend', 'fullstack',
-    'react', 'vue', 'angular', 'javascript', 'typescript',
-    'html', 'css', 'sass', 'less', 'nodejs', 'express',
-    'nextjs', 'gatsby', 'webpack', 'vite', 'bootstrap',
-    'tailwind', 'responsive', 'pwa'
-  ],
-  ai: [
-    'ai', 'machine-learning', 'deep-learning', 'neural-network',
-    'tensorflow', 'pytorch', 'keras', 'scikit-learn',
-    'computer-vision', 'nlp', 'data-science', 'jupyter',
-    'pandas', 'numpy', 'matplotlib', 'opencv', 'reinforcement-learning',
-    'artificial-intelligence'
-  ],
-  desktop: [
-    'desktop', 'desktop-app', 'electron', 'qt', 'gtk',
-    'windows', 'linux', 'macos', 'cross-platform',
-    'gui', 'cli', 'terminal', 'system', 'utility'
-  ]
-};
-
 async function fetchRepos() {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN
@@ -49,16 +26,7 @@ async function fetchRepos() {
         repo: repo.name
       });
 
-      // Określ typ projektu na podstawie tagów
-      let type = 'web'; // domyślnie
       const topics = repo.topics || [];
-      
-      for (const [category, tags] of Object.entries(categoryTags)) {
-        if (topics.some(topic => tags.includes(topic))) {
-          type = category;
-          break;
-        }
-      }
 
       // Połącz wszystkie technologie (języki i tagi)
       const allTechnologies = [
@@ -73,9 +41,8 @@ async function fetchRepos() {
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' '),
         description: repo.description || '',
-        image: '/src/assets/images/projects/placeholder.jpg',
         technologies: allTechnologies,
-        type,
+        language: Object.keys(languages)[0] || 'Unknown',
         githubUrl: repo.html_url,
         liveUrl: repo.homepage || '',
         featured: topics.includes('featured'),
@@ -91,7 +58,6 @@ async function fetchRepos() {
     // Dodaj metadane
     const data = {
       lastUpdated: new Date().toISOString(),
-      categories: categoryTags,
       repos: reposWithDetails
     };
 

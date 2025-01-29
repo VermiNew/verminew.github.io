@@ -35,54 +35,106 @@
       "title": "Skills",
       "description": "My technical skills cover a wide range of technologies and tools",
       "levels": {
+        "planned": "Planned",
         "beginner": "Beginner",
         "intermediate": "Intermediate",
         "advanced": "Advanced",
+        "expert": "Expert",
+        "master": "Master",
+        "hobby": "Hobby",
+        "professional": "Professional",
         "learning": "Learning"
       },
       "categories": {
-        "webDev": {
-          "title": "Web Technologies",
-          "description": "Technologies related to web and application development",
+        "frontendCore": {
+          "title": "Frontend Core",
+          "description": "Fundamental frontend technologies",
           "skills": {
             "html5": {
-              "name": "HTML5"
+              "name": "HTML5",
+              "description": "INF.03 qualification, creating semantic and accessible websites"
             },
             "css3": {
-              "name": "CSS3"
+              "name": "CSS3",
+              "description": "INF.03 qualification, styling and responsive design"
             },
             "javascript": {
-              "name": "JavaScript"
+              "name": "JavaScript",
+              "description": "INF.03 qualification, interactivity and dynamic features"
             },
             "typescript": {
-              "name": "TypeScript"
-            },
+              "name": "TypeScript",
+              "description": "Currently learning through React and Vue projects"
+            }
+          }
+        },
+        "frontendFrameworks": {
+          "title": "Frontend Frameworks & Libraries",
+          "description": "Advanced tools for building user interfaces",
+          "skills": {
             "react": {
-              "name": "React"
+              "name": "React",
+              "description": "Active learning through project development"
+            },
+            "vuejs": {
+              "name": "Vue.js",
+              "description": "Active learning through project development"
+            },
+            "nextjs": {
+              "name": "Next.js",
+              "description": "React framework for application development"
             },
             "angular": {
-              "name": "Angular"
+              "name": "Angular",
+              "description": "Basic framework knowledge"
             },
             "bootstrap": {
-              "name": "Bootstrap"
+              "name": "Bootstrap",
+              "description": "Creating responsive interfaces"
+            },
+            "tailwindcss": {
+              "name": "Tailwind CSS",
+              "description": "Basics of utility-first CSS"
+            }
+          }
+        },
+        "backendDb": {
+          "title": "Backend & Databases",
+          "description": "Server-side and database technologies",
+          "skills": {
+            "php": {
+              "name": "PHP",
+              "description": "INF.03 qualification, server-side application development"
+            },
+            "mysql": {
+              "name": "MySQL",
+              "description": "INF.03 qualification, database design and management"
+            },
+            "fastapi": {
+              "name": "FastAPI",
+              "description": "Building APIs with Python"
             }
           }
         },
         "programming": {
           "title": "Programming Languages",
-          "description": "Core programming languages and technologies",
+          "description": "Core programming languages",
           "skills": {
             "cpp": {
-              "name": "C++"
+              "name": "C++",
+              "description": "Advanced programming, algorithms and data structures"
             },
             "csharp": {
-              "name": "C#"
-            },
-            "java": {
-              "name": "Java"
+              "name": "C#",
+              "description": "Desktop application development"
             },
             "python": {
-              "name": "Python"
+              "name": "Python",
+              "description": "Scripts, automation and AI projects"
+            },
+            "java": {
+              "name": "Java",
+              "description": "Object-oriented programming basics"
             }
           }
         },
@@ -91,25 +143,82 @@
           "description": "Artificial Intelligence and Machine Learning tools",
           "skills": {
             "tensorflow": {
-              "name": "TensorFlow"
+              "name": "TensorFlow",
+              "description": "Machine learning and neural networks"
             },
             "pytorch": {
-              "name": "PyTorch"
+              "name": "PyTorch",
+              "description": "Experimenting with AI models"
             }
           }
         },
-        "other": {
-          "title": "Other Technologies",
-          "description": "Additional tools and technologies",
+        "devTools": {
+          "title": "Development Tools",
+          "description": "Tools supporting the software development process",
           "skills": {
-            "androidStudio": {
-              "name": "Android Studio"
-            },
-            "mysql": {
-              "name": "MySQL"
+            "git": {
+              "name": "Git",
+              "description": "Version control and team collaboration"
             },
             "docker": {
-              "name": "Docker"
+              "name": "Docker",
+              "description": "Application containerization"
+            },
+            "jest": {
+              "name": "Jest",
+              "description": "JavaScript application testing"
+            },
+            "markdown": {
+              "name": "Markdown",
+              "description": "Documentation and text formatting"
+            }
+          }
+        },
+        "systemDevops": {
+          "title": "System & DevOps",
+          "description": "System and operational tools",
+          "skills": {
+            "bash": {
+              "name": "Bash",
+              "description": "Linux shell scripting"
+            },
+            "batch": {
+              "name": "Batch",
+              "description": "Windows scripting and automation"
+            },
+            "androidStudio": {
+              "name": "Android Studio",
+              "description": "Mobile application development basics"
+            }
+          }
+        },
+        "futurePlans": {
+          "title": "Future Plans",
+          "description": "Technologies I plan to learn in the future",
+          "skills": {
+            "redis": {
+              "name": "Redis",
+              "description": "In-memory database"
+            },
+            "firebase": {
+              "name": "Firebase",
+              "description": "Platform for mobile and web applications"
+            },
+            "oauth": {
+              "name": "OAuth 2.0",
+              "description": "Authorization protocol"
+            },
+            "jwt": {
+              "name": "JWT",
+              "description": "Authentication tokens"
+            },
+            "rust": {
+              "name": "Rust",
+              "description": "Efficient and safe systems programming"
+            },
+            "go": {
+              "name": "Go",
+              "description": "Concurrent programming and microservices"
             }
           }
         }
@@ -119,10 +228,7 @@
   "projects": {
     "title": "My Projects",
     "filters": {
-      "all": "All",
-      "web": "Web",
-      "ai": "AI",
-      "desktop": "Desktop"
+      "all": "All"
     },
     "viewGithub": "View on GitHub",
     "visitLive": "Visit Live",
