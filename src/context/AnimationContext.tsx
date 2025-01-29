@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-interface AnimationContextType {
-  reducedMotion: boolean;
-  setReducedMotion: (value: boolean) => void;
-}
+import { AnimationContextType } from './types';
 
 const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
 
