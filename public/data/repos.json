@@ -1,80 +1,15 @@
 {
-  "lastUpdated": "2025-01-29T00:45:06.634Z",
-  "categories": {
-    "web": [
-      "web",
-      "website",
-      "frontend",
-      "backend",
-      "fullstack",
-      "react",
-      "vue",
-      "angular",
-      "javascript",
-      "typescript",
-      "html",
-      "css",
-      "sass",
-      "less",
-      "nodejs",
-      "express",
-      "nextjs",
-      "gatsby",
-      "webpack",
-      "vite",
-      "bootstrap",
-      "tailwind",
-      "responsive",
-      "pwa"
-    ],
-    "ai": [
-      "ai",
-      "machine-learning",
-      "deep-learning",
-      "neural-network",
-      "tensorflow",
-      "pytorch",
-      "keras",
-      "scikit-learn",
-      "computer-vision",
-      "nlp",
-      "data-science",
-      "jupyter",
-      "pandas",
-      "numpy",
-      "matplotlib",
-      "opencv",
-      "reinforcement-learning",
-      "artificial-intelligence"
-    ],
-    "desktop": [
-      "desktop",
-      "desktop-app",
-      "electron",
-      "qt",
-      "gtk",
-      "windows",
-      "linux",
-      "macos",
-      "cross-platform",
-      "gui",
-      "cli",
-      "terminal",
-      "system",
-      "utility"
-    ]
-  },
+  "lastUpdated": "2025-01-29T09:56:35.337Z",
   "repos": [
     {
       "id": "AthenaAI",
       "title": "AthenaAI",
       "description": "AthenaAI is an innovative, advanced platform utilizing the Opus model to simulate interactive characters. AthenaAI combines cutting-edge AI technology with character emulation. This dynamic, customizable AI solution for conversations transforms virtual interactions, making them as close to real conversations as possible.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Python",
         "Batchfile"
       ],
-      "type": "web",
+      "language": "Python",
       "githubUrl": "https://github.com/VermiNew/AthenaAI",
       "liveUrl": "",
       "featured": false,
@@ -89,7 +24,6 @@
       "id": "AudioAnalyzers",
       "title": "AudioAnalyzers",
       "description": "A professional web-based audio analysis and mixing tool that allows you to visualize and process audio tracks in real-time. Features include waveform visualization, spectrum analysis, and separate control over instrumental and vocal tracks.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "JavaScript",
         "CSS",
@@ -98,7 +32,7 @@
         "Batchfile",
         "Shell"
       ],
-      "type": "web",
+      "language": "JavaScript",
       "githubUrl": "https://github.com/VermiNew/AudioAnalyzers",
       "liveUrl": "",
       "featured": false,
@@ -113,13 +47,12 @@
       "id": "BackupTool",
       "title": "BackupTool",
       "description": "A Python-based backup application with an easy-to-use GUI",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Python",
         "Batchfile",
         "Shell"
       ],
-      "type": "web",
+      "language": "Python",
       "githubUrl": "https://github.com/VermiNew/BackupTool",
       "liveUrl": "",
       "featured": false,
@@ -134,7 +67,6 @@
       "id": "Flask_CalculationWizard",
       "title": "Flask_CalculationWizard",
       "description": "FlaskWebsite_UserData is a web application developed using the Flask microframework for Python. The primary focus of this project is to provide a user-friendly platform for user registration, login, and data management. The application utilizes JSON files to store both user authentication information and user-specific data.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "HTML",
         "CSS",
@@ -142,7 +74,7 @@
         "JavaScript",
         "Batchfile"
       ],
-      "type": "web",
+      "language": "HTML",
       "githubUrl": "https://github.com/VermiNew/Flask_CalculationWizard",
       "liveUrl": "",
       "featured": false,
@@ -157,12 +89,11 @@
       "id": "KVRT_AutoUpdater",
       "title": "KVRT_AutoUpdater",
       "description": "Automate the updating process of the Kaspersky Virus Removal Tool.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Python",
         "Batchfile"
       ],
-      "type": "web",
+      "language": "Python",
       "githubUrl": "https://github.com/VermiNew/KVRT_AutoUpdater",
       "liveUrl": "",
       "featured": false,
@@ -177,11 +108,10 @@
       "id": "MindustryExecutable",
       "title": "MindustryExecutable",
       "description": "MindustryExecutable simplifies launching Mindustry with preconfigured executables, streamlining the process. The package includes files that automatically start the game, removing the need for manual setup or extra installations.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Batchfile"
       ],
-      "type": "web",
+      "language": "Batchfile",
       "githubUrl": "https://github.com/VermiNew/MindustryExecutable",
       "liveUrl": "",
       "featured": false,
@@ -196,12 +126,11 @@
       "id": "PortableBlenderManager",
       "title": "PortableBlenderManager",
       "description": "PortableBlenderManager is a tool for Blender's portable edition, focusing on cleaning up data post-use and saving configurations in the script's folder for efficient workflow management.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Python",
         "Batchfile"
       ],
-      "type": "web",
+      "language": "Python",
       "githubUrl": "https://github.com/VermiNew/PortableBlenderManager",
       "liveUrl": "",
       "featured": false,
@@ -216,7 +145,6 @@
       "id": "PythonModules",
       "title": "PythonModules",
       "description": "PythonModules is a repository housing a curated set of reusable Python modules. Easily import these modules into your projects to access a range of functionalities, from utilities to specialized tools. Simplify your development process and contribute to the growing collection of modules to foster collaborative coding.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Python",
         "HTML",
@@ -224,7 +152,7 @@
         "CSS",
         "Batchfile"
       ],
-      "type": "web",
+      "language": "Python",
       "githubUrl": "https://github.com/VermiNew/PythonModules",
       "liveUrl": "",
       "featured": false,
@@ -239,12 +167,11 @@
       "id": "Terminality",
       "title": "Terminality",
       "description": "This Python script generates a customized console prompt with user, host, directory, and Git branch info.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "Python",
         "Batchfile"
       ],
-      "type": "web",
+      "language": "Python",
       "githubUrl": "https://github.com/VermiNew/Terminality",
       "liveUrl": "",
       "featured": false,
@@ -259,12 +186,11 @@
       "id": "VermiNew",
       "title": "VermiNew",
       "description": "Config files for my GitHub profile.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "config",
         "github-config"
       ],
-      "type": "web",
+      "language": "Unknown",
       "githubUrl": "https://github.com/VermiNew/VermiNew",
       "liveUrl": "https://github.com/VermiNew",
       "featured": false,
@@ -279,20 +205,19 @@
       "id": "verminew.github.io",
       "title": "Verminew.github.io",
       "description": "My first full-fledged website.",
-      "image": "/src/assets/images/projects/placeholder.jpg",
       "technologies": [
         "TypeScript",
         "HTML",
         "JavaScript"
       ],
-      "type": "web",
+      "language": "TypeScript",
       "githubUrl": "https://github.com/VermiNew/verminew.github.io",
       "liveUrl": "https://verminew.github.io/",
       "featured": false,
       "archived": false,
       "visibility": "public",
       "createdAt": "2023-02-12T14:30:29Z",
-      "updatedAt": "2025-01-28T20:44:50Z",
+      "updatedAt": "2025-01-29T09:56:21Z",
       "stars": 0,
       "forks": 0
     }
