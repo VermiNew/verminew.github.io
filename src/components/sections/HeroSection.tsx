@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion, Variants } from 'framer-motion';
-import { Section } from '../layout/Section';
-import { Button } from '../ui/Button';
-import { HeroBackground } from './HeroBackground';
-import { useTheme } from '../../context/ThemeContext';
+import { Section } from '@/components/layout/Section';
+import { Button } from '@/components/ui/Button';
+import { HeroBackground } from '@/components/sections/HeroBackground';
+import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { useAnimation as useReducedMotion } from '../../context/AnimationContext';
+import { useAnimation as useReducedMotion } from '@/context/AnimationContext';
 
 const HeroContainer = styled(motion.div)`
   min-height: 100vh;

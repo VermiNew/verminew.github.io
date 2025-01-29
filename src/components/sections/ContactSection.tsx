@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { SiGithub, SiDiscord } from 'react-icons/si';
 import { MdEmail, MdLocationOn, MdSchedule } from 'react-icons/md';
-import { SectionContainer } from '../layout/SectionContainer';
-import { SectionTitle } from '../ui/SectionTitle';
-import { useAnimation } from '../../context/AnimationContext';
-import { socialConfig } from '../../config/social';
+import { SectionContainer } from '@/components/layout/SectionContainer';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+import { useAnimation } from '@/context/AnimationContext';
+import { socialConfig } from '@/config/social';
 
 const ContactContainer = styled(motion.div)`
   display: flex;

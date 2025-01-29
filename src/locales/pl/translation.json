@@ -6,11 +6,11 @@
     "contact": "Kontakt"
   },
   "brand": {
-    "logo": "VermiNew Logo",
+    "logo": "Logo VermiNew",
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Pasjonat programowania, AI i rozwoju technologii",
+    "title": "Entuzjasta programowania, AI i rozwoju technologii",
     "cta": {
       "about": "Poznaj mnie",
       "projects": "Zobacz projekty"
@@ -18,31 +18,18 @@
   },
   "about": {
     "title": "O mnie",
-    "intro": "Jestem pasjonatem programowania, który łączy zamiłowanie do tworzenia oprogramowania z fascynacją sztuczną inteligencją.",
-    "focus": "Skupiam się na rozwoju w obszarach web developmentu i sztucznej inteligencji, nieustannie poszerzając swoją wiedzę i umiejętności.",
+    "intro": "Jestem entuzjastą programowania, który łączy pasję do tworzenia oprogramowania z fascynacją sztuczną inteligencją.",
+    "focus": "Skupiam się na rozwoju w zakresie tworzenia stron internetowych i sztucznej inteligencji, stale poszerzając swoją wiedzę i umiejętności.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
-      "description": "Ver - Version (Wersja), Mi - Michał, New - nieustanne uczenie się nowych rzeczy. To połączenie odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia się."
+      "description": "Ver - Version, Mi - Michael, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
     },
-    "birthInfo": "Urodzony w 2006 roku",
+    "birthInfo": "Urodzony w 2006",
     "profiles": {
       "title": "Profile",
       "github": "GitHub",
       "discord": "Discord",
       "email": "Email"
-    },
-    "currentLearning": {
-      "title": "Obecnie uczę się",
-      "technologies": {
-        "react": "React",
-        "typescript": "TypeScript",
-        "python": "Python",
-        "tensorflow": "TensorFlow",
-        "pytorch": "PyTorch",
-        "docker": "Docker",
-        "googleColab": "Google Colab",
-        "kaggle": "Kaggle"
-      }
     },
     "skills": {
       "title": "Umiejętności",
@@ -140,10 +127,10 @@
     "viewGithub": "Zobacz na GitHub",
     "visitLive": "Zobacz na żywo",
     "tags": {
-      "archived": "Zarchiwizowane",
+      "archived": "Zarchiwizowany",
       "visibility": {
-        "public": "Publiczne",
-        "private": "Prywatne"
+        "public": "Publiczny",
+        "private": "Prywatny"
       }
     }
   },

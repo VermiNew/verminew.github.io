@@ -1,170 +1,60 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Section } from '../layout/Section';
-import { SectionTitle } from '../ui/SectionTitle';
+import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
 import { useTranslation } from 'react-i18next';
-import { SiGithub } from 'react-icons/si';
-import { HiExternalLink } from 'react-icons/hi';
-import { useGithubRepos } from '@/hooks/useGithubRepos';
-import { ProjectType } from '@/types/project';
+import { useRepos } from '@/hooks/useRepos';
+import { ProjectCard } from '@/components/ui/ProjectCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { useAnimation } from '@/context/AnimationContext';
 
-const Content = styled.div`
+const Content = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 0;
 `;
 
-const FiltersContainer = styled.div`
+const FilterContainer = styled(motion.div)`
   display: flex;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
-  justify-content: center;
 `;
 
-const FilterButton = styled(motion.button)<{ isActive: boolean }>`
+const FilterButton = styled.button<{ $isActive: boolean }>`
   padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme['colors'].primary};
-  background: ${({ theme, isActive }) => 
-    isActive ? theme['colors'].primary : 'transparent'};
-  color: ${({ theme, isActive }) => 
-    isActive ? theme['colors'].background : theme['colors'].primary};
   border-radius: 20px;
+  border: 1px solid ${({ theme, $isActive }) => 
+    $isActive ? theme.colors.primary : theme.colors.border};
+  background: ${({ theme, $isActive }) => 
+    $isActive ? theme.colors.primary : 'transparent'};
+  color: ${({ theme, $isActive }) => 
+    $isActive ? '#fff' : theme.colors.text};
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: all ${({ theme }) => theme.transitions.default};
 
   &:hover {
-    background: ${({ theme }) => theme['colors'].primary};
-    color: ${({ theme }) => theme['colors'].background};
+    background: ${({ theme, $isActive }) => 
+      $isActive ? theme.colors.primary : `${theme.colors.primary}20`};
+    transform: translateY(-2px);
   }
 `;
 
-const ProjectsGrid = styled(motion.div)`
+const ProjectsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
-  
-  @media (max-width: ${({ theme }) => theme['breakpoints'].tablet}) {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
+  padding: 1rem;
 `;
 
-const ProjectCard = styled(motion.article)`
-  background: ${({ theme }) => theme['colors'].surface};
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: ${({ theme }) => theme['shadows'].medium};
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${({ theme }) => theme['shadows'].large};
-  }
-`;
-
-const ProjectContent = styled.div`
-  padding: 1.5rem;
-`;
-
-const ProjectTitle = styled.h3`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme['colors'].text};
-  margin-bottom: 0.5rem;
-`;
-
-const ProjectDescription = styled.p`
-  font-size: 0.9rem;
-  color: ${({ theme }) => theme['colors'].textSecondary};
-  margin-bottom: 1rem;
-  line-height: 1.6;
-`;
-
-const TechStack = styled.div`
+const LoadingContainer = styled.div`
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-`;
-
-const TechTag = styled.span<{ $variant?: 'archived' | 'visibility', $isActive?: boolean }>`
-  padding: 0.25rem 0.5rem;
-  background: ${({ theme, $variant }) => {
-    switch ($variant) {
-      case 'archived':
-        return `${theme.colors.error}20`;
-      case 'visibility':
-        return `${theme.colors.success}20`;
-      default:
-        return `${theme.colors.primary}20`;
-    }
-  }};
-  color: ${({ theme, $variant }) => {
-    switch ($variant) {
-      case 'archived':
-        return theme.colors.error;
-      case 'visibility':
-        return theme.colors.success;
-      default:
-        return theme.colors.primary;
-    }
-  }};
-  border-radius: 12px;
-  font-size: 0.8rem;
-  cursor: ${({ $isActive }) => $isActive ? 'pointer' : 'default'};
-
-  &:hover {
-    background: ${({ theme }) => theme['colors'].primary};
-    color: ${({ theme }) => theme['colors'].background};
-  }
-`;
-
-const ProjectLinks = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const ProjectLink = styled.a`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: ${({ theme }) => theme['colors'].primary};
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: ${({ theme }) => theme['colors'].accent};
-  }
-`;
-
-const CategoryTags = styled(motion.div)`
-  margin: 1rem 0 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
   justify-content: center;
-`;
-
-const CategoryTag = styled(motion.span)<{ $isActive: boolean }>`
-  padding: 0.25rem 0.75rem;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  background: ${({ theme, $isActive }) => 
-    $isActive ? `${theme.colors.primary}20` : `${theme.colors.textSecondary}10`
-  };
-  color: ${({ theme, $isActive }) => 
-    $isActive ? theme.colors.primary : theme.colors.textSecondary
-  };
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${({ theme }) => `${theme.colors.primary}20`};
-    color: ${({ theme }) => theme.colors.primary};
-  }
+  align-items: center;
+  min-height: 300px;
 `;
 
 const containerVariants = {
@@ -172,7 +62,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.2
     }
   }
 };
@@ -191,130 +81,62 @@ const itemVariants = {
 
 export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<ProjectType>('all');
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const { projects, categories, isLoading, error } = useGithubRepos();
+  const [activeFilter, setActiveFilter] = useState<'all' | 'web' | 'ai' | 'desktop'>('all');
+  const { data, isLoading, error } = useRepos();
+  const { reducedMotion } = useAnimation();
 
-  const filteredProjects = projects.filter(project => {
-    const matchesType = activeFilter === 'all' ? true : project.type === activeFilter;
-    const matchesTag = !activeTag ? true : project.technologies.includes(activeTag);
-    return matchesType && matchesTag;
-  });
+  const filters = [
+    { id: 'all', label: t('projects.filters.all') },
+    { id: 'web', label: t('projects.filters.web') },
+    { id: 'ai', label: t('projects.filters.ai') },
+    { id: 'desktop', label: t('projects.filters.desktop') }
+  ] as const;
 
-  const currentCategoryTags = activeFilter === 'all' 
-    ? [] 
-    : categories[activeFilter] || [];
+  const filteredProjects = data?.repos.filter(project => 
+    activeFilter === 'all' || project.type === activeFilter
+  );
 
   return (
     <Section id="projects">
-      <Content>
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <SectionTitle>{t('projects.title')}</SectionTitle>
-          
-          <FiltersContainer>
-            {(['all', 'web', 'ai', 'desktop'] as ProjectType[]).map((type) => (
-              <FilterButton
-                key={type}
-                isActive={activeFilter === type}
-                onClick={() => {
-                  setActiveFilter(type);
-                  setActiveTag(null);
-                }}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {t(`projects.filters.${type}`)}
-              </FilterButton>
-            ))}
-          </FiltersContainer>
+      <Content
+        variants={!reducedMotion ? containerVariants : undefined}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>{t('projects.title')}</SectionTitle>
+        
+        <FilterContainer variants={!reducedMotion ? itemVariants : undefined}>
+          {filters.map((filter) => (
+            <FilterButton
+              key={filter.id}
+              $isActive={activeFilter === filter.id}
+              onClick={() => setActiveFilter(filter.id)}
+            >
+              {filter.label}
+            </FilterButton>
+          ))}
+        </FilterContainer>
 
-          {activeFilter !== 'all' && (
-            <CategoryTags>
-              {currentCategoryTags.map((tag) => (
-                <CategoryTag
-                  key={tag}
-                  $isActive={activeTag === tag}
-                  onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {tag}
-                </CategoryTag>
-              ))}
-            </CategoryTags>
-          )}
-
-          {isLoading && (
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <LoadingSpinner />
-            </div>
-          )}
-
-          {error && (
-            <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
-              {error}
-            </div>
-          )}
-
-          {!isLoading && !error && (
-            <ProjectsGrid variants={containerVariants}>
-              {filteredProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  variants={itemVariants}
-                  whileHover={{ y: -5 }}
-                >
-                  <ProjectContent>
-                    <ProjectTitle>{project.title}</ProjectTitle>
-                    <ProjectDescription>{project.description}</ProjectDescription>
-                    <TechStack>
-                      {project.archived && (
-                        <TechTag $variant="archived">
-                          {t('projects.tags.archived')}
-                        </TechTag>
-                      )}
-                      {project.technologies.map((tech) => (
-                        <TechTag 
-                          key={tech}
-                          $isActive={tech === activeTag}
-                          onClick={() => setActiveTag(tech === activeTag ? null : tech)}
-                        >
-                          {tech}
-                        </TechTag>
-                      ))}
-                    </TechStack>
-                    <ProjectLinks>
-                      <ProjectLink 
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <SiGithub />
-                        {t('projects.viewGithub')}
-                      </ProjectLink>
-                      {project.liveUrl && (
-                        <ProjectLink
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <HiExternalLink />
-                          {t('projects.visitLive')}
-                        </ProjectLink>
-                      )}
-                    </ProjectLinks>
-                  </ProjectContent>
-                </ProjectCard>
+        {isLoading ? (
+          <LoadingContainer>
+            <LoadingSpinner />
+          </LoadingContainer>
+        ) : error ? (
+          <ErrorMessage message={error.message} />
+        ) : (
+          <motion.div variants={!reducedMotion ? itemVariants : undefined}>
+            <ProjectsGrid>
+              {filteredProjects?.map((project) => (
+                <motion.div key={project.id} variants={!reducedMotion ? itemVariants : undefined}>
+                  <ProjectCard
+                    project={project}
+                  />
+                </motion.div>
               ))}
             </ProjectsGrid>
-          )}
-        </motion.div>
+          </motion.div>
+        )}
       </Content>
     </Section>
   );

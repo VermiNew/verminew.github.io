@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
+import { useAnimation } from '@/context/AnimationContext';
 
 const Canvas = styled.canvas`
   position: absolute;
@@ -24,6 +25,7 @@ interface Particle {
 
 export const HeroBackground: React.FC = () => {
   const { themeMode } = useTheme();
+  const { reducedMotion } = useAnimation();
   const isDark = themeMode === 'dark';
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
@@ -74,6 +76,18 @@ export const HeroBackground: React.FC = () => {
     };
 
     const animate = () => {
+      if (reducedMotion) {
+        // If reduced motion is enabled, just draw static particles
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.current.forEach((particle) => {
+          ctx.beginPath();
+          ctx.arc(particle.originalX, particle.originalY, particle.radius, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color;
+          ctx.fill();
+        });
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.current.forEach((particle) => {
@@ -112,6 +126,7 @@ export const HeroBackground: React.FC = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (reducedMotion) return;
       const rect = canvas.getBoundingClientRect();
       mousePosition.current = {
         x: e.clientX - rect.left,
@@ -120,6 +135,7 @@ export const HeroBackground: React.FC = () => {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      if (reducedMotion) return;
       const rect = canvas.getBoundingClientRect();
       mousePosition.current = {
         x: e.touches[0].clientX - rect.left,
@@ -143,7 +159,7 @@ export const HeroBackground: React.FC = () => {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [isDark]); // Dodaj isDark do zależności, aby odświeżyć cząsteczki przy zmianie motywu
+  }, [isDark, reducedMotion]);
 
   return <Canvas ref={canvasRef} />;
 }; 

@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { TechnologyIcon } from '../ui/TechnologyIcon';
+import { TechnologyIcon } from '@/components/ui/TechnologyIcon';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
+import { useAnimation } from '@/context/AnimationContext';
 import {
   // Web Development
   SiHtml5,
@@ -96,7 +97,7 @@ const technologies = {
     { id: 'html5', icon: <SiHtml5 />, level: 'advanced' as const },
     { id: 'css3', icon: <SiCss3 />, level: 'advanced' as const },
     { id: 'javascript', icon: <SiJavascript />, level: 'intermediate' as const },
-    { id: 'typescript', icon: <SiTypescript />, level: 'intermediate' as const },
+    { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const },
     { id: 'react', icon: <SiReact />, level: 'learning' as const },
     { id: 'angular', icon: <SiAngular />, level: 'intermediate' as const },
     { id: 'bootstrap', icon: <SiBootstrap />, level: 'intermediate' as const }
@@ -121,10 +122,11 @@ const technologies = {
 export const TechnologyGrid: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
+  const { reducedMotion } = useAnimation();
 
   return (
     <Container
-      variants={containerVariants}
+      variants={!reducedMotion ? containerVariants : undefined}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
@@ -132,7 +134,7 @@ export const TechnologyGrid: React.FC = () => {
       {Object.entries(technologies).map(([category, techs]) => (
         <CategorySection
           key={category}
-          variants={categoryVariants}
+          variants={!reducedMotion ? categoryVariants : undefined}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -150,7 +152,7 @@ export const TechnologyGrid: React.FC = () => {
                 name={t(`about.skills.categories.${category}.skills.${tech.id}.name`)}
                 icon={tech.icon}
                 level={tech.level}
-                variants={itemVariants}
+                variants={!reducedMotion ? itemVariants : undefined}
                 custom={index}
               />
             ))}

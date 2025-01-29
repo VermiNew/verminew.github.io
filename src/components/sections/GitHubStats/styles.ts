@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { SectionContainer } from '@/components/layout/SectionContainer';
+import { SectionTitle } from '@/components/ui/SectionTitle';
 import { motion } from 'framer-motion';
-import { SectionContainer } from '../../layout/SectionContainer';
-import { SectionTitle } from '../../ui/SectionTitle';
 
 export { SectionContainer as Section, SectionTitle };
 

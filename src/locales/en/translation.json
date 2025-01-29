@@ -31,19 +31,6 @@
       "discord": "Discord",
       "email": "Email"
     },
-    "currentLearning": {
-      "title": "Currently Learning",
-      "technologies": {
-        "react": "React",
-        "typescript": "TypeScript",
-        "python": "Python",
-        "tensorflow": "TensorFlow",
-        "pytorch": "PyTorch",
-        "docker": "Docker",
-        "googleColab": "Google Colab",
-        "kaggle": "Kaggle"
-      }
-    },
     "skills": {
       "title": "Skills",
       "description": "My technical skills cover a wide range of technologies and tools",

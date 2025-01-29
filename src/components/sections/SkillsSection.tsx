@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Section } from '../layout/Section';
-import { SectionTitle } from '../ui/SectionTitle';
-import { TechnologyGrid } from './TechnologyGrid';
+import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+import { TechnologyGrid } from '@/components/sections/TechnologyGrid';
 import { useTranslation } from 'react-i18next';
+import { useAnimation } from '@/context/AnimationContext';
 
 const Content = styled.div`
   max-width: 1200px;
@@ -47,18 +48,19 @@ const itemVariants = {
 
 export const SkillsSection: React.FC = () => {
   const { t } = useTranslation();
+  const { reducedMotion } = useAnimation();
 
   return (
     <Section id="skills">
       <Content>
         <motion.div
-          variants={containerVariants}
+          variants={!reducedMotion ? containerVariants : undefined}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <SectionTitle>{t('about.skills.title')}</SectionTitle>
-          <Description variants={itemVariants}>
+          <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>{t('about.skills.title')}</SectionTitle>
+          <Description variants={!reducedMotion ? itemVariants : undefined}>
             {t('about.skills.description')}
           </Description>
           <TechnologyGrid />

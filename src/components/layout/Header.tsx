@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, AnimatePresence } from 'framer-motion';
-import { ThemeToggle } from '../ui/ThemeToggle';
-import { useTheme } from '../../context/ThemeContext';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX } from 'react-icons/fi';
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Section } from '../layout/Section';
-import { SectionTitle } from '../ui/SectionTitle';
+import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
 import { useTranslation } from 'react-i18next';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { useGithubDiscussions, Post } from '@/hooks/useGithubDiscussions';
+import { useAnimation } from '@/context/AnimationContext';
 
 const Content = styled.div`
   max-width: 800px;
@@ -134,6 +135,7 @@ export const BlogSection: React.FC = () => {
   const { t } = useTranslation();
   const [activeTag, setActiveTag] = useState<string>('all');
   const { posts, tags, isLoading, error } = useGithubDiscussions();
+  const { reducedMotion } = useAnimation();
 
   const filteredPosts = activeTag === 'all' 
     ? posts 
@@ -143,20 +145,20 @@ export const BlogSection: React.FC = () => {
     <Section id="blog">
       <Content>
         <motion.div
-          variants={containerVariants}
+          variants={!reducedMotion ? containerVariants : undefined}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <SectionTitle>{t('blog.title')}</SectionTitle>
+          <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>{t('blog.title')}</SectionTitle>
 
           <TagsContainer>
             <Tag
               isActive={activeTag === 'all'}
               onClick={() => setActiveTag('all')}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              variants={!reducedMotion ? itemVariants : undefined}
+              whileHover={!reducedMotion ? { scale: 1.05 } : undefined}
+              whileTap={!reducedMotion ? { scale: 0.95 } : undefined}
             >
               {t('blog.tags.all')}
             </Tag>
@@ -165,9 +167,9 @@ export const BlogSection: React.FC = () => {
                 key={tag}
                 isActive={activeTag === tag}
                 onClick={() => setActiveTag(tag)}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                variants={!reducedMotion ? itemVariants : undefined}
+                whileHover={!reducedMotion ? { scale: 1.05 } : undefined}
+                whileTap={!reducedMotion ? { scale: 0.95 } : undefined}
               >
                 {tag}
               </Tag>
@@ -187,11 +189,11 @@ export const BlogSection: React.FC = () => {
           )}
 
           {!isLoading && !error && (
-            <PostsList variants={containerVariants}>
+            <PostsList variants={!reducedMotion ? containerVariants : undefined}>
               {filteredPosts.map((post: Post) => (
                 <PostCard
                   key={post.id}
-                  variants={itemVariants}
+                  variants={!reducedMotion ? itemVariants : undefined}
                 >
                   <PostTitle>{post.title}</PostTitle>
                   <PostMeta>
@@ -209,7 +211,7 @@ export const BlogSection: React.FC = () => {
                     href={post.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ x: 5 }}
+                    whileHover={!reducedMotion ? { x: 5 } : undefined}
                   >
                     {t('blog.readMore')} →
                   </ReadMore>

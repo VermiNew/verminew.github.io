@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Project, ProjectType } from '../types/project';
+import { Project, ProjectType } from '@/types/project';
 
 interface ReposData {
   lastUpdated: string;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FiSun, FiMoon } from 'react-icons/fi';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const ToggleButton = styled(motion.button)<{ $isDark: boolean }>`
   display: flex;

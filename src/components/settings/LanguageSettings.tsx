@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
@@ -45,7 +45,9 @@ const LanguageButton = styled(motion.button)<{ $isActive: boolean; $isDark: bool
   width: 100%;
   transition: all ${({ theme }) => theme.transitions.default};
   font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
-  animation: ${({ $shouldBlink }) => $shouldBlink ? `${blink} 1s ease-in-out 3` : 'none'};
+  ${({ $shouldBlink }) => $shouldBlink && css`
+    animation: ${blink} 1s ease-in-out 3;
+  `}
 
   &:hover {
     background: ${({ $isActive, theme }) => 

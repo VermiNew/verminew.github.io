@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Section } from '../layout/Section';
 import { SectionTitle } from '../ui/SectionTitle';
-import { CurrentlyLearning } from './CurrentlyLearning';
 import { SiGithub, SiDiscord } from 'react-icons/si';
 import { MdEmail } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { TechnologyGrid } from './TechnologyGrid';
 import { useTheme } from '../../context/ThemeContext';
 import { useAnimation } from '../../context/AnimationContext';
-import { socialConfig } from '../../config/social';
+import { getSocialUrl } from '../../config/social';
 
 const Content = styled.div`
   display: grid;
@@ -51,50 +50,89 @@ const ImageContainer = styled(motion.div)<{ $isDark: boolean }>`
   }
 `;
 
-const ProfileImage = styled.img`
+const Image = styled.img`
   width: 100%;
   height: 100%;
-  max-height: 400px;
   object-fit: cover;
 `;
 
-const TextContent = styled(motion.div)`
+const TextContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 `;
 
-const Paragraph = styled(motion.p)<{ $isDark: boolean }>`
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: ${({ theme }) => theme.colors.text};
-  margin: 0;
-  opacity: ${({ $isDark }) => $isDark ? 0.9 : 1};
-`;
-
-const SocialLinks = styled(motion.div)`
+const Description = styled.div`
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const Paragraph = styled(motion.p)`
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const NameOrigin = styled(motion.div)`
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: ${({ theme }) => `${theme.colors.surface}80`};
+  backdrop-filter: blur(8px);
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+`;
+
+const NameOriginTitle = styled.h3`
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 1rem;
+  font-weight: 600;
+`;
+
+const BirthInfo = styled(motion.p)`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
   margin-top: 1rem;
 `;
 
-const SocialLink = styled(motion.a)<{ $isDark: boolean }>`
+const Profiles = styled(motion.div)`
+  margin-top: 2rem;
+`;
+
+const ProfilesTitle = styled.h3`
+  font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.5rem;
-  transition: all ${({ theme }) => theme.transitions.default};
+  margin-bottom: 1rem;
+  font-weight: 600;
+`;
+
+const ProfilesList = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const ProfileLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: ${({ theme }) => `${theme.colors.surface}80`};
+  color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
+  font-size: 0.9rem;
+  transition: all ${({ theme }) => theme.transitions.default};
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.accent};
+    background: ${({ theme }) => theme.colors.surface};
     transform: translateY(-2px);
+    border-color: ${({ theme }) => `${theme.colors.primary}40`};
   }
 
-  span {
-    font-size: 1rem;
-    opacity: ${({ $isDark }) => $isDark ? 0.9 : 1};
+  svg {
+    font-size: 1.2rem;
   }
 `;
 
@@ -103,9 +141,9 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
-    },
-  },
+      staggerChildren: 0.2
+    }
+  }
 };
 
 const itemVariants = {
@@ -115,155 +153,86 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
+      ease: 'easeOut'
+    }
+  }
 };
-
-const socialVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  }),
-};
-
-const PersonalInfo = styled(motion.div)<{ $isDark: boolean }>`
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  opacity: ${({ $isDark }) => $isDark ? 0.85 : 1};
-`;
-
-const BirthInfo = styled.div<{ $isDark: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  opacity: ${({ $isDark }) => $isDark ? 0.85 : 1};
-`;
-
-const NameOriginBox = styled(motion.div)<{ $isDark: boolean }>`
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: ${({ theme, $isDark }) => $isDark 
-    ? `${theme.colors.surface}40`
-    : `${theme.colors.background}40`
-  };
-  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
-`;
-
-const NameOriginTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: 1rem;
-`;
-
-const NameOriginDescription = styled.p<{ $isDark: boolean }>`
-  font-size: 1rem;
-  line-height: 1.6;
-  color: ${({ theme }) => theme.colors.text};
-  opacity: ${({ $isDark }) => $isDark ? 0.9 : 1};
-`;
 
 export const AboutSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
-  const { reducedMotion } = useAnimation();
-
-  const profiles = [
-    {
-      title: t('about.profiles.github'),
-      icon: <SiGithub />,
-      link: socialConfig.github.url,
-      username: socialConfig.github.username
-    },
-    {
-      title: t('about.profiles.discord'),
-      icon: <SiDiscord />,
-      link: socialConfig.discord.url,
-      username: socialConfig.discord.username
-    },
-    {
-      title: t('about.profiles.email'),
-      icon: <MdEmail />,
-      link: `mailto:${socialConfig.email.address}`,
-      username: socialConfig.email.address
-    }
-  ];
+  const { reducedMotion } = useAnimation(); // Use reducedMotion to respect this function in all code in this project.
 
   return (
     <Section id="about">
-      <Content>
-        <ImageContainer
-          $isDark={isDark}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={!reducedMotion ? itemVariants : undefined}
-        >
-          <ProfileImage src="/src/assets/images/ava.jpg" alt="Profile" />
-        </ImageContainer>
-
-        <TextContent
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={!reducedMotion ? containerVariants : undefined}
-        >
-          <SectionTitle>{t('about.title')}</SectionTitle>
-          
-          <Paragraph variants={!reducedMotion ? itemVariants : undefined} $isDark={isDark}>
-            {t('about.intro')}
-          </Paragraph>
-          
-          <Paragraph variants={!reducedMotion ? itemVariants : undefined} $isDark={isDark}>
-            {t('about.focus')}
-          </Paragraph>
-
-          <NameOriginBox 
-            variants={!reducedMotion ? itemVariants : undefined} 
-            $isDark={isDark}
+      <motion.div
+        variants={!reducedMotion ? containerVariants : undefined}
+        initial={!reducedMotion ? "hidden" : undefined}
+        whileInView={!reducedMotion ? "visible" : undefined}
+        viewport={{ once: true }}
+      >
+        <SectionTitle>{t('about.title')}</SectionTitle>
+        <Content>
+          <ImageContainer
+            $isDark={themeMode === 'dark'}
+            variants={!reducedMotion ? itemVariants : undefined}
           >
-            <NameOriginTitle>{t('about.nameOrigin.title')}</NameOriginTitle>
-            <NameOriginDescription $isDark={isDark}>
-              {t('about.nameOrigin.description')}
-            </NameOriginDescription>
-          </NameOriginBox>
+            <Image src="/assets/images/ava.jpg" alt="VermiNew" />
+          </ImageContainer>
 
-          <SocialLinks variants={!reducedMotion ? containerVariants : undefined}>
-            {profiles.map((profile, index) => (
-              <SocialLink 
-                key={profile.title}
-                href={profile.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                custom={index}
-                variants={socialVariants}
-                $isDark={isDark}
-              >
-                {profile.icon}
-                <span>{profile.title}</span>
-              </SocialLink>
-            ))}
-          </SocialLinks>
+          <TextContent>
+            <Description>
+              <Paragraph variants={!reducedMotion ? itemVariants : undefined}>
+                {t('about.intro')}
+              </Paragraph>
+              <Paragraph variants={!reducedMotion ? itemVariants : undefined}>
+                {t('about.focus')}
+              </Paragraph>
 
-          <PersonalInfo variants={!reducedMotion ? itemVariants : undefined} $isDark={isDark}>
-            <BirthInfo $isDark={isDark}>{t('about.birthInfo')}</BirthInfo>
-          </PersonalInfo>
+              <NameOrigin variants={!reducedMotion ? itemVariants : undefined}>
+                <NameOriginTitle>
+                  {t('about.nameOrigin.title')}
+                </NameOriginTitle>
+                <p>{t('about.nameOrigin.description')}</p>
+              </NameOrigin>
 
-          <CurrentlyLearning />
-          <TechnologyGrid />
-        </TextContent>
-      </Content>
+              <BirthInfo variants={!reducedMotion ? itemVariants : undefined}>
+                {t('about.birthInfo')}
+              </BirthInfo>
+
+              <Profiles variants={!reducedMotion ? itemVariants : undefined}>
+                <ProfilesTitle>{t('about.profiles.title')}</ProfilesTitle>
+                <ProfilesList>
+                  <ProfileLink
+                    href={getSocialUrl('github')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SiGithub />
+                    {t('about.profiles.github')}
+                  </ProfileLink>
+                  <ProfileLink
+                    href={getSocialUrl('discord')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SiDiscord />
+                    {t('about.profiles.discord')}
+                  </ProfileLink>
+                  <ProfileLink
+                    href={getSocialUrl('email')}
+                  >
+                    <MdEmail />
+                    {t('about.profiles.email')}
+                  </ProfileLink>
+                </ProfilesList>
+              </Profiles>
+            </Description>
+
+            <TechnologyGrid />
+          </TextContent>
+        </Content>
+      </motion.div>
     </Section>
   );
 };

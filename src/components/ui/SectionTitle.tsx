@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useInView, useAnimation, HTMLMotionProps } from 'framer-motion';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 interface SectionTitleProps extends HTMLMotionProps<"h2"> {
   children: React.ReactNode;
