@@ -193,6 +193,7 @@ const MobileMenu = styled(motion.div)<{ $isDark: boolean }>`
   };
   backdrop-filter: blur(12px);
   padding: 1.5rem;
+  z-index: ${({ theme }) => theme['zIndices']['header'] - 1};
   border-bottom: 1px solid ${({ $isDark }) => 
     $isDark
       ? 'rgba(255, 255, 255, 0.1)'
