@@ -9,6 +9,7 @@ import { ProjectCard } from '@/components/ui/ProjectCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { useAnimation } from '@/context/AnimationContext';
+import { Repo } from '@/types/repo';
 
 const Content = styled(motion.div)`
   max-width: 1200px;
@@ -122,6 +123,11 @@ const EXCLUDED_TECHNOLOGIES = ['unknown', 'config', 'github-config'];
 const filterValidTechnology = (tech: string) => 
   !EXCLUDED_TECHNOLOGIES.includes(tech.toLowerCase());
 
+interface OrganizedProjects {
+  featured: Repo[];
+  other: Repo[];
+}
+
 export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
@@ -185,7 +191,7 @@ export const ProjectsSection: React.FC = () => {
       })
     : [];
 
-  const organizedProjects = filteredProjects.reduce((acc, project) => {
+  const organizedProjects = filteredProjects.reduce<OrganizedProjects>((acc, project) => {
     if (project.featured) {
       acc.featured.push(project);
     } else {
