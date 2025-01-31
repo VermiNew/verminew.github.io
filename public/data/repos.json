@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-01-31T00:45:20.450Z",
+  "lastUpdated": "2025-01-31T20:16:37.421Z",
   "repos": [
     {
       "id": "AthenaAI",
@@ -18,7 +18,8 @@
       "createdAt": "2024-02-09T12:33:55Z",
       "updatedAt": "2025-01-02T13:43:00Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "AudioAnalyzers",
@@ -41,7 +42,10 @@
       "createdAt": "2025-01-05T09:11:13Z",
       "updatedAt": "2025-01-11T10:41:13Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 2,
+      "category": "fullstack",
+      "featuredReason": "Advanced audio processing tool demonstrating expertise in web audio technologies"
     },
     {
       "id": "BackupTool",
@@ -61,7 +65,10 @@
       "createdAt": "2025-01-11T10:44:13Z",
       "updatedAt": "2025-01-22T20:25:50Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 2,
+      "category": "tools",
+      "featuredReason": "Efficient backup solution with user-friendly GUI and robust file management"
     },
     {
       "id": "Flask_CalculationWizard",
@@ -83,7 +90,8 @@
       "createdAt": "2024-01-06T15:59:35Z",
       "updatedAt": "2024-06-24T12:36:22Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "KVRT_AutoUpdater",
@@ -102,7 +110,8 @@
       "createdAt": "2024-05-30T19:15:24Z",
       "updatedAt": "2024-10-16T09:50:39Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "MindustryExecutable",
@@ -120,7 +129,8 @@
       "createdAt": "2023-11-19T09:52:57Z",
       "updatedAt": "2024-01-18T15:28:47Z",
       "stars": 2,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "PortableBlenderManager",
@@ -139,7 +149,10 @@
       "createdAt": "2024-01-27T09:28:40Z",
       "updatedAt": "2024-07-22T13:56:15Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 2,
+      "category": "tools",
+      "featuredReason": "Innovative tool for managing Blender configurations and workspace"
     },
     {
       "id": "PythonModules",
@@ -161,7 +174,25 @@
       "createdAt": "2023-11-17T11:18:53Z",
       "updatedAt": "2025-01-05T08:55:49Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
+    },
+    {
+      "id": "SnakeMultiplayer",
+      "title": "SnakeMultiplayer",
+      "description": "",
+      "technologies": [],
+      "language": "Unknown",
+      "githubUrl": "https://github.com/VermiNew/SnakeMultiplayer",
+      "liveUrl": "",
+      "featured": false,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2025-01-31T13:04:21Z",
+      "updatedAt": "2025-01-31T13:04:25Z",
+      "stars": 0,
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "Terminality",
@@ -180,7 +211,8 @@
       "createdAt": "2024-06-08T09:21:44Z",
       "updatedAt": "2024-10-12T14:32:24Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "VermiNew",
@@ -199,7 +231,8 @@
       "createdAt": "2022-12-04T09:28:26Z",
       "updatedAt": "2025-01-29T13:16:13Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 3
     },
     {
       "id": "verminew.github.io",
@@ -217,9 +250,12 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2023-02-12T14:30:29Z",
-      "updatedAt": "2025-01-30T00:44:23Z",
+      "updatedAt": "2025-01-31T20:16:24Z",
       "stars": 0,
-      "forks": 0
+      "forks": 0,
+      "priority": 1,
+      "category": "frontend",
+      "featuredReason": "My portfolio website showcasing my projects and skills in modern web development"
     }
   ]
 }
