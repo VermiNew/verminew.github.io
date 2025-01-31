@@ -46,6 +46,47 @@ const FeaturedBadge = styled.div`
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const PriorityIndicator = styled.div<{ $priority: 1 | 2 | 3 }>`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${({ theme, $priority }) => {
+    switch ($priority) {
+      case 1:
+        return theme.colors.success;
+      case 2:
+        return theme.colors.warning;
+      case 3:
+        return theme.colors.info;
+      default:
+        return theme.colors.primary;
+    }
+  }};
+`;
+
+const CategoryBadge = styled.div`
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: ${({ theme }) => `${theme.colors.primary}20`};
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+`;
+
+const FeaturedReason = styled.p`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-style: italic;
+  margin-top: 0.5rem;
+  opacity: 0.9;
 `;
 
 const Content = styled.div`
@@ -153,12 +194,25 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       transition={{ duration: 0.5 }}
     >
       {project.featured && (
-        <FeaturedBadge>{t('projects.featured')}</FeaturedBadge>
+        <>
+          <FeaturedBadge>
+            {project.priority && <PriorityIndicator $priority={project.priority} />}
+            {t('projects.featured')}
+          </FeaturedBadge>
+          {project.category && (
+            <CategoryBadge>
+              {t(`projects.categories.${project.category}`)}
+            </CategoryBadge>
+          )}
+        </>
       )}
       <Content>
         <TopContent>
           <Title>{project.title}</Title>
           <Description>{project.description}</Description>
+          {project.featured && project.featuredReason && (
+            <FeaturedReason>{project.featuredReason}</FeaturedReason>
+          )}
         </TopContent>
         <BottomContent>
           <TechStack>

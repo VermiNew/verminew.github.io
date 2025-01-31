@@ -6,12 +6,28 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const FEATURED_REPOS = [
-  'verminew.github.io',
-  'BackupTool',
-  'AudioAnalyzers',
-  'PortableBlenderManager'
-];
+const FEATURED_REPOS = {
+  'verminew.github.io': {
+    category: 'frontend',
+    priority: 1,
+    featuredReason: 'My portfolio website showcasing my projects and skills in modern web development'
+  },
+  'BackupTool': {
+    category: 'tools',
+    priority: 2,
+    featuredReason: 'Efficient backup solution with user-friendly GUI and robust file management'
+  },
+  'AudioAnalyzers': {
+    category: 'fullstack',
+    priority: 2,
+    featuredReason: 'Advanced audio processing tool demonstrating expertise in web audio technologies'
+  },
+  'PortableBlenderManager': {
+    category: 'tools',
+    priority: 2,
+    featuredReason: 'Innovative tool for managing Blender configurations and workspace'
+  }
+};
 
 async function fetchRepos() {
   const octokit = new Octokit({
@@ -41,6 +57,17 @@ async function fetchRepos() {
         ...topics
       ].filter((value, index, self) => self.indexOf(value) === index);
 
+      // Walidacja dat - upewnij się, że nie są z przyszłości
+      const now = new Date();
+      const validateDate = (dateStr) => {
+        const date = new Date(dateStr);
+        return date > now ? now.toISOString() : dateStr;
+      };
+
+      // Sprawdź, czy repo jest wyróżnione i pobierz dodatkowe informacje
+      const featuredInfo = FEATURED_REPOS[repo.name] || {};
+      const isFeatured = repo.name in FEATURED_REPOS;
+
       return {
         id: repo.name,
         title: repo.name
@@ -52,17 +79,22 @@ async function fetchRepos() {
         language: Object.keys(languages)[0] || 'Unknown',
         githubUrl: repo.html_url,
         liveUrl: repo.homepage || '',
-        featured: FEATURED_REPOS.includes(repo.name),
+        featured: isFeatured,
         archived: repo.archived,
         visibility: 'public',
-        createdAt: repo.created_at,
-        updatedAt: repo.updated_at,
+        createdAt: validateDate(repo.created_at),
+        updatedAt: validateDate(repo.updated_at),
         stars: repo.stargazers_count,
-        forks: repo.forks_count
+        forks: repo.forks_count,
+        priority: isFeatured ? featuredInfo.priority : 3,
+        ...(isFeatured && {
+          category: featuredInfo.category,
+          featuredReason: featuredInfo.featuredReason
+        })
       };
     }));
 
-    // Dodaj metadane
+    // Dodaj metadane z walidacją daty
     const data = {
       lastUpdated: new Date().toISOString(),
       repos: reposWithDetails
