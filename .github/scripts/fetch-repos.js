@@ -6,6 +6,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const FEATURED_REPOS = [
+  'verminew.github.io',
+  'BackupTool',
+  'AudioAnalyzers',
+  'PortableBlenderManager'
+];
+
 async function fetchRepos() {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN
@@ -45,7 +52,7 @@ async function fetchRepos() {
         language: Object.keys(languages)[0] || 'Unknown',
         githubUrl: repo.html_url,
         liveUrl: repo.homepage || '',
-        featured: topics.includes('featured'),
+        featured: FEATURED_REPOS.includes(repo.name),
         archived: repo.archived,
         visibility: 'public',
         createdAt: repo.created_at,

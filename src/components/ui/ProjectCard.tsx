@@ -10,23 +10,56 @@ interface ProjectCardProps {
   project: Repo;
 }
 
-const Card = styled(motion.article)`
+const Card = styled(motion.article)<{ $featured?: boolean }>`
   background: ${({ theme }) => theme.colors.surface};
   border-radius: 16px;
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadows.medium};
   transition: all ${({ theme }) => theme.transitions.default};
-  border: 1px solid ${({ theme }) => `${theme.colors.primary}10`};
+  border: 2px solid ${({ theme, $featured }) => 
+    $featured ? theme.colors.primary : `${theme.colors.primary}10`};
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  ${({ $featured }) => $featured && `
+    order: -1;
+  `}
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: ${({ theme }) => theme.shadows.large};
-    border-color: ${({ theme }) => `${theme.colors.primary}30`};
+    border-color: ${({ theme, $featured }) => 
+      $featured ? theme.colors.accent : `${theme.colors.primary}30`};
   }
+`;
+
+const FeaturedBadge = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
 `;
 
 const Content = styled.div`
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+`;
+
+const TopContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.h3`
@@ -41,6 +74,11 @@ const Description = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 1rem;
   line-height: 1.6;
+  flex: 1;
+`;
+
+const BottomContent = styled.div`
+  margin-top: auto;
 `;
 
 const TechStack = styled.div`
@@ -108,54 +146,61 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
   return (
     <Card
+      $featured={project.featured}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
+      {project.featured && (
+        <FeaturedBadge>{t('projects.featured')}</FeaturedBadge>
+      )}
       <Content>
-        <Title>{project.title}</Title>
-        <Description>{project.description}</Description>
-        
-        <TechStack>
-          {project.archived && (
-            <Tag $variant="archived">
-              {t('projects.tags.archived')}
+        <TopContent>
+          <Title>{project.title}</Title>
+          <Description>{project.description}</Description>
+        </TopContent>
+        <BottomContent>
+          <TechStack>
+            {project.archived && (
+              <Tag $variant="archived">
+                {t('projects.tags.archived')}
+              </Tag>
+            )}
+            <Tag $variant="visibility">
+              {t(`projects.tags.visibility.${project.visibility}`)}
             </Tag>
-          )}
-          <Tag $variant="visibility">
-            {t(`projects.tags.visibility.${project.visibility}`)}
-          </Tag>
-          {project.technologies.map((tech) => (
-            <Tag key={tech}>{tech}</Tag>
-          ))}
-        </TechStack>
+            {project.technologies.map((tech) => (
+              <Tag key={tech}>{tech}</Tag>
+            ))}
+          </TechStack>
 
-        <Stats>
-          <span>⭐ {project.stars}</span>
-          <span>🍴 {project.forks}</span>
-        </Stats>
+          <Stats>
+            <span>⭐ {project.stars}</span>
+            <span>🍴 {project.forks}</span>
+          </Stats>
 
-        <Links>
-          <Link 
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SiGithub />
-            {t('projects.viewGithub')}
-          </Link>
-          {project.liveUrl && (
-            <Link
-              href={project.liveUrl}
+          <Links>
+            <Link 
+              href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <HiExternalLink />
-              {t('projects.visitLive')}
+              <SiGithub />
+              {t('projects.viewGithub')}
             </Link>
-          )}
-        </Links>
+            {project.liveUrl && (
+              <Link
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <HiExternalLink />
+                {t('projects.visitLive')}
+              </Link>
+            )}
+          </Links>
+        </BottomContent>
       </Content>
     </Card>
   );

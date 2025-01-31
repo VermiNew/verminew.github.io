@@ -49,6 +49,32 @@ const ProjectsGrid = styled(motion.div)`
   gap: 2rem;
   padding: 1rem;
   min-height: 100px;
+  align-items: stretch;
+  width: 100%;
+
+  & > * {
+    height: 100%;
+    display: flex;
+  }
+`;
+
+const ProjectsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+`;
+
+const ProjectsCategory = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const CategoryTitle = styled.h3`
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 1rem;
+  font-weight: 600;
 `;
 
 const LoadingContainer = styled.div`
@@ -159,6 +185,15 @@ export const ProjectsSection: React.FC = () => {
       })
     : [];
 
+  const organizedProjects = filteredProjects.reduce((acc, project) => {
+    if (project.featured) {
+      acc.featured.push(project);
+    } else {
+      acc.other.push(project);
+    }
+    return acc;
+  }, { featured: [], other: [] });
+
   return (
     <Section id="projects">
       <Content
@@ -190,22 +225,51 @@ export const ProjectsSection: React.FC = () => {
         ) : error ? (
           <ErrorMessage message={error.message} />
         ) : (
-          <ProjectsGrid
-            key={animateKey}
-            variants={!reducedMotion ? gridVariants : undefined}
-            initial="hidden"
-            animate="visible"
-          >
-            {filteredProjects?.map((project) => (
-              <motion.div
-                key={project.id}
-                variants={!reducedMotion ? itemVariants : undefined}
-                layout
-              >
-                <ProjectCard project={project} />
-              </motion.div>
-            ))}
-          </ProjectsGrid>
+          <ProjectsContainer>
+            {organizedProjects.featured.length > 0 && (
+              <ProjectsCategory>
+                <CategoryTitle>{t('projects.featuredTitle')}</CategoryTitle>
+                <ProjectsGrid
+                  key={`featured-${animateKey}`}
+                  variants={!reducedMotion ? gridVariants : undefined}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {organizedProjects.featured.map((project) => (
+                    <motion.div
+                      key={project.id}
+                      variants={!reducedMotion ? itemVariants : undefined}
+                      layout
+                    >
+                      <ProjectCard project={project} />
+                    </motion.div>
+                  ))}
+                </ProjectsGrid>
+              </ProjectsCategory>
+            )}
+
+            {organizedProjects.other.length > 0 && (
+              <ProjectsCategory>
+                <CategoryTitle>{t('projects.otherTitle')}</CategoryTitle>
+                <ProjectsGrid
+                  key={`other-${animateKey}`}
+                  variants={!reducedMotion ? gridVariants : undefined}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {organizedProjects.other.map((project) => (
+                    <motion.div
+                      key={project.id}
+                      variants={!reducedMotion ? itemVariants : undefined}
+                      layout
+                    >
+                      <ProjectCard project={project} />
+                    </motion.div>
+                  ))}
+                </ProjectsGrid>
+              </ProjectsCategory>
+            )}
+          </ProjectsContainer>
         )}
       </Content>
     </Section>
