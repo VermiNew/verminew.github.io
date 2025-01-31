@@ -256,18 +256,28 @@
     }
   },
   "projects": {
-    "title": "Moje projekty",
+    "title": "Projekty",
     "filters": {
       "all": "Wszystkie"
     },
-    "viewGithub": "Zobacz na GitHub",
-    "visitLive": "Zobacz na żywo",
+    "featured": "Wyróżniony",
+    "featuredTitle": "Wyróżnione Projekty",
+    "otherTitle": "Pozostałe Projekty",
     "tags": {
       "archived": "Zarchiwizowany",
       "visibility": {
         "public": "Publiczny",
         "private": "Prywatny"
       }
+    },
+    "viewGithub": "Zobacz na GitHub",
+    "visitLive": "Zobacz na żywo",
+    "categories": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "fullstack": "Full Stack",
+      "tools": "Narzędzia",
+      "ai": "AI"
     }
   },
   "settings": {

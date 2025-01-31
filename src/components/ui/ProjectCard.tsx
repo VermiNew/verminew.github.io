@@ -49,6 +49,7 @@ const FeaturedBadge = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  z-index: 2;
 `;
 
 const PriorityIndicator = styled.div<{ $priority: 1 | 2 | 3 }>`
@@ -79,6 +80,7 @@ const CategoryBadge = styled.div`
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  z-index: 2;
 `;
 
 const FeaturedReason = styled.p`
@@ -89,12 +91,14 @@ const FeaturedReason = styled.p`
   opacity: 0.9;
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ $hasBadges?: boolean }>`
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   flex: 1;
   width: 100%;
+  position: relative;
+  padding-top: ${({ $hasBadges }) => $hasBadges ? '3rem' : '1.5rem'};
 `;
 
 const TopContent = styled.div`
@@ -184,6 +188,7 @@ const Link = styled.a`
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const { t } = useTranslation();
+  const hasBadges = Boolean(project.featured || project.category);
 
   return (
     <Card
@@ -196,7 +201,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {project.featured && (
         <>
           <FeaturedBadge>
-            {project.priority && <PriorityIndicator $priority={project.priority} />}
+            <PriorityIndicator $priority={project.priority || 3} />
             {t('projects.featured')}
           </FeaturedBadge>
           {project.category && (
@@ -206,7 +211,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           )}
         </>
       )}
-      <Content>
+      <Content $hasBadges={hasBadges}>
         <TopContent>
           <Title>{project.title}</Title>
           <Description>{project.description}</Description>

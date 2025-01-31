@@ -256,18 +256,28 @@
     }
   },
   "projects": {
-    "title": "My Projects",
+    "title": "Projects",
     "filters": {
       "all": "All"
     },
-    "viewGithub": "View on GitHub",
-    "visitLive": "Visit Live",
+    "featured": "Featured",
+    "featuredTitle": "Featured Projects",
+    "otherTitle": "Other Projects",
     "tags": {
       "archived": "Archived",
       "visibility": {
         "public": "Public",
         "private": "Private"
       }
+    },
+    "viewGithub": "View on GitHub",
+    "visitLive": "Visit Live",
+    "categories": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "fullstack": "Full Stack",
+      "tools": "Tools",
+      "ai": "AI"
     }
   },
   "settings": {
