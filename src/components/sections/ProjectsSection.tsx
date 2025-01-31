@@ -71,11 +71,13 @@ const ProjectsCategory = styled.div`
   gap: 1rem;
 `;
 
-const CategoryTitle = styled.h3`
+const CategoryTitle = styled(motion.h3)`
   font-size: 1.5rem;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 1rem;
   font-weight: 600;
+  text-align: center;
+  width: 100%;
 `;
 
 const LoadingContainer = styled.div`
@@ -127,6 +129,26 @@ interface OrganizedProjects {
   featured: Repo[];
   other: Repo[];
 }
+
+const titleVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: -30,
+    scale: 0.9
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 20,
+      duration: 0.6,
+      delay: 0.3
+    }
+  }
+};
 
 export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
@@ -234,7 +256,14 @@ export const ProjectsSection: React.FC = () => {
           <ProjectsContainer>
             {organizedProjects.featured.length > 0 && (
               <ProjectsCategory>
-                <CategoryTitle>{t('projects.featuredTitle')}</CategoryTitle>
+                <CategoryTitle
+                  variants={!reducedMotion ? titleVariants : undefined}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                >
+                  {t('projects.featuredTitle')}
+                </CategoryTitle>
                 <ProjectsGrid
                   key={`featured-${animateKey}`}
                   variants={!reducedMotion ? gridVariants : undefined}
@@ -256,7 +285,14 @@ export const ProjectsSection: React.FC = () => {
 
             {organizedProjects.other.length > 0 && (
               <ProjectsCategory>
-                <CategoryTitle>{t('projects.otherTitle')}</CategoryTitle>
+                <CategoryTitle
+                  variants={!reducedMotion ? titleVariants : undefined}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                >
+                  {t('projects.otherTitle')}
+                </CategoryTitle>
                 <ProjectsGrid
                   key={`other-${animateKey}`}
                   variants={!reducedMotion ? gridVariants : undefined}

@@ -59,13 +59,12 @@ const PriorityIndicator = styled.div<{ $priority: 1 | 2 | 3 }>`
   background: ${({ theme, $priority }) => {
     switch ($priority) {
       case 1:
-        return theme.colors.success;
+        return theme.colors.accent;
       case 2:
-        return theme.colors.warning;
+        return theme.colors.success;
       case 3:
-        return theme.colors.info;
       default:
-        return theme.colors.primary;
+        return theme.colors.warning;
     }
   }};
 `;
@@ -201,7 +200,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {project.featured && (
         <>
           <FeaturedBadge>
-            <PriorityIndicator $priority={project.priority || 3} />
+            <PriorityIndicator $priority={project.priority as 1 | 2 | 3} />
             {t('projects.featured')}
           </FeaturedBadge>
           {project.category && (
