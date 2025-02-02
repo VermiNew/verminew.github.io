@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-02-01T00:49:20.410Z",
+  "lastUpdated": "2025-02-02T00:48:44.181Z",
   "repos": [
     {
       "id": "AthenaAI",
@@ -178,23 +178,6 @@
       "priority": 3
     },
     {
-      "id": "SnakeMultiplayer",
-      "title": "SnakeMultiplayer",
-      "description": "",
-      "technologies": [],
-      "language": "Unknown",
-      "githubUrl": "https://github.com/VermiNew/SnakeMultiplayer",
-      "liveUrl": "",
-      "featured": false,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2025-01-31T13:04:21Z",
-      "updatedAt": "2025-01-31T13:04:25Z",
-      "stars": 0,
-      "forks": 0,
-      "priority": 3
-    },
-    {
       "id": "Terminality",
       "title": "Terminality",
       "description": "This Python script generates a customized console prompt with user, host, directory, and Git branch info.",
@@ -250,7 +233,7 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2023-02-12T14:30:29Z",
-      "updatedAt": "2025-01-31T20:45:09Z",
+      "updatedAt": "2025-02-01T00:49:23Z",
       "stars": 0,
       "forks": 0,
       "priority": 1,
