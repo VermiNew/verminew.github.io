@@ -1,4 +1,20 @@
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 
+  | 'light' 
+  | 'dark'
+  | 'corporateModern'
+  | 'techMinimal'
+  | 'professionalDark'
+  | 'modernNeutral'
+  | 'eInkLight'
+  | 'eInkDark'
+  | 'nord'
+  | 'solarizedLight'
+  | 'solarizedDark'
+  | 'winter'
+  | 'spring'
+  | 'summer'
+  | 'autumn'
+  | 'pastel';
 
 export interface Theme {
   colors: {

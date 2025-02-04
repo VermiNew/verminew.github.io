@@ -16,7 +16,7 @@ const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: b
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: ${({ theme }) => theme['zIndices']['header']};
+  z-index: ${({ theme }) => theme.zIndices.header};
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &::before {
@@ -25,10 +25,10 @@ const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: b
     inset: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: ${({ $isScrolled }) => ($isScrolled ? 1 : 0)};
-    background: ${({ $isDark }) => 
+    background: ${({ theme, $isDark }) => 
       $isDark
-        ? 'linear-gradient(180deg, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.85) 100%)'
-        : 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%)'
+        ? `${theme.colors.background}f0`
+        : `${theme.colors.background}f0`
     };
     backdrop-filter: blur(10px);
     z-index: -1;
@@ -41,16 +41,13 @@ const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: b
     right: 0;
     bottom: 0;
     height: 1px;
-    background: ${({ $isDark }) => 
-      $isDark
-        ? 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)'
-        : 'linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%)'
-    };
+    background: ${({ theme }) => theme.colors.border};
+    opacity: 0.5;
     transform: scaleX(${({ $isScrolled }) => ($isScrolled ? 1 : 0)});
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  @media (max-width: ${({ theme }) => theme['breakpoints']['mobile']}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding: 0 1rem;
     height: 60px;
   }
@@ -183,29 +180,40 @@ const MobileMenuButton = styled.button`
 const MobileMenu = styled(motion.div)<{ $isDark: boolean }>`
   display: none;
   position: fixed;
-  top: 60px;
+  top: 0;
   left: 0;
   right: 0;
-  background: ${({ $isDark }) => 
-    $isDark
-      ? 'rgba(18, 18, 18, 0.95)'
-      : 'rgba(255, 255, 255, 0.95)'
-  };
-  backdrop-filter: blur(12px);
-  padding: 1.5rem;
-  z-index: ${({ theme }) => theme['zIndices']['header'] - 1};
-  border-bottom: 1px solid ${({ $isDark }) => 
-    $isDark
-      ? 'rgba(255, 255, 255, 0.1)'
-      : 'rgba(0, 0, 0, 0.1)'
-  };
-  box-shadow: ${({ $isDark }) => 
-    $isDark
-      ? '0 4px 20px rgba(0, 0, 0, 0.7)'
-      : '0 4px 20px rgba(0, 0, 0, 0.1)'
-  };
+  bottom: 0;
+  background: ${({ theme, $isDark }) => {
+    const bg = theme.colors.background;
+    switch (bg) {
+      // E-ink themes
+      case '#121212': return 'rgba(0, 0, 0, 0.95)';
+      // Nord theme
+      case '#2E3440': return 'rgba(46, 52, 64, 0.95)';
+      // Solarized themes
+      case '#002B36': return 'rgba(0, 43, 54, 0.95)';
+      case '#FDF6E3': return 'rgba(253, 246, 227, 0.95)';
+      // Winter theme
+      case '#f0f8ff': return 'rgba(240, 248, 255, 0.95)';
+      // Spring theme
+      case '#f8fff8': return 'rgba(248, 255, 248, 0.95)';
+      // Summer theme
+      case '#fffaf0': return 'rgba(255, 250, 240, 0.95)';
+      // Autumn theme
+      case '#fdf5e6': return 'rgba(253, 245, 230, 0.95)';
+      // Pastel theme
+      case '#fef6ff': return 'rgba(254, 246, 255, 0.95)';
+      // Default
+      default: return $isDark ? 'rgba(18, 18, 18, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+    }
+  }};
+  backdrop-filter: blur(20px);
+  padding: 5rem 1.5rem 1.5rem;
+  z-index: ${({ theme }) => theme.zIndices.header - 1};
+  overflow-y: auto;
 
-  @media (max-width: ${({ theme }) => theme['breakpoints']['tablet']}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -217,28 +225,90 @@ const MobileNavLink = styled(motion.a)<{ $isDark: boolean }>`
   font-size: 1.1rem;
   text-align: center;
   border-radius: 12px;
-  background: ${({ $isDark }) => $isDark 
-    ? 'rgba(255, 255, 255, 0.05)'
-    : 'rgba(0, 0, 0, 0.05)'
-  };
-  color: ${({ theme }) => theme['colors']['text']};
+  background: ${({ theme, $isDark }) => {
+    const bg = theme.colors.background;
+    switch (bg) {
+      // E-ink themes
+      case '#121212': return 'rgba(255, 255, 255, 0.05)';
+      // Nord theme
+      case '#2E3440': return 'rgba(136, 192, 208, 0.1)';
+      // Solarized themes
+      case '#002B36': return 'rgba(147, 161, 161, 0.1)';
+      case '#FDF6E3': return 'rgba(38, 139, 210, 0.1)';
+      // Winter theme
+      case '#f0f8ff': return 'rgba(44, 82, 130, 0.1)';
+      // Spring theme
+      case '#f8fff8': return 'rgba(47, 133, 90, 0.1)';
+      // Summer theme
+      case '#fffaf0': return 'rgba(192, 86, 33, 0.1)';
+      // Autumn theme
+      case '#fdf5e6': return 'rgba(156, 66, 33, 0.1)';
+      // Pastel theme
+      case '#fef6ff': return 'rgba(128, 90, 213, 0.1)';
+      // Default
+      default: return $isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+    }
+  }};
+  color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
-  transition: all ${({ theme }) => theme['transitions']['default']};
+  transition: all ${({ theme }) => theme.transitions.default};
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
   
   &:hover {
-    background: ${({ $isDark }) => $isDark
-      ? 'rgba(255, 255, 255, 0.1)'
-      : 'rgba(0, 0, 0, 0.1)'
-    };
-    color: ${({ theme }) => theme['colors']['primary']};
+    background: ${({ theme, $isDark }) => {
+      const bg = theme.colors.background;
+      switch (bg) {
+        // E-ink themes
+        case '#121212': return 'rgba(255, 255, 255, 0.1)';
+        // Nord theme
+        case '#2E3440': return 'rgba(136, 192, 208, 0.15)';
+        // Solarized themes
+        case '#002B36': return 'rgba(147, 161, 161, 0.15)';
+        case '#FDF6E3': return 'rgba(38, 139, 210, 0.15)';
+        // Winter theme
+        case '#f0f8ff': return 'rgba(44, 82, 130, 0.15)';
+        // Spring theme
+        case '#f8fff8': return 'rgba(47, 133, 90, 0.15)';
+        // Summer theme
+        case '#fffaf0': return 'rgba(192, 86, 33, 0.15)';
+        // Autumn theme
+        case '#fdf5e6': return 'rgba(156, 66, 33, 0.15)';
+        // Pastel theme
+        case '#fef6ff': return 'rgba(128, 90, 213, 0.15)';
+        // Default
+        default: return $isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
+      }
+    }};
+    color: ${({ theme }) => theme.colors.primary};
     transform: translateX(5px);
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 
   &:active {
-    background: ${({ $isDark }) => $isDark
-      ? 'rgba(255, 255, 255, 0.15)'
-      : 'rgba(0, 0, 0, 0.15)'
-    };
+    background: ${({ theme, $isDark }) => {
+      const bg = theme.colors.background;
+      switch (bg) {
+        // E-ink themes
+        case '#121212': return 'rgba(255, 255, 255, 0.15)';
+        // Nord theme
+        case '#2E3440': return 'rgba(136, 192, 208, 0.2)';
+        // Solarized themes
+        case '#002B36': return 'rgba(147, 161, 161, 0.2)';
+        case '#FDF6E3': return 'rgba(38, 139, 210, 0.2)';
+        // Winter theme
+        case '#f0f8ff': return 'rgba(44, 82, 130, 0.2)';
+        // Spring theme
+        case '#f8fff8': return 'rgba(47, 133, 90, 0.2)';
+        // Summer theme
+        case '#fffaf0': return 'rgba(192, 86, 33, 0.2)';
+        // Autumn theme
+        case '#fdf5e6': return 'rgba(156, 66, 33, 0.2)';
+        // Pastel theme
+        case '#fef6ff': return 'rgba(128, 90, 213, 0.2)';
+        // Default
+        default: return $isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)';
+      }
+    }};
   }
 `;
 
@@ -271,11 +341,26 @@ const menuVariants = {
 
 export const Header: React.FC = () => {
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
+  const isDark = themeMode.includes('dark') || 
+                 themeMode === 'nord' || 
+                 themeMode === 'solarizedDark' || 
+                 themeMode === 'professionalDark';
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const unsubscribe = scrollY.on('change', (latest) => {
@@ -287,8 +372,10 @@ export const Header: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.querySelector(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
       setIsMobileMenuOpen(false);
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     }
   };
 

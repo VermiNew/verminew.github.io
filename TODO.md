@@ -4,7 +4,18 @@
 
 - [x] Konfiguracja React + TypeScript + Vite
 - [x] Styled-components setup
-- [x] System motywów (jasny/ciemny)
+- [x] System motywów
+  - [x] Jasny/ciemny motyw
+  - [x] Rozszerzony system motywów:
+    - [x] Corporate Modern
+    - [x] Tech Minimal
+    - [x] Professional Dark
+    - [x] Modern Neutral
+    - [x] E-Ink (Light/Dark)
+  - [x] Menu wyboru motywu
+  - [x] Zapisywanie preferencji
+  - [ ] Optymalizacja kontrastu dla dostępności
+  - [ ] Dodanie motywu sezonowego (np. świąteczny, letni)
 - [x] Podstawowe komponenty UI
   - [x] Container
   - [x] Section
