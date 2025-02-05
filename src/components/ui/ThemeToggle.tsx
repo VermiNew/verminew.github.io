@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FiSun, FiMoon, FiMonitor, FiBook, FiCloud, FiDroplet, FiWind, FiSunrise } from 'react-icons/fi';
 import { useTheme } from '@/context/ThemeContext';
 import { ThemeMode } from '@/types/theme';
@@ -76,13 +76,19 @@ const ThemeOption = styled.button<{ $isActive: boolean }>`
   background: ${({ theme, $isActive }) => 
     $isActive ? theme.colors.primary + '20' : 'transparent'
   };
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme, $isActive }) => 
+    $isActive ? theme.colors.primary : theme.colors.text
+  };
   cursor: pointer;
   border-radius: 4px;
   transition: all ${({ theme }) => theme.transitions.default};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary + '10'};
+    background: ${({ theme, $isActive }) => 
+      $isActive ? theme.colors.primary + '30' : theme.colors.primary + '10'
+    };
+    color: ${({ theme }) => theme.colors.primary};
+    transform: translateX(4px);
   }
 
   svg {
@@ -110,8 +116,35 @@ const iconVariants = {
 };
 
 const menuVariants = {
-  hidden: { opacity: 0, y: -10 },
-  visible: { opacity: 1, y: 0 }
+  hidden: { 
+    opacity: 0,
+    y: -15,
+    scale: 0.95,
+    transition: {
+      duration: 0.1,
+      ease: 'easeOut'
+    }
+  },
+  visible: { 
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 20,
+      duration: 0.2
+    }
+  },
+  exit: { 
+    opacity: 0,
+    y: -10,
+    scale: 0.95,
+    transition: {
+      duration: 0.15,
+      ease: 'easeIn'
+    }
+  }
 };
 
 const getThemeIcon = (mode: ThemeMode) => {
@@ -188,7 +221,32 @@ const getThemeName = (mode: ThemeMode): string => {
 export const ThemeToggle: React.FC = () => {
   const { themeMode, setThemeMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const isDark = themeMode.includes('dark');
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isMenuOpen]);
 
   const handleThemeChange = (newTheme: ThemeMode) => {
     setThemeMode(newTheme);
@@ -215,13 +273,17 @@ export const ThemeToggle: React.FC = () => {
   ];
 
   return (
-    <ThemeContainer>
+    <ThemeContainer ref={containerRef}>
       <ToggleButton
         $isDark={isDark}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMenuOpen(!isMenuOpen);
+        }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         aria-label="Toggle theme menu"
+        aria-expanded={isMenuOpen}
       >
         <motion.div
           key={themeMode}
@@ -237,25 +299,48 @@ export const ThemeToggle: React.FC = () => {
         </motion.div>
       </ToggleButton>
 
-      {isMenuOpen && (
-        <ThemeMenu
-          initial="hidden"
-          animate="visible"
-          variants={menuVariants}
-          transition={{ duration: 0.2 }}
-        >
-          {themeOptions.map((mode) => (
-            <ThemeOption
-              key={mode}
-              $isActive={mode === themeMode}
-              onClick={() => handleThemeChange(mode)}
-            >
-              {getThemeIcon(mode)}
-              {getThemeName(mode)}
-            </ThemeOption>
-          ))}
-        </ThemeMenu>
-      )}
+      <AnimatePresence mode="wait">
+        {isMenuOpen && (
+          <ThemeMenu
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={menuVariants}
+          >
+            {themeOptions.map((mode, index) => (
+              <ThemeOption
+                key={mode}
+                $isActive={mode === themeMode}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleThemeChange(mode);
+                }}
+                as={motion.button}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ 
+                  opacity: 1, 
+                  x: 0,
+                  transition: { 
+                    delay: index * 0.02,
+                    duration: 0.15
+                  }
+                }}
+                exit={{ 
+                  opacity: 0,
+                  x: -10,
+                  transition: { 
+                    duration: 0.1,
+                    delay: index * 0.01
+                  }
+                }}
+              >
+                {getThemeIcon(mode)}
+                {getThemeName(mode)}
+              </ThemeOption>
+            ))}
+          </ThemeMenu>
+        )}
+      </AnimatePresence>
     </ThemeContainer>
   );
 }; 

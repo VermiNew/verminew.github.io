@@ -195,7 +195,7 @@ const Switch = styled.input`
   appearance: none;
   width: 40px;
   height: 20px;
-  background: ${({ theme }) => theme.colors.background}80;
+  background: ${({ theme }) => theme.colors.border}80;
   border-radius: 10px;
   position: relative;
   cursor: pointer;
@@ -213,12 +213,22 @@ const Switch = styled.input`
     border-radius: 50%;
     top: 2px;
     left: 2px;
-    background: white;
-    transition: transform 0.2s ease;
+    background: ${({ theme }) => theme.colors.surface};
+    transition: all 0.2s ease;
   }
 
   &:checked::before {
     transform: translateX(20px);
+    background: ${({ theme }) => theme.colors.background};
+  }
+
+  &:hover {
+    background: ${({ theme }) => `${theme.colors.primary}50`};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
   }
 `;
 
