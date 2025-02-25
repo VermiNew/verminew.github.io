@@ -58,7 +58,27 @@
       },
       "growth": {
         "title": "Obszary rozwoju",
-        "description": "Otwarcie przyznaję, że mam obszary wymagające doskonalenia: praca pod presją, działanie w bardzo dużych zespołach oraz niektóre aspekty matematyki. Traktuję te wyzwania jako możliwości do rozwoju i aktywnie nad nimi pracuję."
+        "description": "Otwarcie przyznaję, że mam obszary wymagające doskonalenia: praca pod presją, działanie w bardzo dużych zespołach oraz niektóre aspekty matematyki. Chociaż praca w grupie początkowo sprawia mi trudność, aktywnie pracuję nad rozwojem umiejętności współpracy zespołowej i dostosowuję się do dynamiki grupy. Traktuję te wyzwania jako możliwości do rozwoju i systematycznie nad nimi pracuję."
+      },
+      "availability": {
+        "title": "Dostępność i warunki współpracy",
+        "description": "Jako uczeń technikum, oferuję elastyczne godziny pracy dostosowane do mojego planu zajęć. Nie jestem w stanie pracować w pełnym wymiarze godzin ze względu na obowiązki szkolne i czas potrzebny na naukę. Pracuję wyłącznie zdalnie.",
+        "workConditions": [
+          "Elastyczne godziny pracy",
+          "Wyłącznie praca zdalna",
+          "Dostępność w wybrane dni tygodnia",
+          "Preferowana praca projektowa"
+        ],
+        "freelance": {
+          "title": "Zlecenia freelancerskie",
+          "description": "Przyjmuję również zlecenia freelancerskie. Model płatności: 50% kwoty przed rozpoczęciem projektu, 50% po jego ukończeniu.",
+          "highlights": [
+            "Jasne warunki współpracy",
+            "Transparentny model płatności",
+            "Regularna komunikacja podczas realizacji projektu",
+            "Gwarancja jakości wykonania"
+          ]
+        }
       }
     },
     "skills": {

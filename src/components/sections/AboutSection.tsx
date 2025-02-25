@@ -150,6 +150,12 @@ const BackgroundSection = styled(motion.div)`
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
 `;
 
+const HighlightedSection = styled(BackgroundSection)`
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => `${theme.colors.surface}90`};
+  box-shadow: 0 0 15px ${({ theme }) => `${theme.colors.primary}30`};
+`;
+
 const BackgroundTitle = styled.h3`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.primary};
@@ -289,6 +295,36 @@ export const AboutSection: React.FC = () => {
                   <BackgroundTitle>{t('about.background.growth.title')}</BackgroundTitle>
                   <p>{t('about.background.growth.description')}</p>
                 </BackgroundSection>
+
+                <HighlightedSection variants={!reducedMotion ? itemVariants : undefined}>
+                  <BackgroundTitle>
+                    {t('about.background.availability.title')}
+                  </BackgroundTitle>
+                  <Paragraph>
+                    {t('about.background.availability.description')}
+                  </Paragraph>
+                  
+                  <List>
+                    {(t('about.background.availability.workConditions', { returnObjects: true }) as string[])
+                      .map((condition, index) => (
+                        <ListItem key={index}>{condition}</ListItem>
+                      ))}
+                  </List>
+
+                  <BackgroundTitle style={{ marginTop: '1.5rem' }}>
+                    {t('about.background.availability.freelance.title')}
+                  </BackgroundTitle>
+                  <Paragraph>
+                    {t('about.background.availability.freelance.description')}
+                  </Paragraph>
+                  
+                  <List>
+                    {(t('about.background.availability.freelance.highlights', { returnObjects: true }) as string[])
+                      .map((highlight, index) => (
+                        <ListItem key={index}>{highlight}</ListItem>
+                      ))}
+                  </List>
+                </HighlightedSection>
               </Background>
 
               <Profiles variants={!reducedMotion ? itemVariants : undefined}>

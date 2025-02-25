@@ -58,7 +58,27 @@
       },
       "growth": {
         "title": "Growth Areas",
-        "description": "I openly acknowledge areas that need improvement: working under pressure, operating in very large teams, and certain aspects of mathematics. I treat these challenges as opportunities for growth and actively work on them."
+        "description": "I openly acknowledge areas that need improvement: working under pressure, operating in very large teams, and certain aspects of mathematics. While group work initially poses a challenge for me, I actively work on developing my teamwork skills and adapting to group dynamics. I treat these challenges as opportunities for growth and systematically work on them."
+      },
+      "availability": {
+        "title": "Availability & Collaboration Terms",
+        "description": "As a technical school student, I offer flexible working hours adapted to my class schedule. I am unable to work full-time due to school commitments and study requirements. I work exclusively remotely.",
+        "workConditions": [
+          "Flexible working hours",
+          "Remote work only",
+          "Available on selected days",
+          "Project-based work preferred"
+        ],
+        "freelance": {
+          "title": "Freelance Projects",
+          "description": "I also accept freelance projects. Payment model: 50% upfront, 50% upon project completion.",
+          "highlights": [
+            "Clear collaboration terms",
+            "Transparent payment model",
+            "Regular communication during project execution",
+            "Quality assurance guarantee"
+          ]
+        }
       }
     },
     "skills": {
