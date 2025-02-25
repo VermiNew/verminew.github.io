@@ -89,7 +89,7 @@ const StyledButton = styled.button<{
   }
 `;
 
-const MotionButton = motion(StyledButton);
+const MotionButton = motion.create(StyledButton);
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',

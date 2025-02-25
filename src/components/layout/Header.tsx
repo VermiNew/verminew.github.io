@@ -75,17 +75,13 @@ const Logo = styled.img`
   }
 `;
 
-const LogoText = styled.span`
+const LogoText = styled(motion.span)`
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   font-size: 1.2rem;
   color: ${({ theme }) => theme['colors']['text']};
   letter-spacing: 0.5px;
   transition: color ${({ theme }) => theme['transitions']['default']};
-  
-  &:hover {
-    color: ${({ theme }) => theme['colors']['primary']};
-  }
   
   @media (max-width: ${({ theme }) => theme['breakpoints']['mobile']}) {
     display: none;
@@ -282,7 +278,7 @@ const menuVariants = {
 };
 
 export const Header: React.FC = () => {
-  const { themeMode } = useTheme();
+  const { themeMode, theme } = useTheme();
   const isDark = themeMode.includes('dark') || 
                  themeMode === 'nord' || 
                  themeMode === 'solarizedDark' || 
@@ -339,7 +335,25 @@ export const Header: React.FC = () => {
           onClick={() => scrollToSection('#home')}
         >
           <Logo src="/assets/images/Logo.webp" alt="VermiNew Logo" />
-          <LogoText>VermiNew</LogoText>
+          <LogoText
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.3,
+              ease: [0.6, -0.05, 0.01, 0.99]
+            }}
+            whileHover={{
+              scale: 1.05,
+              color: theme.colors.primary,
+              transition: {
+                duration: 0.2,
+                ease: "easeInOut"
+              }
+            }}
+          >
+            VermiNew
+          </LogoText>
         </LogoContainer>
 
         <Nav>
