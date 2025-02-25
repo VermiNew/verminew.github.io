@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-02-13T17:25:42.284Z",
+  "lastUpdated": "2025-02-25T00:48:03.024Z",
   "repos": [
     {
       "id": "AthenaAI",
@@ -46,29 +46,6 @@
       "priority": 2,
       "category": "fullstack",
       "featuredReason": "Advanced audio processing tool demonstrating expertise in web audio technologies"
-    },
-    {
-      "id": "BackupTool",
-      "title": "BackupTool",
-      "description": "A Python-based backup application with an easy-to-use GUI",
-      "technologies": [
-        "Python",
-        "Batchfile",
-        "Shell"
-      ],
-      "language": "Python",
-      "githubUrl": "https://github.com/VermiNew/BackupTool",
-      "liveUrl": "",
-      "featured": true,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2025-01-11T10:44:13Z",
-      "updatedAt": "2025-02-12T19:20:41Z",
-      "stars": 0,
-      "forks": 0,
-      "priority": 2,
-      "category": "tools",
-      "featuredReason": "Efficient backup solution with user-friendly GUI and robust file management"
     },
     {
       "id": "Flask_CalculationWizard",
@@ -233,7 +210,7 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2023-02-12T14:30:29Z",
-      "updatedAt": "2025-02-13T16:45:27Z",
+      "updatedAt": "2025-02-24T00:49:40Z",
       "stars": 0,
       "forks": 0,
       "priority": 1,

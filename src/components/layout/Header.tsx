@@ -5,6 +5,7 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { useActiveSection } from '../../hooks/useActiveSection';
 
 const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: boolean }>`
   position: fixed;
@@ -111,11 +112,11 @@ const NavLinks = styled.div`
   }
 `;
 
-const NavLink = styled.a`
-  color: ${({ theme }) => theme['colors']['text']};
+const NavLink = styled.a<{ $isActive?: boolean }>`
+  color: ${({ theme, $isActive }) => $isActive ? theme.colors.primary : theme.colors.text};
   text-decoration: none;
-  font-weight: 500;
-  transition: all ${({ theme }) => theme['transitions']['default']};
+  font-weight: ${({ $isActive }) => $isActive ? '600' : '500'};
+  transition: all ${({ theme }) => theme.transitions.default};
   position: relative;
   padding: 0.5rem;
 
@@ -124,14 +125,14 @@ const NavLink = styled.a`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0;
+    width: ${({ $isActive }) => $isActive ? '100%' : '0'};
     height: 2px;
-    background: ${({ theme }) => theme['colors']['primary']};
-    transition: width ${({ theme }) => theme['transitions']['default']};
+    background: ${({ theme }) => theme.colors.primary};
+    transition: width ${({ theme }) => theme.transitions.default};
   }
 
   &:hover {
-    color: ${({ theme }) => theme['colors']['primary']};
+    color: ${({ theme }) => theme.colors.primary};
     &::after {
       width: 100%;
     }
@@ -220,64 +221,25 @@ const MobileMenu = styled(motion.div)<{ $isDark: boolean }>`
   }
 `;
 
-const MobileNavLink = styled(motion.a)<{ $isDark: boolean }>`
+const MobileNavLink = styled(motion.a)<{ $isDark: boolean; $isActive?: boolean }>`
   padding: 1rem;
   font-size: 1.1rem;
   text-align: center;
   border-radius: 12px;
-  background: ${({ theme, $isDark }) => {
-    const bg = theme.colors.background;
-    switch (bg) {
-      // E-ink themes
-      case '#121212': return 'rgba(255, 255, 255, 0.05)';
-      // Nord theme
-      case '#2E3440': return 'rgba(136, 192, 208, 0.1)';
-      // Solarized themes
-      case '#002B36': return 'rgba(147, 161, 161, 0.1)';
-      case '#FDF6E3': return 'rgba(38, 139, 210, 0.1)';
-      // Winter theme
-      case '#f0f8ff': return 'rgba(44, 82, 130, 0.1)';
-      // Spring theme
-      case '#f8fff8': return 'rgba(47, 133, 90, 0.1)';
-      // Summer theme
-      case '#fffaf0': return 'rgba(192, 86, 33, 0.1)';
-      // Autumn theme
-      case '#fdf5e6': return 'rgba(156, 66, 33, 0.1)';
-      // Pastel theme
-      case '#fef6ff': return 'rgba(128, 90, 213, 0.1)';
-      // Default
-      default: return $isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
-    }
+  background: ${({ theme, $isDark, $isActive }) => {
+    const baseColor = $isActive ? theme.colors.primary : ($isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)');
+    return $isActive ? `${baseColor}20` : baseColor;
   }};
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme, $isActive }) => $isActive ? theme.colors.primary : theme.colors.text};
   text-decoration: none;
   transition: all ${({ theme }) => theme.transitions.default};
-  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+  border: 1px solid ${({ theme, $isActive }) => $isActive ? theme.colors.primary : `${theme.colors.primary}20`};
+  font-weight: ${({ $isActive }) => $isActive ? '600' : 'normal'};
   
   &:hover {
-    background: ${({ theme, $isDark }) => {
-      const bg = theme.colors.background;
-      switch (bg) {
-        // E-ink themes
-        case '#121212': return 'rgba(255, 255, 255, 0.1)';
-        // Nord theme
-        case '#2E3440': return 'rgba(136, 192, 208, 0.15)';
-        // Solarized themes
-        case '#002B36': return 'rgba(147, 161, 161, 0.15)';
-        case '#FDF6E3': return 'rgba(38, 139, 210, 0.15)';
-        // Winter theme
-        case '#f0f8ff': return 'rgba(44, 82, 130, 0.15)';
-        // Spring theme
-        case '#f8fff8': return 'rgba(47, 133, 90, 0.15)';
-        // Summer theme
-        case '#fffaf0': return 'rgba(192, 86, 33, 0.15)';
-        // Autumn theme
-        case '#fdf5e6': return 'rgba(156, 66, 33, 0.15)';
-        // Pastel theme
-        case '#fef6ff': return 'rgba(128, 90, 213, 0.15)';
-        // Default
-        default: return $isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
-      }
+    background: ${({ theme, $isDark, $isActive }) => {
+      const baseColor = $isActive ? theme.colors.primary : ($isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)');
+      return $isActive ? `${baseColor}30` : baseColor;
     }};
     color: ${({ theme }) => theme.colors.primary};
     transform: translateX(5px);
@@ -285,29 +247,9 @@ const MobileNavLink = styled(motion.a)<{ $isDark: boolean }>`
   }
 
   &:active {
-    background: ${({ theme, $isDark }) => {
-      const bg = theme.colors.background;
-      switch (bg) {
-        // E-ink themes
-        case '#121212': return 'rgba(255, 255, 255, 0.15)';
-        // Nord theme
-        case '#2E3440': return 'rgba(136, 192, 208, 0.2)';
-        // Solarized themes
-        case '#002B36': return 'rgba(147, 161, 161, 0.2)';
-        case '#FDF6E3': return 'rgba(38, 139, 210, 0.2)';
-        // Winter theme
-        case '#f0f8ff': return 'rgba(44, 82, 130, 0.2)';
-        // Spring theme
-        case '#f8fff8': return 'rgba(47, 133, 90, 0.2)';
-        // Summer theme
-        case '#fffaf0': return 'rgba(192, 86, 33, 0.2)';
-        // Autumn theme
-        case '#fdf5e6': return 'rgba(156, 66, 33, 0.2)';
-        // Pastel theme
-        case '#fef6ff': return 'rgba(128, 90, 213, 0.2)';
-        // Default
-        default: return $isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)';
-      }
+    background: ${({ theme, $isDark, $isActive }) => {
+      const baseColor = $isActive ? theme.colors.primary : ($isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)');
+      return $isActive ? `${baseColor}40` : baseColor;
     }};
   }
 `;
@@ -349,6 +291,7 @@ export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const activeSection = useActiveSection();
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -409,6 +352,7 @@ export const Header: React.FC = () => {
                   e.preventDefault();
                   scrollToSection(item.href);
                 }}
+                $isActive={activeSection === item.href.substring(1)}
               >
                 {item.label}
               </NavLink>
@@ -437,6 +381,7 @@ export const Header: React.FC = () => {
             {navItems.map((item, index) => (
               <MobileNavLink
                 $isDark={isDark}
+                $isActive={activeSection === item.href.substring(1)}
                 key={item.href}
                 href={item.href}
                 onClick={(e) => {

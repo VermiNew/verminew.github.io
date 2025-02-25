@@ -335,7 +335,31 @@
   },
   "theme": {
     "toggleDark": "Przełącz na tryb ciemny",
-    "toggleLight": "Przełącz na tryb jasny"
+    "toggleLight": "Przełącz na tryb jasny",
+    "groups": {
+      "basic": "Podstawowe",
+      "professional": "Profesjonalne",
+      "special": "Specjalne",
+      "seasonal": "Sezonowe"
+    },
+    "names": {
+      "light": "Jasny",
+      "dark": "Ciemny",
+      "corporateModern": "Korporacyjny Modern",
+      "techMinimal": "Tech Minimal",
+      "professionalDark": "Profesjonalny Ciemny",
+      "modernNeutral": "Modern Neutralny",
+      "eInkLight": "E-Ink Jasny",
+      "eInkDark": "E-Ink Ciemny",
+      "nord": "Nord",
+      "solarizedLight": "Solarized Jasny",
+      "solarizedDark": "Solarized Ciemny",
+      "winter": "Zima",
+      "spring": "Wiosna",
+      "summer": "Lato",
+      "autumn": "Jesień",
+      "pastel": "Pastelowy"
+    }
   },
   "language": {
     "switchTo": "Przełącz na angielski",

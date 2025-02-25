@@ -334,8 +334,32 @@
     "github": "GitHub"
   },
   "theme": {
-    "toggleDark": "Switch to dark mode",
-    "toggleLight": "Switch to light mode"
+    "toggleDark": "Toggle dark mode",
+    "toggleLight": "Toggle light mode",
+    "groups": {
+      "basic": "Basic",
+      "professional": "Professional",
+      "special": "Special",
+      "seasonal": "Seasonal"
+    },
+    "names": {
+      "light": "Light",
+      "dark": "Dark",
+      "corporateModern": "Corporate Modern",
+      "techMinimal": "Tech Minimal",
+      "professionalDark": "Professional Dark",
+      "modernNeutral": "Modern Neutral",
+      "eInkLight": "E-Ink Light",
+      "eInkDark": "E-Ink Dark",
+      "nord": "Nord",
+      "solarizedLight": "Solarized Light",
+      "solarizedDark": "Solarized Dark",
+      "winter": "Winter",
+      "spring": "Spring",
+      "summer": "Summer",
+      "autumn": "Autumn",
+      "pastel": "Pastel"
+    }
   },
   "language": {
     "switchTo": "Switch to Polish",
