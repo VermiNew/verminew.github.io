@@ -88,10 +88,6 @@ const ThemeMenu = styled(motion.div)`
       background: ${({ theme }) => `${theme.colors.primary}60`};
     }
   }
-
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: ${({ theme }) => `${theme.colors.primary}40 transparent`};
 `;
 
 const ThemeGroup = styled(motion.div)<{ $hasActiveTheme?: boolean }>`
