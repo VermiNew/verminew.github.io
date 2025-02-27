@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Section } from '../layout/Section';
 import { SectionTitle } from '../ui/SectionTitle';
 import { SiGithub, SiDiscord } from 'react-icons/si';
-import { MdEmail } from 'react-icons/md';
+import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdTrendingUp, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
 import { useAnimation } from '../../context/AnimationContext';
@@ -87,12 +87,36 @@ const NameOriginTitle = styled.h3`
   color: ${({ theme }) => theme.colors.primary};
   margin-bottom: 1rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    font-size: 1.4rem;
+  }
 `;
 
-const BirthInfo = styled(motion.p)`
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
+const BirthInfoSection = styled(motion.div)`
   margin-top: 1rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: ${({ theme }) => `${theme.colors.surface}80`};
+  backdrop-filter: blur(8px);
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  svg {
+    font-size: 1.5rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const BirthInfoText = styled.p`
+  font-size: 1.1rem;
+  color: ${({ theme }) => theme.colors.text};
+  line-height: 1.4;
 `;
 
 const Profiles = styled(motion.div)`
@@ -161,6 +185,13 @@ const BackgroundTitle = styled.h3`
   color: ${({ theme }) => theme.colors.primary};
   margin-bottom: 1rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    font-size: 1.4rem;
+  }
 `;
 
 const List = styled.ul`
@@ -250,18 +281,23 @@ export const AboutSection: React.FC = () => {
 
               <NameOrigin variants={!reducedMotion ? itemVariants : undefined}>
                 <NameOriginTitle>
+                  <MdLabel />
                   {t('about.nameOrigin.title')}
                 </NameOriginTitle>
                 <p>{t('about.nameOrigin.description')}</p>
               </NameOrigin>
 
-              <BirthInfo variants={!reducedMotion ? itemVariants : undefined}>
-                {t('about.birthInfo')}
-              </BirthInfo>
+              <BirthInfoSection variants={!reducedMotion ? itemVariants : undefined}>
+                <MdCake />
+                <BirthInfoText>{t('about.birthInfo')}</BirthInfoText>
+              </BirthInfoSection>
 
               <Background variants={!reducedMotion ? itemVariants : undefined}>
                 <BackgroundSection>
-                  <BackgroundTitle>{t('about.background.education.title')}</BackgroundTitle>
+                  <BackgroundTitle>
+                    <MdSchool />
+                    {t('about.background.education.title')}
+                  </BackgroundTitle>
                   <List>
                     <ListItem>{t('about.background.education.current')}</ListItem>
                     <ListItem>{t('about.background.education.achievements')}</ListItem>
@@ -269,7 +305,10 @@ export const AboutSection: React.FC = () => {
                 </BackgroundSection>
 
                 <BackgroundSection>
-                  <BackgroundTitle>{t('about.background.languages.title')}</BackgroundTitle>
+                  <BackgroundTitle>
+                    <MdTranslate />
+                    {t('about.background.languages.title')}
+                  </BackgroundTitle>
                   <List>
                     <ListItem>{t('about.background.languages.native')}</ListItem>
                     <ListItem>{t('about.background.languages.other')}</ListItem>
@@ -277,7 +316,10 @@ export const AboutSection: React.FC = () => {
                 </BackgroundSection>
 
                 <BackgroundSection>
-                  <BackgroundTitle>{t('about.background.interests.title')}</BackgroundTitle>
+                  <BackgroundTitle>
+                    <MdInterests />
+                    {t('about.background.interests.title')}
+                  </BackgroundTitle>
                   <List>
                     {(t('about.background.interests.list', { returnObjects: true }) as string[])
                       .map((interest, index) => (
@@ -287,17 +329,24 @@ export const AboutSection: React.FC = () => {
                 </BackgroundSection>
 
                 <BackgroundSection>
-                  <BackgroundTitle>{t('about.background.strengths.title')}</BackgroundTitle>
+                  <BackgroundTitle>
+                    <MdStars />
+                    {t('about.background.strengths.title')}
+                  </BackgroundTitle>
                   <p>{t('about.background.strengths.description')}</p>
                 </BackgroundSection>
 
                 <BackgroundSection>
-                  <BackgroundTitle>{t('about.background.growth.title')}</BackgroundTitle>
+                  <BackgroundTitle>
+                    <MdTrendingUp />
+                    {t('about.background.growth.title')}
+                  </BackgroundTitle>
                   <p>{t('about.background.growth.description')}</p>
                 </BackgroundSection>
 
                 <HighlightedSection variants={!reducedMotion ? itemVariants : undefined}>
                   <BackgroundTitle>
+                    <MdWork />
                     {t('about.background.availability.title')}
                   </BackgroundTitle>
                   <Paragraph>
@@ -312,6 +361,7 @@ export const AboutSection: React.FC = () => {
                   </List>
 
                   <BackgroundTitle style={{ marginTop: '1.5rem' }}>
+                    <MdWork />
                     {t('about.background.availability.freelance.title')}
                   </BackgroundTitle>
                   <Paragraph>
