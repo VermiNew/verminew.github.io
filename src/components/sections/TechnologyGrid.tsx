@@ -116,50 +116,70 @@ const categoryVariants = {
 
 const technologies = {
   frontendCore: [
+    // HTML + CSS as fundamental pair
     { id: 'html5', icon: <SiHtml5 />, level: 'advanced' as const },
     { id: 'css3', icon: <SiCss3 />, level: 'advanced' as const },
+    // JavaScript + TypeScript as a pair
     { id: 'javascript', icon: <SiJavascript />, level: 'advanced' as const },
     { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const }
   ],
   frontendFrameworks: [
+    // React ecosystem
     { id: 'react', icon: <SiReact />, level: 'learning' as const },
-    { id: 'vuejs', icon: <SiVuedotjs />, level: 'learning' as const },
     { id: 'nextjs', icon: <SiNextdotjs />, level: 'learning' as const },
+    // Vue ecosystem
+    { id: 'vuejs', icon: <SiVuedotjs />, level: 'learning' as const },
+    // Angular
     { id: 'angular', icon: <SiAngular />, level: 'beginner' as const },
+    // Styling frameworks together
     { id: 'bootstrap', icon: <SiBootstrap />, level: 'intermediate' as const },
     { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'beginner' as const }
   ],
   backendDb: [
+    // PHP + MySQL as classic stack
     { id: 'php', icon: <SiPhp />, level: 'advanced' as const },
     { id: 'mysql', icon: <SiMysql />, level: 'intermediate' as const },
+    // Modern API
     { id: 'fastapi', icon: <SiFastapi />, level: 'learning' as const }
   ],
   programming: [
+    // C-family languages together
     { id: 'cpp', icon: <SiCplusplus />, level: 'advanced' as const },
     { id: 'csharp', icon: <SiSharp />, level: 'intermediate' as const },
+    // Interpreted languages
     { id: 'python', icon: <SiPython />, level: 'intermediate' as const },
     { id: 'java', icon: <SiJava />, level: 'beginner' as const }
   ],
   aiMl: [
+    // ML frameworks
     { id: 'tensorflow', icon: <SiTensorflow />, level: 'learning' as const },
     { id: 'pytorch', icon: <SiPytorch />, level: 'learning' as const }
   ],
   devTools: [
+    // Version control
     { id: 'git', icon: <SiGit />, level: 'advanced' as const },
+    // Documentation
+    { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const },
+    // DevOps tools
     { id: 'docker', icon: <SiDocker />, level: 'learning' as const },
-    { id: 'jest', icon: <SiJest />, level: 'learning' as const },
-    { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const }
+    // Testing
+    { id: 'jest', icon: <SiJest />, level: 'learning' as const }
   ],
   systemDevops: [
-    { id: 'bash', icon: <SiGnubash />, level: 'learning' as const },
+    // Development environments
+    { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'intermediate' as const },
+    // Shell scripting
     { id: 'batch', icon: <IoTerminal />, level: 'intermediate' as const },
-    { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'intermediate' as const }
+    { id: 'bash', icon: <SiGnubash />, level: 'learning' as const }
   ],
   futurePlans: [
+    // Backend services
     { id: 'redis', icon: <SiRedis />, level: 'planned' as const },
     { id: 'firebase', icon: <SiFirebase />, level: 'planned' as const },
+    // Authentication & Security
     { id: 'oauth', icon: <SiAuth0 />, level: 'planned' as const },
     { id: 'jwt', icon: <SiJsonwebtokens />, level: 'planned' as const },
+    // Modern systems programming
     { id: 'rust', icon: <SiRust />, level: 'planned' as const },
     { id: 'go', icon: <SiGo />, level: 'planned' as const }
   ]
