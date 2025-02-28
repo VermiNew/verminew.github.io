@@ -327,7 +327,31 @@
       "title": "Dodatkowe informacje",
       "description": "Więcej sposobów na nawiązanie współpracy",
       "location": "Polska, Europa",
-      "availability": "Otwarty na ciekawe projekty i współpracę"
+      "availability": "Otwarty na ciekawe projekty i współpracę",
+      "response_time": "Czas odpowiedzi: zazwyczaj do 48 godzin",
+      "preferred_hours": "Preferowane godziny kontaktu: 16:00 - 20:00\n(dni robocze)",
+      "student_note": "Jestem uczniem, więc moja dostępność może być ograniczona w okresach intensywnej nauki"
+    },
+    "faq": {
+      "title": "Często zadawane pytania",
+      "questions": [
+        {
+          "question": "Jakie projekty preferuję?",
+          "answer": "Najbardziej interesują mnie projekty związane z tworzeniem stron internetowych, aplikacji webowych oraz rozwiązań wykorzystujących sztuczną inteligencję. Jestem otwarty na projekty edukacyjne i innowacyjne rozwiązania."
+        },
+        {
+          "question": "Jak wygląda proces współpracy?",
+          "answer": "Proces rozpoczyna się od wstępnej rozmowy o projekcie, ustalenia zakresu i harmonogramu. Ze względu na naukę, preferuję projekty z elastycznym harmonogramem."
+        },
+        {
+          "question": "Jakie technologie preferuję?",
+          "answer": "Głównie pracuję z React, TypeScript i Node.js. Jestem też zainteresowany projektami wykorzystującymi Python, szczególnie w kontekście AI/ML."
+        },
+        {
+          "question": "Czy podejmuję się komercyjnych projektów?",
+          "answer": "Tak, ale selektywnie i w ograniczonym zakresie ze względu na naukę. Każdy projekt rozpatruję indywidualnie."
+        }
+      ]
     },
     "email": "Email",
     "discord": "Discord",

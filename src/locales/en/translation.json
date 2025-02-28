@@ -327,7 +327,31 @@
       "title": "Additional Information",
       "description": "More ways to connect and collaborate",
       "location": "Poland, Europe",
-      "availability": "Available for interesting projects and collaborations"
+      "availability": "Available for interesting projects and collaborations",
+      "response_time": "Response time: typically within 48 hours",
+      "preferred_hours": "Preferred contact hours: 4 PM - 8 PM\n(workdays)",
+      "student_note": "As a student, my availability may be limited during intensive study periods"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": [
+        {
+          "question": "What types of projects do I prefer?",
+          "answer": "I'm most interested in projects involving web development, web applications, and AI-powered solutions. I'm open to educational projects and innovative solutions."
+        },
+        {
+          "question": "How does the collaboration process work?",
+          "answer": "The process starts with an initial project discussion, establishing scope and timeline. Due to my studies, I prefer projects with flexible schedules."
+        },
+        {
+          "question": "What technologies do I prefer?",
+          "answer": "I mainly work with React, TypeScript, and Node.js. I'm also interested in projects using Python, especially in AI/ML contexts."
+        },
+        {
+          "question": "Do I take commercial projects?",
+          "answer": "Yes, but selectively and in a limited capacity due to my studies. Each project is considered individually."
+        }
+      ]
     },
     "email": "Email",
     "discord": "Discord",
