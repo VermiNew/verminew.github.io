@@ -26,7 +26,6 @@ import {
   SiCplusplus,
   SiSharp,
   SiPython,
-  SiFastapi as SiJava,
   // AI/ML
   SiTensorflow,
   SiPytorch,
@@ -47,6 +46,7 @@ import {
   SiGo
 } from 'react-icons/si';
 import { IoTerminal } from "react-icons/io5";
+import { FaJava } from "react-icons/fa";
 
 const Container = styled(motion.div)`
   display: grid;
@@ -117,60 +117,60 @@ const categoryVariants = {
 const technologies = {
   frontendCore: [
     // HTML + CSS as fundamental pair
-    { id: 'html5', icon: <SiHtml5 />, level: 'advanced' as const },
-    { id: 'css3', icon: <SiCss3 />, level: 'advanced' as const },
+    { id: 'html5', icon: <SiHtml5 />, level: 'intermediate' as const },
+    { id: 'css3', icon: <SiCss3 />, level: 'intermediate' as const },
     // JavaScript + TypeScript as a pair
-    { id: 'javascript', icon: <SiJavascript />, level: 'advanced' as const },
+    { id: 'javascript', icon: <SiJavascript />, level: 'beginner' as const },
     { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const }
   ],
   frontendFrameworks: [
     // React ecosystem
-    { id: 'react', icon: <SiReact />, level: 'learning' as const },
-    { id: 'nextjs', icon: <SiNextdotjs />, level: 'learning' as const },
+    { id: 'react', icon: <SiReact />, level: 'planned' as const },
+    { id: 'nextjs', icon: <SiNextdotjs />, level: 'planned' as const },
     // Vue ecosystem
-    { id: 'vuejs', icon: <SiVuedotjs />, level: 'learning' as const },
+    { id: 'vuejs', icon: <SiVuedotjs />, level: 'planned' as const },
     // Angular
-    { id: 'angular', icon: <SiAngular />, level: 'beginner' as const },
+    { id: 'angular', icon: <SiAngular />, level: 'learning' as const },
     // Styling frameworks together
-    { id: 'bootstrap', icon: <SiBootstrap />, level: 'intermediate' as const },
-    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'beginner' as const }
+    { id: 'bootstrap', icon: <SiBootstrap />, level: 'beginner' as const },
+    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'planned' as const }
   ],
   backendDb: [
     // PHP + MySQL as classic stack
-    { id: 'php', icon: <SiPhp />, level: 'advanced' as const },
-    { id: 'mysql', icon: <SiMysql />, level: 'intermediate' as const },
+    { id: 'php', icon: <SiPhp />, level: 'beginner' as const },
+    { id: 'mysql', icon: <SiMysql />, level: 'beginner' as const },
     // Modern API
-    { id: 'fastapi', icon: <SiFastapi />, level: 'learning' as const }
+    { id: 'fastapi', icon: <SiFastapi />, level: 'planned' as const }
   ],
   programming: [
     // C-family languages together
-    { id: 'cpp', icon: <SiCplusplus />, level: 'advanced' as const },
+    { id: 'cpp', icon: <SiCplusplus />, level: 'intermediate' as const },
     { id: 'csharp', icon: <SiSharp />, level: 'intermediate' as const },
     // Interpreted languages
-    { id: 'python', icon: <SiPython />, level: 'intermediate' as const },
-    { id: 'java', icon: <SiJava />, level: 'beginner' as const }
+    { id: 'python', icon: <SiPython />, level: 'beginner' as const },
+    { id: 'java', icon: <FaJava />, level: 'beginner' as const }
   ],
   aiMl: [
     // ML frameworks
-    { id: 'tensorflow', icon: <SiTensorflow />, level: 'learning' as const },
-    { id: 'pytorch', icon: <SiPytorch />, level: 'learning' as const }
+    { id: 'tensorflow', icon: <SiTensorflow />, level: 'planned' as const },
+    { id: 'pytorch', icon: <SiPytorch />, level: 'planned' as const }
   ],
   devTools: [
     // Version control
-    { id: 'git', icon: <SiGit />, level: 'advanced' as const },
+    { id: 'git', icon: <SiGit />, level: 'intermediate' as const },
     // Documentation
     { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const },
     // DevOps tools
-    { id: 'docker', icon: <SiDocker />, level: 'learning' as const },
+    { id: 'docker', icon: <SiDocker />, level: 'planned' as const },
     // Testing
-    { id: 'jest', icon: <SiJest />, level: 'learning' as const }
+    { id: 'jest', icon: <SiJest />, level: 'planned' as const }
   ],
   systemDevops: [
     // Development environments
-    { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'intermediate' as const },
+    { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'beginner' as const },
     // Shell scripting
-    { id: 'batch', icon: <IoTerminal />, level: 'intermediate' as const },
-    { id: 'bash', icon: <SiGnubash />, level: 'learning' as const }
+    { id: 'batch', icon: <IoTerminal />, level: 'beginner' as const },
+    { id: 'bash', icon: <SiGnubash />, level: 'planned' as const }
   ],
   futurePlans: [
     // Backend services
