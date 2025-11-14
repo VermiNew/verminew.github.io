@@ -311,7 +311,7 @@ export const AboutSection: React.FC = () => {
                   </BackgroundTitle>
                   <List>
                     <ListItem>{t('about.background.languages.native')}</ListItem>
-                    <ListItem>{t('about.background.languages.other')}</ListItem>
+                    <ListItem>{t('about.background.languages.english')}</ListItem>
                   </List>
                 </BackgroundSection>
 

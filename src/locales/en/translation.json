@@ -10,7 +10,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Programming Enthusiast, AI & Tech Development Passionate",
+    "title": "Programming Enthusiast & Vibecoder - Building Ideas into Reality",
     "cta": {
       "about": "Get to know me",
       "projects": "View projects"
@@ -20,7 +20,7 @@
     "title": "About Me",
     "name": "Michael Oslizlo",
     "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
-    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and is preparing for INF.04, I find the greatest satisfaction in seeing the results of my work. Currently, I use artificial intelligence as a tool to support my learning and development in these areas.",
+    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and is preparing for INF.04, I find the greatest satisfaction in seeing the results of my work. I actively use AI through vibecoding - it helps me learn faster, but more importantly, it enables me to build projects I wouldn't normally be able to create on my own. This approach allows me to turn ideas into reality and learn by doing.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
       "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for growth and constant improvement."
@@ -36,25 +36,26 @@
       "title": "About Me",
       "education": {
         "title": "Education",
-        "current": "Technical school student, specialization: programmer",
+        "current": "Technical school student, specialization: IT technician-programmer",
         "achievements": "Completed INF.03 qualification, preparing for INF.04"
       },
       "languages": {
         "title": "Languages",
         "native": "Polish (Native)",
-        "other": "English (Communicative)"
+        "english": "English (Good - B1/B2 level, school grade 4/5 in the Polish grading system)"
       },
       "interests": {
         "title": "Interests & Technologies",
         "list": [
-          "Video editing",
-          "Programming in Python",
-          "Exploring new technologies (Node, React, Vue, TypeScript, Angular)"
+          "Vibecoding - turning ideas into working projects",
+          "Graphic design with Canva",
+          "ESP32 microcontroller projects (C++)",
+          "Catholic Faith"
         ]
       },
       "strengths": {
-        "title": "What Drives Me",
-        "description": "I find my greatest satisfaction in seeing my code work and deliver real results. Programming for me is not just learning, but above all a path of continuous development and skill improvement."
+        "title": "What I Find Satisfying",
+        "description": "I code because I want to and because I enjoy seeing things work. The biggest satisfaction comes from watching my code run and deliver real results. It's that simple."
       },
       "growth": {
         "title": "Growth Areas",
@@ -180,7 +181,7 @@
             },
             "python": {
               "name": "Python",
-              "description": "Scripts, automation and AI projects"
+              "description": "Scripts, automation and AI-assisted projects"
             },
             "java": {
               "name": "Java",
@@ -189,16 +190,16 @@
           }
         },
         "aiMl": {
-          "title": "AI & Machine Learning",
-          "description": "Artificial Intelligence and Machine Learning tools",
+          "title": "AI Tools & Integration",
+          "description": "Using AI/ML tools and APIs in projects",
           "skills": {
             "tensorflow": {
               "name": "TensorFlow",
-              "description": "Machine learning and neural networks"
+              "description": "Integrating pre-trained models in applications"
             },
             "pytorch": {
               "name": "PyTorch",
-              "description": "Experimenting with AI models"
+              "description": "Working with existing AI models and APIs"
             }
           }
         },
@@ -297,7 +298,7 @@
       "backend": "Backend",
       "fullstack": "Full Stack",
       "tools": "Tools",
-      "ai": "AI"
+      "ai": "AI-Powered"
     }
   },
   "settings": {
@@ -345,7 +346,7 @@
         },
         {
           "question": "What technologies do I prefer?",
-          "answer": "I mainly work with React, TypeScript, and Node.js. I'm also interested in projects using Python, especially in AI/ML contexts."
+          "answer": "I mainly work with React, TypeScript, and Node.js. I'm also interested in projects using Python, especially in AI-assisted contexts."
         },
         {
           "question": "Do I take commercial projects?",

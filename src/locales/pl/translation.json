@@ -10,7 +10,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Entuzjasta programowania, AI i rozwoju technologii",
+    "title": "Entuzjasta programowania i Vibecoder - Przekuwam pomysły w rzeczywistość",
     "cta": {
       "about": "Poznaj mnie",
       "projects": "Zobacz projekty"
@@ -20,7 +20,7 @@
     "title": "O mnie",
     "name": "Michał Oślizło",
     "intro": "Jestem Michał, entuzjasta programowania z Podkarpacia. Urodziłem się w październiku 2006 roku i obecnie uczę się w technikum na kierunku programistycznym.",
-    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i przygotowuje się do INF.04, największą satysfakcję czerpię z obserwowania efektów swojej pracy. Obecnie korzystam ze sztucznej inteligencji jako narzędzia wspierającego moją naukę i rozwój w tych dziedzinach.",
+    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i przygotowuje się do INF.04, największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie wykorzystuję AI poprzez vibecoding - pomaga mi to szybciej się uczyć, ale co ważniejsze, pozwala budować projekty, których normalnie nie byłbym w stanie stworzyć samodzielnie. Takie podejście umożliwia mi przekuwanie pomysłów w rzeczywistość i naukę przez praktykę.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
       "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
@@ -36,25 +36,26 @@
       "title": "O sobie",
       "education": {
         "title": "Edukacja",
-        "current": "Uczeń technikum, kierunek: programista",
+        "current": "Uczeń technikum, kierunek: technik-programista",
         "achievements": "Ukończona kwalifikacja INF.03, przygotowania do INF.04"
       },
       "languages": {
         "title": "Języki",
         "native": "Polski (ojczysty)",
-        "other": "Angielski (komunikatywny)"
+        "english": "Angielski (Dobry - poziom B1/B2, ocena szkolna 4/5 w polskim systemie oceniania)"
       },
       "interests": {
         "title": "Zainteresowania i technologie",
         "list": [
-          "Montaż wideo",
-          "Programowanie w Pythonie",
-          "Eksploracja nowych technologii (Node, React, Vue, TypeScript, Angular)"
+          "Vibecoding - przekuwanie pomysłów w działające projekty",
+          "Projektowanie graficzne w Canvie",
+          "Projekty z mikrokontrolerami ESP32 (C++)",
+          "Wiara Katolicka"
         ]
       },
       "strengths": {
-        "title": "Co mnie napędza",
-        "description": "Największą satysfakcję czerpię z obserwowania, jak mój kod działa i przynosi realne efekty. Programowanie to dla mnie nie tylko nauka, ale przede wszystkim droga ciągłego rozwoju i doskonalenia umiejętności."
+        "title": "Co sprawia mi satysfakcję",
+        "description": "Koduję bo chcę i lubię jak coś działa. Największa satysfakcja to obserwowanie jak mój kod działa i przynosi realne efekty. To takie proste."
       },
       "growth": {
         "title": "Obszary rozwoju",
@@ -180,7 +181,7 @@
             },
             "python": {
               "name": "Python",
-              "description": "Skrypty, automatyzacja i projekty AI"
+              "description": "Skrypty, automatyzacja i projekty wspierane przez AI"
             },
             "java": {
               "name": "Java",
@@ -189,16 +190,16 @@
           }
         },
         "aiMl": {
-          "title": "AI i Machine Learning",
-          "description": "Narzędzia do sztucznej inteligencji i uczenia maszynowego",
+          "title": "Narzędzia AI i integracja",
+          "description": "Wykorzystywanie narzędzi AI/ML i API w projektach",
           "skills": {
             "tensorflow": {
               "name": "TensorFlow",
-              "description": "Uczenie maszynowe i sieci neuronowe"
+              "description": "Integracja gotowych modeli w aplikacjach"
             },
             "pytorch": {
               "name": "PyTorch",
-              "description": "Eksperymentowanie z modelami AI"
+              "description": "Praca z istniejącymi modelami AI i API"
             }
           }
         },
@@ -297,7 +298,7 @@
       "backend": "Backend",
       "fullstack": "Full Stack",
       "tools": "Narzędzia",
-      "ai": "AI"
+      "ai": "Wspierane AI"
     }
   },
   "settings": {
@@ -345,7 +346,7 @@
         },
         {
           "question": "Jakie technologie preferuję?",
-          "answer": "Głównie pracuję z React, TypeScript i Node.js. Jestem też zainteresowany projektami wykorzystującymi Python, szczególnie w kontekście AI/ML."
+          "answer": "Głównie pracuję z React, TypeScript i Node.js. Jestem też zainteresowany projektami wykorzystującymi Python, szczególnie w kontekście wsparcia AI."
         },
         {
           "question": "Czy podejmuję się komercyjnych projektów?",
