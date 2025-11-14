@@ -2,44 +2,130 @@ name: Update Repository Data
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Raz dziennie o północy
-  workflow_dispatch:  # Pozwala na ręczne uruchomienie
+    # Raz dziennie o 2:00 UTC (3:00 CET / 4:00 CEST dla Polski)
+    - cron: '0 2 * * *'
+  
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes'
+        required: false
+        type: boolean
+        default: false
+  
   push:
     branches:
       - main
     paths:
-      - 'src/**'
-      - '.github/scripts/**'
+      - '.github/scripts/fetch-repos.js'
+      - '.github/workflows/update-repos.yml'
+  
   repository_dispatch:
-    types: [update_projects]  # Można wywołać przez GitHub API
-  watch:
-    types: [started]  # Aktualizuje gdy ktoś doda gwiazdkę
+    types: [update_projects]
+  
+  # Opcjonalnie: po nowym repo lub update'cie repo
+  # watch:
+  #   types: [started]
 
 jobs:
   update-repos:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
         with:
-          node-version: '18'
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: npm install @octokit/rest
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Fetch repository data
+      - name: 💾 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-update-deps-${{ hashFiles('.github/scripts/package*.json') }}
+          restore-keys: |
+            ${{ runner.os }}-update-deps-
+
+      - name: 📦 Install dependencies
+        working-directory: .github/scripts
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          else
+            npm install @octokit/rest
+          fi
+
+      - name: 📡 Fetch repository data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+        working-directory: .github/scripts
         run: |
-          node .github/scripts/fetch-repos.js
+          echo "📊 Starting repository data fetch..."
+          node fetch-repos.js
+          echo "✅ Fetch complete!"
 
-      - name: Commit and push if changed
+      - name: 🔍 Check for changes
+        id: check_changes
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
+          if git diff --quiet public/data/repos.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No changes detected in repos.json"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes detected in repos.json"
+          fi
+
+      - name: 📊 Generate diff summary
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          echo "### 📊 Repository Data Changes" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
+          git diff public/data/repos.json | head -50 >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: 💾 Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+        run: |
+          git config --local user.name 'github-actions[bot]'
+          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+          
           git add public/data/repos.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update repository data [skip ci]" && git push) 
+          
+          # Commit message z datą
+          COMMIT_DATE=$(date -u +'%Y-%m-%d %H:%M UTC')
+          git commit -m "chore: update repository data [skip ci]
+
+          - Updated at: ${COMMIT_DATE}
+          - Triggered by: ${{ github.event_name }}
+          - Workflow: ${{ github.workflow }}"
+          
+          git push
+
+      - name: ✅ Success summary
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          echo "### ✅ Repository Data Updated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Updated at**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes**: Yes" >> $GITHUB_STEP_SUMMARY
+
+      - name: ℹ️ No changes summary
+        if: steps.check_changes.outputs.changed == 'false'
+        run: |
+          echo "### ℹ️  No Changes Detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Repository data is already up to date." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Checked at**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
