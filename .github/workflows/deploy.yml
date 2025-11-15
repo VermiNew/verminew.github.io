@@ -183,19 +183,17 @@ jobs:
               body: message
             });
 
-  # Opcjonalnie: Lighthouse CI dla performance monitoring
-  # Odkomentuj jeśli chcesz używać
-  # lighthouse:
-  #   needs: deploy
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: 📥 Checkout
-  #       uses: actions/checkout@v4
-  #
-  #     - name: 🔍 Run Lighthouse CI
-  #       uses: treosh/lighthouse-ci-action@v10
-  #       with:
-  #         urls: |
-  #           https://verminew.github.io
-  #         uploadArtifacts: true
-  #         temporaryPublicStorage: true
+  lighthouse:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://verminew.github.io
+          uploadArtifacts: true
+          temporaryPublicStorage: true
