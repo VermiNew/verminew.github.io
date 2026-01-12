@@ -72,18 +72,20 @@ export const useRepos = () => {
       let lastError: Error | null = null;
 
       for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        let timeoutId: ReturnType<typeof setTimeout> | null = null;
+        
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+          timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
           const response = await fetch(REPOS_URL, { signal: controller.signal });
-          clearTimeout(timeoutId);
+          if (timeoutId) clearTimeout(timeoutId);
 
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
 
-          const jsonData = await response.json();
+          const jsonData: unknown = await response.json();
           
           if (!isValidReposData(jsonData)) {
             throw new Error('Invalid repos data format received');
@@ -95,6 +97,8 @@ export const useRepos = () => {
           setIsLoading(false);
           return;
         } catch (err) {
+          if (timeoutId) clearTimeout(timeoutId);
+          
           lastError = err instanceof Error ? err : new Error('Failed to fetch repos');
           
           // Exponential backoff: 1s, 2s, 4s
