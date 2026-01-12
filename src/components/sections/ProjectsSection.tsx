@@ -23,6 +23,10 @@ const FilterContainer = styled(motion.div)`
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 0.5rem;
+  }
 `;
 
 const FilterButton = styled.button<{ $isActive: boolean }>`
@@ -62,6 +66,16 @@ const ProjectsGrid = styled(motion.div)`
   & > * {
     height: 100%;
     display: flex;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 1rem;
   }
 `;
 
