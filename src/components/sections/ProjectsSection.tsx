@@ -155,7 +155,6 @@ export const ProjectsSection: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
   const { data, isLoading, error } = useRepos();
   const { reducedMotion } = useAnimation();
-  const [animateKey, setAnimateKey] = useState(0);
 
   const getAvailableTechnologies = () => {
     if (!data?.repos) return [];
@@ -195,7 +194,6 @@ export const ProjectsSection: React.FC = () => {
       
       setActiveFilters(newFilters.length === 0 ? ['all'] : newFilters);
     }
-    setAnimateKey(prev => prev + 1);
   };
 
   const filteredProjects = data?.repos
@@ -265,11 +263,11 @@ export const ProjectsSection: React.FC = () => {
                   {t('projects.featuredTitle')}
                 </CategoryTitle>
                 <ProjectsGrid
-                  key={`featured-${animateKey}`}
-                  variants={!reducedMotion ? gridVariants : undefined}
-                  initial="hidden"
-                  animate="visible"
-                >
+                   variants={!reducedMotion ? gridVariants : undefined}
+                   initial="hidden"
+                   animate="visible"
+                   layout
+                 >
                   {organizedProjects.featured.map((project) => (
                     <motion.div
                       key={project.id}
@@ -294,11 +292,11 @@ export const ProjectsSection: React.FC = () => {
                   {t('projects.otherTitle')}
                 </CategoryTitle>
                 <ProjectsGrid
-                  key={`other-${animateKey}`}
-                  variants={!reducedMotion ? gridVariants : undefined}
-                  initial="hidden"
-                  animate="visible"
-                >
+                   variants={!reducedMotion ? gridVariants : undefined}
+                   initial="hidden"
+                   animate="visible"
+                   layout
+                 >
                   {organizedProjects.other.map((project) => (
                     <motion.div
                       key={project.id}
