@@ -3,6 +3,7 @@ import { GlobalStyle } from '@/styles/GlobalStyle';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
 import { AnimationProvider } from '@/context/AnimationContext';
 import { ToastProvider } from '@/context/ToastContext';
+import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { Header } from '@/components/layout/Header';
 import Settings from '@/components/settings/Settings';
 import { HeroSection } from '@/components/sections/HeroSection';
@@ -24,25 +25,35 @@ const AppContent: React.FC = () => {
       <Header />
       <AnimatePresence mode="wait">
         <main>
-          <SectionTransition>
-            <HeroSection />
-          </SectionTransition>
+          <ErrorBoundary section="hero">
+            <SectionTransition>
+              <HeroSection />
+            </SectionTransition>
+          </ErrorBoundary>
           
-          <SectionTransition delay={0.2}>
-            <AboutSection />
-          </SectionTransition>
+          <ErrorBoundary section="about">
+            <SectionTransition delay={0.2}>
+              <AboutSection />
+            </SectionTransition>
+          </ErrorBoundary>
           
-          <SectionTransition delay={0.3}>
-            <SkillsSection />
-          </SectionTransition>
+          <ErrorBoundary section="skills">
+            <SectionTransition delay={0.3}>
+              <SkillsSection />
+            </SectionTransition>
+          </ErrorBoundary>
           
-          <SectionTransition delay={0.4}>
-            <ProjectsSection />
-          </SectionTransition>
+          <ErrorBoundary section="projects">
+            <SectionTransition delay={0.4}>
+              <ProjectsSection />
+            </SectionTransition>
+          </ErrorBoundary>
 
-          <SectionTransition delay={0.5}>
-            <ContactSection />
-          </SectionTransition>
+          <ErrorBoundary section="contact">
+            <SectionTransition delay={0.5}>
+              <ContactSection />
+            </SectionTransition>
+          </ErrorBoundary>
         </main>
       </AnimatePresence>
       <Settings />
