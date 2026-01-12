@@ -123,18 +123,6 @@
           "title": "Frontend Frameworks & Libraries",
           "description": "Advanced tools for building user interfaces",
           "skills": {
-            "react": {
-              "name": "React",
-              "description": "Active learning through project development"
-            },
-            "vuejs": {
-              "name": "Vue.js",
-              "description": "Active learning through project development"
-            },
-            "nextjs": {
-              "name": "Next.js",
-              "description": "React framework for application development"
-            },
             "angular": {
               "name": "Angular",
               "description": "Basic framework knowledge"
@@ -142,10 +130,6 @@
             "bootstrap": {
               "name": "Bootstrap",
               "description": "Creating responsive interfaces"
-            },
-            "tailwindcss": {
-              "name": "Tailwind CSS",
-              "description": "Basics of utility-first CSS"
             }
           }
         },
@@ -160,10 +144,6 @@
             "mysql": {
               "name": "MySQL",
               "description": "INF.03 qualification, database design and management"
-            },
-            "fastapi": {
-              "name": "FastAPI",
-              "description": "Building APIs with Python"
             }
           }
         },
@@ -189,20 +169,6 @@
             }
           }
         },
-        "aiMl": {
-          "title": "AI Tools & Integration",
-          "description": "Using AI/ML tools and APIs in projects",
-          "skills": {
-            "tensorflow": {
-              "name": "TensorFlow",
-              "description": "Integrating pre-trained models in applications"
-            },
-            "pytorch": {
-              "name": "PyTorch",
-              "description": "Working with existing AI models and APIs"
-            }
-          }
-        },
         "devTools": {
           "title": "Development Tools",
           "description": "Tools supporting the software development process",
@@ -210,14 +176,6 @@
             "git": {
               "name": "Git",
               "description": "Version control and team collaboration"
-            },
-            "docker": {
-              "name": "Docker",
-              "description": "Application containerization"
-            },
-            "jest": {
-              "name": "Jest",
-              "description": "JavaScript application testing"
             },
             "markdown": {
               "name": "Markdown",
@@ -229,10 +187,6 @@
           "title": "System & DevOps",
           "description": "System and operational tools",
           "skills": {
-            "bash": {
-              "name": "Bash",
-              "description": "Linux shell scripting"
-            },
             "batch": {
               "name": "Batch",
               "description": "Windows scripting and automation"
@@ -243,10 +197,30 @@
             }
           }
         },
-        "futurePlans": {
-          "title": "Future Plans",
+        "plannedSkills": {
+          "title": "Planned Skills",
           "description": "Technologies I plan to learn in the future",
           "skills": {
+            "react": {
+              "name": "React",
+              "description": "Active learning through project development"
+            },
+            "nextjs": {
+              "name": "Next.js",
+              "description": "React framework for application development"
+            },
+            "vuejs": {
+              "name": "Vue.js",
+              "description": "Active learning through project development"
+            },
+            "tailwindcss": {
+              "name": "Tailwind CSS",
+              "description": "Basics of utility-first CSS"
+            },
+            "fastapi": {
+              "name": "FastAPI",
+              "description": "Building APIs with Python"
+            },
             "redis": {
               "name": "Redis",
               "description": "In-memory database"
@@ -254,6 +228,26 @@
             "firebase": {
               "name": "Firebase",
               "description": "Platform for mobile and web applications"
+            },
+            "docker": {
+              "name": "Docker",
+              "description": "Application containerization"
+            },
+            "bash": {
+              "name": "Bash",
+              "description": "Linux shell scripting"
+            },
+            "jest": {
+              "name": "Jest",
+              "description": "JavaScript application testing"
+            },
+            "tensorflow": {
+              "name": "TensorFlow",
+              "description": "Integrating pre-trained models in applications"
+            },
+            "pytorch": {
+              "name": "PyTorch",
+              "description": "Working with existing AI models and APIs"
             },
             "oauth": {
               "name": "OAuth 2.0",

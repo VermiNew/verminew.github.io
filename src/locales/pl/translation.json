@@ -123,18 +123,6 @@
           "title": "Frontend - Frameworki i Biblioteki",
           "description": "Zaawansowane narzędzia do tworzenia interfejsów",
           "skills": {
-            "react": {
-              "name": "React",
-              "description": "Aktywna nauka poprzez tworzenie projektów"
-            },
-            "vuejs": {
-              "name": "Vue.js",
-              "description": "Aktywna nauka poprzez tworzenie projektów"
-            },
-            "nextjs": {
-              "name": "Next.js",
-              "description": "Framework React do tworzenia aplikacji"
-            },
             "angular": {
               "name": "Angular",
               "description": "Podstawowa znajomość frameworka"
@@ -142,10 +130,6 @@
             "bootstrap": {
               "name": "Bootstrap",
               "description": "Tworzenie responsywnych interfejsów"
-            },
-            "tailwindcss": {
-              "name": "Tailwind CSS",
-              "description": "Podstawy utility-first CSS"
             }
           }
         },
@@ -160,10 +144,6 @@
             "mysql": {
               "name": "MySQL",
               "description": "Kwalifikacja INF.03, projektowanie i zarządzanie bazami danych"
-            },
-            "fastapi": {
-              "name": "FastAPI",
-              "description": "Tworzenie API w Pythonie"
             }
           }
         },
@@ -189,20 +169,6 @@
             }
           }
         },
-        "aiMl": {
-          "title": "Narzędzia AI i integracja",
-          "description": "Wykorzystywanie narzędzi AI/ML i API w projektach",
-          "skills": {
-            "tensorflow": {
-              "name": "TensorFlow",
-              "description": "Integracja gotowych modeli w aplikacjach"
-            },
-            "pytorch": {
-              "name": "PyTorch",
-              "description": "Praca z istniejącymi modelami AI i API"
-            }
-          }
-        },
         "devTools": {
           "title": "Narzędzia Programistyczne",
           "description": "Narzędzia wspierające proces rozwoju oprogramowania",
@@ -210,14 +176,6 @@
             "git": {
               "name": "Git",
               "description": "Kontrola wersji i praca zespołowa"
-            },
-            "docker": {
-              "name": "Docker",
-              "description": "Konteneryzacja aplikacji"
-            },
-            "jest": {
-              "name": "Jest",
-              "description": "Testowanie aplikacji JavaScript"
             },
             "markdown": {
               "name": "Markdown",
@@ -229,10 +187,6 @@
           "title": "System i DevOps",
           "description": "Narzędzia systemowe i operacyjne",
           "skills": {
-            "bash": {
-              "name": "Bash",
-              "description": "Skrypty powłoki Linux"
-            },
             "batch": {
               "name": "Batch",
               "description": "Skrypty Windows i automatyzacja"
@@ -243,10 +197,30 @@
             }
           }
         },
-        "futurePlans": {
-          "title": "Plany na Przyszłość",
+        "plannedSkills": {
+          "title": "Planowane Umiejętności",
           "description": "Technologie, których planuję się nauczyć",
           "skills": {
+            "react": {
+              "name": "React",
+              "description": "Aktywna nauka poprzez tworzenie projektów"
+            },
+            "nextjs": {
+              "name": "Next.js",
+              "description": "Framework React do tworzenia aplikacji"
+            },
+            "vuejs": {
+              "name": "Vue.js",
+              "description": "Aktywna nauka poprzez tworzenie projektów"
+            },
+            "tailwindcss": {
+              "name": "Tailwind CSS",
+              "description": "Podstawy utility-first CSS"
+            },
+            "fastapi": {
+              "name": "FastAPI",
+              "description": "Tworzenie API w Pythonie"
+            },
             "redis": {
               "name": "Redis",
               "description": "Baza danych w pamięci RAM"
@@ -254,6 +228,26 @@
             "firebase": {
               "name": "Firebase",
               "description": "Platforma do tworzenia aplikacji mobilnych i webowych"
+            },
+            "docker": {
+              "name": "Docker",
+              "description": "Konteneryzacja aplikacji"
+            },
+            "bash": {
+              "name": "Bash",
+              "description": "Skrypty powłoki Linux"
+            },
+            "jest": {
+              "name": "Jest",
+              "description": "Testowanie aplikacji JavaScript"
+            },
+            "tensorflow": {
+              "name": "TensorFlow",
+              "description": "Integracja gotowych modeli w aplikacjach"
+            },
+            "pytorch": {
+              "name": "PyTorch",
+              "description": "Praca z istniejącymi modelami AI i API"
             },
             "oauth": {
               "name": "OAuth 2.0",

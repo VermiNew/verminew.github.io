@@ -53,16 +53,26 @@ const Container = styled(motion.div)`
   gap: 3rem;
 `;
 
-const CategorySection = styled(motion.div)`
-  background: ${({ theme }) => `${theme.colors.surface}40`};
+const CategorySection = styled(motion.div)<{ $isPlanned?: boolean }>`
+  background: ${({ theme, $isPlanned }) => $isPlanned 
+    ? `${theme.colors.surface}20`
+    : `${theme.colors.surface}40`
+  };
   border-radius: 16px;
   padding: 2rem;
   backdrop-filter: blur(8px);
-  border: 1px solid ${({ theme }) => `${theme.colors.primary}10`};
+  border: 1px solid ${({ theme, $isPlanned }) => $isPlanned
+    ? `${theme.colors.textSecondary}15`
+    : `${theme.colors.primary}10`
+  };
   transition: all ${({ theme }) => theme.transitions.default};
+  opacity: ${({ $isPlanned }) => $isPlanned ? 0.8 : 1};
 
   &:hover {
-    border-color: ${({ theme }) => `${theme.colors.primary}30`};
+    border-color: ${({ theme, $isPlanned }) => $isPlanned
+      ? `${theme.colors.textSecondary}30`
+      : `${theme.colors.primary}30`
+    };
     transform: translateY(-2px);
   }
 `;
@@ -124,23 +134,15 @@ const technologies = {
     { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const }
   ],
   frontendFrameworks: [
-    // React ecosystem
-    { id: 'react', icon: <SiReact />, level: 'planned' as const },
-    { id: 'nextjs', icon: <SiNextdotjs />, level: 'planned' as const },
-    // Vue ecosystem
-    { id: 'vuejs', icon: <SiVuedotjs />, level: 'planned' as const },
     // Angular
     { id: 'angular', icon: <SiAngular />, level: 'learning' as const },
     // Styling frameworks together
-    { id: 'bootstrap', icon: <SiBootstrap />, level: 'beginner' as const },
-    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'planned' as const }
+    { id: 'bootstrap', icon: <SiBootstrap />, level: 'beginner' as const }
   ],
   backendDb: [
     // PHP + MySQL as classic stack
     { id: 'php', icon: <SiPhp />, level: 'beginner' as const },
-    { id: 'mysql', icon: <SiMysql />, level: 'beginner' as const },
-    // Modern API
-    { id: 'fastapi', icon: <SiFastapi />, level: 'planned' as const }
+    { id: 'mysql', icon: <SiMysql />, level: 'beginner' as const }
   ],
   programming: [
     // C-family languages together
@@ -150,32 +152,36 @@ const technologies = {
     { id: 'python', icon: <SiPython />, level: 'beginner' as const },
     { id: 'java', icon: <FaJava />, level: 'beginner' as const }
   ],
-  aiMl: [
-    // ML frameworks
-    { id: 'tensorflow', icon: <SiTensorflow />, level: 'planned' as const },
-    { id: 'pytorch', icon: <SiPytorch />, level: 'planned' as const }
-  ],
   devTools: [
     // Version control
     { id: 'git', icon: <SiGit />, level: 'intermediate' as const },
     // Documentation
-    { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const },
-    // DevOps tools
-    { id: 'docker', icon: <SiDocker />, level: 'planned' as const },
-    // Testing
-    { id: 'jest', icon: <SiJest />, level: 'planned' as const }
+    { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const }
   ],
   systemDevops: [
     // Development environments
     { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'beginner' as const },
     // Shell scripting
-    { id: 'batch', icon: <IoTerminal />, level: 'beginner' as const },
-    { id: 'bash', icon: <SiGnubash />, level: 'planned' as const }
+    { id: 'batch', icon: <IoTerminal />, level: 'beginner' as const }
   ],
-  futurePlans: [
+  plannedSkills: [
+    // Frontend frameworks
+    { id: 'react', icon: <SiReact />, level: 'planned' as const },
+    { id: 'nextjs', icon: <SiNextdotjs />, level: 'planned' as const },
+    { id: 'vuejs', icon: <SiVuedotjs />, level: 'planned' as const },
+    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'planned' as const },
     // Backend services
+    { id: 'fastapi', icon: <SiFastapi />, level: 'planned' as const },
     { id: 'redis', icon: <SiRedis />, level: 'planned' as const },
     { id: 'firebase', icon: <SiFirebase />, level: 'planned' as const },
+    // DevOps tools
+    { id: 'docker', icon: <SiDocker />, level: 'planned' as const },
+    { id: 'bash', icon: <SiGnubash />, level: 'planned' as const },
+    // Testing
+    { id: 'jest', icon: <SiJest />, level: 'planned' as const },
+    // AI/ML frameworks
+    { id: 'tensorflow', icon: <SiTensorflow />, level: 'planned' as const },
+    { id: 'pytorch', icon: <SiPytorch />, level: 'planned' as const },
     // Authentication & Security
     { id: 'oauth', icon: <SiAuth0 />, level: 'planned' as const },
     { id: 'jwt', icon: <SiJsonwebtokens />, level: 'planned' as const },
@@ -201,6 +207,7 @@ export const TechnologyGrid: React.FC = () => {
         <CategorySection
           key={category}
           variants={!reducedMotion ? categoryVariants : undefined}
+          $isPlanned={category === 'plannedSkills'}
         >
           <CategoryTitle $isDark={themeMode === 'dark'}>
             {t(`about.skills.categories.${category}.title`)}

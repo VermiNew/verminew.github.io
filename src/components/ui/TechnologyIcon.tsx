@@ -79,6 +79,8 @@ const Level = styled(motion.span)<{ $levelColor: string }>`
   font-weight: 500;
 `;
 
+
+
 const Tooltip = styled(motion.div)<{ $isDark: boolean }>`
   position: absolute;
   top: 100%;
@@ -245,12 +247,14 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
         {icon}
       </IconWrapper>
       <Name variants={textVariants}>{name}</Name>
-      <Level 
-        $levelColor={levelColor}
-        variants={textVariants}
-      >
-        {levelText}
-      </Level>
+      {level !== 'planned' && (
+        <Level 
+          $levelColor={levelColor}
+          variants={textVariants}
+        >
+          {levelText}
+        </Level>
+      )}
       <AnimatePresence>
         {showTooltip && (
           <Tooltip
