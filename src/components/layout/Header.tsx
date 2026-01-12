@@ -302,10 +302,12 @@ export const Header: React.FC = () => {
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
-    const unsubscribe = scrollY.on('change', (latest) => {
+    const unsubscribe = scrollY.on('change', (latest: number) => {
       setIsScrolled(latest > 50);
     });
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, [scrollY]);
 
   const scrollToSection = (sectionId: string) => {
