@@ -23,6 +23,7 @@ export const useActiveSection = () => {
 
     return () => {
       sections.forEach((section) => observer.unobserve(section));
+      observer.disconnect();
     };
   }, []);
 
