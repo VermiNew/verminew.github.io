@@ -179,9 +179,16 @@ const Link = styled.a`
   text-decoration: none;
   font-size: 0.9rem;
   transition: color ${({ theme }) => theme.transitions.default};
+  font-weight: 500;
 
   &:hover {
     color: ${({ theme }) => theme.colors.accent};
+  }
+
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 `;
 
@@ -234,8 +241,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           </TechStack>
 
           <Stats>
-            <span>⭐ {project.stars}</span>
-            <span>🍴 {project.forks}</span>
+            <span aria-label={`${project.stars} stars`}>★ {project.stars}</span>
+            <span aria-label={`${project.forks} forks`}>⎇ {project.forks}</span>
           </Stats>
 
           <Links>
@@ -243,8 +250,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${t('projects.viewGithub')} for ${project.title} (opens in new tab)`}
             >
-              <SiGithub />
+              <SiGithub aria-hidden="true" />
               {t('projects.viewGithub')}
             </Link>
             {project.liveUrl && (
@@ -252,8 +260,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${t('projects.visitLive')} for ${project.title} (opens in new tab)`}
               >
-                <HiExternalLink />
+                <HiExternalLink aria-hidden="true" />
                 {t('projects.visitLive')}
               </Link>
             )}
