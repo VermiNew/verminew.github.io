@@ -36,11 +36,17 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
     $isActive ? '#fff' : theme.colors.text};
   cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.default};
+  font-weight: 500;
 
   &:hover {
     background: ${({ theme, $isActive }) => 
       $isActive ? theme.colors.primary : `${theme.colors.primary}20`};
     transform: translateY(-2px);
+  }
+
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
   }
 `;
 
@@ -232,12 +238,19 @@ export const ProjectsSection: React.FC = () => {
           {t('projects.title')}
         </SectionTitle>
         
-        <FilterContainer variants={!reducedMotion ? itemVariants : undefined}>
+        <FilterContainer
+          variants={!reducedMotion ? itemVariants : undefined}
+          role="group"
+          aria-label={t('projects.filters.label')}
+        >
           {filters.map((filter) => (
             <FilterButton
               key={filter.id}
+              type="button"
               $isActive={activeFilters.includes(filter.id)}
               onClick={() => handleFilterClick(filter.id)}
+              aria-pressed={activeFilters.includes(filter.id)}
+              aria-label={`${t('projects.filters.label')}: ${filter.label}`}
             >
               {filter.label}
             </FilterButton>
