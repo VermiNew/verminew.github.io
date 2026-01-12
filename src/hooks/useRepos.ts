@@ -1,11 +1,36 @@
 import { useState, useEffect } from 'react';
-import { ReposData } from '@/types/repo';
+import { ReposData, Repo } from '@/types/repo';
 
 const REPOS_URL = 'https://raw.githubusercontent.com/VermiNew/verminew.github.io/refs/heads/main/public/data/repos.json';
 const CACHE_KEY = 'repos_cache';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const FETCH_TIMEOUT = 10000; // 10 seconds
 const MAX_RETRIES = 3;
+
+const isValidRepo = (repo: unknown): repo is Repo => {
+  if (typeof repo !== 'object' || repo === null) return false;
+  
+  const r = repo as Record<string, unknown>;
+  return (
+    typeof r.id === 'string' &&
+    typeof r.title === 'string' &&
+    typeof r.description === 'string' &&
+    Array.isArray(r.technologies) &&
+    typeof r.githubUrl === 'string' &&
+    typeof r.featured === 'boolean'
+  );
+};
+
+const isValidReposData = (data: unknown): data is ReposData => {
+  if (typeof data !== 'object' || data === null) return false;
+  
+  const d = data as Record<string, unknown>;
+  return (
+    typeof d.lastUpdated === 'string' &&
+    Array.isArray(d.repos) &&
+    d.repos.every(isValidRepo)
+  );
+};
 
 const getCachedRepos = (): { data: ReposData; timestamp: number } | null => {
   try {
@@ -59,6 +84,11 @@ export const useRepos = () => {
           }
 
           const jsonData = await response.json();
+          
+          if (!isValidReposData(jsonData)) {
+            throw new Error('Invalid repos data format received');
+          }
+          
           setData(jsonData);
           setCachedRepos(jsonData);
           setError(null);
