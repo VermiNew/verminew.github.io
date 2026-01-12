@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { SiGithub, SiDiscord } from 'react-icons/si';
+import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdLocationOn, MdSchedule } from 'react-icons/md';
 import { SectionContainer } from '@/components/layout/SectionContainer';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -210,6 +210,12 @@ export const ContactSection: React.FC = () => {
       value: socialConfig.github.username,
       icon: <SiGithub />,
       link: socialConfig.github.url,
+    },
+    {
+      title: t('contact.linkedin'),
+      value: socialConfig.linkedin.username,
+      icon: <SiLinkedin />,
+      link: socialConfig.linkedin.url,
     },
     {
       title: t('contact.discord'),
