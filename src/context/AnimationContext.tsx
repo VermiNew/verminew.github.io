@@ -1,15 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { AnimationContextType } from './types';
 
-const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
-
-export const useAnimation = () => {
-  const context = useContext(AnimationContext);
-  if (!context) {
-    throw new Error('useAnimation must be used within an AnimationProvider');
-  }
-  return context;
-};
+export const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
 
 export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [reducedMotion, setReducedMotion] = useState(() => 
@@ -25,4 +17,6 @@ export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       {children}
     </AnimationContext.Provider>
   );
-}; 
+};
+
+export { useAnimation } from './hooks/useAnimationHook'; 
