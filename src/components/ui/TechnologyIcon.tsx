@@ -77,6 +77,9 @@ const Level = styled(motion.span)<{ $levelColor: string }>`
   font-size: 0.75rem;
   color: ${({ $levelColor }) => $levelColor};
   font-weight: 500;
+  height: 1rem;
+  display: flex;
+  align-items: center;
 `;
 
 
