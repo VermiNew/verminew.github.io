@@ -59,10 +59,7 @@ export const changeLanguageWithReload = async (language: SupportedLanguage) => {
   const normalizedLang = normalizeLanguage(language);
   await i18n.changeLanguage(normalizedLang);
   localStorage.setItem('i18nextLng', normalizedLang);
-  
-  // Wymuszamy przeładowanie strony, aby upewnić się, że wszystkie komponenty
-  // zostaną zaktualizowane z nowym językiem
-  window.location.reload();
+  // react-i18next automatically updates all connected components
 };
 
 export const getBrowserLanguage = (): SupportedLanguage => {
