@@ -1,7 +1,8 @@
 {
   "navigation": {
     "start": "Start",
-    "about": "O mnie",
+    "background": "O mnie",
+    "skills": "Umiejętności",
     "projects": "Projekty",
     "contact": "Kontakt"
   },

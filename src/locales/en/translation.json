@@ -1,7 +1,8 @@
 {
   "navigation": {
     "start": "Start",
-    "about": "About",
+    "background": "Background",
+    "skills": "Skills",
     "projects": "Projects",
     "contact": "Contact"
   },

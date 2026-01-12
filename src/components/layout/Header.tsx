@@ -116,22 +116,43 @@ const NavLink = styled.a<{ $isActive?: boolean }>`
   transition: all ${({ theme }) => theme.transitions.default};
   position: relative;
   padding: 0.5rem;
+  display: inline-block;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, ${({ theme }) => theme.colors.primary}, transparent);
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transform-origin: center;
+    transition: width ${({ theme }) => theme.transitions.default};
+  }
 
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -4px;
+    left: 50%;
     width: ${({ $isActive }) => $isActive ? '100%' : '0'};
-    height: 2px;
+    height: 3px;
     background: ${({ theme }) => theme.colors.primary};
+    border-radius: 2px;
+    transform: translateX(-50%);
     transition: width ${({ theme }) => theme.transitions.default};
+    box-shadow: 0 0 8px ${({ theme }) => `${theme.colors.primary}40`};
   }
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
+    &::before {
+      width: ${({ $isActive }) => $isActive ? '0' : '40%'};
+    }
     &::after {
-      width: 100%;
+      width: ${({ $isActive }) => $isActive ? '100%' : '100%'};
     }
   }
 `;
@@ -320,7 +341,8 @@ export const Header: React.FC = () => {
 
   const navItems = [
     { href: '#home', label: t('navigation.start') },
-    { href: '#about', label: t('navigation.about') },
+    { href: '#about', label: t('navigation.background') },
+    { href: '#skills', label: t('navigation.skills') },
     { href: '#projects', label: t('navigation.projects') },
     { href: '#contact', label: t('navigation.contact') }
   ];
