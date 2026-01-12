@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { GlobalStyle } from '@/styles/GlobalStyle';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
 import { AnimationProvider } from '@/context/AnimationContext';
@@ -15,6 +15,7 @@ import { SectionTransition } from '@/components/layout/SectionTransition';
 import { AnimatePresence } from 'framer-motion';
 import { ReloadPopup } from '@/components/ui/ReloadPopup';
 import { LanguageNotification } from '@/components/ui/LanguageNotification';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 const AppContent: React.FC = () => {
   const { theme } = useTheme();
@@ -68,7 +69,9 @@ const App: React.FC = () => {
     <CustomThemeProvider>
       <AnimationProvider>
         <ToastProvider>
-          <AppContent />
+          <Suspense fallback={<LoadingSpinner />}>
+            <AppContent />
+          </Suspense>
         </ToastProvider>
       </AnimationProvider>
     </CustomThemeProvider>
