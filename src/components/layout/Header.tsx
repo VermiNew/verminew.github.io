@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX } from 'react-icons/fi';
-import { useActiveSection } from '../../hooks/useActiveSection';
+import { useActiveSection } from '@/hooks/useActiveSection';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: boolean }>`
   position: fixed;
@@ -279,10 +280,7 @@ const menuVariants = {
 
 export const Header: React.FC = () => {
   const { themeMode, theme } = useTheme();
-  const isDark = themeMode.includes('dark') || 
-                 themeMode === 'nord' || 
-                 themeMode === 'solarizedDark' || 
-                 themeMode === 'professionalDark';
+  const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
