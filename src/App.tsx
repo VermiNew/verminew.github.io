@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { GlobalStyle } from '@/styles/GlobalStyle';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
 import { AnimationProvider } from '@/context/AnimationContext';
@@ -20,7 +19,7 @@ const AppContent: React.FC = () => {
   const { theme } = useTheme();
   
   return (
-    <StyledThemeProvider theme={theme}>
+    <>
       <GlobalStyle theme={theme} />
       <Header />
       <AnimatePresence mode="wait">
@@ -49,7 +48,7 @@ const AppContent: React.FC = () => {
       <Settings />
       <ReloadPopup />
       <LanguageNotification />
-    </StyledThemeProvider>
+    </>
   );
 };
 
