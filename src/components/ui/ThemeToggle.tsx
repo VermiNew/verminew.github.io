@@ -49,6 +49,11 @@ const ToggleButton = styled(motion.button)<{ $isDark: boolean }>`
     };
   }
 
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
   &:active {
     transform: translateY(0);
   }
@@ -147,6 +152,11 @@ const ThemeOption = styled(motion.button)<{ $isActive: boolean }>`
     };
     color: ${({ theme }) => theme.colors.primary};
     transform: translateX(4px);
+  }
+
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: -2px;
   }
 
   &:active {
@@ -388,6 +398,8 @@ export const ThemeToggle: React.FC = () => {
                     e.stopPropagation();
                     handleThemeChange(mode as ThemeMode);
                   }}
+                  aria-label={`${getThemeName(mode as ThemeMode, t)} theme${mode === themeMode ? ' (current)' : ''}`}
+                  aria-pressed={mode === themeMode}
                   as={motion.button}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ 
