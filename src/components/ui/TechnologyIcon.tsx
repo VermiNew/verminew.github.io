@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { isDarkTheme } from '@/utils/themeUtils';
+import { Theme } from '@/types/theme';
 
 interface TechnologyIconProps {
   name: string;
@@ -46,7 +47,7 @@ const Container = styled(motion.div)<{ $isDark: boolean }>`
   }
 `;
 
-const getLevelColor = (level: TechnologyIconProps['level'], theme: any): string => {
+const getLevelColor = (level: TechnologyIconProps['level'], theme: Theme): string => {
   const levelColorMap: Record<TechnologyIconProps['level'], string> = {
     'planned': theme.colors.textSecondary,
     'learning': theme.colors.accent,
@@ -229,7 +230,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
 
   const levelText = useMemo(
     () => t(`about.skills.levels.${level}`, levelFallbackMap[level]),
-    [level, t]
+    [level, t, levelFallbackMap]
   );
 
   return (
