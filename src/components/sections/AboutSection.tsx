@@ -264,7 +264,11 @@ export const AboutSection: React.FC = () => {
             $isDark={themeMode === 'dark'}
             variants={!reducedMotion ? itemVariants : undefined}
           >
-            <Image src="/assets/images/avatar.webp" alt="VermiNew" />
+            <Image 
+              src="/assets/images/avatar.webp" 
+              alt={t('about.imageAlt')} 
+              loading="lazy"
+            />
           </ImageContainer>
 
           <TextContent>
@@ -384,22 +388,25 @@ export const AboutSection: React.FC = () => {
                     href={getSocialUrl('github')}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${t('about.profiles.github')} (opens in new tab)`}
                   >
-                    <SiGithub />
+                    <SiGithub aria-hidden="true" />
                     {t('about.profiles.github')}
                   </ProfileLink>
                   <ProfileLink
                     href={getSocialUrl('discord')}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${t('about.profiles.discord')} (opens in new tab)`}
                   >
-                    <SiDiscord />
+                    <SiDiscord aria-hidden="true" />
                     {t('about.profiles.discord')}
                   </ProfileLink>
                   <ProfileLink
                     href={getSocialUrl('email')}
+                    aria-label={t('about.profiles.email')}
                   >
-                    <MdEmail />
+                    <MdEmail aria-hidden="true" />
                     {t('about.profiles.email')}
                   </ProfileLink>
                 </ProfilesList>
