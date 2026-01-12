@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 interface TechnologyIconProps {
   name: string;
@@ -45,32 +46,24 @@ const Container = styled(motion.div)<{ $isDark: boolean }>`
   }
 `;
 
-const IconWrapper = styled(motion.div)<{ level: TechnologyIconProps['level'] }>`
+const getLevelColor = (level: TechnologyIconProps['level'], theme: any): string => {
+  const levelColorMap: Record<TechnologyIconProps['level'], string> = {
+    'planned': theme.colors.textSecondary,
+    'learning': theme.colors.accent,
+    'beginner': theme.colors.warning,
+    'intermediate': theme.colors.primary,
+    'advanced': theme.colors.success,
+    'expert': `${theme.colors.success}ee`,
+    'master': theme.colors.special || '#FFD700',
+    'hobby': theme.colors.info,
+    'professional': theme.colors.professional || '#9370DB'
+  };
+  return levelColorMap[level] || theme.colors.text;
+};
+
+const IconWrapper = styled(motion.div)<{ $levelColor: string }>`
   font-size: 2rem;
-  color: ${({ theme, level }) => {
-    switch (level) {
-      case 'planned':
-        return theme.colors.textSecondary;
-      case 'learning':
-        return theme.colors.accent;
-      case 'beginner':
-        return theme.colors.warning;
-      case 'intermediate':
-        return theme.colors.primary;
-      case 'advanced':
-        return theme.colors.success;
-      case 'expert':
-        return `${theme.colors.success}ee`;
-      case 'master':
-        return theme.colors.special || '#FFD700';
-      case 'hobby':
-        return theme.colors.info;
-      case 'professional':
-        return theme.colors.professional || '#9370DB';
-      default:
-        return theme.colors.text;
-    }
-  }};
+  color: ${({ $levelColor }) => $levelColor};
 `;
 
 const Name = styled(motion.span)`
@@ -80,32 +73,9 @@ const Name = styled(motion.span)`
   text-align: center;
 `;
 
-const Level = styled(motion.span)<{ level: TechnologyIconProps['level'] }>`
+const Level = styled(motion.span)<{ $levelColor: string }>`
   font-size: 0.75rem;
-  color: ${({ theme, level }) => {
-    switch (level) {
-      case 'planned':
-        return theme.colors.textSecondary;
-      case 'learning':
-        return theme.colors.accent;
-      case 'beginner':
-        return theme.colors.warning;
-      case 'intermediate':
-        return theme.colors.primary;
-      case 'advanced':
-        return theme.colors.success;
-      case 'expert':
-        return `${theme.colors.success}ee`;
-      case 'master':
-        return theme.colors.special || '#FFD700';
-      case 'hobby':
-        return theme.colors.info;
-      case 'professional':
-        return theme.colors.professional || '#9370DB';
-      default:
-        return theme.colors.text;
-    }
-  }};
+  color: ${({ $levelColor }) => $levelColor};
   font-weight: 500;
 `;
 
@@ -227,45 +197,35 @@ const tooltipVariants = {
   }
 };
 
-export const TechnologyIcon: React.FC<TechnologyIconProps> = ({ 
+const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({ 
   name, 
   description,
   icon, 
   level
 }) => {
-  const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
+  const { themeMode, theme } = useTheme();
+  const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { t } = useTranslation();
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const getLevelText = (level: TechnologyIconProps['level']) => {
-    return t(`about.skills.levels.${level}`, getLevelFallback(level));
+  const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
+
+  const levelFallbackMap: Record<TechnologyIconProps['level'], string> = {
+    'planned': 'Planned',
+    'learning': 'Learning',
+    'beginner': 'Beginner',
+    'intermediate': 'Intermediate',
+    'advanced': 'Advanced',
+    'expert': 'Expert',
+    'master': 'Master',
+    'hobby': 'Hobby',
+    'professional': 'Professional'
   };
 
-  const getLevelFallback = (level: TechnologyIconProps['level']) => {
-    switch (level) {
-      case 'planned':
-        return 'Planned';
-      case 'learning':
-        return 'Learning';
-      case 'beginner':
-        return 'Beginner';
-      case 'intermediate':
-        return 'Intermediate';
-      case 'advanced':
-        return 'Advanced';
-      case 'expert':
-        return 'Expert';
-      case 'master':
-        return 'Master';
-      case 'hobby':
-        return 'Hobby';
-      case 'professional':
-        return 'Professional';
-      default:
-        return '';
-    }
-  };
+  const levelText = useMemo(
+    () => t(`about.skills.levels.${level}`, levelFallbackMap[level]),
+    [level, t]
+  );
 
   return (
     <Container
@@ -279,17 +239,17 @@ export const TechnologyIcon: React.FC<TechnologyIconProps> = ({
       whileTap="tap"
     >
       <IconWrapper 
-        level={level}
+        $levelColor={levelColor}
         variants={iconVariants}
       >
         {icon}
       </IconWrapper>
       <Name variants={textVariants}>{name}</Name>
       <Level 
-        level={level}
+        $levelColor={levelColor}
         variants={textVariants}
       >
-        {getLevelText(level)}
+        {levelText}
       </Level>
       <AnimatePresence>
         {showTooltip && (
@@ -306,4 +266,6 @@ export const TechnologyIcon: React.FC<TechnologyIconProps> = ({
       </AnimatePresence>
     </Container>
   );
-}; 
+};
+
+export const TechnologyIcon = memo(TechnologyIconComponent); 
