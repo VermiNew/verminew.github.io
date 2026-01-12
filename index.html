@@ -17,10 +17,14 @@
     <meta name="author" content="VermiNew" />
     <meta name="theme-color" content="#000000" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <link rel="canonical" href="https://verminew.github.io" />
     
     <!-- Security headers -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     
     <!-- Performance optimizations -->
     <link rel="preload" as="image" href="/assets/images/Logo.webp" type="image/webp" />
@@ -56,6 +60,20 @@
     <meta name="apple-mobile-web-app-title" content="VermiNew" />
     
     <title>VermiNew - Portfolio</title>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "VermiNew",
+        "url": "https://verminew.github.io",
+        "sameAs": ["https://github.com/VermiNew"],
+        "jobTitle": "Developer",
+        "description": "Portfolio and personal website of VermiNew - Exploring programming and web development",
+        "image": "https://verminew.github.io/assets/images/Logo.webp"
+      }
+    </script>
     
     <!-- NoScript Styles -->
     <style>
