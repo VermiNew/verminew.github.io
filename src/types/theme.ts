@@ -28,6 +28,10 @@ export interface Theme {
     border: string;
     success: string;
     error: string;
+    warning: string;
+    info: string;
+    special: string;
+    professional: string;
   };
   shadows: {
     small: string;
