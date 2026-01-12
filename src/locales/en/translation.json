@@ -279,7 +279,8 @@
     },
     "featured": "Featured",
     "featuredTitle": "Featured Projects",
-    "otherTitle": "Other Projects",
+    "otherTitle": "Active Projects",
+    "plannedTitle": "Planned Projects",
     "tags": {
       "archived": "Archived",
       "visibility": {

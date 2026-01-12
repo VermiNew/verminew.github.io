@@ -1,4 +1,5 @@
 export type ProjectCategory = 'frontend' | 'backend' | 'fullstack' | 'tools' | 'ai';
+export type ProjectStatus = 'active' | 'planned' | 'archived';
 
 export interface Repo {
   id: string;
@@ -18,6 +19,7 @@ export interface Repo {
   category?: ProjectCategory;
   priority?: 1 | 2 | 3;
   featuredReason?: string;
+  status?: ProjectStatus;
 }
 
 export interface ReposData {

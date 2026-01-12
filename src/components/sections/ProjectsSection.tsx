@@ -147,7 +147,8 @@ const filterValidTechnology = (tech: string) =>
 
 interface OrganizedProjects {
   featured: Repo[];
-  other: Repo[];
+  active: Repo[];
+  planned: Repo[];
 }
 
 const titleVariants = {
@@ -234,11 +235,13 @@ export const ProjectsSection: React.FC = () => {
   const organizedProjects = filteredProjects.reduce<OrganizedProjects>((acc, project) => {
     if (project.featured) {
       acc.featured.push(project);
+    } else if (project.status === 'planned') {
+      acc.planned.push(project);
     } else {
-      acc.other.push(project);
+      acc.active.push(project);
     }
     return acc;
-  }, { featured: [], other: [] });
+  }, { featured: [], active: [], planned: [] });
 
   return (
     <Section id="projects">
@@ -308,7 +311,7 @@ export const ProjectsSection: React.FC = () => {
               </ProjectsCategory>
             )}
 
-            {organizedProjects.other.length > 0 && (
+            {organizedProjects.active.length > 0 && (
               <ProjectsCategory>
                 <CategoryTitle
                   variants={!reducedMotion ? titleVariants : undefined}
@@ -324,7 +327,36 @@ export const ProjectsSection: React.FC = () => {
                    animate="visible"
                    layout
                  >
-                  {organizedProjects.other.map((project) => (
+                  {organizedProjects.active.map((project) => (
+                    <motion.div
+                      key={project.id}
+                      variants={!reducedMotion ? itemVariants : undefined}
+                      layout
+                    >
+                      <ProjectCard project={project} />
+                    </motion.div>
+                  ))}
+                </ProjectsGrid>
+              </ProjectsCategory>
+            )}
+
+            {organizedProjects.planned.length > 0 && (
+              <ProjectsCategory>
+                <CategoryTitle
+                  variants={!reducedMotion ? titleVariants : undefined}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                >
+                  {t('projects.plannedTitle')}
+                </CategoryTitle>
+                <ProjectsGrid
+                   variants={!reducedMotion ? gridVariants : undefined}
+                   initial="hidden"
+                   animate="visible"
+                   layout
+                 >
+                  {organizedProjects.planned.map((project) => (
                     <motion.div
                       key={project.id}
                       variants={!reducedMotion ? itemVariants : undefined}

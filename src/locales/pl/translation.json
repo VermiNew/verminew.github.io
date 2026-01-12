@@ -279,7 +279,8 @@
     },
     "featured": "Wyróżniony",
     "featuredTitle": "Wyróżnione Projekty",
-    "otherTitle": "Pozostałe Projekty",
+    "otherTitle": "Aktywne Projekty",
+    "plannedTitle": "Planowane Projekty",
     "tags": {
       "archived": "Zarchiwizowany",
       "visibility": {
