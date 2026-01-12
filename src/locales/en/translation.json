@@ -30,6 +30,7 @@
     "profiles": {
       "title": "Profiles",
       "github": "GitHub",
+      "linkedin": "LinkedIn",
       "discord": "Discord",
       "email": "Email"
     },
