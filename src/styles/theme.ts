@@ -9,7 +9,11 @@ export const theme = {
     textSecondary: '#64748b',
     border: '#e2e8f0',
     success: '#10b981',
-    error: '#ef4444'
+    error: '#ef4444',
+    warning: '#d97706',
+    info: '#0284c7',
+    special: '#ea580c',
+    professional: '#7c3aed'
   },
   breakpoints: {
     mobile: '480px',
