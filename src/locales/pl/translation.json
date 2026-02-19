@@ -21,7 +21,7 @@
     "title": "O mnie",
     "name": "Michał Oślizło",
     "intro": "Jestem Michał, entuzjasta programowania z Podkarpacia. Urodziłem się w październiku 2006 roku i obecnie uczę się w technikum na kierunku programistycznym.",
-    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i przygotowuje się do INF.04, największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie wykorzystuję AI poprzez vibecoding - pomaga mi to szybciej się uczyć, ale co ważniejsze, pozwala budować projekty, których normalnie nie byłbym w stanie stworzyć samodzielnie. Takie podejście umożliwia mi przekuwanie pomysłów w rzeczywistość i naukę przez praktykę.",
+    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i napisał egzamin INF.04 (czekam na wynik), największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie wykorzystuję AI poprzez vibecoding - pomaga mi to szybciej się uczyć, ale co ważniejsze, pozwala budować projekty, których normalnie nie byłbym w stanie stworzyć samodzielnie. Takie podejście umożliwia mi przekuwanie pomysłów w rzeczywistość i naukę przez praktykę.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
       "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
@@ -39,12 +39,12 @@
       "education": {
         "title": "Edukacja",
         "current": "Uczeń technikum, kierunek: technik-programista",
-        "achievements": "Ukończona kwalifikacja INF.03, przygotowania do INF.04"
+        "achievements": "Ukończona kwalifikacja INF.03, INF.04 napisany (czekam na wynik)"
       },
       "languages": {
         "title": "Języki",
         "native": "Polski (ojczysty)",
-        "english": "Angielski (Dobry - poziom B1/B2, ocena szkolna 4/5 w polskim systemie oceniania)"
+        "english": "Angielski (Dobry - poziom B1/B2)"
       },
       "interests": {
         "title": "Zainteresowania i technologie",

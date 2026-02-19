@@ -21,7 +21,7 @@
     "title": "About Me",
     "name": "Michael Oslizlo",
     "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
-    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and is preparing for INF.04, I find the greatest satisfaction in seeing the results of my work. I actively use AI through vibecoding - it helps me learn faster, but more importantly, it enables me to build projects I wouldn't normally be able to create on my own. This approach allows me to turn ideas into reality and learn by doing.",
+    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and has written the INF.04 exam (awaiting results), I find the greatest satisfaction in seeing the results of my work. I actively use AI through vibecoding - it helps me learn faster, but more importantly, it enables me to build projects I wouldn't normally be able to create on my own. This approach allows me to turn ideas into reality and learn by doing.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
       "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for growth and constant improvement."
@@ -39,12 +39,12 @@
       "education": {
         "title": "Education",
         "current": "Technical school student, specialization: IT technician-programmer",
-        "achievements": "Completed INF.03 qualification, preparing for INF.04"
+        "achievements": "Completed INF.03 qualification, INF.04 written (awaiting results)"
       },
       "languages": {
         "title": "Languages",
         "native": "Polish (Native)",
-        "english": "English (Good - B1/B2 level, school grade 4/5 in the Polish grading system)"
+        "english": "English (Good - B1/B2 level)"
       },
       "interests": {
         "title": "Interests & Technologies",
