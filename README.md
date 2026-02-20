@@ -53,3 +53,8 @@ npm run build
 ## 📄 License
 
 This project is open source and available under the MIT License.
+
+## License for personal content
+
+All personal images and descriptions in this repository are © 2026 Michał Oślizło.  
+All rights reserved. Do not copy, distribute, or use without permission.
