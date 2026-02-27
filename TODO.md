@@ -83,6 +83,7 @@
 ## 🔴 Krytyczne do naprawy
 
 ### Nieużywane pliki (Dead Code)
+
 - [ ] Usunąć `src/styles/GlobalStyles.ts` - nieużywany (używany jest `GlobalStyle.ts`)
 - [ ] Usunąć `src/styles/theme.ts` - nieużywany (używany jest `themes.ts` przez `themeUtils.ts`)
 - [ ] Usunąć `src/hooks/useGithubRepos.ts` - nieużywany (używany jest `useRepos.ts`)
@@ -92,6 +93,7 @@
   - → Przenieść wszystko do `src/utils/themeUtils.ts`
 
 ### Ostrzeżenia ESLint
+
 - [ ] `TechnologyIcon.tsx`: Przenieść `levelFallbackMap` do wnętrza `useMemo`
 - [ ] Rozdzielić Context i hooki do osobnych plików (react-refresh warning):
   - `AnimationContext.tsx` → oddzielić `useAnimation` hook
@@ -103,10 +105,13 @@
 ## 🟠 Ważne ulepszenia
 
 ### Wydajność (Bundle size: 509KB → cel <300KB)
+
 - [ ] Code splitting - dynamiczne importy dla sekcji:
+
   ```tsx
   const AboutSection = lazy(() => import('./sections/AboutSection'));
   ```
+
 - [ ] Rozdzielić vendor chunks w vite.config.ts (framer-motion, react-icons)
 - [ ] Lazy loading dla ikon technologii (react-icons)
 - [ ] Optymalizacja obrazów - użyć srcset dla różnych rozmiarów
@@ -114,11 +119,13 @@
 ### Dostępność (A11y) - SZCZEGÓŁOWO
 
 #### Brak Skip Link
+
 - [ ] Dodać "Skip to main content" link na początku strony
   - Ukryty wizualnie, widoczny przy focus
   - Prowadzi do `<main>` lub `#about`
 
 #### Problemy z focus
+
 - [ ] `Button.tsx` - brak `:focus-visible` styles (tylko hover)
 - [ ] `NavLink` w Header - focus outline może być niewidoczny na niektórych motywach
 - [ ] `FilterButton` w ProjectsSection - ma focus, ale może być za słaby kontrast
@@ -126,34 +133,40 @@
 - [ ] `MobileNavLink` - brak wyraźnego focus state
 
 #### Brak aria-live dla dynamicznych treści
+
 - [ ] `Toast.tsx` - powinien mieć `role="alert"` lub `aria-live="polite"`
 - [ ] `LoadingSpinner` - dodać `aria-busy="true"` i `aria-label`
 - [ ] `ErrorMessage` - dodać `role="alert"`
 - [ ] Filtry projektów - ogłosić liczbę wyników po filtrowaniu
 
 #### Brakujące atrybuty ARIA
+
 - [ ] Ikony (react-icons) bez tekstu - dodać `aria-hidden="true"` lub `aria-label`
 - [ ] `IconWrapper` w ContactSection - ikony dekoracyjne bez `aria-hidden`
 - [ ] `Logo` w Header - ma alt, ale rozważyć `role="img"`
 - [ ] Sekcje strony - dodać `aria-labelledby` wskazujące na SectionTitle
 
 #### Nawigacja klawiaturą
+
 - [ ] Sprawdzić kolejność tabowania (tab order)
 - [ ] Menu mobilne - focus trap gdy otwarte
 - [ ] Escape key powinien zamykać menu mobilne
 - [ ] Theme toggle - sprawdzić czy ma odpowiedni `aria-label` z aktualnym stanem
 
 #### Animacje i ruch
+
 - [x] `reducedMotion` - już zaimplementowane ✅
 - [ ] Sprawdzić czy WSZYSTKIE animacje respektują `prefers-reduced-motion`
 - [ ] `HeroBackground` z cząsteczkami - czy wyłącza się przy reduced motion?
 
 #### Semantyka HTML
+
 - [ ] Sprawdzić hierarchię nagłówków (h1 → h2 → h3, bez przeskoków)
 - [ ] `FAQSection` - rozważyć użycie `<details>/<summary>` lub ARIA accordion
 - [ ] Listy kontaktów - mogłyby być `<ul>` zamiast grid divów
 
 ### SEO
+
 - [ ] Dynamiczne meta tagi dla języka (hreflang)
 - [ ] Sitemap.xml generator w build pipeline
 - [ ] Robots.txt w folderze public
@@ -225,6 +238,7 @@
 ## Refaktoryzacja i jakość kodu 🔧
 
 ### Struktura projektu
+
 - [ ] Utworzyć barrel exports (`index.ts`) dla folderów:
   - `components/ui/index.ts`
   - `components/sections/index.ts`
@@ -236,6 +250,7 @@
   - Komponenty UI
 
 ### TypeScript
+
 - [ ] Włączyć strict mode w tsconfig (strictNullChecks już jest)
 - [ ] Usunąć `any` types jeśli występują
 - [ ] Dodać JSDoc komentarze do eksportowanych funkcji
@@ -258,12 +273,14 @@
 ## 📊 Metryki do osiągnięcia
 
 ### Lighthouse Scores (cel)
+
 - Performance: 90+
 - Accessibility: 95+
 - Best Practices: 95+
 - SEO: 95+
 
 ### Core Web Vitals
+
 - LCP (Largest Contentful Paint): <2.5s
 - FID (First Input Delay): <100ms
 - CLS (Cumulative Layout Shift): <0.1

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { ThemeMode, Theme } from '@/types/theme';
-import { getThemeByMode } from './themeUtils';
+import { getThemeByMode } from '@/utils/themeUtils';
 
 interface ThemeContextType {
   themeMode: ThemeMode;
@@ -49,4 +49,4 @@ export const useTheme = () => {
   return context;
 };
 
-export { getThemeByMode } from './themeUtils'; 
+export { getThemeByMode } from '@/utils/themeUtils'; 

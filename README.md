@@ -15,21 +15,25 @@ This is my personal portfolio website built with modern web technologies. It sho
 ## 🚀 Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/verminew/verminew.github.io.git
 ```
 
-2. Install dependencies:
+1. Install dependencies:
+
 ```bash
 npm install
 ```
 
-3. Start the development server:
+1. Start the development server:
+
 ```bash
 npm run dev
 ```
 
-4. Build for production:
+1. Build for production:
+
 ```bash
 npm run build
 ```
