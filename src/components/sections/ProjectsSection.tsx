@@ -48,7 +48,7 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
     transform: translateY(-2px);
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }

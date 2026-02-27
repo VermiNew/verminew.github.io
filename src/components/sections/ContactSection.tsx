@@ -62,6 +62,12 @@ const ContactCard = styled(motion.a)<{ $isDark: boolean }>`
     border-color: ${({ theme }) => theme.colors.primary};
     box-shadow: ${({ theme }) => theme.shadows.medium};
   }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 4px;
+    border-radius: 16px;
+  }
 `;
 
 const IconWrapper = styled.div`

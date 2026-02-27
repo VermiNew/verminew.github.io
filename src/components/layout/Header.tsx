@@ -155,6 +155,12 @@ const NavLink = styled.a<{ $isActive?: boolean }>`
       width: ${({ $isActive }) => $isActive ? '100%' : '100%'};
     }
   }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -183,6 +189,11 @@ const MobileMenuButton = styled.button`
   &:hover {
     color: ${({ theme }) => theme['colors']['primary']};
     background: ${({ theme }) => `${theme['colors']['primary']}10`};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
   }
 
   &:active {
@@ -262,6 +273,11 @@ const MobileNavLink = styled(motion.a)<{ $isDark: boolean; $isActive?: boolean }
     color: ${({ theme }) => theme.colors.primary};
     transform: translateX(5px);
     border-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
   }
 
   &:active {

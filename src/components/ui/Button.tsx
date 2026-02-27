@@ -79,6 +79,11 @@ const StyledButton = styled.button<{
     }
   }}
 
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
