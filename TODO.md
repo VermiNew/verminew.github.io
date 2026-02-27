@@ -82,23 +82,11 @@
 
 ## 🔴 Krytyczne do naprawy
 
-### Nieużywane pliki (Dead Code)
-
-- [ ] Usunąć `src/styles/GlobalStyles.ts` - nieużywany (używany jest `GlobalStyle.ts`)
-- [ ] Usunąć `src/styles/theme.ts` - nieużywany (używany jest `themes.ts` przez `themeUtils.ts`)
-- [ ] Usunąć `src/hooks/useGithubRepos.ts` - nieużywany (używany jest `useRepos.ts`)
-- [ ] Połączyć pliki themeUtils do jednego:
-  - `src/utils/themeUtils.ts` (isDarkTheme)
-  - `src/context/themeUtils.ts` (getThemeByMode)
-  - → Przenieść wszystko do `src/utils/themeUtils.ts`
-
 ### Ostrzeżenia ESLint
 
 - [ ] `TechnologyIcon.tsx`: Przenieść `levelFallbackMap` do wnętrza `useMemo`
-- [ ] Rozdzielić Context i hooki do osobnych plików (react-refresh warning):
-  - `AnimationContext.tsx` → oddzielić `useAnimation` hook
-  - `ThemeContext.tsx` → oddzielić `useTheme` hook
-  - `ToastContext.tsx` → oddzielić `useToast` hook
+- [ ] `ThemeContext.tsx` → oddzielić `useTheme` hook do osobnego pliku
+- [ ] `ToastContext.tsx` → oddzielić `useToast` hook do osobnego pliku
 
 ---
 
@@ -118,50 +106,33 @@
 
 ### Dostępność (A11y) - SZCZEGÓŁOWO
 
-#### Brak Skip Link
+#### Skip Link ✅
+- [x] Dodać "Skip to main content" link na początku strony (commit 112cc6f)
 
-- [ ] Dodać "Skip to main content" link na początku strony
-  - Ukryty wizualnie, widoczny przy focus
-  - Prowadzi do `<main>` lub `#about`
+#### Focus States ✅
+- [x] `Button.tsx` - `:focus-visible` styles dodane (commit ed58d8c)
+- [x] `NavLink`, `FilterButton`, `ContactCard`, `MobileNavLink` - focus states (commit ed58d8c)
 
-#### Problemy z focus
+#### ARIA Attributes ✅
+- [x] `Toast.tsx` - `role="alert"` dodane (commit 63b9582)
+- [x] `LoadingSpinner` - `aria-busy="true"` i `aria-label` (commit 63b9582)
+- [x] `ErrorMessage` - `role="alert"` (commit 63b9582)
+- [x] Ikony - `aria-hidden="true"` lub `aria-label` (commit fbe7832)
+- [x] Menu button - `aria-expanded` (commit fbe7832)
 
-- [ ] `Button.tsx` - brak `:focus-visible` styles (tylko hover)
-- [ ] `NavLink` w Header - focus outline może być niewidoczny na niektórych motywach
-- [ ] `FilterButton` w ProjectsSection - ma focus, ale może być za słaby kontrast
-- [ ] `ContactCard` - brak focus indicator (tylko hover transform)
-- [ ] `MobileNavLink` - brak wyraźnego focus state
-
-#### Brak aria-live dla dynamicznych treści
-
-- [ ] `Toast.tsx` - powinien mieć `role="alert"` lub `aria-live="polite"`
-- [ ] `LoadingSpinner` - dodać `aria-busy="true"` i `aria-label`
-- [ ] `ErrorMessage` - dodać `role="alert"`
-- [ ] Filtry projektów - ogłosić liczbę wyników po filtrowaniu
-
-#### Brakujące atrybuty ARIA
-
-- [ ] Ikony (react-icons) bez tekstu - dodać `aria-hidden="true"` lub `aria-label`
-- [ ] `IconWrapper` w ContactSection - ikony dekoracyjne bez `aria-hidden`
-- [ ] `Logo` w Header - ma alt, ale rozważyć `role="img"`
-- [ ] Sekcje strony - dodać `aria-labelledby` wskazujące na SectionTitle
-
-#### Nawigacja klawiaturą
-
-- [ ] Sprawdzić kolejność tabowania (tab order)
-- [ ] Menu mobilne - focus trap gdy otwarte
-- [ ] Escape key powinien zamykać menu mobilne
-- [ ] Theme toggle - sprawdzić czy ma odpowiedni `aria-label` z aktualnym stanem
+#### Nawigacja klawiaturą ✅
+- [x] Menu mobilne - focus trap gdy otwarte (commit 0458b18)
+- [x] Escape key zamyka menu mobilne (commit 0458b18)
+- [x] Theme toggle - `aria-label` z aktualnym stanem (commit fbe7832)
 
 #### Animacje i ruch
-
-- [x] `reducedMotion` - już zaimplementowane ✅
+- [x] `reducedMotion` - zaimplementowane ✅
 - [ ] Sprawdzić czy WSZYSTKIE animacje respektują `prefers-reduced-motion`
 - [ ] `HeroBackground` z cząsteczkami - czy wyłącza się przy reduced motion?
 
 #### Semantyka HTML
-
 - [ ] Sprawdzić hierarchię nagłówków (h1 → h2 → h3, bez przeskoków)
+- [ ] Sekcje strony - dodać `aria-labelledby` wskazujące na SectionTitle
 - [ ] `FAQSection` - rozważyć użycie `<details>/<summary>` lub ARIA accordion
 - [ ] Listy kontaktów - mogłyby być `<ul>` zamiast grid divów
 
