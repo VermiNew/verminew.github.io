@@ -324,8 +324,9 @@ const Settings: React.FC = () => {
                   onClick={() => setIsOpen(false)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
+                  aria-label={t('navigation.close')}
                 >
-                  <FiX />
+                  <FiX aria-hidden="true" />
                 </CloseButton>
               </PanelHeader>
 

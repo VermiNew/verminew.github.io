@@ -413,9 +413,14 @@ export const Header: React.FC = () => {
 
           <ThemeToggle />
 
-          <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <MobileMenuButton 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? t('navigation.close') : t('navigation.menu')}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
             <IconWrapper>
-              {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+              {isMobileMenuOpen ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
             </IconWrapper>
           </MobileMenuButton>
         </Nav>
@@ -424,6 +429,7 @@ export const Header: React.FC = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <MobileMenu
+            id="mobile-menu"
             $isDark={isDark}
             variants={menuVariants}
             initial="hidden"

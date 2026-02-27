@@ -8,7 +8,9 @@
     "background": "Background",
     "skills": "Skills",
     "projects": "Projects",
-    "contact": "Contact"
+    "contact": "Contact",
+    "menu": "Open menu",
+    "close": "Close menu"
   },
   "brand": {
     "logo": "VermiNew Logo",
