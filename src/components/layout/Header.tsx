@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, AnimatePresence } from 'framer-motion';
+import FocusTrap from 'focus-trap-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useTheme } from '@/context/ThemeContext';
 import { useTranslation } from 'react-i18next';
@@ -345,6 +346,17 @@ export const Header: React.FC = () => {
     };
   }, [scrollY]);
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isMobileMenuOpen]);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.querySelector(sectionId);
     if (element) {
@@ -428,32 +440,34 @@ export const Header: React.FC = () => {
 
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <MobileMenu
-            id="mobile-menu"
-            $isDark={isDark}
-            variants={menuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            {navItems.map((item, index) => (
-              <MobileNavLink
-                $isDark={isDark}
-                $isActive={activeSection === item.href.substring(1)}
-                key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.href);
-                }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-              >
-                {item.label}
-              </MobileNavLink>
-            ))}
-          </MobileMenu>
+          <FocusTrap>
+            <MobileMenu
+              id="mobile-menu"
+              $isDark={isDark}
+              variants={menuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {navItems.map((item, index) => (
+                <MobileNavLink
+                  $isDark={isDark}
+                  $isActive={activeSection === item.href.substring(1)}
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.href);
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  {item.label}
+                </MobileNavLink>
+              ))}
+            </MobileMenu>
+          </FocusTrap>
         )}
       </AnimatePresence>
     </>
