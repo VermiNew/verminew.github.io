@@ -16,6 +16,7 @@ import { AnimatePresence } from 'framer-motion';
 import { ReloadPopup } from '@/components/ui/ReloadPopup';
 import { LanguageNotification } from '@/components/ui/LanguageNotification';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { SkipLink } from '@/components/layout/SkipLink';
 
 const AppContent: React.FC = () => {
   const { theme } = useTheme();
@@ -23,9 +24,10 @@ const AppContent: React.FC = () => {
   return (
     <>
       <GlobalStyle theme={theme} />
+      <SkipLink />
       <Header />
       <AnimatePresence mode="wait">
-        <main>
+        <main id="main">
           <ErrorBoundary section="hero">
             <SectionTransition>
               <HeroSection />

@@ -1,4 +1,8 @@
 {
+  "accessibility": {
+    "skipToContent": "Skip to content",
+    "skipContentLabel": "Skip to main content"
+  },
   "navigation": {
     "start": "Start",
     "background": "Background",

@@ -1,4 +1,8 @@
 {
+  "accessibility": {
+    "skipToContent": "Przejdź do treści",
+    "skipContentLabel": "Przejdź do głównej treści"
+  },
   "navigation": {
     "start": "Start",
     "background": "O mnie",
