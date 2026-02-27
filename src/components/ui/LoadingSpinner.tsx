@@ -24,8 +24,13 @@ const Spinner = styled.div`
 
 export const LoadingSpinner: React.FC = () => {
   return (
-    <SpinnerContainer>
-      <Spinner />
+    <SpinnerContainer 
+      role="status" 
+      aria-live="polite" 
+      aria-busy="true"
+      aria-label="Loading..."
+    >
+      <Spinner aria-hidden="true" />
     </SpinnerContainer>
   );
 }; 

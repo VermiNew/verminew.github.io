@@ -281,8 +281,12 @@
   "projects": {
     "title": "Projekty",
     "filters": {
-      "all": "Wszystkie"
+      "all": "Wszystkie",
+      "label": "Filtry projektów"
     },
+    "resultsCount_one": "1 projekt",
+    "resultsCount_few": "{{count}} projekty",
+    "resultsCount_many": "{{count}} projektów",
     "featured": "Wyróżniony",
     "featuredTitle": "Wyróżnione Projekty",
     "otherTitle": "Aktywne Projekty",

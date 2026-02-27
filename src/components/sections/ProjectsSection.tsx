@@ -274,6 +274,15 @@ export const ProjectsSection: React.FC = () => {
           ))}
         </FilterContainer>
 
+        <div 
+          role="status" 
+          aria-live="polite" 
+          aria-atomic="true"
+          style={{ display: 'none' }}
+        >
+          {t('projects.resultsCount', { count: filteredProjects.length })}
+        </div>
+
         {isLoading ? (
           <LoadingContainer>
             <LoadingSpinner />

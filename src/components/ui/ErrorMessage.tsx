@@ -31,12 +31,14 @@ const Message = styled.p`
 export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
   return (
     <Container
+      role="alert"
+      aria-live="assertive"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <IconWrapper>
-        <FiAlertCircle />
+        <FiAlertCircle aria-hidden="true" />
       </IconWrapper>
       <Message>{message}</Message>
     </Container>

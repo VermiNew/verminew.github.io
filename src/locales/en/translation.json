@@ -281,8 +281,11 @@
   "projects": {
     "title": "Projects",
     "filters": {
-      "all": "All"
+      "all": "All",
+      "label": "Project filters"
     },
+    "resultsCount_one": "1 project",
+    "resultsCount_other": "{{count}} projects",
     "featured": "Featured",
     "featuredTitle": "Featured Projects",
     "otherTitle": "Active Projects",
