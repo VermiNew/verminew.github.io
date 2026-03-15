@@ -3,6 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiSettings, FiX, FiXCircle } from 'react-icons/fi';
+import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 const pulse = keyframes`
   0% { transform: scale(1); }
@@ -160,7 +162,8 @@ const CloseButton = styled(motion.button)`
 export const LanguageNotification: React.FC = () => {
   const { i18n, t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
-  const isDark = document.documentElement.classList.contains('dark');
+  const { themeMode } = useTheme();
+  const isDark = isDarkTheme(themeMode);
 
   useEffect(() => {
     const showNotification = () => {

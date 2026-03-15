@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 const Container = styled.div`
   display: flex;
@@ -67,7 +69,8 @@ const CurrentLanguage = styled.div`
 
 export const LanguageSettings: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const isDark = document.documentElement.classList.contains('dark');
+  const { themeMode } = useTheme();
+  const isDark = isDarkTheme(themeMode);
   const [shouldBlink, setShouldBlink] = useState(false);
 
   useEffect(() => {
