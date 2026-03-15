@@ -24,8 +24,7 @@ export const isDarkTheme = (themeMode: ThemeMode): boolean => {
     'professionalDark',
     'eInkDark',
     'nord',
-    'solarizedDark',
-    'autumn'
+    'solarizedDark'
   ];
   return darkThemes.includes(themeMode);
 };
