@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSettings, FiX, FiGlobe, FiZap } from 'react-icons/fi';
+import FocusTrap from 'focus-trap-react';
 import { useTheme } from '@/context/ThemeContext';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { LanguageSettings } from '@/components/settings/LanguageSettings';
@@ -241,9 +242,32 @@ const Settings: React.FC = () => {
   const { reducedMotion, setReducedMotion } = useAnimation();
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const buttonTimer = useRef<NodeJS.Timeout | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
+  const panelTitleId = 'settings-panel-title';
+
+  const closePanel = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  // Return focus to trigger button when panel closes
+  useEffect(() => {
+    if (!isOpen) {
+      buttonRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  // Close panel on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closePanel();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, closePanel]);
 
   const handleButtonVisibility = () => {
     setIsButtonVisible(true);
@@ -280,6 +304,8 @@ const Settings: React.FC = () => {
       <SettingsButton
         onClick={() => setIsOpen(true)}
         onMouseEnter={handleButtonVisibility}
+        ref={buttonRef}
+        aria-haspopup="dialog"
         initial={{ scale: 0, rotate: -180 }}
         animate={{ 
           scale: 1, 
@@ -312,17 +338,26 @@ const Settings: React.FC = () => {
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             />
+            <FocusTrap
+              focusTrapOptions={{
+                allowOutsideClick: true,
+                returnFocusOnDeactivate: false,
+              }}
+            >
             <Panel
               $isDark={isDark}
               variants={panelVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={panelTitleId}
             >
               <PanelHeader>
-                <PanelTitle>{t('settings.title')}</PanelTitle>
+                <PanelTitle id={panelTitleId}>{t('settings.title')}</PanelTitle>
                 <CloseButton
-                  onClick={() => setIsOpen(false)}
+                  onClick={closePanel}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   aria-label={t('navigation.close')}
@@ -331,12 +366,14 @@ const Settings: React.FC = () => {
                 </CloseButton>
               </PanelHeader>
 
-              <TabContainer>
+              <TabContainer role="tablist" aria-label={t('settings.title')}>
                 <Tab
                   $isActive={activeTab === 'language'}
                   onClick={() => setActiveTab('language')}
                   whileTap={{ scale: 0.95 }}
-                  aria-label="Language"
+                  role="tab"
+                  aria-selected={activeTab === 'language'}
+                  aria-label={t('settings.tabs.language')}
                 >
                   <FiGlobe />
                   {t('settings.tabs.language')}
@@ -345,8 +382,11 @@ const Settings: React.FC = () => {
                   $isActive={activeTab === 'preferences'}
                   onClick={() => setActiveTab('preferences')}
                   whileTap={{ scale: 0.95 }}
+                  role="tab"
+                  aria-selected={activeTab === 'preferences'}
+                  aria-label={t('settings.tabs.preferences')}
                 >
-                  <FiZap />
+                  <FiZap aria-hidden="true" />
                   {t('settings.tabs.preferences')}
                 </Tab>
               </TabContainer>
@@ -373,14 +413,16 @@ const Settings: React.FC = () => {
                     >
                       <PreferencesContainer>
                         <PreferenceItem>
-                          <PreferenceLabel>
-                            <FiZap />
+                          <PreferenceLabel htmlFor="reduced-motion-switch">
+                            <FiZap aria-hidden="true" />
                             {t('settings.preferences.reducedMotion')}
                           </PreferenceLabel>
                           <Switch
+                            id="reduced-motion-switch"
                             type="checkbox"
                             checked={reducedMotion}
                             onChange={handleReducedMotionChange}
+                            aria-label={t('settings.preferences.reducedMotion')}
                           />
                         </PreferenceItem>
                       </PreferencesContainer>
@@ -389,6 +431,7 @@ const Settings: React.FC = () => {
                 </AnimatePresence>
               </PanelContent>
             </Panel>
+            </FocusTrap>
           </>
         )}
       </AnimatePresence>
