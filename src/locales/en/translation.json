@@ -8,6 +8,7 @@
     "background": "Background",
     "skills": "Skills",
     "projects": "Projects",
+    "order": "Order",
     "contact": "Contact",
     "menu": "Open menu",
     "close": "Close menu"
@@ -89,6 +90,10 @@
           ]
         }
       }
+    },
+    "order": {
+      "button": "Place an Order",
+      "tooltip": "Start your project with me"
     },
     "skills": {
       "title": "Skills",
@@ -322,6 +327,41 @@
     },
     "preferences": {
       "reducedMotion": "Reduced Motion"
+    }
+  },
+  "order": {
+    "title": "Order",
+    "description": "Interested in working together? Tell me about your project and let's discuss how I can help bring your ideas to life.",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email Address",
+      "emailPlaceholder": "john@example.com",
+      "type": "Project Type",
+      "typePlaceholder": "Select project type...",
+      "typeOptions": [
+        "Website",
+        "Web Application",
+        "Mobile App",
+        "UI/UX Design",
+        "Consulting",
+        "Other"
+      ],
+      "budget": "Budget Range",
+      "budgetPlaceholder": "Select budget range...",
+      "budgetOptions": [
+        "$500 - $2,000",
+        "$2,000 - $5,000",
+        "$5,000 - $10,000",
+        "$10,000+",
+        "To be discussed"
+      ],
+      "description": "Project Description",
+      "descriptionPlaceholder": "Tell me about your project, goals, and any specific requirements...",
+      "submit": "Send Order",
+      "sending": "Sending...",
+      "success": "Thank you! Your order has been sent successfully. I'll get back to you soon.",
+      "error": "Something went wrong. Please try again."
     }
   },
   "contact": {

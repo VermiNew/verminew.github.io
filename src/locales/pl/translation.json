@@ -8,6 +8,7 @@
     "background": "O mnie",
     "skills": "Umiejętności",
     "projects": "Projekty",
+    "order": "Zamówienie",
     "contact": "Kontakt",
     "menu": "Otwórz menu",
     "close": "Zamknij menu"
@@ -89,6 +90,10 @@
           ]
         }
       }
+    },
+    "order": {
+      "button": "Złóż zamówienie",
+      "tooltip": "Rozpocznij swój projekt ze mną"
     },
     "skills": {
       "title": "Umiejętności",
@@ -323,6 +328,41 @@
     },
     "preferences": {
       "reducedMotion": "Zredukowane animacje"
+    }
+  },
+  "order": {
+    "title": "Zamówienie",
+    "description": "Zainteresowany współpracą? Opowiedz mi o swoim projekcie i omówmy, jak mogę pomóc w urzeczywistnieniu twoich pomysłów.",
+    "form": {
+      "name": "Pełne imię i nazwisko",
+      "namePlaceholder": "Jan Kowalski",
+      "email": "Adres e-mail",
+      "emailPlaceholder": "jan@example.com",
+      "type": "Typ projektu",
+      "typePlaceholder": "Wybierz typ projektu...",
+      "typeOptions": [
+        "Strona internetowa",
+        "Aplikacja webowa",
+        "Aplikacja mobilna",
+        "Projektowanie UI/UX",
+        "Konsultacja",
+        "Inne"
+      ],
+      "budget": "Zakres budżetu",
+      "budgetPlaceholder": "Wybierz zakres budżetu...",
+      "budgetOptions": [
+        "500 - 2 000 zł",
+        "2 000 - 5 000 zł",
+        "5 000 - 10 000 zł",
+        "10 000+ zł",
+        "Do omówienia"
+      ],
+      "description": "Opis projektu",
+      "descriptionPlaceholder": "Opowiedz mi o swoim projekcie, celach i konkretnych wymaganiach...",
+      "submit": "Wyślij zamówienie",
+      "sending": "Wysyłanie...",
+      "success": "Dziękuję! Twoje zamówienie zostało wysłane pomyślnie. Skontaktuję się z tobą wkrótce.",
+      "error": "Coś poszło nie tak. Spróbuj jeszcze raz."
     }
   },
   "contact": {
