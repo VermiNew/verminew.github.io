@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 import { useAnimation } from '@/context/AnimationContext';
 
 const Canvas = styled.canvas`
@@ -26,7 +27,7 @@ interface Particle {
 export const HeroBackground: React.FC = () => {
   const { themeMode } = useTheme();
   const { reducedMotion } = useAnimation();
-  const isDark = themeMode === 'dark';
+  const isDark = isDarkTheme(themeMode);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const mousePosition = useRef({ x: 0, y: 0 });

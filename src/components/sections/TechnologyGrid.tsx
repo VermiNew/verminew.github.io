@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { TechnologyIcon } from '@/components/ui/TechnologyIcon';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 import { useAnimation } from '@/context/AnimationContext';
 import {
   // Frontend Core
@@ -194,6 +195,7 @@ const technologies = {
 export const TechnologyGrid: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
+  const isDark = isDarkTheme(themeMode);
   const { reducedMotion } = useAnimation();
 
   return (
@@ -209,7 +211,7 @@ export const TechnologyGrid: React.FC = () => {
           variants={!reducedMotion ? categoryVariants : undefined}
           $isPlanned={category === 'plannedSkills'}
         >
-          <CategoryTitle $isDark={themeMode === 'dark'}>
+          <CategoryTitle $isDark={isDark}>
             {t(`about.skills.categories.${category}.title`)}
           </CategoryTitle>
           <CategoryDescription>

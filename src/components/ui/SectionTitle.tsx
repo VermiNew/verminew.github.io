@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useInView, useAnimation, HTMLMotionProps } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 interface SectionTitleProps extends HTMLMotionProps<"h2"> {
   children: React.ReactNode;
@@ -45,7 +46,7 @@ const Cursor = styled(motion.span)<{ $isDark: boolean }>`
 export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitleProps>(
   ({ children, className, ...props }, ref) => {
     const { themeMode } = useTheme();
-    const isDark = themeMode === 'dark';
+    const isDark = isDarkTheme(themeMode);
     const internalRef = useRef(null);
     const resolvedRef = (ref || internalRef) as React.RefObject<HTMLHeadingElement>;
     const isInView = useInView(resolvedRef, { once: true });

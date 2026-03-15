@@ -5,6 +5,7 @@ import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
 import { HeroBackground } from '@/components/sections/HeroBackground';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
 import { useAnimation as useReducedMotion } from '@/context/AnimationContext';
 
@@ -130,7 +131,7 @@ const itemVariants: Variants = {
 
 export const HeroSection: React.FC = () => {
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
+  const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
   const { reducedMotion } = useReducedMotion();
 

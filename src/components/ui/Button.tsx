@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline';
@@ -103,7 +104,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
+  const isDark = isDarkTheme(themeMode);
 
   return (
     <MotionButton

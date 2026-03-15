@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSettings, FiX, FiGlobe, FiZap } from 'react-icons/fi';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 import { LanguageSettings } from '@/components/settings/LanguageSettings';
 import { useTranslation } from 'react-i18next';
 import { useAnimation } from '@/context/AnimationContext';
@@ -241,7 +242,7 @@ const Settings: React.FC = () => {
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const buttonTimer = useRef<NodeJS.Timeout | null>(null);
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
+  const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
 
   const handleButtonVisibility = () => {

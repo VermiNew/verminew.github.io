@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
 import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdLocationOn, MdSchedule } from 'react-icons/md';
@@ -207,7 +208,7 @@ const itemVariants = {
 export const ContactSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const isDark = themeMode === 'dark';
+  const isDark = isDarkTheme(themeMode);
   const { reducedMotion } = useAnimation();
 
   const contacts = [
