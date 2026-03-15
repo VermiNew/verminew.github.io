@@ -8,7 +8,8 @@
     "background": "Background",
     "skills": "Skills",
     "projects": "Projects",
-    "order": "Order",
+    "services": "Services",
+    "order": "Start a Project",
     "contact": "Contact",
     "menu": "Open menu",
     "close": "Close menu"
@@ -92,8 +93,8 @@
       }
     },
     "order": {
-      "button": "Place an Order",
-      "tooltip": "Start your project with me"
+      "button": "Get a Free Quote",
+      "tooltip": "Describe your app idea to me"
     },
     "skills": {
       "title": "Skills",
@@ -330,38 +331,54 @@
     }
   },
   "order": {
-    "title": "Order",
+    "title": "Start a Project",
     "description": "Interested in working together? Tell me about your project and let's discuss how I can help bring your ideas to life.",
     "form": {
       "name": "Full Name",
-      "namePlaceholder": "John Doe",
+      "namePlaceholder": "What is your or your company's name?",
       "email": "Email Address",
-      "emailPlaceholder": "john@example.com",
-      "type": "Project Type",
-      "typePlaceholder": "Select project type...",
+      "emailPlaceholder": "name@company.com",
+      "type": "Required Service",
+      "typePlaceholder": "What do you need built?",
       "typeOptions": [
-        "Website",
-        "Web Application",
-        "Mobile App",
-        "UI/UX Design",
-        "Consulting",
-        "Other"
+        "Web Application / Website",
+        "Desktop Application (Tauri/Electron)",
+        "Mobile Application (React Native / PWA)",
+        "Other request"
       ],
-      "budget": "Budget Range",
-      "budgetPlaceholder": "Select budget range...",
+      "budget": "Estimated Budget",
+      "budgetPlaceholder": "Set your budget frames (optional)",
       "budgetOptions": [
-        "$500 - $2,000",
-        "$2,000 - $5,000",
-        "$5,000 - $10,000",
-        "$10,000+",
-        "To be discussed"
+        "Under 250$ (Simple iterations/Landing Pages)",
+        "250$ - 700$ (Standard website / small app)",
+        "700$ - 1500$ (Advanced B2B/B2C app)",
+        "1500$+ (Complex enterprise web architectures)",
+        "Not sure yet / Need a quote"
       ],
-      "description": "Project Description",
-      "descriptionPlaceholder": "Tell me about your project, goals, and any specific requirements...",
-      "submit": "Send Order",
+      "description": "Project Details",
+      "descriptionPlaceholder": "Tell me what you need. What's the main function of your software? Who will be the end user? What is absolutely crucial for you?",
+      "submit": "Send Request for Free Quote",
       "sending": "Sending...",
-      "success": "Thank you! Your order has been sent successfully. I'll get back to you soon.",
-      "error": "Something went wrong. Please try again."
+      "success": "Great! I've received your request. I will respond as soon as possible.",
+      "error": "An unexpected error occurred. Please make sure adblock isn't interfering or contact me directly via email."
+    }
+  },
+  "services": {
+    "title": "My Services",
+    "subtitle": "What can I build for you?",
+    "items": {
+      "web": {
+        "title": "Web Applications",
+        "description": "I create modern, ultra-fast websites. From digital business cards for local stores, through extensive B2B panels, to custom e-commerce solutions. Built with leading technologies like React and Next.js."
+      },
+      "desktop": {
+        "title": "Desktop Software",
+        "description": "Need an internal tool for your company's PCs? I build applications for Windows, macOS, and Linux. Using lightweight Tauri/Electron frameworks ensures the software is blazing fast, memory-efficient, and runs anywhere."
+      },
+      "mobile": {
+        "title": "Mobile Applications",
+        "description": "I deliver smartphone software leveraging the React Native ecosystem and Progressive Web Apps (PWAs). Offer your users a final product swiftly while drastically cutting down the costs associated with native app development."
+      }
     }
   },
   "contact": {
@@ -457,6 +474,7 @@
     }
   },
   "sections": {
-    "contact": "Contact"
+    "contact": "Contact",
+    "services": "Services"
   }
 }

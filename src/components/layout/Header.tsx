@@ -370,6 +370,7 @@ export const Header: React.FC = () => {
   const navItems = [
     { href: '#home', label: t('navigation.start') },
     { href: '#about', label: t('navigation.background') },
+    { href: '#services', label: t('navigation.services') },
     { href: '#skills', label: t('navigation.skills') },
     { href: '#projects', label: t('navigation.projects') },
     { href: '#order', label: t('navigation.order') },

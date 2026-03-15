@@ -8,6 +8,7 @@ import { Header } from '@/components/layout/Header';
 import Settings from '@/components/settings/Settings';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
+import { ServicesSection } from '@/components/sections/ServicesSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { OrderSection } from '@/components/sections/OrderSection';
@@ -38,6 +39,12 @@ const AppContent: React.FC = () => {
           <ErrorBoundary section="about">
             <SectionTransition delay={0.2}>
               <AboutSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="services">
+            <SectionTransition delay={0.25}>
+              <ServicesSection />
             </SectionTransition>
           </ErrorBoundary>
           

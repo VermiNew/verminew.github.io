@@ -8,7 +8,8 @@
     "background": "O mnie",
     "skills": "Umiejętności",
     "projects": "Projekty",
-    "order": "Zamówienie",
+    "services": "Usługi",
+    "order": "Zleć projekt",
     "contact": "Kontakt",
     "menu": "Otwórz menu",
     "close": "Zamknij menu"
@@ -92,8 +93,8 @@
       }
     },
     "order": {
-      "button": "Złóż zamówienie",
-      "tooltip": "Rozpocznij swój projekt ze mną"
+      "button": "Zleć projekt",
+      "tooltip": "Opisz mi swój pomysł na aplikację"
     },
     "skills": {
       "title": "Umiejętności",
@@ -335,34 +336,50 @@
     "description": "Zainteresowany współpracą? Opowiedz mi o swoim projekcie i omówmy, jak mogę pomóc w urzeczywistnieniu twoich pomysłów.",
     "form": {
       "name": "Pełne imię i nazwisko",
-      "namePlaceholder": "Jan Kowalski",
+      "namePlaceholder": "Z kim mam przyjemność?",
       "email": "Adres e-mail",
-      "emailPlaceholder": "jan@example.com",
-      "type": "Typ projektu",
-      "typePlaceholder": "Wybierz typ projektu...",
+      "emailPlaceholder": "nazwa@firma.com",
+      "type": "Rodzaj usługi",
+      "typePlaceholder": "Czego dotyczy zlecenie?",
       "typeOptions": [
-        "Strona internetowa",
-        "Aplikacja webowa",
-        "Aplikacja mobilna",
-        "Projektowanie UI/UX",
-        "Konsultacja",
-        "Inne"
+        "Aplikacja Webowa / Portal",
+        "Aplikacja Desktopowa (Tauri/Electron)",
+        "Aplikacja Mobilna (React Native / PWA)",
+        "Inne zapotrzebowanie"
       ],
-      "budget": "Zakres budżetu",
-      "budgetPlaceholder": "Wybierz zakres budżetu...",
+      "budget": "Szacowany budżet",
+      "budgetPlaceholder": "Określ ramy budżetowe (opcjonalnie)",
       "budgetOptions": [
-        "500 - 2 000 zł",
-        "2 000 - 5 000 zł",
-        "5 000 - 10 000 zł",
-        "10 000+ zł",
-        "Do omówienia"
+        "Poniżej 1 000 zł (Proste landing page/poprawki)",
+        "1 000 zł - 3 500 zł (Standardowa strona/nieduża aplikacja)",
+        "3 500 zł - 8 000 zł (Zaawansowana aplikacja B2B/B2C)",
+        "Powyżej 8 000 zł (Złożone wdrożenia platform/architektury)",
+        "Jeszcze nie wiem / Do wyceny"
       ],
-      "description": "Opis projektu",
-      "descriptionPlaceholder": "Opowiedz mi o swoim projekcie, celach i konkretnych wymaganiach...",
-      "submit": "Wyślij zamówienie",
-      "sending": "Wysyłanie...",
-      "success": "Dziękuję! Twoje zamówienie zostało wysłane pomyślnie. Skontaktuję się z tobą wkrótce.",
-      "error": "Coś poszło nie tak. Spróbuj jeszcze raz."
+      "description": "Szczegóły zlecenia",
+      "descriptionPlaceholder": "Napisz mi czego potrzebujesz. Jaką funkcję ma spełniać program/strona? Kto będzie głównym użytkownikiem? Co jest dla Ciebie najważniejsze?",
+      "submit": "Wyślij zapytanie o bezpłatną wycenę",
+      "sending": "Trwa wysyłanie...",
+      "success": "Świetnie! Otrzymałem Twoje zapytanie. Odpiszę najszybciej jak to możliwe.",
+      "error": "Wystąpił nieoczekiwany błąd. Upewnij się, że nie masz adblocka lub skontaktuj się ze mną e-mailem."
+    }
+  },
+  "services": {
+    "title": "Moje Usługi",
+    "subtitle": "Co mogę dla Ciebie zbudować?",
+    "items": {
+      "web": {
+        "title": "Aplikacje Webowe",
+        "description": "Tworzę nowoczesne, ultraszybkie witryny internetowe. Od wizytówek dla lokalnych biznesów, przez rozbudowane panele B2B aż po rozwiązania e-commerce szyte na miarę. Używam wiodących technologii takich jak React i Next.js."
+      },
+      "desktop": {
+        "title": "Oprogramowanie Desktopowe",
+        "description": "Potrzebujesz wewnętrznego narzędzia dla firmy na komputery? Buduję aplikacje na systemy Windows, macOS i Linux. Wykorzystuję lekkie frameworki Tauri/Electron, sprawiając że soft jest szybki, nie obciąża pamięci i działa wszędzie."
+      },
+      "mobile": {
+        "title": "Aplikacje Mobilne",
+        "description": "Dostarczam oprogramowanie na smartfony z wykorzystaniem ekosystemu React Native oraz PWA (aplikacje działające z poziomu przeglądarki). Możesz dać swoim użytkownikom produkt docelowy w szybkim czasie obniżając drastycznie koszt stworzenia natywnej appki."
+      }
     }
   },
   "contact": {
@@ -458,6 +475,7 @@
     }
   },
   "sections": {
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "services": "Zleć projekt"
   }
 }
