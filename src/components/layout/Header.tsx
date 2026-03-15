@@ -102,10 +102,10 @@ const Nav = styled.nav`
 
 const NavLinks = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
 
-  @media (max-width: ${({ theme }) => theme['breakpoints']['tablet']}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     display: none;
   }
 `;
@@ -201,7 +201,7 @@ const MobileMenuButton = styled.button`
     background: ${({ theme }) => `${theme['colors']['primary']}20`};
   }
 
-  @media (max-width: ${({ theme }) => theme['breakpoints']['tablet']}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -244,7 +244,7 @@ const MobileMenu = styled(motion.div)<{ $isDark: boolean }>`
   z-index: ${({ theme }) => theme.zIndices.header - 1};
   overflow-y: auto;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     display: flex;
     flex-direction: column;
     gap: 1rem;

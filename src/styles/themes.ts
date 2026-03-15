@@ -4,7 +4,7 @@ const baseTheme = {
   breakpoints: {
     mobile: '480px',
     tablet: '768px',
-    desktop: '1024px',
+    desktop: '1100px',
   },
   transitions: {
     default: '0.3s ease',
