@@ -4,9 +4,12 @@ import { AnimationContextType } from './types';
 export const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
 
 export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [reducedMotion, setReducedMotion] = useState(() => 
-    localStorage.getItem('reducedMotion') === 'true'
-  );
+  const [reducedMotion, setReducedMotion] = useState(() => {
+    const saved = localStorage.getItem('reducedMotion');
+    if (saved !== null) return saved === 'true';
+    // Respect system prefers-reduced-motion on first visit
+    return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  });
 
   useEffect(() => {
     localStorage.setItem('reducedMotion', reducedMotion.toString());
