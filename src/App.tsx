@@ -3,6 +3,7 @@ import { GlobalStyle } from '@/styles/GlobalStyle';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
 import { AnimationProvider } from '@/context/AnimationContext';
 import { ToastProvider } from '@/context/ToastContext';
+import { SettingsProvider } from '@/context/SettingsContext';
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { Header } from '@/components/layout/Header';
 import Settings from '@/components/settings/Settings';
@@ -85,9 +86,11 @@ const App: React.FC = () => {
     <CustomThemeProvider>
       <AnimationProvider>
         <ToastProvider>
-          <Suspense fallback={<LoadingSpinner />}>
-            <AppContent />
-          </Suspense>
+          <SettingsProvider>
+            <Suspense fallback={<LoadingSpinner />}>
+              <AppContent />
+            </Suspense>
+          </SettingsProvider>
         </ToastProvider>
       </AnimationProvider>
     </CustomThemeProvider>

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { FiSettings, FiX, FiXCircle } from 'react-icons/fi';
 import { useTheme } from '@/context/ThemeContext';
 import { isDarkTheme } from '@/utils/themeUtils';
+import { useSettings } from '@/context/SettingsContext';
 
 const pulse = keyframes`
   0% { transform: scale(1); }
@@ -164,6 +165,7 @@ export const LanguageNotification: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
+  const { openSettings } = useSettings();
 
   useEffect(() => {
     const showNotification = () => {
@@ -193,19 +195,8 @@ export const LanguageNotification: React.FC = () => {
   };
 
   const handleIUnderstand = () => {
-    // Symulacja kliknięcia przycisku ustawień
-    const settingsButton = document.querySelector('[aria-label="Open Settings"]') as HTMLButtonElement;
-    if (settingsButton) {
-      settingsButton.click();
-      // Daj czas na otwarcie menu
-      setTimeout(() => {
-        // Znajdź i kliknij zakładkę języka
-        const languageTab = document.querySelector('[aria-label="Language"]') as HTMLButtonElement;
-        if (languageTab) {
-          languageTab.click();
-        }
-      }, 100);
-    }
+    // Open the settings panel on the language tab via React context
+    openSettings('language');
     handleClose();
   };
 

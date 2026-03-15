@@ -8,6 +8,7 @@ import { isDarkTheme } from '@/utils/themeUtils';
 import { LanguageSettings } from '@/components/settings/LanguageSettings';
 import { useTranslation } from 'react-i18next';
 import { useAnimation } from '@/context/AnimationContext';
+import { useSettings } from '@/context/SettingsContext';
 
 const SettingsButton = styled(motion.button)`
   position: fixed;
@@ -234,11 +235,9 @@ const Switch = styled.input`
   }
 `;
 
-type TabType = 'language' | 'preferences';
 
 const Settings: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabType>('language');
+  const { isSettingsOpen, activeSettingsTab, openSettings, closeSettings } = useSettings();
   const { reducedMotion, setReducedMotion } = useAnimation();
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const buttonTimer = useRef<NodeJS.Timeout | null>(null);
@@ -249,25 +248,25 @@ const Settings: React.FC = () => {
   const panelTitleId = 'settings-panel-title';
 
   const closePanel = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    closeSettings();
+  }, [closeSettings]);
 
   // Return focus to trigger button when panel closes
   useEffect(() => {
-    if (!isOpen) {
+    if (!isSettingsOpen) {
       buttonRef.current?.focus();
     }
-  }, [isOpen]);
+  }, [isSettingsOpen]);
 
   // Close panel on Escape key
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isSettingsOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closePanel();
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, closePanel]);
+  }, [isSettingsOpen, closePanel]);
 
   const handleButtonVisibility = () => {
     setIsButtonVisible(true);
@@ -275,7 +274,7 @@ const Settings: React.FC = () => {
       clearTimeout(buttonTimer.current);
     }
     buttonTimer.current = setTimeout(() => {
-      if (!isOpen) {
+      if (!isSettingsOpen) {
         setIsButtonVisible(false);
       }
     }, 3000);
@@ -283,7 +282,7 @@ const Settings: React.FC = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (!isOpen) {
+      if (!isSettingsOpen) {
         setIsButtonVisible(false);
       }
     }, 5000);
@@ -293,7 +292,7 @@ const Settings: React.FC = () => {
         clearTimeout(buttonTimer.current);
       }
     };
-  }, [isOpen]);
+  }, [isSettingsOpen]);
 
   const handleReducedMotionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReducedMotion(e.target.checked);
@@ -302,7 +301,7 @@ const Settings: React.FC = () => {
   return (
     <>
       <SettingsButton
-        onClick={() => setIsOpen(true)}
+        onClick={() => openSettings()}
         onMouseEnter={handleButtonVisibility}
         ref={buttonRef}
         aria-haspopup="dialog"
@@ -330,13 +329,13 @@ const Settings: React.FC = () => {
       </SettingsButton>
 
       <AnimatePresence>
-        {isOpen && (
+        {isSettingsOpen && (
           <>
             <Overlay
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
+              onClick={closePanel}
             />
             <FocusTrap
               focusTrapOptions={{
@@ -368,22 +367,22 @@ const Settings: React.FC = () => {
 
               <TabContainer role="tablist" aria-label={t('settings.title')}>
                 <Tab
-                  $isActive={activeTab === 'language'}
-                  onClick={() => setActiveTab('language')}
+                  $isActive={activeSettingsTab === 'language'}
+                  onClick={() => openSettings('language')}
                   whileTap={{ scale: 0.95 }}
                   role="tab"
-                  aria-selected={activeTab === 'language'}
+                  aria-selected={activeSettingsTab === 'language'}
                   aria-label={t('settings.tabs.language')}
                 >
                   <FiGlobe />
                   {t('settings.tabs.language')}
                 </Tab>
                 <Tab
-                  $isActive={activeTab === 'preferences'}
-                  onClick={() => setActiveTab('preferences')}
+                  $isActive={activeSettingsTab === 'preferences'}
+                  onClick={() => openSettings('preferences')}
                   whileTap={{ scale: 0.95 }}
                   role="tab"
-                  aria-selected={activeTab === 'preferences'}
+                  aria-selected={activeSettingsTab === 'preferences'}
                   aria-label={t('settings.tabs.preferences')}
                 >
                   <FiZap aria-hidden="true" />
@@ -393,7 +392,7 @@ const Settings: React.FC = () => {
 
               <PanelContent>
                 <AnimatePresence mode="wait">
-                  {activeTab === 'language' ? (
+                  {activeSettingsTab === 'language' ? (
                     <motion.div
                       key="language"
                       initial={{ opacity: 0, x: 20 }}
