@@ -242,6 +242,7 @@ const Settings: React.FC = () => {
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const buttonTimer = useRef<NodeJS.Timeout | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
@@ -258,14 +259,33 @@ const Settings: React.FC = () => {
     }
   }, [isSettingsOpen]);
 
-  // Close panel on Escape key
+  // Close panel on Escape key or outside click
   useEffect(() => {
     if (!isSettingsOpen) return;
+    
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closePanel();
     };
+
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      // Don't close if clicking the toggle button or inside the panel
+      if (
+        panelRef.current && !panelRef.current.contains(e.target as Node) &&
+        buttonRef.current && !buttonRef.current.contains(e.target as Node)
+      ) {
+        closePanel();
+      }
+    };
+
     document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, [isSettingsOpen, closePanel]);
 
   const handleButtonVisibility = () => {
@@ -335,7 +355,6 @@ const Settings: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={closePanel}
             />
             <FocusTrap
               focusTrapOptions={{
@@ -344,6 +363,7 @@ const Settings: React.FC = () => {
               }}
             >
             <Panel
+              ref={panelRef}
               $isDark={isDark}
               variants={panelVariants}
               initial="hidden"
