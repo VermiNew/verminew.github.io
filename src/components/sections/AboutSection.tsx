@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Section } from '../layout/Section';
 import { SectionTitle } from '../ui/SectionTitle';
+import { Button } from '../ui/Button';
 import { SiGithub, SiDiscord } from 'react-icons/si';
 import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdTrendingUp, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
@@ -180,6 +181,10 @@ const HighlightedSection = styled(BackgroundSection)`
   box-shadow: 0 0 15px ${({ theme }) => `${theme.colors.primary}30`};
 `;
 
+const OrderButtonWrapper = styled.div`
+  margin-top: 1.5rem;
+`;
+
 const BackgroundTitle = styled.h3`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.primary};
@@ -249,6 +254,13 @@ export const AboutSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
   const { reducedMotion } = useAnimation();
+
+  const scrollToOrder = () => {
+    const element = document.querySelector('#order');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <Section id="about">
@@ -378,7 +390,13 @@ export const AboutSection: React.FC = () => {
                         <ListItem key={index}>{highlight}</ListItem>
                       ))}
                   </List>
-                </HighlightedSection>
+
+                  <OrderButtonWrapper>
+                    <Button variant="outline" onClick={scrollToOrder}>
+                      {t('about.order.button')}
+                    </Button>
+                  </OrderButtonWrapper>
+                  </HighlightedSection>
               </Background>
 
               <Profiles variants={!reducedMotion ? itemVariants : undefined}>
