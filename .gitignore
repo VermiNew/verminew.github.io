@@ -55,3 +55,6 @@ __snapshots__
 
 # Auto-generated files
 public/data/repos.json
+
+# Agent directories
+.agents/
