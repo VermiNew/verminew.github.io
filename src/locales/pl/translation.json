@@ -372,7 +372,36 @@
       "attachmentsCount_few": "{{count}} pliki wybrane",
       "attachmentsCount_many": "{{count}} plików wybranych",
       "attachmentsTooBig": "Łączny rozmiar plików przekracza 20 MB",
-      "generate": "Generuj zamówienie"
+      "generate": "Generuj zamówienie",
+      "deadline": "Termin realizacji",
+      "deadlinePlaceholder": "Kiedy projekt ma być gotowy?",
+      "deadlineOptions": [
+        "Do 2 tygodni (pilne)",
+        "Do 1 miesiąca",
+        "2–3 miesiące",
+        "Powyżej 3 miesięcy",
+        "Termin elastyczny / do ustalenia"
+      ],
+      "clientType": "Typ klienta",
+      "clientTypePlaceholder": "Kto składa zamówienie?",
+      "clientTypeOptions": [
+        "Osoba prywatna",
+        "Firma / Organizacja",
+        "Startup",
+        "Instytucja publiczna"
+      ],
+      "references": "Linki referencyjne (opcjonalne)",
+      "referencesPlaceholder": "Wklej linki do stron lub aplikacji, które Ci się podobają (po jednym w linii)",
+      "existingProject": "Stan projektu",
+      "existingProjectPlaceholder": "Od zera czy rozbudowa?",
+      "existingProjectOptions": [
+        "Nowy projekt — zaczynamy od zera",
+        "Rozbudowa istniejącego projektu",
+        "Naprawa / przepisanie obecnego kodu",
+        "Nie wiem jeszcze"
+      ],
+      "phone": "Numer telefonu (opcjonalne)",
+      "phonePlaceholder": "+48 000 000 000"
     },
     "summary": {
       "title": "Zamówienie gotowe!",

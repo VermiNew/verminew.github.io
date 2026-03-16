@@ -370,7 +370,36 @@
       "attachmentsCount_one": "1 file selected",
       "attachmentsCount_other": "{{count}} files selected",
       "attachmentsTooBig": "Total file size exceeds 20 MB",
-      "generate": "Generate order"
+      "generate": "Generate order",
+      "deadline": "Project deadline",
+      "deadlinePlaceholder": "When does the project need to be done?",
+      "deadlineOptions": [
+        "Within 2 weeks (urgent)",
+        "Within 1 month",
+        "2–3 months",
+        "More than 3 months",
+        "Flexible / to be discussed"
+      ],
+      "clientType": "Client type",
+      "clientTypePlaceholder": "Who is placing the order?",
+      "clientTypeOptions": [
+        "Private individual",
+        "Company / Organisation",
+        "Startup",
+        "Public institution"
+      ],
+      "references": "Reference links (optional)",
+      "referencesPlaceholder": "Paste links to sites or apps you like (one per line)",
+      "existingProject": "Project status",
+      "existingProjectPlaceholder": "Starting fresh or expanding?",
+      "existingProjectOptions": [
+        "New project — starting from scratch",
+        "Expanding an existing project",
+        "Fixing / rewriting existing code",
+        "Not sure yet"
+      ],
+      "phone": "Phone number (optional)",
+      "phonePlaceholder": "+1 000 000 0000"
     },
     "summary": {
       "title": "Order ready!",

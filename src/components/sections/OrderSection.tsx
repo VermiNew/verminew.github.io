@@ -33,8 +33,13 @@ type Step = 'form' | 'summary';
 interface FormData {
   name: string;
   email: string;
+  phone: string;
+  clientType: string;
   type: string;
+  deadline: string;
+  existingProject: string;
   budget: string;
+  references: string;
   description: string;
 }
 
@@ -506,8 +511,13 @@ export const OrderSection: React.FC = () => {
   const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
+    phone: '',
+    clientType: '',
     type: '',
+    deadline: '',
+    existingProject: '',
     budget: '',
+    references: '',
     description: '',
   });
   const [files, setFiles] = useState<File[]>([]);
@@ -736,6 +746,38 @@ export const OrderSection: React.FC = () => {
                       </Field>
 
                       <Field>
+                        <Label htmlFor="order-phone">{t('order.form.phone')}</Label>
+                        <Input
+                          $isDark={isDark}
+                          id="order-phone"
+                          name="phone"
+                          type="tel"
+                          placeholder={t('order.form.phonePlaceholder')}
+                          value={form.phone}
+                          onChange={handleChange}
+                        />
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-clientType">{t('order.form.clientType')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-clientType"
+                          name="clientType"
+                          required
+                          value={form.clientType}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.clientTypePlaceholder')}
+                          </option>
+                          {(t('order.form.clientTypeOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => <option key={opt} value={opt}>{opt}</option>
+                          )}
+                        </Select>
+                      </Field>
+
+                      <Field>
                         <Label htmlFor="order-type">{t('order.form.type')}</Label>
                         <Select
                           $isDark={isDark}
@@ -754,6 +796,25 @@ export const OrderSection: React.FC = () => {
                                 {opt}
                               </option>
                             )
+                          )}
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-deadline">{t('order.form.deadline')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-deadline"
+                          name="deadline"
+                          required
+                          value={form.deadline}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.deadlinePlaceholder')}
+                          </option>
+                          {(t('order.form.deadlineOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => <option key={opt} value={opt}>{opt}</option>
                           )}
                         </Select>
                       </Field>
@@ -782,6 +843,25 @@ export const OrderSection: React.FC = () => {
                       </Field>
 
                       <Field>
+                        <Label htmlFor="order-existingProject">{t('order.form.existingProject')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-existingProject"
+                          name="existingProject"
+                          required
+                          value={form.existingProject}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.existingProjectPlaceholder')}
+                          </option>
+                          {(t('order.form.existingProjectOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => <option key={opt} value={opt}>{opt}</option>
+                          )}
+                        </Select>
+                      </Field>
+
+                      <Field>
                         <Label htmlFor="order-description">
                           {t('order.form.description')}
                         </Label>
@@ -793,6 +873,19 @@ export const OrderSection: React.FC = () => {
                           placeholder={t('order.form.descriptionPlaceholder')}
                           value={form.description}
                           onChange={handleChange}
+                        />
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-references">{t('order.form.references')}</Label>
+                        <Textarea
+                          $isDark={isDark}
+                          id="order-references"
+                          name="references"
+                          placeholder={t('order.form.referencesPlaceholder')}
+                          value={form.references}
+                          onChange={handleChange}
+                          style={{ minHeight: '80px' }}
                         />
                       </Field>
 
