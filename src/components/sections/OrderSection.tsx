@@ -14,6 +14,7 @@ import {
   MdChevronRight,
   MdClose,
   MdEdit,
+  MdWarningAmber,
 } from 'react-icons/md';
 import { SectionContainer } from '@/components/layout/SectionContainer';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -69,7 +70,7 @@ const Description = styled(motion.p)`
   margin: 0 auto;
 `;
 
-const PreviewCard = styled(motion.div)<{ $isDark: boolean }>`
+const PreviewCard = styled(motion.div) <{ $isDark: boolean }>`
   width: 100%;
   padding: 2.5rem;
   border-radius: 20px;
@@ -167,7 +168,7 @@ const ModalBackdrop = styled(motion.div)`
   overflow-y: auto;
 `;
 
-const ModalContainer = styled(motion.div)<{ $isDark: boolean }>`
+const ModalContainer = styled(motion.div) <{ $isDark: boolean }>`
   width: 100%;
   max-width: 740px;
   margin: auto;
@@ -330,6 +331,20 @@ const FileCount = styled.span<{ $hasError: boolean }>`
     $hasError ? '#ef4444' : theme.colors.textSecondary};
 `;
 
+const DeadlineWarning = styled(motion.div)`
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #f59e0b;
+  background: #f59e0b14;
+  color: #f59e0b;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+`;
+
 const SubmitRow = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -415,7 +430,7 @@ const DownloadRow = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-const ManualSection = styled(motion.div)<{ $isDark: boolean }>`
+const ManualSection = styled(motion.div) <{ $isDark: boolean }>`
   margin-top: 1.5rem;
   padding: 1.25rem 1.5rem;
   border-radius: 12px;
@@ -620,6 +635,9 @@ export const OrderSection: React.FC = () => {
   }, [orderId, t]);
 
   // ── Render ───────────────────────────────────────────────────────────────────
+  const deadlineOptions = t('order.form.deadlineOptions', { returnObjects: true }) as string[];
+  const isStrictDeadline = form.deadline !== '' && form.deadline !== deadlineOptions[deadlineOptions.length - 1];
+
   return (
     <SectionContainer id="order">
       <SectionTitle>{t('order.title')}</SectionTitle>
@@ -813,10 +831,23 @@ export const OrderSection: React.FC = () => {
                           <option value="" disabled>
                             {t('order.form.deadlinePlaceholder')}
                           </option>
-                          {(t('order.form.deadlineOptions', { returnObjects: true }) as string[]).map(
-                            (opt) => <option key={opt} value={opt}>{opt}</option>
-                          )}
+                          {deadlineOptions.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
                         </Select>
+                        <AnimatePresence>
+                          {isStrictDeadline && (
+                            <DeadlineWarning
+                              initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                              animate={{ opacity: 1, height: 'auto', marginTop: '0.5rem' }}
+                              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                              style={{ overflow: 'hidden' }}
+                            >
+                              <MdWarningAmber size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
+                              <span>{t('order.form.deadlineWarning')}</span>
+                            </DeadlineWarning>
+                          )}
+                        </AnimatePresence>
                       </Field>
 
                       <Field>

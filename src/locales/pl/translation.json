@@ -382,6 +382,7 @@
         "Powyżej 3 miesięcy",
         "Termin elastyczny / do ustalenia"
       ],
+      "deadlineWarning": "Uwaga: ten termin może być trudny do realizacji. Zastrzeżam sobie prawo do odrzucenia propozycji lub zaproponowania dłuższego czasu realizacji po analizie projektu.",
       "clientType": "Typ klienta",
       "clientTypePlaceholder": "Kto składa zamówienie?",
       "clientTypeOptions": [

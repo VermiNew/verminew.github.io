@@ -380,6 +380,7 @@
         "More than 3 months",
         "Flexible / to be discussed"
       ],
+      "deadlineWarning": "Note: this deadline may be difficult to meet. I reserve the right to decline the proposal or suggest a longer timeline after reviewing the project scope.",
       "clientType": "Client type",
       "clientTypePlaceholder": "Who is placing the order?",
       "clientTypeOptions": [
