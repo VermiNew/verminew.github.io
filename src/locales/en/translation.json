@@ -348,9 +348,12 @@
       "type": "Required Service",
       "typePlaceholder": "What do you need built?",
       "typeOptions": [
-        "Web Application / Website",
-        "Desktop Application (Tauri/Electron)",
-        "Mobile Application (React Native / PWA)",
+        "Website / Web App (React, Vue, Next.js)",
+        "Desktop Application (WPF, WinForms, Tauri)",
+        "Mobile Application (Android, React Native, PWA)",
+        "Backend / API (Python, PHP, Node.js)",
+        "Script / Automation (Python, C++)",
+        "IoT / Embedded (ESP32, microcontrollers)",
         "Other request"
       ],
       "budget": "Estimated Budget",

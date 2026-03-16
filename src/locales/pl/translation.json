@@ -349,9 +349,12 @@
       "type": "Rodzaj usługi",
       "typePlaceholder": "Czego dotyczy zlecenie?",
       "typeOptions": [
-        "Aplikacja Webowa / Portal",
-        "Aplikacja Desktopowa (Tauri/Electron)",
-        "Aplikacja Mobilna (React Native / PWA)",
+        "Strona / Aplikacja Webowa (React, Vue, Next.js)",
+        "Aplikacja Desktopowa (WPF, WinForms, Tauri)",
+        "Aplikacja Mobilna (Android, React Native, PWA)",
+        "Backend / API (Python, PHP, Node.js)",
+        "Skrypt / Automatyzacja (Python, C++)",
+        "IoT / Embedded (ESP32, mikrokontrolery)",
         "Inne zapotrzebowanie"
       ],
       "budget": "Szacowany budżet",
