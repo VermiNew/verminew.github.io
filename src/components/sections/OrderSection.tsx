@@ -1083,6 +1083,7 @@ export const OrderSection: React.FC = () => {
 
                     <Field>
                       <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
+                      <FieldHint>{t('order.form.budgetHint')}</FieldHint>
                       <Select
                         $isDark={isDark}
                         id="order-budget"

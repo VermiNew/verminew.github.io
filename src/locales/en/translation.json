@@ -355,6 +355,7 @@
       ],
       "budget": "Estimated Budget",
       "budgetPlaceholder": "Set your budget frames (optional)",
+      "budgetHint": "Payment model: 30% upfront · 50% near completion · 20% on code delivery",
       "budgetOptions": [
         "Under 250$ (Simple iterations/Landing Pages)",
         "250$ - 700$ (Standard website / small app)",

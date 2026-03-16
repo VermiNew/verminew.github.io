@@ -356,6 +356,7 @@
       ],
       "budget": "Szacowany budżet",
       "budgetPlaceholder": "Określ ramy budżetowe (opcjonalnie)",
+      "budgetHint": "Model płatności: 30% na start · 50% przy kończeniu · 20% po przekazaniu kodu",
       "budgetOptions": [
         "Poniżej 1 000 zł (Proste landing page/poprawki)",
         "1 000 zł - 3 500 zł (Standardowa strona/nieduża aplikacja)",
