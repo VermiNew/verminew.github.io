@@ -332,7 +332,7 @@
   },
   "order": {
     "title": "Start a Project",
-    "description": "Interested in working together? Fill out the form and I'll generate an order package ready to send by email.",
+    "description": "Interested in working together? Fill out the form and I'll generate an order package ready to send by email. Payment model: 30% upfront, 50% near completion, 20% upon delivery of code and copyright transfer.",
     "preview": {
       "cta": "Fill out the form",
       "hint": "Click to open"

@@ -333,7 +333,7 @@
   },
   "order": {
     "title": "Zamówienie",
-    "description": "Zainteresowany współpracą? Wypełnij formularz, a wygeneruję dla Ciebie paczkę z zamówieniem gotową do wysyłki mailem.",
+    "description": "Zainteresowany współpracą? Wypełnij formularz, a wygeneruję dla Ciebie paczkę z zamówieniem gotową do wysyłki mailem. Model płatności: 30% na rozpoczęcie prac, 50% przy kończeniu, 20% po przekazaniu kodu i praw autorskich.",
     "preview": {
       "cta": "Wypełnij formularz",
       "hint": "Kliknij, aby otworzyć"
