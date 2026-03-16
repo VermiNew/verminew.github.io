@@ -371,6 +371,13 @@
       "attachmentsCount_other": "{{count}} files selected",
       "attachmentsTooBig": "Total file size exceeds 20 MB",
       "generate": "Generate order",
+      "next": "Next",
+      "back": "Back",
+      "stepBasic": "Basic info",
+      "stepProject": "About the project",
+      "stepDetails": "Details",
+      "stepLabel": "Step {{current}} of {{total}}",
+      "requiredField": "This field is required",
       "deadline": "Project deadline",
       "deadlinePlaceholder": "When does the project need to be done?",
       "deadlineOptions": [
@@ -400,7 +407,41 @@
         "Not sure yet"
       ],
       "phone": "Phone number (optional)",
-      "phonePlaceholder": "+1 000 000 0000"
+      "phonePlaceholder": "+1 000 000 0000",
+      "contactMethod": "Preferred contact method",
+      "contactMethodPlaceholder": "How do you prefer to communicate?",
+      "contactMethodOptions": [
+        "Email",
+        "Phone",
+        "Discord",
+        "Other"
+      ],
+      "source": "How did you find me? (optional)",
+      "sourcePlaceholder": "How did you discover me?",
+      "sourceOptions": [
+        "Referral from a friend",
+        "GitHub",
+        "Social media",
+        "Search engine (Google etc.)",
+        "Other"
+      ],
+      "contentReady": "Is your content ready?",
+      "contentReadyPlaceholder": "Texts, logo, images...",
+      "contentReadyOptions": [
+        "Yes, everything is ready",
+        "Partially — I have some materials",
+        "No, I need help with content"
+      ],
+      "hasDomain": "Do you have a domain and/or hosting?",
+      "hasDomainPlaceholder": "Domain and hosting...",
+      "hasDomainOptions": [
+        "Yes, I have both domain and hosting",
+        "I only have a domain",
+        "I only have hosting",
+        "No, I need help"
+      ],
+      "rodoConsent": "I consent to the processing of my personal data for the purpose of order fulfilment, in accordance with GDPR.",
+      "rodoRequired": "Consent is required"
     },
     "summary": {
       "title": "Order ready!",

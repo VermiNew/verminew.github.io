@@ -373,6 +373,13 @@
       "attachmentsCount_many": "{{count}} plików wybranych",
       "attachmentsTooBig": "Łączny rozmiar plików przekracza 20 MB",
       "generate": "Generuj zamówienie",
+      "next": "Dalej",
+      "back": "Wstecz",
+      "stepBasic": "Dane podstawowe",
+      "stepProject": "O projekcie",
+      "stepDetails": "Szczegóły",
+      "stepLabel": "Krok {{current}} z {{total}}",
+      "requiredField": "To pole jest wymagane",
       "deadline": "Termin realizacji",
       "deadlinePlaceholder": "Kiedy projekt ma być gotowy?",
       "deadlineOptions": [
@@ -402,7 +409,41 @@
         "Nie wiem jeszcze"
       ],
       "phone": "Numer telefonu (opcjonalne)",
-      "phonePlaceholder": "+48 000 000 000"
+      "phonePlaceholder": "+48 000 000 000",
+      "contactMethod": "Preferowana forma kontaktu",
+      "contactMethodPlaceholder": "Jak wolisz się komunikować?",
+      "contactMethodOptions": [
+        "E-mail",
+        "Telefon",
+        "Discord",
+        "Inna"
+      ],
+      "source": "Skąd o mnie wiesz? (opcjonalne)",
+      "sourcePlaceholder": "Jak mnie znalazłeś/aś?",
+      "sourceOptions": [
+        "Polecenie znajomego",
+        "GitHub",
+        "Social media",
+        "Wyszukiwarka (Google itp.)",
+        "Inne"
+      ],
+      "contentReady": "Czy treści są gotowe?",
+      "contentReadyPlaceholder": "Teksty, logo, zdjęcia...",
+      "contentReadyOptions": [
+        "Tak, mam wszystko gotowe",
+        "Częściowo — część materiałów mam",
+        "Nie, potrzebuję pomocy z treściami"
+      ],
+      "hasDomain": "Czy masz domenę i/lub hosting?",
+      "hasDomainPlaceholder": "Domena i hosting...",
+      "hasDomainOptions": [
+        "Tak, mam domenę i hosting",
+        "Mam tylko domenę",
+        "Mam tylko hosting",
+        "Nie, potrzebuję pomocy"
+      ],
+      "rodoConsent": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji zamówienia, zgodnie z RODO.",
+      "rodoRequired": "Zgoda jest wymagana"
     },
     "summary": {
       "title": "Zamówienie gotowe!",

@@ -29,19 +29,23 @@ const ACCEPTED_TYPES = 'image/*,.pdf,.zip,.txt,.doc,.docx';
 // ───────────────────────────────────────────────────────────────────────────────
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-type Step = 'form' | 'summary';
+type Step = 'basics' | 'project' | 'details' | 'summary';
 
 interface FormData {
   name: string;
   email: string;
   phone: string;
   clientType: string;
+  contactMethod: string;
+  source: string;
   type: string;
   deadline: string;
   existingProject: string;
   budget: string;
-  references: string;
   description: string;
+  contentReady: string;
+  hasDomain: string;
+  references: string;
 }
 
 interface OrderPayload extends FormData {
@@ -345,10 +349,40 @@ const DeadlineWarning = styled(motion.div)`
   align-items: flex-start;
 `;
 
-const SubmitRow = styled.div`
+const FormNav = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 0.5rem;
+  gap: 1rem;
+`;
+
+const StepIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+`;
+
+const StepDot = styled.div<{ $active: boolean }>`
+  width: 2rem;
+  height: 4px;
+  border-radius: 2px;
+  background: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : `${theme.colors.primary}30`};
+  transition: background 0.25s;
+`;
+
+const StepLabel = styled.span`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin-left: auto;
+`;
+
+const FieldError = styled(motion.span)`
+  font-size: 0.78rem;
+  color: #ef4444;
+  margin-top: -0.15rem;
 `;
 // ───────────────────────────────────────────────────────────────────────────────
 
@@ -521,20 +555,26 @@ export const OrderSection: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   // ── Form state ───────────────────────────────────────────────────────────────
-  const [step, setStep] = useState<Step>('form');
+  const [step, setStep] = useState<Step>('basics');
   const [slideDir, setSlideDir] = useState(1);
+  const [touched, setTouched] = useState<Set<string>>(new Set());
   const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
     phone: '',
     clientType: '',
+    contactMethod: '',
+    source: '',
     type: '',
     deadline: '',
     existingProject: '',
     budget: '',
-    references: '',
     description: '',
+    contentReady: '',
+    hasDomain: '',
+    references: '',
   });
+  const [rodoConsent, setRodoConsent] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [fileSizeError, setFileSizeError] = useState(false);
 
@@ -566,10 +606,74 @@ export const OrderSection: React.FC = () => {
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      const { name, value } = e.target;
+      setForm((prev) => ({ ...prev, [name]: value }));
+      setTouched((prev) => new Set(prev).add(name));
     },
     []
   );
+
+  // ── Validation ──────────────────────────────────────────────────────────────
+  const requiredBasics: (keyof FormData)[] = ['name', 'email', 'clientType', 'contactMethod'];
+  const requiredProject: (keyof FormData)[] = ['type', 'deadline', 'budget', 'existingProject'];
+  const requiredDetails: (keyof FormData)[] = ['description', 'contentReady', 'hasDomain'];
+
+  const isFieldMissing = useCallback(
+    (field: keyof FormData) => touched.has(field) && form[field].trim() === '',
+    [form, touched]
+  );
+
+  const isBasicsValid = useMemo(
+    () => requiredBasics.every((f) => form[f].trim() !== ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.name, form.email, form.clientType, form.contactMethod]
+  );
+
+  const isProjectValid = useMemo(
+    () => requiredProject.every((f) => form[f].trim() !== ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.type, form.deadline, form.budget, form.existingProject]
+  );
+
+  const isDetailsValid = useMemo(
+    () => requiredDetails.every((f) => form[f].trim() !== '') && !fileSizeError && rodoConsent,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.description, form.contentReady, form.hasDomain, fileSizeError, rodoConsent]
+  );
+
+  const markTouched = useCallback((fields: (keyof FormData)[]) => {
+    setTouched((prev) => {
+      const next = new Set(prev);
+      fields.forEach((f) => next.add(f));
+      return next;
+    });
+  }, []);
+
+  const handleNextToProject = useCallback(() => {
+    markTouched(requiredBasics);
+    if (!isBasicsValid) return;
+    setSlideDir(1);
+    setStep('project');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBasicsValid, markTouched]);
+
+  const handleNextToDetails = useCallback(() => {
+    markTouched(requiredProject);
+    if (!isProjectValid) return;
+    setSlideDir(1);
+    setStep('details');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isProjectValid, markTouched]);
+
+  const handleBackToBasics = useCallback(() => {
+    setSlideDir(-1);
+    setStep('basics');
+  }, []);
+
+  const handleBackToProject = useCallback(() => {
+    setSlideDir(-1);
+    setStep('project');
+  }, []);
 
   const handleFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files ?? []);
@@ -586,18 +690,20 @@ export const OrderSection: React.FC = () => {
   const handleGenerate = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      if (fileSizeError) return;
+      markTouched(requiredDetails);
+      if (!isDetailsValid) return;
       const id = crypto.randomUUID();
       setOrderId(id);
       setSlideDir(1);
       setStep('summary');
     },
-    [fileSizeError]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isDetailsValid, markTouched]
   );
 
   const handleBack = useCallback(() => {
     setSlideDir(-1);
-    setStep('form');
+    setStep('details');
     setCopied(false);
     setManualOpen(false);
   }, []);
@@ -725,173 +831,315 @@ export const OrderSection: React.FC = () => {
               <ModalTitle>{t('order.title')}</ModalTitle>
 
               <AnimatePresence mode="wait" custom={slideDir}>
-                {step === 'form' && (
+                {/* ── Step 1: Basic info ── */}
+                {step === 'basics' && (
                   <motion.div
-                    key="form"
+                    key="basics"
                     variants={!reducedMotion ? slideVariants : undefined}
                     custom={slideDir}
                     initial="initial"
                     animate="animate"
                     exit="exit"
                   >
-                    <form onSubmit={handleGenerate} noValidate>
-                      <Field>
-                        <Label htmlFor="order-name">{t('order.form.name')}</Label>
-                        <Input
-                          $isDark={isDark}
-                          id="order-name"
-                          name="name"
-                          type="text"
-                          required
-                          placeholder={t('order.form.namePlaceholder')}
-                          value={form.name}
-                          onChange={handleChange}
-                        />
-                      </Field>
+                    <StepIndicator>
+                      <StepDot $active />
+                      <StepDot $active={false} />
+                      <StepDot $active={false} />
+                      <StepLabel>{t('order.form.stepLabel', { current: 1, total: 3 })} — {t('order.form.stepBasic')}</StepLabel>
+                    </StepIndicator>
 
-                      <Field>
-                        <Label htmlFor="order-email">{t('order.form.email')}</Label>
-                        <Input
-                          $isDark={isDark}
-                          id="order-email"
-                          name="email"
-                          type="email"
-                          required
-                          placeholder={t('order.form.emailPlaceholder')}
-                          value={form.email}
-                          onChange={handleChange}
-                        />
-                      </Field>
+                    <Field>
+                      <Label htmlFor="order-name">{t('order.form.name')}</Label>
+                      <Input
+                        $isDark={isDark}
+                        id="order-name"
+                        name="name"
+                        type="text"
+                        required
+                        placeholder={t('order.form.namePlaceholder')}
+                        value={form.name}
+                        onChange={handleChange}
+                      />
+                      {isFieldMissing('name') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
 
-                      <Field>
-                        <Label htmlFor="order-phone">{t('order.form.phone')}</Label>
-                        <Input
-                          $isDark={isDark}
-                          id="order-phone"
-                          name="phone"
-                          type="tel"
-                          placeholder={t('order.form.phonePlaceholder')}
-                          value={form.phone}
-                          onChange={handleChange}
-                        />
-                      </Field>
+                    <Field>
+                      <Label htmlFor="order-email">{t('order.form.email')}</Label>
+                      <Input
+                        $isDark={isDark}
+                        id="order-email"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder={t('order.form.emailPlaceholder')}
+                        value={form.email}
+                        onChange={handleChange}
+                      />
+                      {isFieldMissing('email') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
 
-                      <Field>
-                        <Label htmlFor="order-clientType">{t('order.form.clientType')}</Label>
-                        <Select
-                          $isDark={isDark}
-                          id="order-clientType"
-                          name="clientType"
-                          required
-                          value={form.clientType}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled>
-                            {t('order.form.clientTypePlaceholder')}
-                          </option>
-                          {(t('order.form.clientTypeOptions', { returnObjects: true }) as string[]).map(
-                            (opt) => <option key={opt} value={opt}>{opt}</option>
-                          )}
-                        </Select>
-                      </Field>
+                    <Field>
+                      <Label htmlFor="order-phone">{t('order.form.phone')}</Label>
+                      <Input
+                        $isDark={isDark}
+                        id="order-phone"
+                        name="phone"
+                        type="tel"
+                        placeholder={t('order.form.phonePlaceholder')}
+                        value={form.phone}
+                        onChange={handleChange}
+                      />
+                    </Field>
 
-                      <Field>
-                        <Label htmlFor="order-type">{t('order.form.type')}</Label>
-                        <Select
-                          $isDark={isDark}
-                          id="order-type"
-                          name="type"
-                          required
-                          value={form.type}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled>
-                            {t('order.form.typePlaceholder')}
-                          </option>
-                          {(t('order.form.typeOptions', { returnObjects: true }) as string[]).map(
-                            (opt) => (
-                              <option key={opt} value={opt}>
-                                {opt}
-                              </option>
-                            )
-                          )}
-                        </Select>
-                      </Field>
+                    <Field>
+                      <Label htmlFor="order-clientType">{t('order.form.clientType')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-clientType"
+                        name="clientType"
+                        required
+                        value={form.clientType}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.clientTypePlaceholder')}
+                        </option>
+                        {(t('order.form.clientTypeOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isFieldMissing('clientType') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
 
-                      <Field>
-                        <Label htmlFor="order-deadline">{t('order.form.deadline')}</Label>
-                        <Select
-                          $isDark={isDark}
-                          id="order-deadline"
-                          name="deadline"
-                          required
-                          value={form.deadline}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled>
-                            {t('order.form.deadlinePlaceholder')}
-                          </option>
-                          {deadlineOptions.map((opt) => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </Select>
-                        <AnimatePresence>
-                          {isStrictDeadline && (
-                            <DeadlineWarning
-                              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                              animate={{ opacity: 1, height: 'auto', marginTop: '0.5rem' }}
-                              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                              style={{ overflow: 'hidden' }}
-                            >
-                              <MdWarningAmber size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
-                              <span>{t('order.form.deadlineWarning')}</span>
-                            </DeadlineWarning>
-                          )}
-                        </AnimatePresence>
-                      </Field>
+                    <Field>
+                      <Label htmlFor="order-contactMethod">{t('order.form.contactMethod')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-contactMethod"
+                        name="contactMethod"
+                        required
+                        value={form.contactMethod}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.contactMethodPlaceholder')}
+                        </option>
+                        {(t('order.form.contactMethodOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isFieldMissing('contactMethod') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
 
-                      <Field>
-                        <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
-                        <Select
-                          $isDark={isDark}
-                          id="order-budget"
-                          name="budget"
-                          required
-                          value={form.budget}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled>
-                            {t('order.form.budgetPlaceholder')}
-                          </option>
-                          {(
-                            t('order.form.budgetOptions', { returnObjects: true }) as string[]
-                          ).map((opt) => (
+                    <Field>
+                      <Label htmlFor="order-source">{t('order.form.source')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-source"
+                        name="source"
+                        value={form.source}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.sourcePlaceholder')}
+                        </option>
+                        {(t('order.form.sourceOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                    </Field>
+
+                    <FormNav>
+                      <div />
+                      <Button type="button" size="large" onClick={handleNextToProject}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
+                )}
+
+                {/* ── Step 2: About the project ── */}
+                {step === 'project' && (
+                  <motion.div
+                    key="project"
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <StepDot $active />
+                      <StepDot $active />
+                      <StepDot $active={false} />
+                      <StepLabel>{t('order.form.stepLabel', { current: 2, total: 3 })} — {t('order.form.stepProject')}</StepLabel>
+                    </StepIndicator>
+
+                    <Field>
+                      <Label htmlFor="order-type">{t('order.form.type')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-type"
+                        name="type"
+                        required
+                        value={form.type}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.typePlaceholder')}
+                        </option>
+                        {(t('order.form.typeOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => (
                             <option key={opt} value={opt}>
                               {opt}
                             </option>
-                          ))}
-                        </Select>
-                      </Field>
+                          )
+                        )}
+                      </Select>
+                      {isFieldMissing('type') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
 
-                      <Field>
-                        <Label htmlFor="order-existingProject">{t('order.form.existingProject')}</Label>
-                        <Select
-                          $isDark={isDark}
-                          id="order-existingProject"
-                          name="existingProject"
-                          required
-                          value={form.existingProject}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled>
-                            {t('order.form.existingProjectPlaceholder')}
+                    <Field>
+                      <Label htmlFor="order-existingProject">{t('order.form.existingProject')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-existingProject"
+                        name="existingProject"
+                        required
+                        value={form.existingProject}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.existingProjectPlaceholder')}
+                        </option>
+                        {(t('order.form.existingProjectOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isFieldMissing('existingProject') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-deadline">{t('order.form.deadline')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-deadline"
+                        name="deadline"
+                        required
+                        value={form.deadline}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.deadlinePlaceholder')}
+                        </option>
+                        {deadlineOptions.map((opt) => (
+                          <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                      </Select>
+                      {isFieldMissing('deadline') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                      <AnimatePresence>
+                        {isStrictDeadline && (
+                          <DeadlineWarning
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: 'auto', marginTop: '0.5rem' }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            style={{ overflow: 'hidden' }}
+                          >
+                            <MdWarningAmber size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
+                            <span>{t('order.form.deadlineWarning')}</span>
+                          </DeadlineWarning>
+                        )}
+                      </AnimatePresence>
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-budget"
+                        name="budget"
+                        required
+                        value={form.budget}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.budgetPlaceholder')}
+                        </option>
+                        {(
+                          t('order.form.budgetOptions', { returnObjects: true }) as string[]
+                        ).map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
                           </option>
-                          {(t('order.form.existingProjectOptions', { returnObjects: true }) as string[]).map(
-                            (opt) => <option key={opt} value={opt}>{opt}</option>
-                          )}
-                        </Select>
-                      </Field>
+                        ))}
+                      </Select>
+                      {isFieldMissing('budget') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
 
+                    <FormNav>
+                      <Button type="button" size="medium" variant="outline" onClick={handleBackToBasics}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.form.back')}
+                      </Button>
+                      <Button type="button" size="large" onClick={handleNextToDetails}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
+                )}
+
+                {/* ── Step 3: Details ── */}
+                {step === 'details' && (
+                  <motion.div
+                    key="details"
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <StepDot $active />
+                      <StepDot $active />
+                      <StepDot $active />
+                      <StepLabel>{t('order.form.stepLabel', { current: 3, total: 3 })} — {t('order.form.stepDetails')}</StepLabel>
+                    </StepIndicator>
+
+                    <form onSubmit={handleGenerate} noValidate>
                       <Field>
                         <Label htmlFor="order-description">
                           {t('order.form.description')}
@@ -905,6 +1153,59 @@ export const OrderSection: React.FC = () => {
                           value={form.description}
                           onChange={handleChange}
                         />
+                        {isFieldMissing('description') && (
+                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            {t('order.form.requiredField')}
+                          </FieldError>
+                        )}
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-contentReady">{t('order.form.contentReady')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-contentReady"
+                          name="contentReady"
+                          required
+                          value={form.contentReady}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.contentReadyPlaceholder')}
+                          </option>
+                          {(t('order.form.contentReadyOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => <option key={opt} value={opt}>{opt}</option>
+                          )}
+                        </Select>
+                        {isFieldMissing('contentReady') && (
+                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            {t('order.form.requiredField')}
+                          </FieldError>
+                        )}
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-hasDomain">{t('order.form.hasDomain')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-hasDomain"
+                          name="hasDomain"
+                          required
+                          value={form.hasDomain}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.hasDomainPlaceholder')}
+                          </option>
+                          {(t('order.form.hasDomainOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => <option key={opt} value={opt}>{opt}</option>
+                          )}
+                        </Select>
+                        {isFieldMissing('hasDomain') && (
+                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            {t('order.form.requiredField')}
+                          </FieldError>
+                        )}
                       </Field>
 
                       <Field>
@@ -948,14 +1249,35 @@ export const OrderSection: React.FC = () => {
                         </FileInputWrapper>
                       </Field>
 
-                      <SubmitRow>
+                      <Field>
+                        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={rodoConsent}
+                            onChange={(e) => setRodoConsent(e.target.checked)}
+                            style={{ marginTop: '0.2rem', accentColor: 'var(--color-primary, #6366f1)' }}
+                          />
+                          <FieldHint style={{ opacity: 1 }}>{t('order.form.rodoConsent')}</FieldHint>
+                        </label>
+                        {!rodoConsent && touched.has('description') && (
+                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            {t('order.form.rodoRequired')}
+                          </FieldError>
+                        )}
+                      </Field>
+
+                      <FormNav>
+                        <Button type="button" size="medium" variant="outline" onClick={handleBackToProject}>
+                          <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                          {t('order.form.back')}
+                        </Button>
                         <Button type="submit" size="large" disabled={fileSizeError}>
                           {t('order.form.generate')}
                           <MdChevronRight
                             style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }}
                           />
                         </Button>
-                      </SubmitRow>
+                      </FormNav>
                     </form>
                   </motion.div>
                 )}
