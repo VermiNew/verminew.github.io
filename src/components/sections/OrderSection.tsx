@@ -79,6 +79,8 @@ const PreviewCard = styled(motion.div)<{ $isDark: boolean }>`
 
   &:hover > div[data-overlay] {
     opacity: 1;
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.12);
   }
 
   &:hover {
@@ -92,15 +94,15 @@ const PreviewCard = styled(motion.div)<{ $isDark: boolean }>`
 const PreviewOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: ${({ theme }) => `${theme.colors.primary}18`};
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  opacity: 0;
-  transition: opacity 0.25s;
+  opacity: 0.75;
+  transition: opacity 0.25s, backdrop-filter 0.25s;
   border-radius: 20px;
 `;
 
