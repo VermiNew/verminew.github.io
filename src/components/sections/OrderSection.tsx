@@ -1,19 +1,49 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
-import { MdCheckCircle, MdError, MdSend } from 'react-icons/md';
+import {
+  MdDownload,
+  MdEmail,
+  MdContentCopy,
+  MdCheck,
+  MdArrowBack,
+  MdAttachFile,
+  MdChevronRight,
+} from 'react-icons/md';
 import { SectionContainer } from '@/components/layout/SectionContainer';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Button } from '@/components/ui/Button';
 import { useAnimation } from '@/context/AnimationContext';
+import { socialConfig } from '@/config/social';
+import JSZip from 'jszip';
 
-// ── Replace with your real Formspree endpoint ──────────────────────────────
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
-// ───────────────────────────────────────────────────────────────────────────
+// ── Constants ──────────────────────────────────────────────────────────────────
+const MAX_TOTAL_SIZE_MB = 20;
+const MAX_TOTAL_SIZE_BYTES = MAX_TOTAL_SIZE_MB * 1024 * 1024;
+const ACCEPTED_TYPES = 'image/*,.pdf,.zip,.txt,.doc,.docx';
+// ───────────────────────────────────────────────────────────────────────────────
 
+// ── Types ──────────────────────────────────────────────────────────────────────
+type Step = 'form' | 'summary';
+
+interface FormData {
+  name: string;
+  email: string;
+  type: string;
+  budget: string;
+  description: string;
+}
+
+interface OrderPayload extends FormData {
+  id: string;
+  createdAt: string;
+}
+// ───────────────────────────────────────────────────────────────────────────────
+
+// ── Styled components ──────────────────────────────────────────────────────────
 const Wrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -56,6 +86,12 @@ const Label = styled.label`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.primary};
   letter-spacing: 0.3px;
+`;
+
+const FieldHint = styled.span`
+  font-size: 0.78rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  opacity: 0.75;
 `;
 
 const inputStyles = `
@@ -126,34 +162,165 @@ const Textarea = styled.textarea<{ $isDark: boolean }>`
   }
 `;
 
+const FileInputWrapper = styled.div<{ $isDark: boolean; $hasError: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1.5px ${({ $hasError, theme }) => ($hasError ? '#ef4444' : `${theme.colors.primary}30`)} dashed;
+  background: ${({ theme, $isDark }) =>
+    $isDark ? `${theme.colors.background}cc` : `${theme.colors.surface}cc`};
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  input {
+    display: none;
+  }
+`;
+
+const FileCount = styled.span<{ $hasError: boolean }>`
+  font-size: 0.9rem;
+  color: ${({ $hasError, theme }) => ($hasError ? '#ef4444' : theme.colors.textSecondary)};
+`;
+
 const SubmitRow = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 0.5rem;
 `;
 
-const StatusBanner = styled(motion.div)<{ $type: 'success' | 'error' }>`
+// ── Summary screen styled components ──────────────────────────────────────────
+const SummaryTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0 0 0.25rem 0;
+`;
+
+const SummarySubtitle = styled.p`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin: 0 0 2rem 0;
+`;
+
+const IdBox = styled.button<{ $isDark: boolean; $copied: boolean }>`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 1.25rem;
   border-radius: 12px;
-  font-size: 1rem;
-  background: ${({ $type, theme }) =>
-    $type === 'success'
-      ? `${theme.colors.primary}15`
-      : '#ef444415'};
-  border: 1px solid ${({ $type, theme }) =>
-    $type === 'success' ? theme.colors.primary : '#ef4444'};
-  color: ${({ $type, theme }) =>
-    $type === 'success' ? theme.colors.primary : '#ef4444'};
+  border: 2px solid ${({ theme, $copied }) => ($copied ? theme.colors.primary : `${theme.colors.primary}40`)};
+  background: ${({ theme }) => `${theme.colors.primary}10`};
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.1s;
+  margin-bottom: 2rem;
 
-  svg {
-    font-size: 1.4rem;
-    flex-shrink: 0;
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:active {
+    transform: scale(0.99);
   }
 `;
 
+const IdLabel = styled.span`
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.primary};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  text-align: left;
+`;
+
+const IdValue = styled.span`
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.text};
+  word-break: break-all;
+  text-align: left;
+`;
+
+const IdCopyHint = styled.span`
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+`;
+
+const ActionGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const DownloadRow = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const ManualSection = styled(motion.div)<{ $isDark: boolean }>`
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: ${({ theme, $isDark }) =>
+    $isDark ? `${theme.colors.background}99` : `${theme.colors.surface}99`};
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+`;
+
+const ManualTitle = styled.h3`
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primary};
+  margin: 0 0 1rem 0;
+`;
+
+const ManualRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.85rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const ManualRowLabel = styled.span`
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+`;
+
+const ManualRowValue = styled.span`
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.text};
+  font-family: 'Courier New', monospace;
+  word-break: break-all;
+`;
+
+const BackRow = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+`;
+// ───────────────────────────────────────────────────────────────────────────────
+
+// ── Animation variants ─────────────────────────────────────────────────────────
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
@@ -164,7 +331,12 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
 
-type Status = 'idle' | 'loading' | 'success' | 'error';
+const slideVariants = {
+  initial: (dir: number) => ({ opacity: 0, x: dir * 40 }),
+  animate: { opacity: 1, x: 0, transition: { duration: 0.35, ease: 'easeOut' } },
+  exit: (dir: number) => ({ opacity: 0, x: dir * -40, transition: { duration: 0.25 } }),
+};
+// ───────────────────────────────────────────────────────────────────────────────
 
 export const OrderSection: React.FC = () => {
   const { t } = useTranslation();
@@ -172,43 +344,119 @@ export const OrderSection: React.FC = () => {
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { reducedMotion } = useAnimation();
 
-  const [status, setStatus] = useState<Status>('idle');
-  const [form, setForm] = useState({
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // ── Form state ───────────────────────────────────────────────────────────────
+  const [step, setStep] = useState<Step>('form');
+  const [slideDir, setSlideDir] = useState(1); // 1 = forward, -1 = back
+  const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
     type: '',
     budget: '',
     description: '',
   });
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileSizeError, setFileSizeError] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  // ── Summary state ────────────────────────────────────────────────────────────
+  const [orderId, setOrderId] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [manualOpen, setManualOpen] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
+  // ── Derived ──────────────────────────────────────────────────────────────────
+  const fileCountKey =
+    files.length === 0
+      ? 'order.form.attachmentsCount_zero'
+      : files.length === 1
+        ? 'order.form.attachmentsCount_one'
+        : 'order.form.attachmentsCount_few';
 
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(form),
-      });
+  // ── Handlers ─────────────────────────────────────────────────────────────────
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    },
+    []
+  );
 
-      if (res.ok) {
-        setStatus('success');
-        setForm({ name: '', email: '', type: '', budget: '', description: '' });
-      } else {
-        setStatus('error');
-      }
-    } catch {
-      setStatus('error');
+  const handleFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? []);
+    const total = selected.reduce((acc, f) => acc + f.size, 0);
+    if (total > MAX_TOTAL_SIZE_BYTES) {
+      setFileSizeError(true);
+      setFiles([]);
+    } else {
+      setFileSizeError(false);
+      setFiles(selected);
     }
-  };
+  }, []);
 
+  const handleGenerate = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (fileSizeError) return;
+      const id = crypto.randomUUID();
+      setOrderId(id);
+      setSlideDir(1);
+      setStep('summary');
+    },
+    [fileSizeError]
+  );
+
+  const handleBack = useCallback(() => {
+    setSlideDir(-1);
+    setStep('form');
+    setCopied(false);
+    setManualOpen(false);
+  }, []);
+
+  const handleCopyId = useCallback(async () => {
+    await navigator.clipboard.writeText(orderId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [orderId]);
+
+  /** Builds OrderPayload and triggers ZIP download */
+  const handleDownloadZip = useCallback(async () => {
+    const zip = new JSZip();
+
+    const payload: OrderPayload = {
+      id: orderId,
+      createdAt: new Date().toISOString(),
+      ...form,
+    };
+
+    zip.file(`zamowienie-${orderId}.json`, JSON.stringify(payload, null, 2));
+
+    files.forEach((file) => {
+      zip.file(file.name, file);
+    });
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `files_for_order.zip`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [orderId, form, files]);
+
+  /** Opens default mail client with pre-filled subject and localized body */
+  const handleOpenMailClient = useCallback(() => {
+    const subject = encodeURIComponent(
+      t('order.summary.mailSubject', { id: orderId })
+    );
+    const body = encodeURIComponent(
+      t('order.summary.mailBody', {
+        id: orderId,
+        date: new Date().toLocaleString(),
+      })
+    );
+    window.location.href = `mailto:${socialConfig.email.address}?subject=${subject}&body=${body}`;
+  }, [orderId, t]);
+
+  // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <SectionContainer id="order">
       <SectionTitle>{t('order.title')}</SectionTitle>
@@ -222,142 +470,252 @@ export const OrderSection: React.FC = () => {
           {t('order.description')}
         </Description>
 
-        <Card
-          $isDark={isDark}
-          variants={!reducedMotion ? itemVariants : undefined}
-        >
-          <AnimatePresence>
-            {status === 'success' && (
-              <StatusBanner
-                $type="success"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                style={{ marginBottom: '1.5rem' }}
-              >
-                <MdCheckCircle />
-                {t('order.form.success')}
-              </StatusBanner>
-            )}
-            {status === 'error' && (
-              <StatusBanner
-                $type="error"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                style={{ marginBottom: '1.5rem' }}
-              >
-                <MdError />
-                {t('order.form.error')}
-              </StatusBanner>
-            )}
-          </AnimatePresence>
+        <AnimatePresence mode="wait" custom={slideDir}>
+          {step === 'form' && (
+            <Card
+              key="form"
+              $isDark={isDark}
+              variants={!reducedMotion ? slideVariants : undefined}
+              custom={slideDir}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{ width: '100%' }}
+            >
+              <form onSubmit={handleGenerate} noValidate>
+                {/* Name */}
+                <Field>
+                  <Label htmlFor="order-name">{t('order.form.name')}</Label>
+                  <Input
+                    $isDark={isDark}
+                    id="order-name"
+                    name="name"
+                    type="text"
+                    required
+                    placeholder={t('order.form.namePlaceholder')}
+                    value={form.name}
+                    onChange={handleChange}
+                  />
+                </Field>
 
-          <form onSubmit={handleSubmit} noValidate>
-            <Field>
-              <Label htmlFor="order-name">{t('order.form.name')}</Label>
-              <Input
-                $isDark={isDark}
-                id="order-name"
-                name="name"
-                type="text"
-                required
-                placeholder={t('order.form.namePlaceholder')}
-                value={form.name}
-                onChange={handleChange}
-              />
-            </Field>
+                {/* Email */}
+                <Field>
+                  <Label htmlFor="order-email">{t('order.form.email')}</Label>
+                  <Input
+                    $isDark={isDark}
+                    id="order-email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder={t('order.form.emailPlaceholder')}
+                    value={form.email}
+                    onChange={handleChange}
+                  />
+                </Field>
 
-            <Field>
-              <Label htmlFor="order-email">{t('order.form.email')}</Label>
-              <Input
-                $isDark={isDark}
-                id="order-email"
-                name="email"
-                type="email"
-                required
-                placeholder={t('order.form.emailPlaceholder')}
-                value={form.email}
-                onChange={handleChange}
-              />
-            </Field>
+                {/* Service type */}
+                <Field>
+                  <Label htmlFor="order-type">{t('order.form.type')}</Label>
+                  <Select
+                    $isDark={isDark}
+                    id="order-type"
+                    name="type"
+                    required
+                    value={form.type}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>
+                      {t('order.form.typePlaceholder')}
+                    </option>
+                    {(
+                      t('order.form.typeOptions', { returnObjects: true }) as string[]
+                    ).map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
 
-            <Field>
-              <Label htmlFor="order-type">{t('order.form.type')}</Label>
-              <Select
-                $isDark={isDark}
-                id="order-type"
-                name="type"
-                required
-                value={form.type}
-                onChange={handleChange}
-              >
-                <option value="" disabled>
-                  {t('order.form.typePlaceholder')}
-                </option>
-                {(
-                  t('order.form.typeOptions', { returnObjects: true }) as string[]
-                ).map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+                {/* Budget */}
+                <Field>
+                  <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
+                  <Select
+                    $isDark={isDark}
+                    id="order-budget"
+                    name="budget"
+                    required
+                    value={form.budget}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>
+                      {t('order.form.budgetPlaceholder')}
+                    </option>
+                    {(
+                      t('order.form.budgetOptions', { returnObjects: true }) as string[]
+                    ).map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
 
-            <Field>
-              <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
-              <Select
-                $isDark={isDark}
-                id="order-budget"
-                name="budget"
-                required
-                value={form.budget}
-                onChange={handleChange}
-              >
-                <option value="" disabled>
-                  {t('order.form.budgetPlaceholder')}
-                </option>
-                {(
-                  t('order.form.budgetOptions', { returnObjects: true }) as string[]
-                ).map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+                {/* Description */}
+                <Field>
+                  <Label htmlFor="order-description">{t('order.form.description')}</Label>
+                  <Textarea
+                    $isDark={isDark}
+                    id="order-description"
+                    name="description"
+                    required
+                    placeholder={t('order.form.descriptionPlaceholder')}
+                    value={form.description}
+                    onChange={handleChange}
+                  />
+                </Field>
 
-            <Field>
-              <Label htmlFor="order-description">{t('order.form.description')}</Label>
-              <Textarea
-                $isDark={isDark}
-                id="order-description"
-                name="description"
-                required
-                placeholder={t('order.form.descriptionPlaceholder')}
-                value={form.description}
-                onChange={handleChange}
-              />
-            </Field>
+                {/* Attachments */}
+                <Field>
+                  <Label>{t('order.form.attachments')}</Label>
+                  <FieldHint>{t('order.form.attachmentsHint')}</FieldHint>
+                  <FileInputWrapper
+                    $isDark={isDark}
+                    $hasError={fileSizeError}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <MdAttachFile size={20} style={{ flexShrink: 0, opacity: 0.6 }} />
+                    <FileCount $hasError={fileSizeError}>
+                      {fileSizeError
+                        ? t('order.form.attachmentsTooBig')
+                        : files.length === 0
+                          ? t('order.form.attachmentsCount_zero')
+                          : files.length === 1
+                            ? t('order.form.attachmentsCount_one')
+                            : t(fileCountKey, { count: files.length })}
+                    </FileCount>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      multiple
+                      accept={ACCEPTED_TYPES}
+                      onChange={handleFiles}
+                    />
+                  </FileInputWrapper>
+                </Field>
 
-            <SubmitRow>
-              <Button
-                type="submit"
-                size="large"
-                disabled={status === 'loading'}
-              >
-                {status === 'loading'
-                  ? t('order.form.sending')
-                  : <>
-                      <MdSend style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
-                      {t('order.form.submit')}
-                    </>
-                }
-              </Button>
-            </SubmitRow>
-          </form>
-        </Card>
+                <SubmitRow>
+                  <Button type="submit" size="large" disabled={fileSizeError}>
+                    {t('order.form.generate')}
+                    <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                  </Button>
+                </SubmitRow>
+              </form>
+            </Card>
+          )}
+
+          {step === 'summary' && (
+            <Card
+              key="summary"
+              $isDark={isDark}
+              variants={!reducedMotion ? slideVariants : undefined}
+              custom={slideDir}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{ width: '100%' }}
+            >
+              <SummaryTitle>{t('order.summary.title')}</SummaryTitle>
+              <SummarySubtitle>{t('order.summary.subtitle')}</SummarySubtitle>
+
+              {/* Order ID box — click to copy */}
+              <IdBox $isDark={isDark} $copied={copied} onClick={handleCopyId} type="button">
+                <div>
+                  <IdLabel>{t('order.summary.idLabel')}</IdLabel>
+                  <IdValue>{orderId}</IdValue>
+                </div>
+                <IdCopyHint>
+                  {copied ? (
+                    <MdCheck color="currentColor" />
+                  ) : (
+                    <MdContentCopy color="currentColor" />
+                  )}
+                </IdCopyHint>
+              </IdBox>
+
+              {/* Download ZIP */}
+              <DownloadRow>
+                <Button size="large" onClick={handleDownloadZip} style={{ width: '100%' }}>
+                  <MdDownload style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                  {t('order.summary.downloadZip')}
+                </Button>
+              </DownloadRow>
+
+              {/* Open mail client / Manual */}
+              <ActionGrid>
+                <Button size="medium" onClick={handleOpenMailClient}>
+                  <MdEmail style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                  {t('order.summary.sendEmail')}
+                </Button>
+                <Button
+                  size="medium"
+                  variant="outline"
+                  onClick={() => setManualOpen((v) => !v)}
+                >
+                  {manualOpen
+                    ? t('order.summary.manual')
+                    : t('order.summary.manual')}
+                  <MdChevronRight
+                    style={{
+                      marginLeft: '0.25rem',
+                      verticalAlign: 'middle',
+                      transform: manualOpen ? 'rotate(90deg)' : 'none',
+                      transition: 'transform 0.2s',
+                    }}
+                  />
+                </Button>
+              </ActionGrid>
+
+              {/* Manual instructions accordion */}
+              <AnimatePresence>
+                {manualOpen && (
+                  <ManualSection
+                    $isDark={isDark}
+                    key="manual"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <ManualTitle>{t('order.summary.manualTitle')}</ManualTitle>
+
+                    <ManualRow>
+                      <ManualRowLabel>{t('order.summary.manualTo')}</ManualRowLabel>
+                      <ManualRowValue>{socialConfig.email.address}</ManualRowValue>
+                    </ManualRow>
+
+                    <ManualRow>
+                      <ManualRowLabel>{t('order.summary.manualSubject')}</ManualRowLabel>
+                      <ManualRowValue>Zamówienie {orderId}</ManualRowValue>
+                    </ManualRow>
+
+                    <ManualRow>
+                      <ManualRowLabel>{t('order.summary.manualAttach')}</ManualRowLabel>
+                      <ManualRowValue>zamowienie-{orderId}.zip</ManualRowValue>
+                    </ManualRow>
+                  </ManualSection>
+                )}
+              </AnimatePresence>
+
+              <BackRow>
+                <Button size="medium" variant="outline" onClick={handleBack}>
+                  <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                  {t('order.summary.back')}
+                </Button>
+              </BackRow>
+            </Card>
+          )}
+        </AnimatePresence>
       </Wrapper>
     </SectionContainer>
   );

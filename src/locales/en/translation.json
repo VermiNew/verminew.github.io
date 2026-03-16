@@ -332,7 +332,7 @@
   },
   "order": {
     "title": "Start a Project",
-    "description": "Interested in working together? Tell me about your project and let's discuss how I can help bring your ideas to life.",
+    "description": "Interested in working together? Fill out the form and I'll generate an order package ready to send by email.",
     "form": {
       "name": "Full Name",
       "namePlaceholder": "What is your or your company's name?",
@@ -357,10 +357,32 @@
       ],
       "description": "Project Details",
       "descriptionPlaceholder": "Tell me what you need. What's the main function of your software? Who will be the end user? What is absolutely crucial for you?",
-      "submit": "Send Request for Free Quote",
-      "sending": "Sending...",
-      "success": "Great! I've received your request. I will respond as soon as possible.",
-      "error": "An unexpected error occurred. Please make sure adblock isn't interfering or contact me directly via email."
+      "attachments": "Attachments (optional)",
+      "attachmentsHint": "You can attach images, PDFs, ZIPs — max 20 MB total",
+      "attachmentsCount_zero": "No files",
+      "attachmentsCount_one": "1 file selected",
+      "attachmentsCount_other": "{{count}} files selected",
+      "attachmentsTooBig": "Total file size exceeds 20 MB",
+      "generate": "Generate order"
+    },
+    "summary": {
+      "title": "Order ready!",
+      "subtitle": "Your order is below. Download the ZIP package and send it to me by email.",
+      "idLabel": "Order ID",
+      "idCopied": "Copied!",
+      "idCopy": "Click to copy",
+      "downloadZip": "Download package (.zip)",
+      "sendEmail": "Open mail client",
+      "sendEmailHint": "Opens your mail app with the subject pre-filled",
+      "manual": "Send manually",
+      "manualTitle": "Manual send instructions",
+      "manualTo": "To:",
+      "manualSubject": "Email subject:",
+      "manualAttach": "Download and attach the ZIP package",
+      "manualBody": "Body: (contents of the JSON file from the package)",
+      "back": "Go back and edit the form",
+      "mailSubject": "Order {{id}}",
+      "mailBody": "Order ID: {{id}}\n\nPlease download and attach the file files_for_order.zip\n\nGenerated: {{date}}"
     }
   },
   "services": {

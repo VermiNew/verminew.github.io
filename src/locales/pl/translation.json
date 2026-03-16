@@ -333,7 +333,7 @@
   },
   "order": {
     "title": "Zamówienie",
-    "description": "Zainteresowany współpracą? Opowiedz mi o swoim projekcie i omówmy, jak mogę pomóc w urzeczywistnieniu twoich pomysłów.",
+    "description": "Zainteresowany współpracą? Wypełnij formularz, a wygeneruję dla Ciebie paczkę z zamówieniem gotową do wysyłki mailem.",
     "form": {
       "name": "Pełne imię i nazwisko",
       "namePlaceholder": "Z kim mam przyjemność?",
@@ -358,10 +358,33 @@
       ],
       "description": "Szczegóły zlecenia",
       "descriptionPlaceholder": "Napisz mi czego potrzebujesz. Jaką funkcję ma spełniać program/strona? Kto będzie głównym użytkownikiem? Co jest dla Ciebie najważniejsze?",
-      "submit": "Wyślij zapytanie o bezpłatną wycenę",
-      "sending": "Trwa wysyłanie...",
-      "success": "Świetnie! Otrzymałem Twoje zapytanie. Odpiszę najszybciej jak to możliwe.",
-      "error": "Wystąpił nieoczekiwany błąd. Upewnij się, że nie masz adblocka lub skontaktuj się ze mną e-mailem."
+      "attachments": "Załączniki (opcjonalne)",
+      "attachmentsHint": "Możesz dołączyć obrazy, PDF, ZIP — maks. 20 MB łącznie",
+      "attachmentsCount_zero": "Brak plików",
+      "attachmentsCount_one": "1 plik wybrany",
+      "attachmentsCount_few": "{{count}} pliki wybrane",
+      "attachmentsCount_many": "{{count}} plików wybranych",
+      "attachmentsTooBig": "Łączny rozmiar plików przekracza 20 MB",
+      "generate": "Generuj zamówienie"
+    },
+    "summary": {
+      "title": "Zamówienie gotowe!",
+      "subtitle": "Poniżej znajdziesz swoje zamówienie. Pobierz paczkę ZIP i wyślij ją do mnie mailem.",
+      "idLabel": "Identyfikator zamówienia",
+      "idCopied": "Skopiowano!",
+      "idCopy": "Kliknij, aby skopiować",
+      "downloadZip": "Pobierz paczkę (.zip)",
+      "sendEmail": "Otwórz klienta poczty",
+      "sendEmailHint": "Otworzy Twój program pocztowy z wypełnionym tytułem",
+      "manual": "Wyślij ręcznie",
+      "manualTitle": "Instrukcja ręcznego wysłania",
+      "manualTo": "Do:",
+      "manualSubject": "Tytuł maila:",
+      "manualAttach": "Pobierz i dołącz paczkę ZIP",
+      "manualBody": "Treść: (zawartość pliku JSON z paczki)",
+      "back": "Wróć i edytuj formularz",
+      "mailSubject": "Zamówienie {{id}}",
+      "mailBody": "ID zamówienia: {{id}}\n\nPobierz i dołącz plik files_for_order.zip\n\nWygenerowano: {{date}}"
     }
   },
   "services": {

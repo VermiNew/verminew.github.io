@@ -11,6 +11,7 @@ interface ButtonProps {
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 const StyledButton = styled.button<{
