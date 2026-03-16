@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
@@ -12,6 +12,8 @@ import {
   MdArrowBack,
   MdAttachFile,
   MdChevronRight,
+  MdClose,
+  MdEdit,
 } from 'react-icons/md';
 import { SectionContainer } from '@/components/layout/SectionContainer';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -21,8 +23,7 @@ import { socialConfig } from '@/config/social';
 import JSZip from 'jszip';
 
 // ── Constants ──────────────────────────────────────────────────────────────────
-const MAX_TOTAL_SIZE_MB = 20;
-const MAX_TOTAL_SIZE_BYTES = MAX_TOTAL_SIZE_MB * 1024 * 1024;
+const MAX_TOTAL_SIZE_BYTES = 20 * 1024 * 1024;
 const ACCEPTED_TYPES = 'image/*,.pdf,.zip,.txt,.doc,.docx';
 // ───────────────────────────────────────────────────────────────────────────────
 
@@ -43,7 +44,7 @@ interface OrderPayload extends FormData {
 }
 // ───────────────────────────────────────────────────────────────────────────────
 
-// ── Styled components ──────────────────────────────────────────────────────────
+// ── Preview styled components ──────────────────────────────────────────────────
 const Wrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -63,7 +64,7 @@ const Description = styled(motion.p)`
   margin: 0 auto;
 `;
 
-const Card = styled(motion.div)<{ $isDark: boolean }>`
+const PreviewCard = styled(motion.div)<{ $isDark: boolean }>`
   width: 100%;
   padding: 2.5rem;
   border-radius: 20px;
@@ -72,8 +73,140 @@ const Card = styled(motion.div)<{ $isDark: boolean }>`
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
   backdrop-filter: blur(5px);
   box-shadow: ${({ theme }) => theme.shadows.medium};
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover > div[data-overlay] {
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: ${({ theme }) => `${theme.colors.primary}50`};
+    box-shadow: ${({ theme }) => theme.shadows.large};
+  }
+
+  transition: border-color 0.25s, box-shadow 0.25s;
 `;
 
+const PreviewOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: ${({ theme }) => `${theme.colors.primary}18`};
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.25s;
+  border-radius: 20px;
+`;
+
+const PreviewCta = styled.span`
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const PreviewHint = styled.span`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+// Skeleton field for the preview
+const PreviewField = styled.div`
+  margin-bottom: 1.25rem;
+`;
+
+const PreviewLabel = styled.div<{ $w?: string }>`
+  height: 0.75rem;
+  width: ${({ $w }) => $w ?? '35%'};
+  border-radius: 4px;
+  background: ${({ theme }) => `${theme.colors.primary}25`};
+  margin-bottom: 0.5rem;
+`;
+
+const PreviewInput = styled.div`
+  height: 2.75rem;
+  border-radius: 10px;
+  background: ${({ theme }) => `${theme.colors.textSecondary}10`};
+  border: 1.5px solid ${({ theme }) => `${theme.colors.primary}15`};
+`;
+
+const PreviewTextarea = styled(PreviewInput)`
+  height: 7rem;
+`;
+
+const PreviewRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+`;
+// ───────────────────────────────────────────────────────────────────────────────
+
+// ── Modal styled components ────────────────────────────────────────────────────
+const ModalBackdrop = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+`;
+
+const ModalContainer = styled(motion.div)<{ $isDark: boolean }>`
+  width: 100%;
+  max-width: 740px;
+  margin: auto;
+  padding: 2.5rem;
+  border-radius: 20px;
+  background: ${({ theme, $isDark }) =>
+    $isDark ? theme.colors.surface : theme.colors.background};
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  flex-shrink: 0;
+`;
+
+const ModalCloseButton = styled.button`
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: none;
+  background: ${({ theme }) => `${theme.colors.primary}15`};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => `${theme.colors.primary}30`};
+    color: ${({ theme }) => theme.colors.text};
+  }
+`;
+
+const ModalTitle = styled.h2`
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0 0 2rem 0;
+  padding-right: 2.5rem;
+`;
+// ───────────────────────────────────────────────────────────────────────────────
+
+// ── Form styled components ─────────────────────────────────────────────────────
 const Field = styled.div`
   display: flex;
   flex-direction: column;
@@ -168,7 +301,8 @@ const FileInputWrapper = styled.div<{ $isDark: boolean; $hasError: boolean }>`
   gap: 1rem;
   padding: 0.85rem 1rem;
   border-radius: 10px;
-  border: 1.5px ${({ $hasError, theme }) => ($hasError ? '#ef4444' : `${theme.colors.primary}30`)} dashed;
+  border: 1.5px ${({ $hasError, theme }) =>
+    $hasError ? '#ef4444' : `${theme.colors.primary}30`} dashed;
   background: ${({ theme, $isDark }) =>
     $isDark ? `${theme.colors.background}cc` : `${theme.colors.surface}cc`};
   cursor: pointer;
@@ -185,7 +319,8 @@ const FileInputWrapper = styled.div<{ $isDark: boolean; $hasError: boolean }>`
 
 const FileCount = styled.span<{ $hasError: boolean }>`
   font-size: 0.9rem;
-  color: ${({ $hasError, theme }) => ($hasError ? '#ef4444' : theme.colors.textSecondary)};
+  color: ${({ $hasError, theme }) =>
+    $hasError ? '#ef4444' : theme.colors.textSecondary};
 `;
 
 const SubmitRow = styled.div`
@@ -193,8 +328,9 @@ const SubmitRow = styled.div`
   justify-content: flex-end;
   margin-top: 0.5rem;
 `;
+// ───────────────────────────────────────────────────────────────────────────────
 
-// ── Summary screen styled components ──────────────────────────────────────────
+// ── Summary styled components ──────────────────────────────────────────────────
 const SummaryTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
@@ -215,7 +351,8 @@ const IdBox = styled.button<{ $isDark: boolean; $copied: boolean }>`
   width: 100%;
   padding: 1rem 1.25rem;
   border-radius: 12px;
-  border: 2px solid ${({ theme, $copied }) => ($copied ? theme.colors.primary : `${theme.colors.primary}40`)};
+  border: 2px solid ${({ theme, $copied }) =>
+    $copied ? theme.colors.primary : `${theme.colors.primary}40`};
   background: ${({ theme }) => `${theme.colors.primary}10`};
   cursor: pointer;
   transition: border-color 0.2s, transform 0.1s;
@@ -331,6 +468,18 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
 
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.25 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const modalVariants = {
+  hidden: { opacity: 0, scale: 0.96, y: 20 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+  exit: { opacity: 0, scale: 0.96, y: 10, transition: { duration: 0.2 } },
+};
+
 const slideVariants = {
   initial: (dir: number) => ({ opacity: 0, x: dir * 40 }),
   animate: { opacity: 1, x: 0, transition: { duration: 0.35, ease: 'easeOut' } },
@@ -346,9 +495,12 @@ export const OrderSection: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // ── Modal state ──────────────────────────────────────────────────────────────
+  const [modalOpen, setModalOpen] = useState(false);
+
   // ── Form state ───────────────────────────────────────────────────────────────
   const [step, setStep] = useState<Step>('form');
-  const [slideDir, setSlideDir] = useState(1); // 1 = forward, -1 = back
+  const [slideDir, setSlideDir] = useState(1);
   const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
@@ -364,15 +516,27 @@ export const OrderSection: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
 
-  // ── Derived ──────────────────────────────────────────────────────────────────
-  const fileCountKey =
-    files.length === 0
-      ? 'order.form.attachmentsCount_zero'
-      : files.length === 1
-        ? 'order.form.attachmentsCount_one'
-        : 'order.form.attachmentsCount_few';
+  // ── Lock body scroll when modal is open ──────────────────────────────────────
+  useEffect(() => {
+    document.body.style.overflow = modalOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [modalOpen]);
+
+  // ── Close on Escape ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setModalOpen(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
+  const openModal = useCallback(() => setModalOpen(true), []);
+  const closeModal = useCallback(() => setModalOpen(false), []);
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -417,41 +581,28 @@ export const OrderSection: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   }, [orderId]);
 
-  /** Builds OrderPayload and triggers ZIP download */
   const handleDownloadZip = useCallback(async () => {
     const zip = new JSZip();
-
     const payload: OrderPayload = {
       id: orderId,
       createdAt: new Date().toISOString(),
       ...form,
     };
-
     zip.file(`zamowienie-${orderId}.json`, JSON.stringify(payload, null, 2));
-
-    files.forEach((file) => {
-      zip.file(file.name, file);
-    });
-
+    files.forEach((file) => { zip.file(file.name, file); });
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `files_for_order.zip`;
+    a.download = 'files_for_order.zip';
     a.click();
     URL.revokeObjectURL(url);
   }, [orderId, form, files]);
 
-  /** Opens default mail client with pre-filled subject and localized body */
   const handleOpenMailClient = useCallback(() => {
-    const subject = encodeURIComponent(
-      t('order.summary.mailSubject', { id: orderId })
-    );
+    const subject = encodeURIComponent(t('order.summary.mailSubject', { id: orderId }));
     const body = encodeURIComponent(
-      t('order.summary.mailBody', {
-        id: orderId,
-        date: new Date().toLocaleString(),
-      })
+      t('order.summary.mailBody', { id: orderId, date: new Date().toLocaleString() })
     );
     window.location.href = `mailto:${socialConfig.email.address}?subject=${subject}&body=${body}`;
   }, [orderId, t]);
@@ -460,6 +611,7 @@ export const OrderSection: React.FC = () => {
   return (
     <SectionContainer id="order">
       <SectionTitle>{t('order.title')}</SectionTitle>
+
       <Wrapper
         variants={!reducedMotion ? containerVariants : undefined}
         initial="hidden"
@@ -470,253 +622,315 @@ export const OrderSection: React.FC = () => {
           {t('order.description')}
         </Description>
 
-        <AnimatePresence mode="wait" custom={slideDir}>
-          {step === 'form' && (
-            <Card
-              key="form"
+        {/* ── Preview card (always visible, triggers modal) ── */}
+        <PreviewCard
+          $isDark={isDark}
+          variants={!reducedMotion ? itemVariants : undefined}
+          onClick={openModal}
+          role="button"
+          tabIndex={0}
+          aria-label={t('order.preview.cta')}
+          onKeyDown={(e) => e.key === 'Enter' && openModal()}
+        >
+          {/* Skeleton fields */}
+          <PreviewField>
+            <PreviewLabel $w="30%" />
+            <PreviewInput />
+          </PreviewField>
+          <PreviewRow>
+            <PreviewField>
+              <PreviewLabel $w="40%" />
+              <PreviewInput />
+            </PreviewField>
+            <PreviewField>
+              <PreviewLabel $w="35%" />
+              <PreviewInput />
+            </PreviewField>
+          </PreviewRow>
+          <PreviewField>
+            <PreviewLabel $w="45%" />
+            <PreviewInput />
+          </PreviewField>
+          <PreviewField>
+            <PreviewLabel $w="50%" />
+            <PreviewTextarea />
+          </PreviewField>
+
+          {/* CTA overlay */}
+          <PreviewOverlay data-overlay>
+            <MdEdit size={32} color="currentColor" style={{ opacity: 0.7 }} />
+            <PreviewCta>{t('order.preview.cta')}</PreviewCta>
+            <PreviewHint>{t('order.preview.hint')}</PreviewHint>
+          </PreviewOverlay>
+        </PreviewCard>
+      </Wrapper>
+
+      {/* ── Modal ── */}
+      <AnimatePresence>
+        {modalOpen && (
+          <ModalBackdrop
+            key="backdrop"
+            variants={!reducedMotion ? backdropVariants : undefined}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            onClick={closeModal}
+          >
+            <ModalContainer
               $isDark={isDark}
-              variants={!reducedMotion ? slideVariants : undefined}
-              custom={slideDir}
-              initial="initial"
-              animate="animate"
+              variants={!reducedMotion ? modalVariants : undefined}
+              initial="hidden"
+              animate="visible"
               exit="exit"
-              style={{ width: '100%' }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <form onSubmit={handleGenerate} noValidate>
-                {/* Name */}
-                <Field>
-                  <Label htmlFor="order-name">{t('order.form.name')}</Label>
-                  <Input
-                    $isDark={isDark}
-                    id="order-name"
-                    name="name"
-                    type="text"
-                    required
-                    placeholder={t('order.form.namePlaceholder')}
-                    value={form.name}
-                    onChange={handleChange}
-                  />
-                </Field>
+              <ModalCloseButton
+                onClick={closeModal}
+                aria-label={t('order.modal.close')}
+                type="button"
+              >
+                <MdClose />
+              </ModalCloseButton>
 
-                {/* Email */}
-                <Field>
-                  <Label htmlFor="order-email">{t('order.form.email')}</Label>
-                  <Input
-                    $isDark={isDark}
-                    id="order-email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder={t('order.form.emailPlaceholder')}
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                </Field>
+              <ModalTitle>{t('order.title')}</ModalTitle>
 
-                {/* Service type */}
-                <Field>
-                  <Label htmlFor="order-type">{t('order.form.type')}</Label>
-                  <Select
-                    $isDark={isDark}
-                    id="order-type"
-                    name="type"
-                    required
-                    value={form.type}
-                    onChange={handleChange}
+              <AnimatePresence mode="wait" custom={slideDir}>
+                {step === 'form' && (
+                  <motion.div
+                    key="form"
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
                   >
-                    <option value="" disabled>
-                      {t('order.form.typePlaceholder')}
-                    </option>
-                    {(
-                      t('order.form.typeOptions', { returnObjects: true }) as string[]
-                    ).map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Select>
-                </Field>
+                    <form onSubmit={handleGenerate} noValidate>
+                      <Field>
+                        <Label htmlFor="order-name">{t('order.form.name')}</Label>
+                        <Input
+                          $isDark={isDark}
+                          id="order-name"
+                          name="name"
+                          type="text"
+                          required
+                          placeholder={t('order.form.namePlaceholder')}
+                          value={form.name}
+                          onChange={handleChange}
+                        />
+                      </Field>
 
-                {/* Budget */}
-                <Field>
-                  <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
-                  <Select
-                    $isDark={isDark}
-                    id="order-budget"
-                    name="budget"
-                    required
-                    value={form.budget}
-                    onChange={handleChange}
+                      <Field>
+                        <Label htmlFor="order-email">{t('order.form.email')}</Label>
+                        <Input
+                          $isDark={isDark}
+                          id="order-email"
+                          name="email"
+                          type="email"
+                          required
+                          placeholder={t('order.form.emailPlaceholder')}
+                          value={form.email}
+                          onChange={handleChange}
+                        />
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-type">{t('order.form.type')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-type"
+                          name="type"
+                          required
+                          value={form.type}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.typePlaceholder')}
+                          </option>
+                          {(t('order.form.typeOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => (
+                              <option key={opt} value={opt}>
+                                {opt}
+                              </option>
+                            )
+                          )}
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-budget"
+                          name="budget"
+                          required
+                          value={form.budget}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.budgetPlaceholder')}
+                          </option>
+                          {(
+                            t('order.form.budgetOptions', { returnObjects: true }) as string[]
+                          ).map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-description">
+                          {t('order.form.description')}
+                        </Label>
+                        <Textarea
+                          $isDark={isDark}
+                          id="order-description"
+                          name="description"
+                          required
+                          placeholder={t('order.form.descriptionPlaceholder')}
+                          value={form.description}
+                          onChange={handleChange}
+                        />
+                      </Field>
+
+                      <Field>
+                        <Label>{t('order.form.attachments')}</Label>
+                        <FieldHint>{t('order.form.attachmentsHint')}</FieldHint>
+                        <FileInputWrapper
+                          $isDark={isDark}
+                          $hasError={fileSizeError}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <MdAttachFile size={20} style={{ flexShrink: 0, opacity: 0.6 }} />
+                          <FileCount $hasError={fileSizeError}>
+                            {fileSizeError
+                              ? t('order.form.attachmentsTooBig')
+                              : files.length === 0
+                                ? t('order.form.attachmentsCount_zero')
+                                : files.length === 1
+                                  ? t('order.form.attachmentsCount_one')
+                                  : t('order.form.attachmentsCount_few', { count: files.length })}
+                          </FileCount>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            multiple
+                            accept={ACCEPTED_TYPES}
+                            onChange={handleFiles}
+                          />
+                        </FileInputWrapper>
+                      </Field>
+
+                      <SubmitRow>
+                        <Button type="submit" size="large" disabled={fileSizeError}>
+                          {t('order.form.generate')}
+                          <MdChevronRight
+                            style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }}
+                          />
+                        </Button>
+                      </SubmitRow>
+                    </form>
+                  </motion.div>
+                )}
+
+                {step === 'summary' && (
+                  <motion.div
+                    key="summary"
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
                   >
-                    <option value="" disabled>
-                      {t('order.form.budgetPlaceholder')}
-                    </option>
-                    {(
-                      t('order.form.budgetOptions', { returnObjects: true }) as string[]
-                    ).map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </Select>
-                </Field>
+                    <SummaryTitle>{t('order.summary.title')}</SummaryTitle>
+                    <SummarySubtitle>{t('order.summary.subtitle')}</SummarySubtitle>
 
-                {/* Description */}
-                <Field>
-                  <Label htmlFor="order-description">{t('order.form.description')}</Label>
-                  <Textarea
-                    $isDark={isDark}
-                    id="order-description"
-                    name="description"
-                    required
-                    placeholder={t('order.form.descriptionPlaceholder')}
-                    value={form.description}
-                    onChange={handleChange}
-                  />
-                </Field>
+                    <IdBox $isDark={isDark} $copied={copied} onClick={handleCopyId} type="button">
+                      <div>
+                        <IdLabel>{t('order.summary.idLabel')}</IdLabel>
+                        <IdValue>{orderId}</IdValue>
+                      </div>
+                      <IdCopyHint>
+                        {copied ? <MdCheck color="currentColor" /> : <MdContentCopy color="currentColor" />}
+                      </IdCopyHint>
+                    </IdBox>
 
-                {/* Attachments */}
-                <Field>
-                  <Label>{t('order.form.attachments')}</Label>
-                  <FieldHint>{t('order.form.attachmentsHint')}</FieldHint>
-                  <FileInputWrapper
-                    $isDark={isDark}
-                    $hasError={fileSizeError}
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <MdAttachFile size={20} style={{ flexShrink: 0, opacity: 0.6 }} />
-                    <FileCount $hasError={fileSizeError}>
-                      {fileSizeError
-                        ? t('order.form.attachmentsTooBig')
-                        : files.length === 0
-                          ? t('order.form.attachmentsCount_zero')
-                          : files.length === 1
-                            ? t('order.form.attachmentsCount_one')
-                            : t(fileCountKey, { count: files.length })}
-                    </FileCount>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      multiple
-                      accept={ACCEPTED_TYPES}
-                      onChange={handleFiles}
-                    />
-                  </FileInputWrapper>
-                </Field>
+                    <DownloadRow>
+                      <Button
+                        size="large"
+                        onClick={handleDownloadZip}
+                        style={{ width: '100%' }}
+                      >
+                        <MdDownload style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                        {t('order.summary.downloadZip')}
+                      </Button>
+                    </DownloadRow>
 
-                <SubmitRow>
-                  <Button type="submit" size="large" disabled={fileSizeError}>
-                    {t('order.form.generate')}
-                    <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
-                  </Button>
-                </SubmitRow>
-              </form>
-            </Card>
-          )}
+                    <ActionGrid>
+                      <Button size="medium" onClick={handleOpenMailClient}>
+                        <MdEmail style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                        {t('order.summary.sendEmail')}
+                      </Button>
+                      <Button
+                        size="medium"
+                        variant="outline"
+                        onClick={() => setManualOpen((v) => !v)}
+                      >
+                        {t('order.summary.manual')}
+                        <MdChevronRight
+                          style={{
+                            marginLeft: '0.25rem',
+                            verticalAlign: 'middle',
+                            transform: manualOpen ? 'rotate(90deg)' : 'none',
+                            transition: 'transform 0.2s',
+                          }}
+                        />
+                      </Button>
+                    </ActionGrid>
 
-          {step === 'summary' && (
-            <Card
-              key="summary"
-              $isDark={isDark}
-              variants={!reducedMotion ? slideVariants : undefined}
-              custom={slideDir}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              style={{ width: '100%' }}
-            >
-              <SummaryTitle>{t('order.summary.title')}</SummaryTitle>
-              <SummarySubtitle>{t('order.summary.subtitle')}</SummarySubtitle>
+                    <AnimatePresence>
+                      {manualOpen && (
+                        <ManualSection
+                          $isDark={isDark}
+                          key="manual"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <ManualTitle>{t('order.summary.manualTitle')}</ManualTitle>
+                          <ManualRow>
+                            <ManualRowLabel>{t('order.summary.manualTo')}</ManualRowLabel>
+                            <ManualRowValue>{socialConfig.email.address}</ManualRowValue>
+                          </ManualRow>
+                          <ManualRow>
+                            <ManualRowLabel>{t('order.summary.manualSubject')}</ManualRowLabel>
+                            <ManualRowValue>
+                              {t('order.summary.mailSubject', { id: orderId })}
+                            </ManualRowValue>
+                          </ManualRow>
+                          <ManualRow>
+                            <ManualRowLabel>{t('order.summary.manualAttach')}</ManualRowLabel>
+                            <ManualRowValue>files_for_order.zip</ManualRowValue>
+                          </ManualRow>
+                        </ManualSection>
+                      )}
+                    </AnimatePresence>
 
-              {/* Order ID box — click to copy */}
-              <IdBox $isDark={isDark} $copied={copied} onClick={handleCopyId} type="button">
-                <div>
-                  <IdLabel>{t('order.summary.idLabel')}</IdLabel>
-                  <IdValue>{orderId}</IdValue>
-                </div>
-                <IdCopyHint>
-                  {copied ? (
-                    <MdCheck color="currentColor" />
-                  ) : (
-                    <MdContentCopy color="currentColor" />
-                  )}
-                </IdCopyHint>
-              </IdBox>
-
-              {/* Download ZIP */}
-              <DownloadRow>
-                <Button size="large" onClick={handleDownloadZip} style={{ width: '100%' }}>
-                  <MdDownload style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
-                  {t('order.summary.downloadZip')}
-                </Button>
-              </DownloadRow>
-
-              {/* Open mail client / Manual */}
-              <ActionGrid>
-                <Button size="medium" onClick={handleOpenMailClient}>
-                  <MdEmail style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
-                  {t('order.summary.sendEmail')}
-                </Button>
-                <Button
-                  size="medium"
-                  variant="outline"
-                  onClick={() => setManualOpen((v) => !v)}
-                >
-                  {manualOpen
-                    ? t('order.summary.manual')
-                    : t('order.summary.manual')}
-                  <MdChevronRight
-                    style={{
-                      marginLeft: '0.25rem',
-                      verticalAlign: 'middle',
-                      transform: manualOpen ? 'rotate(90deg)' : 'none',
-                      transition: 'transform 0.2s',
-                    }}
-                  />
-                </Button>
-              </ActionGrid>
-
-              {/* Manual instructions accordion */}
-              <AnimatePresence>
-                {manualOpen && (
-                  <ManualSection
-                    $isDark={isDark}
-                    key="manual"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    style={{ overflow: 'hidden' }}
-                  >
-                    <ManualTitle>{t('order.summary.manualTitle')}</ManualTitle>
-
-                    <ManualRow>
-                      <ManualRowLabel>{t('order.summary.manualTo')}</ManualRowLabel>
-                      <ManualRowValue>{socialConfig.email.address}</ManualRowValue>
-                    </ManualRow>
-
-                    <ManualRow>
-                      <ManualRowLabel>{t('order.summary.manualSubject')}</ManualRowLabel>
-                      <ManualRowValue>Zamówienie {orderId}</ManualRowValue>
-                    </ManualRow>
-
-                    <ManualRow>
-                      <ManualRowLabel>{t('order.summary.manualAttach')}</ManualRowLabel>
-                      <ManualRowValue>zamowienie-{orderId}.zip</ManualRowValue>
-                    </ManualRow>
-                  </ManualSection>
+                    <BackRow>
+                      <Button size="medium" variant="outline" onClick={handleBack}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.summary.back')}
+                      </Button>
+                    </BackRow>
+                  </motion.div>
                 )}
               </AnimatePresence>
-
-              <BackRow>
-                <Button size="medium" variant="outline" onClick={handleBack}>
-                  <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
-                  {t('order.summary.back')}
-                </Button>
-              </BackRow>
-            </Card>
-          )}
-        </AnimatePresence>
-      </Wrapper>
+            </ModalContainer>
+          </ModalBackdrop>
+        )}
+      </AnimatePresence>
     </SectionContainer>
   );
 };

@@ -333,6 +333,13 @@
   "order": {
     "title": "Start a Project",
     "description": "Interested in working together? Fill out the form and I'll generate an order package ready to send by email.",
+    "preview": {
+      "cta": "Fill out the form",
+      "hint": "Click to open"
+    },
+    "modal": {
+      "close": "Close"
+    },
     "form": {
       "name": "Full Name",
       "namePlaceholder": "What is your or your company's name?",

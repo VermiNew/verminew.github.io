@@ -334,6 +334,13 @@
   "order": {
     "title": "Zamówienie",
     "description": "Zainteresowany współpracą? Wypełnij formularz, a wygeneruję dla Ciebie paczkę z zamówieniem gotową do wysyłki mailem.",
+    "preview": {
+      "cta": "Wypełnij formularz",
+      "hint": "Kliknij, aby otworzyć"
+    },
+    "modal": {
+      "close": "Zamknij"
+    },
     "form": {
       "name": "Pełne imię i nazwisko",
       "namePlaceholder": "Z kim mam przyjemność?",
