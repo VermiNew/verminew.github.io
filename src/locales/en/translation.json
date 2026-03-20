@@ -338,7 +338,8 @@
       "hint": "Click to open"
     },
     "modal": {
-      "close": "Close"
+      "close": "Close",
+      "confirmClose": "You have unsaved data in the form. Are you sure you want to close?"
     },
     "form": {
       "name": "Full Name",
@@ -378,10 +379,14 @@
       "next": "Next",
       "back": "Back",
       "stepBasic": "Basic info",
+      "stepContact": "Contact",
       "stepProject": "About the project",
       "stepDetails": "Details",
+      "stepExtras": "Extras",
       "stepLabel": "Step {{current}} of {{total}}",
       "requiredField": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "clear": "Clear",
       "deadline": "Project deadline",
       "deadlinePlaceholder": "When does the project need to be done?",
       "deadlineOptions": [

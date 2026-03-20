@@ -15,6 +15,7 @@ import {
   MdClose,
   MdEdit,
   MdWarningAmber,
+  MdDeleteOutline,
 } from 'react-icons/md';
 import { SectionContainer } from '@/components/layout/SectionContainer';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -26,10 +27,12 @@ import JSZip from 'jszip';
 // ── Constants ──────────────────────────────────────────────────────────────────
 const MAX_TOTAL_SIZE_BYTES = 20 * 1024 * 1024;
 const ACCEPTED_TYPES = 'image/*,.pdf,.zip,.txt,.doc,.docx';
+const SESSION_KEY = 'order-form-data';
 // ───────────────────────────────────────────────────────────────────────────────
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-type Step = 'basics' | 'project' | 'details' | 'summary';
+type Step = 'basics' | 'contact' | 'project' | 'details' | 'extras' | 'summary';
+const TOTAL_STEPS = 5;
 
 interface FormData {
   name: string;
@@ -52,6 +55,31 @@ interface OrderPayload extends FormData {
   id: string;
   createdAt: string;
 }
+
+const emptyForm: FormData = {
+  name: '',
+  email: '',
+  phone: '',
+  clientType: '',
+  contactMethod: '',
+  source: '',
+  type: '',
+  deadline: '',
+  existingProject: '',
+  budget: '',
+  description: '',
+  contentReady: '',
+  hasDomain: '',
+  references: '',
+};
+
+const loadSavedForm = (): FormData => {
+  try {
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved) return { ...emptyForm, ...JSON.parse(saved) };
+  } catch { /* ignore */ }
+  return emptyForm;
+};
 // ───────────────────────────────────────────────────────────────────────────────
 
 // ── Preview styled components ──────────────────────────────────────────────────
@@ -209,12 +237,39 @@ const ModalCloseButton = styled.button`
   }
 `;
 
+const ModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-right: 2.5rem;
+`;
+
 const ModalTitle = styled.h2`
   font-size: 1.4rem;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
-  margin: 0 0 2rem 0;
-  padding-right: 2.5rem;
+  margin: 0;
+`;
+
+const ClearButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+
+  &:hover {
+    color: #ef4444;
+    background: #ef444415;
+  }
 `;
 // ───────────────────────────────────────────────────────────────────────────────
 
@@ -226,11 +281,18 @@ const Field = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ $required?: boolean }>`
   font-size: 0.9rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.primary};
   letter-spacing: 0.3px;
+
+  ${({ $required }) => $required && `
+    &::after {
+      content: ' *';
+      color: #ef4444;
+    }
+  `}
 `;
 
 const FieldHint = styled.span`
@@ -364,25 +426,65 @@ const StepIndicator = styled.div`
   margin-bottom: 1.75rem;
 `;
 
-const StepDot = styled.div<{ $active: boolean }>`
-  width: 2rem;
+const ProgressBarTrack = styled.div`
+  flex: 1;
   height: 4px;
   border-radius: 2px;
-  background: ${({ theme, $active }) =>
-    $active ? theme.colors.primary : `${theme.colors.primary}30`};
-  transition: background 0.25s;
+  background: ${({ theme }) => `${theme.colors.primary}20`};
+  overflow: hidden;
+`;
+
+const ProgressBarFill = styled.div<{ $progress: number }>`
+  height: 100%;
+  border-radius: 2px;
+  background: ${({ theme }) => theme.colors.primary};
+  width: ${({ $progress }) => $progress}%;
+  transition: width 0.4s ease;
 `;
 
 const StepLabel = styled.span`
   font-size: 0.8rem;
   color: ${({ theme }) => theme.colors.textSecondary};
-  margin-left: auto;
+  white-space: nowrap;
 `;
 
 const FieldError = styled(motion.span)`
   font-size: 0.78rem;
   color: #ef4444;
   margin-top: -0.15rem;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+`;
+
+const CheckboxInput = styled.div<{ $checked: boolean }>`
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  border-radius: 5px;
+  border: 2px solid ${({ theme, $checked }) =>
+    $checked ? theme.colors.primary : `${theme.colors.primary}40`};
+  background: ${({ theme, $checked }) =>
+    $checked ? theme.colors.primary : 'transparent'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-top: 0.1rem;
+
+  &::after {
+    content: '';
+    width: 0.4rem;
+    height: 0.65rem;
+    border: solid ${({ theme, $checked }) =>
+      $checked ? (theme.colors.background) : 'transparent'};
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg) translateY(-1px);
+  }
 `;
 // ───────────────────────────────────────────────────────────────────────────────
 
@@ -537,9 +639,9 @@ const modalVariants = {
 };
 
 const slideVariants = {
-  initial: (dir: number) => ({ opacity: 0, x: dir * 40 }),
-  animate: { opacity: 1, x: 0, transition: { duration: 0.35, ease: 'easeOut' } },
-  exit: (dir: number) => ({ opacity: 0, x: dir * -40, transition: { duration: 0.25 } }),
+  initial: (dir: number) => ({ opacity: 0, x: dir * 40, y: 8 }),
+  animate: { opacity: 1, x: 0, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
+  exit: (dir: number) => ({ opacity: 0, x: dir * -40, y: -8, transition: { duration: 0.25 } }),
 };
 // ───────────────────────────────────────────────────────────────────────────────
 
@@ -558,22 +660,7 @@ export const OrderSection: React.FC = () => {
   const [step, setStep] = useState<Step>('basics');
   const [slideDir, setSlideDir] = useState(1);
   const [touched, setTouched] = useState<Set<string>>(new Set());
-  const [form, setForm] = useState<FormData>({
-    name: '',
-    email: '',
-    phone: '',
-    clientType: '',
-    contactMethod: '',
-    source: '',
-    type: '',
-    deadline: '',
-    existingProject: '',
-    budget: '',
-    description: '',
-    contentReady: '',
-    hasDomain: '',
-    references: '',
-  });
+  const [form, setForm] = useState<FormData>(loadSavedForm);
   const [rodoConsent, setRodoConsent] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [fileSizeError, setFileSizeError] = useState(false);
@@ -591,18 +678,47 @@ export const OrderSection: React.FC = () => {
     };
   }, [modalOpen]);
 
+  // ── Save form to sessionStorage ──────────────────────────────────────────────
+  useEffect(() => {
+    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(form)); }
+    catch { /* ignore */ }
+  }, [form]);
+
+  // ── Check if form has data ─────────────────────────────────────────────────
+  const isFormDirty = useMemo(
+    () => Object.values(form).some((v) => v.trim() !== ''),
+    [form]
+  );
+
+  // ── Close with confirmation ────────────────────────────────────────────────
+  const confirmClose = useCallback(() => {
+    if (isFormDirty && step !== 'summary') {
+      if (!window.confirm(t('order.modal.confirmClose'))) return;
+    }
+    setModalOpen(false);
+  }, [isFormDirty, step, t]);
+
   // ── Close on Escape ──────────────────────────────────────────────────────────
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setModalOpen(false);
+      if (e.key === 'Escape' && modalOpen) confirmClose();
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, []);
+  }, [modalOpen, confirmClose]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
   const openModal = useCallback(() => setModalOpen(true), []);
-  const closeModal = useCallback(() => setModalOpen(false), []);
+
+  const handleClearForm = useCallback(() => {
+    setForm(emptyForm);
+    setRodoConsent(false);
+    setFiles([]);
+    setFileSizeError(false);
+    setTouched(new Set());
+    setStep('basics');
+    sessionStorage.removeItem(SESSION_KEY);
+  }, []);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -614,31 +730,55 @@ export const OrderSection: React.FC = () => {
   );
 
   // ── Validation ──────────────────────────────────────────────────────────────
-  const requiredBasics: (keyof FormData)[] = ['name', 'email', 'clientType', 'contactMethod'];
-  const requiredProject: (keyof FormData)[] = ['type', 'deadline', 'budget', 'existingProject'];
-  const requiredDetails: (keyof FormData)[] = ['description', 'contentReady', 'hasDomain'];
+  const requiredBasics: (keyof FormData)[] = ['name', 'email'];
+  const requiredContact: (keyof FormData)[] = ['clientType', 'contactMethod'];
+  const requiredProject: (keyof FormData)[] = ['type', 'existingProject', 'budget'];
+  const requiredDetails: (keyof FormData)[] = ['deadline', 'description', 'contentReady'];
+  const requiredExtras: (keyof FormData)[] = ['hasDomain'];
+
+  const isEmailValid = useCallback(
+    (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    []
+  );
 
   const isFieldMissing = useCallback(
     (field: keyof FormData) => touched.has(field) && form[field].trim() === '',
     [form, touched]
   );
 
+  const isEmailError = useMemo(
+    () => touched.has('email') && form.email.trim() !== '' && !isEmailValid(form.email),
+    [form.email, touched, isEmailValid]
+  );
+
   const isBasicsValid = useMemo(
-    () => requiredBasics.every((f) => form[f].trim() !== ''),
+    () => requiredBasics.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [form.name, form.email, form.clientType, form.contactMethod]
+    [form.name, form.email, isEmailValid]
+  );
+
+  const isContactValid = useMemo(
+    () => requiredContact.every((f) => form[f].trim() !== ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.clientType, form.contactMethod]
   );
 
   const isProjectValid = useMemo(
     () => requiredProject.every((f) => form[f].trim() !== ''),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [form.type, form.deadline, form.budget, form.existingProject]
+    [form.type, form.budget, form.existingProject]
   );
 
   const isDetailsValid = useMemo(
-    () => requiredDetails.every((f) => form[f].trim() !== '') && !fileSizeError && rodoConsent,
+    () => requiredDetails.every((f) => form[f].trim() !== ''),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [form.description, form.contentReady, form.hasDomain, fileSizeError, rodoConsent]
+    [form.deadline, form.description, form.contentReady]
+  );
+
+  const isExtrasValid = useMemo(
+    () => requiredExtras.every((f) => form[f].trim() !== '') && !fileSizeError && rodoConsent,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.hasDomain, fileSizeError, rodoConsent]
   );
 
   const markTouched = useCallback((fields: (keyof FormData)[]) => {
@@ -649,31 +789,43 @@ export const OrderSection: React.FC = () => {
     });
   }, []);
 
-  const handleNextToProject = useCallback(() => {
+  const goNext = useCallback((nextStep: Step) => {
+    setSlideDir(1);
+    setStep(nextStep);
+  }, []);
+
+  const goBack = useCallback((prevStep: Step) => {
+    setSlideDir(-1);
+    setStep(prevStep);
+  }, []);
+
+  const handleNextToContact = useCallback(() => {
     markTouched(requiredBasics);
     if (!isBasicsValid) return;
-    setSlideDir(1);
-    setStep('project');
+    goNext('contact');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBasicsValid, markTouched]);
+  }, [isBasicsValid, markTouched, goNext]);
+
+  const handleNextToProject = useCallback(() => {
+    markTouched(requiredContact);
+    if (!isContactValid) return;
+    goNext('project');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isContactValid, markTouched, goNext]);
 
   const handleNextToDetails = useCallback(() => {
     markTouched(requiredProject);
     if (!isProjectValid) return;
-    setSlideDir(1);
-    setStep('details');
+    goNext('details');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isProjectValid, markTouched]);
+  }, [isProjectValid, markTouched, goNext]);
 
-  const handleBackToBasics = useCallback(() => {
-    setSlideDir(-1);
-    setStep('basics');
-  }, []);
-
-  const handleBackToProject = useCallback(() => {
-    setSlideDir(-1);
-    setStep('project');
-  }, []);
+  const handleNextToExtras = useCallback(() => {
+    markTouched(requiredDetails);
+    if (!isDetailsValid) return;
+    goNext('extras');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDetailsValid, markTouched, goNext]);
 
   const handleFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files ?? []);
@@ -690,23 +842,21 @@ export const OrderSection: React.FC = () => {
   const handleGenerate = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      markTouched(requiredDetails);
-      if (!isDetailsValid) return;
+      markTouched(requiredExtras);
+      if (!isExtrasValid) return;
       const id = crypto.randomUUID();
       setOrderId(id);
-      setSlideDir(1);
-      setStep('summary');
+      goNext('summary');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isDetailsValid, markTouched]
+    [isExtrasValid, markTouched, goNext]
   );
 
   const handleBack = useCallback(() => {
-    setSlideDir(-1);
-    setStep('details');
+    goBack('extras');
     setCopied(false);
     setManualOpen(false);
-  }, []);
+  }, [goBack]);
 
   const handleCopyId = useCallback(async () => {
     await navigator.clipboard.writeText(orderId);
@@ -810,7 +960,7 @@ export const OrderSection: React.FC = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            onClick={closeModal}
+            onClick={confirmClose}
           >
             <ModalContainer
               $isDark={isDark}
@@ -821,17 +971,25 @@ export const OrderSection: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <ModalCloseButton
-                onClick={closeModal}
+                onClick={confirmClose}
                 aria-label={t('order.modal.close')}
                 type="button"
               >
                 <MdClose />
               </ModalCloseButton>
 
-              <ModalTitle>{t('order.title')}</ModalTitle>
+              <ModalHeader>
+                <ModalTitle>{t('order.title')}</ModalTitle>
+                {step !== 'summary' && isFormDirty && (
+                  <ClearButton type="button" onClick={handleClearForm}>
+                    <MdDeleteOutline size={16} />
+                    {t('order.form.clear')}
+                  </ClearButton>
+                )}
+              </ModalHeader>
 
               <AnimatePresence mode="wait" custom={slideDir}>
-                {/* ── Step 1: Basic info ── */}
+                {/* ── Step 1: Basic info (name, email, phone) ── */}
                 {step === 'basics' && (
                   <motion.div
                     key="basics"
@@ -842,14 +1000,14 @@ export const OrderSection: React.FC = () => {
                     exit="exit"
                   >
                     <StepIndicator>
-                      <StepDot $active />
-                      <StepDot $active={false} />
-                      <StepDot $active={false} />
-                      <StepLabel>{t('order.form.stepLabel', { current: 1, total: 3 })} — {t('order.form.stepBasic')}</StepLabel>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(100 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 1, total: TOTAL_STEPS })} — {t('order.form.stepBasic')}</StepLabel>
                     </StepIndicator>
 
                     <Field>
-                      <Label htmlFor="order-name">{t('order.form.name')}</Label>
+                      <Label htmlFor="order-name" $required>{t('order.form.name')}</Label>
                       <Input
                         $isDark={isDark}
                         id="order-name"
@@ -868,7 +1026,7 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <Field>
-                      <Label htmlFor="order-email">{t('order.form.email')}</Label>
+                      <Label htmlFor="order-email" $required>{t('order.form.email')}</Label>
                       <Input
                         $isDark={isDark}
                         id="order-email"
@@ -882,6 +1040,11 @@ export const OrderSection: React.FC = () => {
                       {isFieldMissing('email') && (
                         <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                           {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                      {isEmailError && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.invalidEmail')}
                         </FieldError>
                       )}
                     </Field>
@@ -899,8 +1062,35 @@ export const OrderSection: React.FC = () => {
                       />
                     </Field>
 
+                    <FormNav>
+                      <div />
+                      <Button type="button" size="large" onClick={handleNextToContact} disabled={!isBasicsValid}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
+                )}
+
+                {/* ── Step 2: Contact (clientType, contactMethod, source) ── */}
+                {step === 'contact' && (
+                  <motion.div
+                    key="contact"
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(200 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 2, total: TOTAL_STEPS })} — {t('order.form.stepContact')}</StepLabel>
+                    </StepIndicator>
+
                     <Field>
-                      <Label htmlFor="order-clientType">{t('order.form.clientType')}</Label>
+                      <Label htmlFor="order-clientType" $required>{t('order.form.clientType')}</Label>
                       <Select
                         $isDark={isDark}
                         id="order-clientType"
@@ -924,7 +1114,7 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <Field>
-                      <Label htmlFor="order-contactMethod">{t('order.form.contactMethod')}</Label>
+                      <Label htmlFor="order-contactMethod" $required>{t('order.form.contactMethod')}</Label>
                       <Select
                         $isDark={isDark}
                         id="order-contactMethod"
@@ -966,8 +1156,11 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <FormNav>
-                      <div />
-                      <Button type="button" size="large" onClick={handleNextToProject}>
+                      <Button type="button" size="medium" variant="outline" onClick={() => goBack('basics')}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.form.back')}
+                      </Button>
+                      <Button type="button" size="large" onClick={handleNextToProject} disabled={!isContactValid}>
                         {t('order.form.next')}
                         <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
                       </Button>
@@ -975,7 +1168,7 @@ export const OrderSection: React.FC = () => {
                   </motion.div>
                 )}
 
-                {/* ── Step 2: About the project ── */}
+                {/* ── Step 3: Project (type, existingProject, budget) ── */}
                 {step === 'project' && (
                   <motion.div
                     key="project"
@@ -986,14 +1179,14 @@ export const OrderSection: React.FC = () => {
                     exit="exit"
                   >
                     <StepIndicator>
-                      <StepDot $active />
-                      <StepDot $active />
-                      <StepDot $active={false} />
-                      <StepLabel>{t('order.form.stepLabel', { current: 2, total: 3 })} — {t('order.form.stepProject')}</StepLabel>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(300 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 3, total: TOTAL_STEPS })} — {t('order.form.stepProject')}</StepLabel>
                     </StepIndicator>
 
                     <Field>
-                      <Label htmlFor="order-type">{t('order.form.type')}</Label>
+                      <Label htmlFor="order-type" $required>{t('order.form.type')}</Label>
                       <Select
                         $isDark={isDark}
                         id="order-type"
@@ -1021,7 +1214,7 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <Field>
-                      <Label htmlFor="order-existingProject">{t('order.form.existingProject')}</Label>
+                      <Label htmlFor="order-existingProject" $required>{t('order.form.existingProject')}</Label>
                       <Select
                         $isDark={isDark}
                         id="order-existingProject"
@@ -1045,7 +1238,66 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <Field>
-                      <Label htmlFor="order-deadline">{t('order.form.deadline')}</Label>
+                      <Label htmlFor="order-budget" $required>{t('order.form.budget')}</Label>
+                      <FieldHint>{t('order.form.budgetHint')}</FieldHint>
+                      <Select
+                        $isDark={isDark}
+                        id="order-budget"
+                        name="budget"
+                        required
+                        value={form.budget}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.budgetPlaceholder')}
+                        </option>
+                        {(
+                          t('order.form.budgetOptions', { returnObjects: true }) as string[]
+                        ).map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </Select>
+                      {isFieldMissing('budget') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <FormNav>
+                      <Button type="button" size="medium" variant="outline" onClick={() => goBack('contact')}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.form.back')}
+                      </Button>
+                      <Button type="button" size="large" onClick={handleNextToDetails} disabled={!isProjectValid}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
+                )}
+
+                {/* ── Step 4: Details (deadline, description, contentReady) ── */}
+                {step === 'details' && (
+                  <motion.div
+                    key="details"
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(400 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 4, total: TOTAL_STEPS })} — {t('order.form.stepDetails')}</StepLabel>
+                    </StepIndicator>
+
+                    <Field>
+                      <Label htmlFor="order-deadline" $required>{t('order.form.deadline')}</Label>
                       <Select
                         $isDark={isDark}
                         id="order-deadline"
@@ -1082,28 +1334,43 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <Field>
-                      <Label htmlFor="order-budget">{t('order.form.budget')}</Label>
-                      <FieldHint>{t('order.form.budgetHint')}</FieldHint>
+                      <Label htmlFor="order-description" $required>
+                        {t('order.form.description')}
+                      </Label>
+                      <Textarea
+                        $isDark={isDark}
+                        id="order-description"
+                        name="description"
+                        required
+                        placeholder={t('order.form.descriptionPlaceholder')}
+                        value={form.description}
+                        onChange={handleChange}
+                      />
+                      {isFieldMissing('description') && (
+                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-contentReady" $required>{t('order.form.contentReady')}</Label>
                       <Select
                         $isDark={isDark}
-                        id="order-budget"
-                        name="budget"
+                        id="order-contentReady"
+                        name="contentReady"
                         required
-                        value={form.budget}
+                        value={form.contentReady}
                         onChange={handleChange}
                       >
                         <option value="" disabled>
-                          {t('order.form.budgetPlaceholder')}
+                          {t('order.form.contentReadyPlaceholder')}
                         </option>
-                        {(
-                          t('order.form.budgetOptions', { returnObjects: true }) as string[]
-                        ).map((opt) => (
-                          <option key={opt} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
+                        {(t('order.form.contentReadyOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
                       </Select>
-                      {isFieldMissing('budget') && (
+                      {isFieldMissing('contentReady') && (
                         <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                           {t('order.form.requiredField')}
                         </FieldError>
@@ -1111,11 +1378,11 @@ export const OrderSection: React.FC = () => {
                     </Field>
 
                     <FormNav>
-                      <Button type="button" size="medium" variant="outline" onClick={handleBackToBasics}>
+                      <Button type="button" size="medium" variant="outline" onClick={() => goBack('project')}>
                         <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
                         {t('order.form.back')}
                       </Button>
-                      <Button type="button" size="large" onClick={handleNextToDetails}>
+                      <Button type="button" size="large" onClick={handleNextToExtras} disabled={!isDetailsValid}>
                         {t('order.form.next')}
                         <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
                       </Button>
@@ -1123,10 +1390,10 @@ export const OrderSection: React.FC = () => {
                   </motion.div>
                 )}
 
-                {/* ── Step 3: Details ── */}
-                {step === 'details' && (
+                {/* ── Step 5: Extras (hasDomain, references, attachments + rodo) ── */}
+                {step === 'extras' && (
                   <motion.div
-                    key="details"
+                    key="extras"
                     variants={!reducedMotion ? slideVariants : undefined}
                     custom={slideDir}
                     initial="initial"
@@ -1134,59 +1401,15 @@ export const OrderSection: React.FC = () => {
                     exit="exit"
                   >
                     <StepIndicator>
-                      <StepDot $active />
-                      <StepDot $active />
-                      <StepDot $active />
-                      <StepLabel>{t('order.form.stepLabel', { current: 3, total: 3 })} — {t('order.form.stepDetails')}</StepLabel>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={100} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 5, total: TOTAL_STEPS })} — {t('order.form.stepExtras')}</StepLabel>
                     </StepIndicator>
 
                     <form onSubmit={handleGenerate} noValidate>
                       <Field>
-                        <Label htmlFor="order-description">
-                          {t('order.form.description')}
-                        </Label>
-                        <Textarea
-                          $isDark={isDark}
-                          id="order-description"
-                          name="description"
-                          required
-                          placeholder={t('order.form.descriptionPlaceholder')}
-                          value={form.description}
-                          onChange={handleChange}
-                        />
-                        {isFieldMissing('description') && (
-                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            {t('order.form.requiredField')}
-                          </FieldError>
-                        )}
-                      </Field>
-
-                      <Field>
-                        <Label htmlFor="order-contentReady">{t('order.form.contentReady')}</Label>
-                        <Select
-                          $isDark={isDark}
-                          id="order-contentReady"
-                          name="contentReady"
-                          required
-                          value={form.contentReady}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled>
-                            {t('order.form.contentReadyPlaceholder')}
-                          </option>
-                          {(t('order.form.contentReadyOptions', { returnObjects: true }) as string[]).map(
-                            (opt) => <option key={opt} value={opt}>{opt}</option>
-                          )}
-                        </Select>
-                        {isFieldMissing('contentReady') && (
-                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            {t('order.form.requiredField')}
-                          </FieldError>
-                        )}
-                      </Field>
-
-                      <Field>
-                        <Label htmlFor="order-hasDomain">{t('order.form.hasDomain')}</Label>
+                        <Label htmlFor="order-hasDomain" $required>{t('order.form.hasDomain')}</Label>
                         <Select
                           $isDark={isDark}
                           id="order-hasDomain"
@@ -1251,16 +1474,11 @@ export const OrderSection: React.FC = () => {
                       </Field>
 
                       <Field>
-                        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer' }}>
-                          <input
-                            type="checkbox"
-                            checked={rodoConsent}
-                            onChange={(e) => setRodoConsent(e.target.checked)}
-                            style={{ marginTop: '0.2rem', accentColor: 'var(--color-primary, #6366f1)' }}
-                          />
+                        <CheckboxLabel onClick={() => setRodoConsent((v) => !v)}>
+                          <CheckboxInput $checked={rodoConsent} />
                           <FieldHint style={{ opacity: 1 }}>{t('order.form.rodoConsent')}</FieldHint>
-                        </label>
-                        {!rodoConsent && touched.has('description') && (
+                        </CheckboxLabel>
+                        {!rodoConsent && touched.has('hasDomain') && (
                           <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                             {t('order.form.rodoRequired')}
                           </FieldError>
@@ -1268,11 +1486,11 @@ export const OrderSection: React.FC = () => {
                       </Field>
 
                       <FormNav>
-                        <Button type="button" size="medium" variant="outline" onClick={handleBackToProject}>
+                        <Button type="button" size="medium" variant="outline" onClick={() => goBack('details')}>
                           <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
                           {t('order.form.back')}
                         </Button>
-                        <Button type="submit" size="large" disabled={fileSizeError}>
+                        <Button type="submit" size="large" disabled={!isExtrasValid}>
                           {t('order.form.generate')}
                           <MdChevronRight
                             style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }}

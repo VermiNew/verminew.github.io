@@ -339,7 +339,8 @@
       "hint": "Kliknij, aby otworzyć"
     },
     "modal": {
-      "close": "Zamknij"
+      "close": "Zamknij",
+      "confirmClose": "Masz niezapisane dane w formularzu. Na pewno chcesz zamknąć?"
     },
     "form": {
       "name": "Pełne imię i nazwisko",
@@ -380,10 +381,14 @@
       "next": "Dalej",
       "back": "Wstecz",
       "stepBasic": "Dane podstawowe",
+      "stepContact": "Kontakt",
       "stepProject": "O projekcie",
       "stepDetails": "Szczegóły",
+      "stepExtras": "Dodatki",
       "stepLabel": "Krok {{current}} z {{total}}",
       "requiredField": "To pole jest wymagane",
+      "invalidEmail": "Podaj prawidłowy adres e-mail",
+      "clear": "Wyczyść",
       "deadline": "Termin realizacji",
       "deadlinePlaceholder": "Kiedy projekt ma być gotowy?",
       "deadlineOptions": [
