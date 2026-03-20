@@ -475,15 +475,15 @@
     "items": {
       "web": {
         "title": "Aplikacje Webowe",
-        "description": "Tworzę nowoczesne, ultraszybkie witryny internetowe. Od wizytówek dla lokalnych biznesów, przez rozbudowane panele B2B aż po rozwiązania e-commerce szyte na miarę. Używam wiodących technologii takich jak React i Next.js."
+        "description": "Strony, panele, formularze – dobieram technologię do projektu. Dbam o to, żeby działało szybko i wyglądało dobrze na każdym ekranie."
       },
       "desktop": {
-        "title": "Oprogramowanie Desktopowe",
-        "description": "Potrzebujesz wewnętrznego narzędzia dla firmy na komputery? Buduję aplikacje na systemy Windows, macOS i Linux. Wykorzystuję lekkie frameworki Tauri/Electron, sprawiając że soft jest szybki, nie obciąża pamięci i działa wszędzie."
+        "title": "Aplikacje Desktopowe",
+        "description": "Programy na Windows, a w razie potrzeby też wieloplatformowe. Narzędzia wewnętrzne, automatyzacja, cokolwiek potrzebujesz na komputer."
       },
       "mobile": {
         "title": "Aplikacje Mobilne",
-        "description": "Dostarczam oprogramowanie na smartfony z wykorzystaniem ekosystemu React Native oraz PWA (aplikacje działające z poziomu przeglądarki). Możesz dać swoim użytkownikom produkt docelowy w szybkim czasie obniżając drastycznie koszt stworzenia natywnej appki."
+        "description": "Apki na telefon – od PWA działających z przeglądarki, przez React Native, po rozwiązania natywne na Androida."
       }
     }
   },

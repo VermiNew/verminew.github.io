@@ -473,15 +473,15 @@
     "items": {
       "web": {
         "title": "Web Applications",
-        "description": "I create modern, ultra-fast websites. From digital business cards for local stores, through extensive B2B panels, to custom e-commerce solutions. Built with leading technologies like React and Next.js."
+        "description": "Websites, panels, forms – I pick the right tech for the project. I make sure it loads fast and looks good on any screen."
       },
       "desktop": {
-        "title": "Desktop Software",
-        "description": "Need an internal tool for your company's PCs? I build applications for Windows, macOS, and Linux. Using lightweight Tauri/Electron frameworks ensures the software is blazing fast, memory-efficient, and runs anywhere."
+        "title": "Desktop Apps",
+        "description": "Windows apps, or cross-platform if needed. Internal tools, automation, whatever you need on a computer."
       },
       "mobile": {
-        "title": "Mobile Applications",
-        "description": "I deliver smartphone software leveraging the React Native ecosystem and Progressive Web Apps (PWAs). Offer your users a final product swiftly while drastically cutting down the costs associated with native app development."
+        "title": "Mobile Apps",
+        "description": "Phone apps – from PWAs running in the browser, through React Native, to native Android solutions."
       }
     }
   },
