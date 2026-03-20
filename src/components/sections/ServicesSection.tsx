@@ -30,7 +30,8 @@ const ServiceCard = styled(motion.div)<{ $isDark: boolean }>`
   box-shadow: ${({ theme }) => theme.shadows.medium};
   border: 1px solid ${({ $isDark }) => 
     $isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'};
-  transition: transform ${({ theme }) => theme.transitions.default};
+  transition: transform ${({ theme }) => theme.transitions.default},
+    box-shadow ${({ theme }) => theme.transitions.default};
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -47,14 +48,20 @@ const ServiceCard = styled(motion.div)<{ $isDark: boolean }>`
     height: 4px;
     background: linear-gradient(90deg, 
       ${({ theme }) => theme.colors.primary}, 
-      ${({ theme }) => theme.colors.accent}
+      color-mix(in srgb, ${({ theme }) => theme.colors.primary} 60%, #000)
     );
-    opacity: 0;
-    transition: opacity ${({ theme }) => theme.transitions.default};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${({ theme }) => theme.shadows.large};
   }
 
   &:hover::before {
-    opacity: 1;
+    transform: scaleX(1);
   }
 `;
 
