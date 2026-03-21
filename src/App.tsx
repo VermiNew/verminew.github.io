@@ -14,6 +14,7 @@ import { SkillsSection } from '@/components/sections/SkillsSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { OrderSection } from '@/components/sections/OrderSection';
 import { ContactSection } from '@/components/sections/ContactSection';
+import { FaqSection } from '@/components/sections/FaqSection';
 import { SectionTransition } from '@/components/layout/SectionTransition';
 import { AnimatePresence } from 'framer-motion';
 import { ReloadPopup } from '@/components/ui/ReloadPopup';
@@ -67,8 +68,14 @@ const AppContent: React.FC = () => {
             </SectionTransition>
           </ErrorBoundary>
 
-          <ErrorBoundary section="contact">
+          <ErrorBoundary section="faq">
             <SectionTransition delay={0.6}>
+              <FaqSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="contact">
+            <SectionTransition delay={0.7}>
               <ContactSection />
             </SectionTransition>
           </ErrorBoundary>

@@ -374,6 +374,7 @@ export const Header: React.FC = () => {
     { href: '#skills', label: t('navigation.skills') },
     { href: '#projects', label: t('navigation.projects') },
     { href: '#order', label: t('navigation.order') },
+    { href: '#faq', label: t('navigation.faq') },
     { href: '#contact', label: t('navigation.contact') }
   ];
 

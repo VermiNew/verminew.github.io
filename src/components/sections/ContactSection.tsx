@@ -138,51 +138,6 @@ const InfoText = styled.p`
   align-self: center;
 `;
 
-const FAQSection = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-  margin-top: 3rem;
-`;
-
-const FAQTitle = styled.h3`
-  font-size: 1.5rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin: 0;
-  text-align: center;
-`;
-
-const FAQGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  width: 100%;
-`;
-
-const FAQCard = styled.div<{ $isDark: boolean }>`
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: ${({ theme, $isDark }) => $isDark 
-    ? `${theme.colors.surface}40`
-    : `${theme.colors.background}40`
-  };
-  border: 1px solid ${({ theme }) => `${theme.colors.primary}10`};
-`;
-
-const Question = styled.h4`
-  font-size: 1.1rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin: 0 0 1rem 0;
-`;
-
-const Answer = styled.p`
-  font-size: 0.95rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  margin: 0;
-  line-height: 1.6;
-`;
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -296,17 +251,6 @@ export const ContactSection: React.FC = () => {
           </InfoItem>
         </AdditionalInfo>
 
-        <FAQSection variants={!reducedMotion ? itemVariants : undefined}>
-          <FAQTitle>{t('contact.faq.title')}</FAQTitle>
-          <FAQGrid>
-            {(t('contact.faq.questions', { returnObjects: true }) as Array<{ question: string; answer: string }>).map((faq, index) => (
-              <FAQCard key={index} $isDark={isDark}>
-                <Question>{faq.question}</Question>
-                <Answer>{faq.answer}</Answer>
-              </FAQCard>
-            ))}
-          </FAQGrid>
-        </FAQSection>
       </ContactContainer>
     </SectionContainer>
   );
