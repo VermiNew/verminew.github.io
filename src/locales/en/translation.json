@@ -100,6 +100,7 @@
     "skills": {
       "title": "Skills",
       "description": "My technical skills cover a wide range of technologies and tools",
+      "aiNote": "I actively develop my skills by working with AI tools. This allows me to deliver projects beyond my current experience while learning new technologies in practice.",
       "levels": {
         "planned": "Planned",
         "beginner": "Beginner",
@@ -138,6 +139,14 @@
           "title": "Frontend Frameworks & Libraries",
           "description": "Advanced tools for building user interfaces",
           "skills": {
+            "react": {
+              "name": "React",
+              "description": "Actively learning by building projects with AI assistance"
+            },
+            "tailwindcss": {
+              "name": "Tailwind CSS",
+              "description": "Utility-first CSS, used in several projects"
+            },
             "angular": {
               "name": "Angular",
               "description": "Basic framework knowledge"
@@ -214,71 +223,15 @@
         },
         "plannedSkills": {
           "title": "Planned Skills",
-          "description": "Technologies I plan to learn in the future",
+          "description": "Technologies I plan to learn",
           "skills": {
-            "react": {
-              "name": "React",
-              "description": "Active learning through project development"
-            },
             "nextjs": {
               "name": "Next.js",
-              "description": "React framework for application development"
-            },
-            "vuejs": {
-              "name": "Vue.js",
-              "description": "Active learning through project development"
-            },
-            "tailwindcss": {
-              "name": "Tailwind CSS",
-              "description": "Basics of utility-first CSS"
-            },
-            "fastapi": {
-              "name": "FastAPI",
-              "description": "Building APIs with Python"
-            },
-            "redis": {
-              "name": "Redis",
-              "description": "In-memory database"
-            },
-            "firebase": {
-              "name": "Firebase",
-              "description": "Platform for mobile and web applications"
-            },
-            "docker": {
-              "name": "Docker",
-              "description": "Application containerization"
+              "description": "React framework for building full web applications"
             },
             "bash": {
               "name": "Bash",
-              "description": "Linux shell scripting"
-            },
-            "jest": {
-              "name": "Jest",
-              "description": "JavaScript application testing"
-            },
-            "tensorflow": {
-              "name": "TensorFlow",
-              "description": "Integrating pre-trained models in applications"
-            },
-            "pytorch": {
-              "name": "PyTorch",
-              "description": "Working with existing AI models and APIs"
-            },
-            "oauth": {
-              "name": "OAuth 2.0",
-              "description": "Authorization protocol"
-            },
-            "jwt": {
-              "name": "JWT",
-              "description": "Authentication tokens"
-            },
-            "rust": {
-              "name": "Rust",
-              "description": "Efficient and safe systems programming"
-            },
-            "go": {
-              "name": "Go",
-              "description": "Concurrent programming and microservices"
+              "description": "Linux shell scripting, used once with AI assistance"
             }
           }
         }

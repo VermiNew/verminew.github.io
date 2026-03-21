@@ -100,6 +100,7 @@
     "skills": {
       "title": "Umiejętności",
       "description": "Moje umiejętności techniczne obejmują szeroki zakres technologii i narzędzi",
+      "aiNote": "Aktywnie rozwijam swoje umiejętności, pracując z narzędziami AI. Pozwala mi to realizować projekty wykraczające poza moje obecne doświadczenie, jednocześnie ucząc się nowych technologii w praktyce.",
       "levels": {
         "planned": "Planowane",
         "beginner": "Początkujący",
@@ -138,6 +139,14 @@
           "title": "Frontend - Frameworki i Biblioteki",
           "description": "Zaawansowane narzędzia do tworzenia interfejsów",
           "skills": {
+            "react": {
+              "name": "React",
+              "description": "Aktywna nauka poprzez budowanie projektów z pomocą AI"
+            },
+            "tailwindcss": {
+              "name": "Tailwind CSS",
+              "description": "Utility-first CSS, używany w kilku projektach"
+            },
             "angular": {
               "name": "Angular",
               "description": "Podstawowa znajomość frameworka"
@@ -216,69 +225,13 @@
           "title": "Planowane Umiejętności",
           "description": "Technologie, których planuję się nauczyć",
           "skills": {
-            "react": {
-              "name": "React",
-              "description": "Aktywna nauka poprzez tworzenie projektów"
-            },
             "nextjs": {
               "name": "Next.js",
-              "description": "Framework React do tworzenia aplikacji"
-            },
-            "vuejs": {
-              "name": "Vue.js",
-              "description": "Aktywna nauka poprzez tworzenie projektów"
-            },
-            "tailwindcss": {
-              "name": "Tailwind CSS",
-              "description": "Podstawy utility-first CSS"
-            },
-            "fastapi": {
-              "name": "FastAPI",
-              "description": "Tworzenie API w Pythonie"
-            },
-            "redis": {
-              "name": "Redis",
-              "description": "Baza danych w pamięci RAM"
-            },
-            "firebase": {
-              "name": "Firebase",
-              "description": "Platforma do tworzenia aplikacji mobilnych i webowych"
-            },
-            "docker": {
-              "name": "Docker",
-              "description": "Konteneryzacja aplikacji"
+              "description": "Framework React do tworzenia pełnych aplikacji webowych"
             },
             "bash": {
               "name": "Bash",
-              "description": "Skrypty powłoki Linux"
-            },
-            "jest": {
-              "name": "Jest",
-              "description": "Testowanie aplikacji JavaScript"
-            },
-            "tensorflow": {
-              "name": "TensorFlow",
-              "description": "Integracja gotowych modeli w aplikacjach"
-            },
-            "pytorch": {
-              "name": "PyTorch",
-              "description": "Praca z istniejącymi modelami AI i API"
-            },
-            "oauth": {
-              "name": "OAuth 2.0",
-              "description": "Protokół autoryzacji"
-            },
-            "jwt": {
-              "name": "JWT",
-              "description": "Tokeny uwierzytelniania"
-            },
-            "rust": {
-              "name": "Rust",
-              "description": "Wydajne i bezpieczne programowanie systemowe"
-            },
-            "go": {
-              "name": "Go",
-              "description": "Programowanie współbieżne i mikrousługi"
+              "description": "Skrypty powłoki Linux, używany jednorazowo z pomocą AI"
             }
           }
         }

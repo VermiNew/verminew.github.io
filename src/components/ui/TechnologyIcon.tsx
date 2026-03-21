@@ -213,6 +213,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { t } = useTranslation();
   const [showTooltip, setShowTooltip] = useState(false);
+  const isTouchDevice = 'ontouchstart' in window;
 
   const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
 
@@ -236,8 +237,9 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   return (
     <Container
       $isDark={isDark}
-      onHoverStart={() => setShowTooltip(true)}
-      onHoverEnd={() => setShowTooltip(false)}
+      onHoverStart={!isTouchDevice ? () => setShowTooltip(true) : undefined}
+      onHoverEnd={!isTouchDevice ? () => setShowTooltip(false) : undefined}
+      onClick={isTouchDevice ? () => setShowTooltip(prev => !prev) : undefined}
       variants={containerVariants}
       initial="initial"
       animate="animate"

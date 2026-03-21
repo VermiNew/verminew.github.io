@@ -24,6 +24,17 @@ const Description = styled(motion.p)`
   line-height: 1.6;
 `;
 
+const AiNote = styled(motion.p)`
+  text-align: center;
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  max-width: 700px;
+  margin: 3rem auto 0;
+  line-height: 1.6;
+  font-style: italic;
+  opacity: 0.85;
+`;
+
 const GridContainer = styled(motion.div)`
   display: grid;
   gap: 2rem;
@@ -74,6 +85,9 @@ export const SkillsSection: React.FC = () => {
           <GridContainer variants={!reducedMotion ? itemVariants : undefined}>
             <TechnologyGrid />
           </GridContainer>
+          <AiNote variants={!reducedMotion ? itemVariants : undefined}>
+            {t('about.skills.aiNote')}
+          </AiNote>
         </motion.div>
       </Content>
     </Section>

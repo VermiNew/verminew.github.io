@@ -14,7 +14,6 @@ import {
   SiTypescript,
   // Frontend Frameworks & Libraries
   SiReact,
-  SiVuedotjs,
   SiNextdotjs,
   SiAngular,
   SiBootstrap,
@@ -22,29 +21,16 @@ import {
   // Backend & Databases
   SiPhp,
   SiMysql,
-  SiFastapi,
   // Programming Languages
   SiCplusplus,
   SiSharp,
   SiPython,
-  // AI/ML
-  SiTensorflow,
-  SiPytorch,
   // Development Tools
   SiGit,
-  SiDocker,
-  SiJest,
   SiMarkdown,
   // System & DevOps
   SiGnubash,
-  SiAndroidstudio,
-  // Future Plans
-  SiRedis,
-  SiFirebase,
-  SiAuth0,
-  SiJsonwebtokens,
-  SiRust,
-  SiGo
+  SiAndroidstudio
 } from 'react-icons/si';
 import { IoTerminal } from "react-icons/io5";
 import { FaJava } from "react-icons/fa";
@@ -127,68 +113,38 @@ const categoryVariants = {
 
 const technologies = {
   frontendCore: [
-    // HTML + CSS as fundamental pair
     { id: 'html5', icon: <SiHtml5 />, level: 'intermediate' as const },
     { id: 'css3', icon: <SiCss3 />, level: 'intermediate' as const },
-    // JavaScript + TypeScript as a pair
     { id: 'javascript', icon: <SiJavascript />, level: 'beginner' as const },
     { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const }
   ],
   frontendFrameworks: [
-    // Angular
+    { id: 'react', icon: <SiReact />, level: 'learning' as const },
+    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'learning' as const },
     { id: 'angular', icon: <SiAngular />, level: 'learning' as const },
-    // Styling frameworks together
     { id: 'bootstrap', icon: <SiBootstrap />, level: 'beginner' as const }
   ],
   backendDb: [
-    // PHP + MySQL as classic stack
     { id: 'php', icon: <SiPhp />, level: 'beginner' as const },
     { id: 'mysql', icon: <SiMysql />, level: 'beginner' as const }
   ],
   programming: [
-    // C-family languages together
     { id: 'cpp', icon: <SiCplusplus />, level: 'intermediate' as const },
     { id: 'csharp', icon: <SiSharp />, level: 'intermediate' as const },
-    // Interpreted languages
     { id: 'python', icon: <SiPython />, level: 'beginner' as const },
     { id: 'java', icon: <FaJava />, level: 'beginner' as const }
   ],
   devTools: [
-    // Version control
     { id: 'git', icon: <SiGit />, level: 'intermediate' as const },
-    // Documentation
     { id: 'markdown', icon: <SiMarkdown />, level: 'advanced' as const }
   ],
   systemDevops: [
-    // Development environments
     { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'beginner' as const },
-    // Shell scripting
     { id: 'batch', icon: <IoTerminal />, level: 'beginner' as const }
   ],
   plannedSkills: [
-    // Frontend frameworks
-    { id: 'react', icon: <SiReact />, level: 'planned' as const },
     { id: 'nextjs', icon: <SiNextdotjs />, level: 'planned' as const },
-    { id: 'vuejs', icon: <SiVuedotjs />, level: 'planned' as const },
-    { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'planned' as const },
-    // Backend services
-    { id: 'fastapi', icon: <SiFastapi />, level: 'planned' as const },
-    { id: 'redis', icon: <SiRedis />, level: 'planned' as const },
-    { id: 'firebase', icon: <SiFirebase />, level: 'planned' as const },
-    // DevOps tools
-    { id: 'docker', icon: <SiDocker />, level: 'planned' as const },
-    { id: 'bash', icon: <SiGnubash />, level: 'planned' as const },
-    // Testing
-    { id: 'jest', icon: <SiJest />, level: 'planned' as const },
-    // AI/ML frameworks
-    { id: 'tensorflow', icon: <SiTensorflow />, level: 'planned' as const },
-    { id: 'pytorch', icon: <SiPytorch />, level: 'planned' as const },
-    // Authentication & Security
-    { id: 'oauth', icon: <SiAuth0 />, level: 'planned' as const },
-    { id: 'jwt', icon: <SiJsonwebtokens />, level: 'planned' as const },
-    // Modern systems programming
-    { id: 'rust', icon: <SiRust />, level: 'planned' as const },
-    { id: 'go', icon: <SiGo />, level: 'planned' as const }
+    { id: 'bash', icon: <SiGnubash />, level: 'planned' as const }
   ]
 };
 
