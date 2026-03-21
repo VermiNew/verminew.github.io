@@ -118,13 +118,15 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 30, scale: 0.95, filter: 'blur(4px)' },
   visible: {
     opacity: 1,
     y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
     transition: {
-      duration: 0.3,
-      ease: 'easeOut'
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94]
     }
   }
 };
@@ -134,8 +136,8 @@ const gridVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.1
+      staggerChildren: 0.08,
+      delayChildren: 0.15
     }
   }
 };
@@ -304,14 +306,13 @@ export const ProjectsSection: React.FC = () => {
                 <ProjectsGrid
                    variants={!reducedMotion ? gridVariants : undefined}
                    initial="hidden"
-                   animate="visible"
-                   layout
+                   whileInView="visible"
+                   viewport={{ once: true, margin: "-50px" }}
                  >
                   {organizedProjects.featured.map((project) => (
                     <motion.div
                       key={project.id}
                       variants={!reducedMotion ? itemVariants : undefined}
-                      layout
                     >
                       <ProjectCard project={project} />
                     </motion.div>
@@ -333,14 +334,13 @@ export const ProjectsSection: React.FC = () => {
                 <ProjectsGrid
                    variants={!reducedMotion ? gridVariants : undefined}
                    initial="hidden"
-                   animate="visible"
-                   layout
+                   whileInView="visible"
+                   viewport={{ once: true, margin: "-50px" }}
                  >
                   {organizedProjects.active.map((project) => (
                     <motion.div
                       key={project.id}
                       variants={!reducedMotion ? itemVariants : undefined}
-                      layout
                     >
                       <ProjectCard project={project} />
                     </motion.div>
@@ -362,14 +362,13 @@ export const ProjectsSection: React.FC = () => {
                 <ProjectsGrid
                    variants={!reducedMotion ? gridVariants : undefined}
                    initial="hidden"
-                   animate="visible"
-                   layout
+                   whileInView="visible"
+                   viewport={{ once: true, margin: "-50px" }}
                  >
                   {organizedProjects.planned.map((project) => (
                     <motion.div
                       key={project.id}
                       variants={!reducedMotion ? itemVariants : undefined}
-                      layout
                     >
                       <ProjectCard project={project} />
                     </motion.div>
