@@ -293,7 +293,12 @@
     },
     "modal": {
       "close": "Close",
-      "confirmClose": "You have unsaved data in the form. Are you sure you want to close?"
+      "confirmClose": "The form has not been completed yet.\nAre you sure you want to close?",
+      "confirmCloseHint": "Your data will be remembered.",
+      "confirmClear": "All entered data will be deleted.\nAre you sure you want to clear the form?",
+      "confirmNo": "Cancel",
+      "confirmYesClose": "Yes, close",
+      "confirmYesClear": "Yes, clear"
     },
     "form": {
       "name": "Full Name",

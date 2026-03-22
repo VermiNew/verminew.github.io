@@ -87,8 +87,18 @@ const StyledButton = styled.button<{
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    background: ${({ theme }) => `${theme.colors.textSecondary}30`};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    border-color: ${({ theme }) => `${theme.colors.textSecondary}30`};
+    transform: none;
+
+    &:hover {
+      background: ${({ theme }) => `${theme.colors.textSecondary}30`};
+      color: ${({ theme }) => theme.colors.textSecondary};
+      transform: none;
+    }
   }
 
   &:active {
@@ -102,6 +112,7 @@ export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'medium',
   children,
+  disabled,
   ...props
 }) => {
   const { themeMode } = useTheme();
@@ -112,8 +123,9 @@ export const Button: React.FC<ButtonProps> = ({
       $variant={variant}
       $size={size}
       $isDark={isDark}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      disabled={disabled}
+      whileHover={disabled ? undefined : { scale: 1.05 }}
+      whileTap={disabled ? undefined : { scale: 0.95 }}
       {...props}
     >
       {children}

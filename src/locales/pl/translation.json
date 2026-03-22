@@ -294,7 +294,12 @@
     },
     "modal": {
       "close": "Zamknij",
-      "confirmClose": "Masz niezapisane dane w formularzu. Na pewno chcesz zamknąć?"
+      "confirmClose": "Formularz nie został jeszcze ukończony.\nNa pewno chcesz zamknąć?",
+      "confirmCloseHint": "Twoje dane zostaną zapamiętane.",
+      "confirmClear": "Wszystkie wpisane dane zostaną usunięte.\nNa pewno chcesz wyczyścić formularz?",
+      "confirmNo": "Anuluj",
+      "confirmYesClose": "Tak, zamknij",
+      "confirmYesClear": "Tak, wyczyść"
     },
     "form": {
       "name": "Pełne imię i nazwisko",

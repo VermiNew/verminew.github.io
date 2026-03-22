@@ -488,6 +488,65 @@ const CheckboxInput = styled.div<{ $checked: boolean }>`
 `;
 // ───────────────────────────────────────────────────────────────────────────────
 
+// ── Confirm dialog styled components ───────────────────────────────────────────
+const ConfirmBackdrop = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+`;
+
+const ConfirmBox = styled(motion.div)<{ $isDark: boolean }>`
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: ${({ theme, $isDark }) =>
+    $isDark ? theme.colors.surface : theme.colors.background};
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  text-align: center;
+`;
+
+const ConfirmIcon = styled.div`
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: #ef444418;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+`;
+
+const ConfirmMessage = styled.p`
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0 0 0.5rem;
+  white-space: pre-line;
+`;
+
+const ConfirmHint = styled.p`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.info};
+  margin: 0 0 1.5rem;
+`;
+
+const ConfirmActions = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+`;
+// ───────────────────────────────────────────────────────────────────────────────
+
 // ── Summary styled components ──────────────────────────────────────────────────
 const SummaryTitle = styled.h2`
   font-size: 1.5rem;
@@ -670,6 +729,9 @@ export const OrderSection: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
 
+  // ── Confirm dialog state ───────────────────────────────────────────────────
+  const [confirmAction, setConfirmAction] = useState<'close' | 'clear' | null>(null);
+
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
     document.body.style.overflow = modalOpen ? 'hidden' : '';
@@ -693,10 +755,11 @@ export const OrderSection: React.FC = () => {
   // ── Close with confirmation ────────────────────────────────────────────────
   const confirmClose = useCallback(() => {
     if (isFormDirty && step !== 'summary') {
-      if (!window.confirm(t('order.modal.confirmClose'))) return;
+      setConfirmAction('close');
+      return;
     }
     setModalOpen(false);
-  }, [isFormDirty, step, t]);
+  }, [isFormDirty, step]);
 
   // ── Close on Escape ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -710,6 +773,10 @@ export const OrderSection: React.FC = () => {
   // ── Handlers ─────────────────────────────────────────────────────────────────
   const openModal = useCallback(() => setModalOpen(true), []);
 
+  const handleClearRequest = useCallback(() => {
+    setConfirmAction('clear');
+  }, []);
+
   const handleClearForm = useCallback(() => {
     setForm(emptyForm);
     setRodoConsent(false);
@@ -718,6 +785,19 @@ export const OrderSection: React.FC = () => {
     setTouched(new Set());
     setStep('basics');
     sessionStorage.removeItem(SESSION_KEY);
+  }, []);
+
+  const handleConfirmYes = useCallback(() => {
+    if (confirmAction === 'close') {
+      setModalOpen(false);
+    } else if (confirmAction === 'clear') {
+      handleClearForm();
+    }
+    setConfirmAction(null);
+  }, [confirmAction, handleClearForm]);
+
+  const handleConfirmNo = useCallback(() => {
+    setConfirmAction(null);
   }, []);
 
   const handleChange = useCallback(
@@ -981,7 +1061,7 @@ export const OrderSection: React.FC = () => {
               <ModalHeader>
                 <ModalTitle>{t('order.title')}</ModalTitle>
                 {step !== 'summary' && isFormDirty && (
-                  <ClearButton type="button" onClick={handleClearForm}>
+                  <ClearButton type="button" onClick={handleClearRequest}>
                     <MdDeleteOutline size={16} />
                     {t('order.form.clear')}
                   </ClearButton>
@@ -1596,6 +1676,49 @@ export const OrderSection: React.FC = () => {
               </AnimatePresence>
             </ModalContainer>
           </ModalBackdrop>
+        )}
+      </AnimatePresence>
+
+      {/* ── Confirm dialog ── */}
+      <AnimatePresence>
+        {confirmAction && (
+          <ConfirmBackdrop
+            key="confirm-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+            exit={{ opacity: 0, transition: { duration: 0.12 } }}
+            onClick={handleConfirmNo}
+          >
+            <ConfirmBox
+              $isDark={isDark}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } }}
+              exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.15 } }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ConfirmIcon>
+                <MdWarningAmber />
+              </ConfirmIcon>
+              <ConfirmMessage>
+                {confirmAction === 'close'
+                  ? t('order.modal.confirmClose')
+                  : t('order.modal.confirmClear')}
+              </ConfirmMessage>
+              {confirmAction === 'close' && (
+                <ConfirmHint>{t('order.modal.confirmCloseHint')}</ConfirmHint>
+              )}
+              <ConfirmActions>
+                <Button size="medium" variant="outline" onClick={handleConfirmNo}>
+                  {t('order.modal.confirmNo')}
+                </Button>
+                <Button size="medium" onClick={handleConfirmYes}>
+                  {confirmAction === 'close'
+                    ? t('order.modal.confirmYesClose')
+                    : t('order.modal.confirmYesClear')}
+                </Button>
+              </ConfirmActions>
+            </ConfirmBox>
+          </ConfirmBackdrop>
         )}
       </AnimatePresence>
     </SectionContainer>
