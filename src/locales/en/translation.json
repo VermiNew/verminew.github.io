@@ -48,7 +48,7 @@
       "education": {
         "title": "Education",
         "current": "Technical school student, specialization: IT technician-programmer",
-        "achievements": "Completed INF.03 qualification, INF.04 written (awaiting results)"
+        "achievements": "INF.03 qualification passed, INF.04 qualification passed"
       },
       "languages": {
         "title": "Languages",
@@ -83,12 +83,12 @@
         ],
         "freelance": {
           "title": "Freelance Projects",
-          "description": "I also accept freelance projects. Payment model: 50% upfront, 50% upon project completion.",
+          "description": "I also accept freelance projects. Payment model: 30% upfront, 50% near completion, 20% on code delivery.",
           "highlights": [
             "Clear collaboration terms",
             "Transparent payment model",
             "Regular communication during project execution",
-            "Quality assurance guarantee"
+            "Revisions within agreed scope"
           ]
         }
       }

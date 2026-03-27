@@ -48,7 +48,7 @@
       "education": {
         "title": "Edukacja",
         "current": "Uczeń technikum, kierunek: technik-programista",
-        "achievements": "Ukończona kwalifikacja INF.03, INF.04 napisany (czekam na wynik)"
+        "achievements": "Kwalifikacja INF.03 zdana, kwalifikacja INF.04 zdana"
       },
       "languages": {
         "title": "Języki",
@@ -83,12 +83,12 @@
         ],
         "freelance": {
           "title": "Zlecenia freelancerskie",
-          "description": "Przyjmuję również zlecenia freelancerskie. Model płatności: 50% kwoty przed rozpoczęciem projektu, 50% po jego ukończeniu.",
+          "description": "Przyjmuję również zlecenia freelancerskie. Model płatności: 30% na start, 50% przy kończeniu, 20% po przekazaniu kodu.",
           "highlights": [
             "Jasne warunki współpracy",
             "Transparentny model płatności",
             "Regularna komunikacja podczas realizacji projektu",
-            "Gwarancja jakości wykonania"
+            "Poprawki w ramach ustalonego zakresu"
           ]
         }
       }
