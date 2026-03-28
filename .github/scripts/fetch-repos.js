@@ -24,27 +24,17 @@ const FEATURED_REPOS = {
   'verminew.github.io': {
     category: 'frontend',
     priority: 1,
-    featuredReason: 'Professional portfolio showcasing vibecoding approach and modern web development skills'
+    featuredReason: 'Portfolio website built with React, TypeScript and styled-components'
   },
-  'AudioAnalyzers': {
-    category: 'fullstack',
-    priority: 2,
-    featuredReason: 'Professional audio processing tool with real-time waveform visualization and spectrum analysis'
+  'w-chrystusie': {
+    category: 'frontend',
+    priority: 1,
+    featuredReason: 'Catholic web app — prayers, rosary and hymns in one place'
   },
-  'transfer-app': {
-    category: 'fullstack',
-    priority: 2,
-    featuredReason: 'Modern file transfer application built with TypeScript and modern web technologies'
-  },
-  'PortableBlenderManager': {
-    category: 'tools',
-    priority: 3,
-    featuredReason: 'Workflow management tool for Blender portable edition with efficient configuration handling'
-  },
-  'Terminality': {
-    category: 'tools',
-    priority: 3,
-    featuredReason: 'Customizable console prompt generator with Git integration and colorful output'
+  'energy-monitoring-system': {
+    category: 'frontend',
+    priority: 1,
+    featuredReason: 'Smart home energy monitoring dashboard built with React and TypeScript'
   }
 };
 
