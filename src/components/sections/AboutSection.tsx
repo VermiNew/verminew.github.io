@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Section } from '../layout/Section';
 import { SectionTitle } from '../ui/SectionTitle';
 import { Button } from '../ui/Button';
-import { SiGithub, SiDiscord } from 'react-icons/si';
+import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdTrendingUp, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
@@ -419,6 +419,15 @@ export const AboutSection: React.FC = () => {
                   >
                     <SiDiscord aria-hidden="true" />
                     {t('about.profiles.discord')}
+                  </ProfileLink>
+                  <ProfileLink
+                    href={getSocialUrl('linkedin')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${t('about.profiles.linkedin')} (opens in new tab)`}
+                  >
+                    <SiLinkedin aria-hidden="true" />
+                    {t('about.profiles.linkedin')}
                   </ProfileLink>
                   <ProfileLink
                     href={getSocialUrl('email')}
