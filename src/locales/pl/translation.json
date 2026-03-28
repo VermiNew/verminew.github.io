@@ -60,8 +60,7 @@
         "list": [
           "Vibecoding - przekuwanie pomysłów w działające projekty",
           "Projektowanie graficzne w Canvie",
-          "Projekty z mikrokontrolerami ESP32 (C++)",
-          "Wiara Katolicka"
+          "Projekty z mikrokontrolerami ESP32 (C++)"
         ]
       },
       "strengths": {
@@ -523,7 +522,7 @@
     }
   },
   "faq": {
-    "title": "FAQ",
+    "title": "Najczęściej zadawane pytania",
     "questions": [
       {
         "question": "Jakie projekty preferuję?",
