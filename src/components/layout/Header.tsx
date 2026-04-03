@@ -66,6 +66,7 @@ const LogoContainer = styled(motion.div)`
 const Logo = styled.img`
   height: 40px;
   width: auto;
+  filter: ${({ theme }) => theme.logoFilter};
   transition: all ${({ theme }) => theme['transitions']['default']};
 
   @media (max-width: ${({ theme }) => theme['breakpoints']['mobile']}) {

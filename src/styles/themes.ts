@@ -1,4 +1,5 @@
 import { Theme } from '@/types/theme';
+import { getLogoFilter } from '@/utils/logoFilter';
 
 const baseTheme = {
   breakpoints: {
@@ -46,6 +47,7 @@ export const lightTheme: Theme = {
     medium: '0 4px 8px rgba(0,0,0,0.1)',
     large: '0 8px 16px rgba(0,0,0,0.15)',
   },
+  logoFilter: getLogoFilter('#2563eb'),
 };
 
 export const darkTheme: Theme = {
@@ -71,6 +73,7 @@ export const darkTheme: Theme = {
     medium: '0 4px 8px rgba(0,0,0,0.3)',
     large: '0 8px 16px rgba(0,0,0,0.4)',
   },
+  logoFilter: getLogoFilter('#60a5fa'),
 };
 
 export const corporateModernTheme: Theme = {
@@ -96,6 +99,7 @@ export const corporateModernTheme: Theme = {
     medium: '0 4px 8px rgba(0,0,0,0.08)',
     large: '0 8px 16px rgba(0,0,0,0.12)',
   },
+  logoFilter: getLogoFilter('#2c5282'),
 };
 
 export const techMinimalTheme: Theme = {
@@ -121,6 +125,7 @@ export const techMinimalTheme: Theme = {
     medium: '0 4px 6px rgba(0,0,0,0.07)',
     large: '0 10px 15px rgba(0,0,0,0.1)',
   },
+  logoFilter: getLogoFilter('#4f46e5'),
 };
 
 export const professionalDarkTheme: Theme = {
@@ -146,6 +151,7 @@ export const professionalDarkTheme: Theme = {
     medium: '0 4px 8px rgba(0,0,0,0.4)',
     large: '0 8px 16px rgba(0,0,0,0.5)',
   },
+  logoFilter: getLogoFilter('#6366f1'),
 };
 
 export const modernNeutralTheme: Theme = {
@@ -171,6 +177,7 @@ export const modernNeutralTheme: Theme = {
     medium: '0 4px 6px rgba(0,0,0,0.06)',
     large: '0 8px 12px rgba(0,0,0,0.09)',
   },
+  logoFilter: getLogoFilter('#44403c'),
 };
 
 export const eInkLightTheme: Theme = {
@@ -201,6 +208,7 @@ export const eInkLightTheme: Theme = {
     slow: '0.25s ease',
     fast: '0.1s ease',
   },
+  logoFilter: getLogoFilter('#212529'),
 };
 
 export const eInkDarkTheme: Theme = {
@@ -231,6 +239,7 @@ export const eInkDarkTheme: Theme = {
     slow: '0.25s ease',
     fast: '0.1s ease',
   },
+  logoFilter: getLogoFilter('#e0e0e0'),
 };
 
 export const nordTheme: Theme = {
@@ -256,6 +265,7 @@ export const nordTheme: Theme = {
     medium: '0 4px 8px rgba(0,0,0,0.4)',
     large: '0 8px 16px rgba(0,0,0,0.5)',
   },
+  logoFilter: getLogoFilter('#88C0D0'),
 };
 
 export const solarizedLightTheme: Theme = {
@@ -281,6 +291,7 @@ export const solarizedLightTheme: Theme = {
     medium: '0 3px 6px rgba(0,0,0,0.15)',
     large: '0 6px 12px rgba(0,0,0,0.2)',
   },
+  logoFilter: getLogoFilter('#268BD2'),
 };
 
 export const solarizedDarkTheme: Theme = {
@@ -306,6 +317,7 @@ export const solarizedDarkTheme: Theme = {
     medium: '0 4px 8px rgba(0,0,0,0.4)',
     large: '0 8px 16px rgba(0,0,0,0.5)',
   },
+  logoFilter: getLogoFilter('#839496'),
 };
 
 export const winterTheme: Theme = {
@@ -331,6 +343,7 @@ export const winterTheme: Theme = {
     medium: '0 4px 8px rgba(44,82,130,0.15)',
     large: '0 8px 16px rgba(44,82,130,0.2)',
   },
+  logoFilter: getLogoFilter('#2c5282'),
 };
 
 export const springTheme: Theme = {
@@ -356,6 +369,7 @@ export const springTheme: Theme = {
     medium: '0 4px 8px rgba(47,133,90,0.15)',
     large: '0 8px 16px rgba(47,133,90,0.2)',
   },
+  logoFilter: getLogoFilter('#2f855a'),
 };
 
 export const summerTheme: Theme = {
@@ -381,6 +395,7 @@ export const summerTheme: Theme = {
     medium: '0 4px 8px rgba(192,86,33,0.15)',
     large: '0 8px 16px rgba(192,86,33,0.2)',
   },
+  logoFilter: getLogoFilter('#c05621'),
 };
 
 export const autumnTheme: Theme = {
@@ -406,6 +421,7 @@ export const autumnTheme: Theme = {
     medium: '0 4px 8px rgba(156,66,33,0.15)',
     large: '0 8px 16px rgba(156,66,33,0.2)',
   },
+  logoFilter: getLogoFilter('#9c4221'),
 };
 
 export const pastelTheme: Theme = {
@@ -431,4 +447,5 @@ export const pastelTheme: Theme = {
     medium: '0 4px 8px rgba(128,90,213,0.15)',
     large: '0 8px 16px rgba(128,90,213,0.2)',
   },
+  logoFilter: getLogoFilter('#805ad5'),
 };

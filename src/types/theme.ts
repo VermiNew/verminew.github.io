@@ -53,4 +53,5 @@ export interface Theme {
     modal: number;
     tooltip: number;
   };
+  logoFilter: string;
 } 

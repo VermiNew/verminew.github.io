@@ -78,11 +78,11 @@ const LogoContainer = styled(motion.div)`
   position: relative;
 `;
 
-const Logo = styled(motion.img)<{ $isDark: boolean }>`
+const Logo = styled(motion.img)`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: ${({ $isDark }) => !$isDark ? 'none' : 'brightness(100%)'};
+  filter: ${({ theme }) => theme.logoFilter};
   transform-origin: center;
 `;
 
@@ -146,7 +146,6 @@ export const HeroSection: React.FC = () => {
         <Content $isDark={isDark}>
           <LogoContainer>
             <Logo 
-              $isDark={isDark}
               src="/assets/images/Logo.webp" 
               alt={t('brand.logo')}
               variants={!reducedMotion ? logoVariants : undefined}
