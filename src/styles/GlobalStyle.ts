@@ -18,6 +18,8 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.5;
+    min-width: 280px;
+    overflow-x: hidden;
     transition: background-color ${({ theme }) => theme.transitions.default},
                 color ${({ theme }) => theme.transitions.default};
   }

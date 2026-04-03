@@ -16,6 +16,7 @@ const Content = styled.div`
   grid-template-columns: 1fr 2fr;
   gap: 3rem;
   align-items: start;
+  min-width: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
@@ -27,9 +28,13 @@ const ImageContainer = styled(motion.div)<{ $isDark: boolean }>`
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  max-height: 400px;
-  width: 100%;
+  max-width: 400px;
   box-shadow: ${({ theme }) => theme.shadows.medium};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    max-width: 300px;
+    margin: 0 auto;
+  }
 
   &::after {
     content: '';
@@ -51,15 +56,20 @@ const ImageContainer = styled(motion.div)<{ $isDark: boolean }>`
 `;
 
 const Image = styled.img`
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: cover;
+  display: block;
 `;
 
 const TextContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  min-width: 0;
+  overflow-wrap: break-word;
 `;
 
 const Description = styled.div`
@@ -133,6 +143,7 @@ const ProfilesTitle = styled.h3`
 
 const ProfilesList = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 `;
 
