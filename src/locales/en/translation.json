@@ -82,7 +82,7 @@
         ],
         "freelance": {
           "title": "Freelance Projects",
-          "description": "I also accept freelance projects. Payment model: 30% upfront, 50% near completion, 20% on code delivery.",
+          "description": "I also accept freelance projects. Payment model: 50% upfront deposit, 50% on completion and acceptance.",
           "highlights": [
             "Clear collaboration terms",
             "Transparent payment model",
@@ -408,6 +408,9 @@
         "No, I need help"
       ],
       "rodoConsent": "I consent to the processing of my personal data for the purpose of order fulfilment, in accordance with GDPR.",
+      "rodoConsentBefore": "I have read the ",
+      "rodoConsentLink": "Privacy Policy",
+      "rodoConsentAfter": " and consent to the processing of my personal data for the purpose of order fulfilment (GDPR).",
       "rodoRequired": "Consent is required"
     },
     "summary": {
@@ -429,6 +432,94 @@
       "mailSubject": "Order {{id}}",
       "mailBody": "Order ID: {{id}}\n\nPlease download and attach the file files_for_order.zip\n\nGenerated: {{date}}"
     }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "close": "Close Privacy Policy",
+    "openLink": "Privacy Policy",
+    "lastUpdatedLabel": "Last updated",
+    "lastUpdated": "April 2026",
+    "intro": "This Policy describes the rules for processing personal data of persons using the order form and other forms of contact on the verminew.github.io website.",
+    "puodoNote": "You also have the right to lodge a complaint with the Polish supervisory authority — the President of the Personal Data Protection Office (PUODO):",
+    "sections": [
+      {
+        "title": "Data controller",
+        "paragraphs": [
+          "The controller of your personal data is Michał Oślizło — a natural person conducting unregistered economic activity within the meaning of art. 5 sec. 1 of the Polish Act of 6 March 2018 — Entrepreneurs' Law.",
+          "Contact: verminewfey@gmail.com. The correspondence address is provided on request after a contract is concluded."
+        ]
+      },
+      {
+        "title": "Purpose and legal basis of processing",
+        "paragraphs": [
+          "Your data is processed for the following purposes:"
+        ],
+        "list": [
+          "Order fulfilment, preparing a quote and possibly concluding a contract for specific work — basis: art. 6(1)(b) GDPR (necessity to take steps at the request of the data subject prior to entering into a contract and to perform the contract).",
+          "Reply and correspondence handling — basis: art. 6(1)(f) GDPR (legitimate interest of the controller in providing a response).",
+          "Fulfilling tax and record-keeping obligations if a contract is concluded — basis: art. 6(1)(c) GDPR."
+        ]
+      },
+      {
+        "title": "Scope of processed data",
+        "paragraphs": [
+          "Only data you provide yourself in the form or correspondence is processed:"
+        ],
+        "list": [
+          "First and last name (or company name)",
+          "E-mail address",
+          "Phone number (optional)",
+          "Inquiry content / project description",
+          "Attached files (if you choose to attach them)"
+        ]
+      },
+      {
+        "title": "Recipients of data",
+        "paragraphs": [
+          "Your data may be shared with the following processors whose services are necessary to handle the order:"
+        ],
+        "list": [
+          "FormSubmit.co — form delivery service provider. The service is based outside the European Economic Area; data transfer is carried out on the basis of standard contractual clauses approved by the European Commission.",
+          "Google LLC (Gmail) — e-mail service provider receiving the form contents."
+        ]
+      },
+      {
+        "title": "Retention period",
+        "paragraphs": [
+          "Data is stored for up to 12 months from the last contact, after which it is deleted.",
+          "If a contract is concluded, data necessary for accounting and tax purposes is stored for 5 years from the end of the calendar year in which the tax obligation arose (in accordance with the Polish Tax Ordinance)."
+        ]
+      },
+      {
+        "title": "Your rights",
+        "paragraphs": [
+          "In connection with the processing of your data, you have the following rights:"
+        ],
+        "list": [
+          "Right of access (art. 15 GDPR)",
+          "Right to rectification (art. 16 GDPR)",
+          "Right to erasure — \"right to be forgotten\" (art. 17 GDPR)",
+          "Right to restriction of processing (art. 18 GDPR)",
+          "Right to data portability (art. 20 GDPR)",
+          "Right to object to processing (art. 21 GDPR)",
+          "Right to withdraw consent at any time (where processing is based on consent)"
+        ]
+      },
+      {
+        "title": "Cookies and browser storage",
+        "paragraphs": [
+          "The site does not use cookies for advertising or analytical purposes.",
+          "Browser storage (localStorage / sessionStorage) is used solely to save your preferences (selected colour theme, interface language) and to temporarily store a partially filled order form so that you do not lose entered data on page refresh.",
+          "This data is never sent to a server and remains exclusively in your browser."
+        ]
+      },
+      {
+        "title": "No profiling",
+        "paragraphs": [
+          "Your data is not used for profiling or automated decision-making within the meaning of art. 22 GDPR."
+        ]
+      }
+    ]
   },
   "services": {
     "title": "My Services",

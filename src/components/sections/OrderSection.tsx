@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/Button';
 import { useAnimation } from '@/context/AnimationContext';
 import { socialConfig } from '@/config/social';
 import JSZip from 'jszip';
+import { PrivacyPolicyModal } from '@/components/legal/PrivacyPolicyModal';
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 const MAX_TOTAL_SIZE_BYTES = 20 * 1024 * 1024;
@@ -488,6 +489,20 @@ const CheckboxInput = styled.div<{ $checked: boolean }>`
 `;
 // ───────────────────────────────────────────────────────────────────────────────
 
+const InlineLinkButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
 // ── Confirm dialog styled components ───────────────────────────────────────────
 const ConfirmBackdrop = styled(motion.div)`
   position: fixed;
@@ -731,6 +746,9 @@ export const OrderSection: React.FC = () => {
 
   // ── Confirm dialog state ───────────────────────────────────────────────────
   const [confirmAction, setConfirmAction] = useState<'close' | 'clear' | null>(null);
+
+  // ── Legal modals state ────────────────────────────────────────────────────
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -1556,7 +1574,20 @@ export const OrderSection: React.FC = () => {
                       <Field>
                         <CheckboxLabel onClick={() => setRodoConsent((v) => !v)}>
                           <CheckboxInput $checked={rodoConsent} />
-                          <FieldHint style={{ opacity: 1 }}>{t('order.form.rodoConsent')}</FieldHint>
+                          <FieldHint style={{ opacity: 1 }}>
+                            {t('order.form.rodoConsentBefore')}
+                            <InlineLinkButton
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setPrivacyOpen(true);
+                              }}
+                            >
+                              {t('order.form.rodoConsentLink')}
+                            </InlineLinkButton>
+                            {t('order.form.rodoConsentAfter')}
+                          </FieldHint>
                         </CheckboxLabel>
                         {!rodoConsent && touched.has('hasDomain') && (
                           <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -1721,6 +1752,8 @@ export const OrderSection: React.FC = () => {
           </ConfirmBackdrop>
         )}
       </AnimatePresence>
+
+      <PrivacyPolicyModal isOpen={privacyOpen} onClose={() => setPrivacyOpen(false)} />
     </SectionContainer>
   );
 };
