@@ -252,13 +252,6 @@ const Settings: React.FC = () => {
     closeSettings();
   }, [closeSettings]);
 
-  // Return focus to trigger button when panel closes
-  useEffect(() => {
-    if (!isSettingsOpen) {
-      buttonRef.current?.focus();
-    }
-  }, [isSettingsOpen]);
-
   // Close panel on Escape key or outside click
   useEffect(() => {
     if (!isSettingsOpen) return;
@@ -359,7 +352,7 @@ const Settings: React.FC = () => {
             <FocusTrap
               focusTrapOptions={{
                 allowOutsideClick: true,
-                returnFocusOnDeactivate: false,
+                returnFocusOnDeactivate: true,
               }}
             >
             <Panel
@@ -458,4 +451,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings; 
+export default Settings;

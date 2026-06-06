@@ -31,7 +31,7 @@ const AppContent: React.FC = () => {
       <SkipLink />
       <Header />
       <AnimatePresence mode="wait">
-        <main id="main">
+        <main id="main" tabIndex={-1}>
           <ErrorBoundary section="hero">
             <SectionTransition>
               <HeroSection />
