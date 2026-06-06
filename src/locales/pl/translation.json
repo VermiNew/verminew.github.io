@@ -12,6 +12,9 @@
     "order": "Zleć projekt",
     "faq": "FAQ",
     "contact": "Kontakt",
+    "homeLabel": "VermiNew — przejdź na początek strony",
+    "primaryLabel": "Główna nawigacja",
+    "mobileLabel": "Mobilna nawigacja",
     "menu": "Otwórz menu",
     "close": "Zamknij menu"
   },

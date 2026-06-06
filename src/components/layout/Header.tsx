@@ -56,11 +56,19 @@ const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: b
   }
 `;
 
-const LogoContainer = styled(motion.div)`
+const LogoContainer = styled(motion.a)`
   display: flex;
   align-items: center;
   gap: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: none;
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
 `;
 
 const Logo = styled.img`
@@ -91,7 +99,7 @@ const LogoText = styled(motion.span)`
   }
 `;
 
-const Nav = styled.nav`
+const HeaderControls = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -101,7 +109,7 @@ const Nav = styled.nav`
   }
 `;
 
-const NavLinks = styled.div`
+const NavLinks = styled.nav`
   display: flex;
   gap: 1.5rem;
   align-items: center;
@@ -209,7 +217,7 @@ const MobileMenuButton = styled.button`
   }
 `;
 
-const MobileMenu = styled(motion.div)<{ $isDark: boolean }>`
+const MobileMenu = styled(motion.nav)<{ $isDark: boolean }>`
   display: none;
   position: fixed;
   top: 0;
@@ -358,16 +366,6 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [isMobileMenuOpen]);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.querySelector(sectionId);
-    if (element) {
-      setIsMobileMenuOpen(false);
-      setTimeout(() => {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-  };
-
   const navItems = [
     { href: '#home', label: t('navigation.start') },
     { href: '#about', label: t('navigation.background') },
@@ -383,12 +381,13 @@ export const Header: React.FC = () => {
     <>
       <HeaderContainer $isScrolled={isScrolled} $isDark={isDark}>
         <LogoContainer
+          href="#home"
+          aria-label={t('navigation.homeLabel')}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          onClick={() => scrollToSection('#home')}
         >
-          <Logo src="/assets/images/Logo.webp" alt="VermiNew Logo" />
+          <Logo src="/assets/images/Logo.webp" alt="" />
           <LogoText
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -410,17 +409,14 @@ export const Header: React.FC = () => {
           </LogoText>
         </LogoContainer>
 
-        <Nav>
-          <NavLinks>
+        <HeaderControls>
+          <NavLinks aria-label={t('navigation.primaryLabel')}>
             {navItems.map((item) => (
               <NavLink
                 key={item.href}
                 href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.href);
-                }}
                 $isActive={activeSection === item.href.substring(1)}
+                aria-current={activeSection === item.href.substring(1) ? 'location' : undefined}
               >
                 {item.label}
               </NavLink>
@@ -439,7 +435,7 @@ export const Header: React.FC = () => {
               {isMobileMenuOpen ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
             </IconWrapper>
           </MobileMenuButton>
-        </Nav>
+        </HeaderControls>
       </HeaderContainer>
 
       <AnimatePresence>
@@ -447,6 +443,7 @@ export const Header: React.FC = () => {
           <FocusTrap>
             <MobileMenu
               id="mobile-menu"
+              aria-label={t('navigation.mobileLabel')}
               $isDark={isDark}
               variants={menuVariants}
               initial="hidden"
@@ -459,10 +456,8 @@ export const Header: React.FC = () => {
                   $isActive={activeSection === item.href.substring(1)}
                   key={item.href}
                   href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(item.href);
-                  }}
+                  aria-current={activeSection === item.href.substring(1) ? 'location' : undefined}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -476,4 +471,4 @@ export const Header: React.FC = () => {
       </AnimatePresence>
     </>
   );
-}; 
+};

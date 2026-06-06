@@ -12,6 +12,9 @@
     "order": "Start a Project",
     "faq": "FAQ",
     "contact": "Contact",
+    "homeLabel": "VermiNew — go to the top of the page",
+    "primaryLabel": "Main navigation",
+    "mobileLabel": "Mobile navigation",
     "menu": "Open menu",
     "close": "Close menu"
   },

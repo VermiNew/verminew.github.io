@@ -13,6 +13,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     scroll-behavior: smooth;
   }
 
+  section[id] {
+    scroll-margin-top: 70px;
+  }
+
   body {
     font-family: 'Space Grotesk', 'Poppins', sans-serif;
     background-color: ${({ theme }) => theme.colors.background};
@@ -86,5 +90,9 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     html {
       font-size: 14px;
     }
+
+    section[id] {
+      scroll-margin-top: 60px;
+    }
   }
-`; 
+`;
