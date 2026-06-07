@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import FocusTrap from 'focus-trap-react';
 import { MdClose } from 'react-icons/md';
 import { useTheme } from '@/context/ThemeContext';
 import { useAnimation } from '@/context/AnimationContext';
@@ -64,6 +65,11 @@ const CloseButton = styled.button`
   &:hover {
     background: ${({ theme }) => `${theme.colors.primary}30`};
     color: ${({ theme }) => theme.colors.text};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
   }
 `;
 
@@ -140,6 +146,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
   const { themeMode } = useTheme();
   const { reducedMotion } = useAnimation();
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
+  const titleId = React.useId();
 
   // Lock body scroll while open
   useEffect(() => {
@@ -170,25 +177,33 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           exit="exit"
           onClick={onClose}
         >
-          <Container
-            $isDark={isDark}
-            variants={!reducedMotion ? modalVariants : undefined}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label={title}
+          <FocusTrap
+            focusTrapOptions={{
+              allowOutsideClick: true,
+              escapeDeactivates: false,
+              returnFocusOnDeactivate: true,
+            }}
           >
-            <CloseButton onClick={onClose} aria-label={closeLabel} type="button">
-              <MdClose />
-            </CloseButton>
-            <Header>
-              <Title>{title}</Title>
-            </Header>
-            <Body>{children}</Body>
-          </Container>
+            <Container
+              $isDark={isDark}
+              variants={!reducedMotion ? modalVariants : undefined}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
+            >
+              <CloseButton onClick={onClose} aria-label={closeLabel} type="button">
+                <MdClose aria-hidden="true" />
+              </CloseButton>
+              <Header>
+                <Title id={titleId}>{title}</Title>
+              </Header>
+              <Body>{children}</Body>
+            </Container>
+          </FocusTrap>
         </Backdrop>
       )}
     </AnimatePresence>

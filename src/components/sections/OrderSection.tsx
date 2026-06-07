@@ -801,7 +801,7 @@ export const OrderSection: React.FC = () => {
   // ── Close on Escape ──────────────────────────────────────────────────────────
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape' || !modalOpen) return;
+      if (e.key !== 'Escape' || !modalOpen || privacyOpen) return;
 
       if (confirmAction) {
         handleConfirmNo();
@@ -811,7 +811,7 @@ export const OrderSection: React.FC = () => {
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [modalOpen, confirmAction, confirmClose, handleConfirmNo]);
+  }, [modalOpen, privacyOpen, confirmAction, confirmClose, handleConfirmNo]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
   const openModal = useCallback(() => setModalOpen(true), []);
