@@ -175,6 +175,11 @@ const Tab = styled(motion.button)<{ $isActive: boolean }>`
       $isActive ? theme.colors.primary : theme.colors.primary + '20'
     };
   }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
 `;
 
 const PreferencesContainer = styled.div`
@@ -247,6 +252,7 @@ const Switch = styled.input`
   }
 `;
 
+type SettingsTab = 'language' | 'preferences';
 
 const Settings: React.FC = () => {
   const { isSettingsOpen, activeSettingsTab, openSettings, closeSettings } = useSettings();
@@ -255,10 +261,16 @@ const Settings: React.FC = () => {
   const buttonTimer = useRef<NodeJS.Timeout | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const languageTabRef = useRef<HTMLButtonElement>(null);
+  const preferencesTabRef = useRef<HTMLButtonElement>(null);
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
   const panelTitleId = 'settings-panel-title';
+  const languageTabId = 'settings-language-tab';
+  const languagePanelId = 'settings-language-panel';
+  const preferencesTabId = 'settings-preferences-tab';
+  const preferencesPanelId = 'settings-preferences-panel';
 
   const closePanel = useCallback(() => {
     closeSettings();
@@ -321,6 +333,32 @@ const Settings: React.FC = () => {
 
   const handleReducedMotionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReducedMotion(e.target.checked);
+  };
+
+  const selectSettingsTab = (tab: SettingsTab) => {
+    openSettings(tab);
+    const tabRef = tab === 'language' ? languageTabRef : preferencesTabRef;
+    requestAnimationFrame(() => tabRef.current?.focus());
+  };
+
+  const handleTabKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    currentTab: SettingsTab
+  ) => {
+    let nextTab: SettingsTab | null = null;
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      nextTab = currentTab === 'language' ? 'preferences' : 'language';
+    } else if (event.key === 'Home') {
+      nextTab = 'language';
+    } else if (event.key === 'End') {
+      nextTab = 'preferences';
+    }
+
+    if (nextTab) {
+      event.preventDefault();
+      selectSettingsTab(nextTab);
+    }
   };
 
   return (
@@ -392,23 +430,33 @@ const Settings: React.FC = () => {
 
               <TabContainer role="tablist" aria-label={t('settings.title')}>
                 <Tab
+                  ref={languageTabRef}
+                  id={languageTabId}
+                  type="button"
                   $isActive={activeSettingsTab === 'language'}
                   onClick={() => openSettings('language')}
+                  onKeyDown={(event) => handleTabKeyDown(event, 'language')}
                   whileTap={{ scale: 0.95 }}
                   role="tab"
                   aria-selected={activeSettingsTab === 'language'}
-                  aria-label={t('settings.tabs.language')}
+                  aria-controls={languagePanelId}
+                  tabIndex={activeSettingsTab === 'language' ? 0 : -1}
                 >
-                  <FiGlobe />
+                  <FiGlobe aria-hidden="true" />
                   {t('settings.tabs.language')}
                 </Tab>
                 <Tab
+                  ref={preferencesTabRef}
+                  id={preferencesTabId}
+                  type="button"
                   $isActive={activeSettingsTab === 'preferences'}
                   onClick={() => openSettings('preferences')}
+                  onKeyDown={(event) => handleTabKeyDown(event, 'preferences')}
                   whileTap={{ scale: 0.95 }}
                   role="tab"
                   aria-selected={activeSettingsTab === 'preferences'}
-                  aria-label={t('settings.tabs.preferences')}
+                  aria-controls={preferencesPanelId}
+                  tabIndex={activeSettingsTab === 'preferences' ? 0 : -1}
                 >
                   <FiZap aria-hidden="true" />
                   {t('settings.tabs.preferences')}
@@ -416,43 +464,42 @@ const Settings: React.FC = () => {
               </TabContainer>
 
               <PanelContent>
-                <AnimatePresence mode="wait">
-                  {activeSettingsTab === 'language' ? (
-                    <motion.div
-                      key="language"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <LanguageSettings />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="preferences"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <PreferencesContainer>
-                        <PreferenceItem>
-                          <PreferenceLabel htmlFor="reduced-motion-switch">
-                            <FiZap aria-hidden="true" />
-                            {t('settings.preferences.reducedMotion')}
-                          </PreferenceLabel>
-                          <Switch
-                            id="reduced-motion-switch"
-                            type="checkbox"
-                            checked={reducedMotion}
-                            onChange={handleReducedMotionChange}
-                            aria-label={t('settings.preferences.reducedMotion')}
-                          />
-                        </PreferenceItem>
-                      </PreferencesContainer>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <motion.div
+                  id={languagePanelId}
+                  role="tabpanel"
+                  aria-labelledby={languageTabId}
+                  hidden={activeSettingsTab !== 'language'}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <LanguageSettings />
+                </motion.div>
+                <motion.div
+                  id={preferencesPanelId}
+                  role="tabpanel"
+                  aria-labelledby={preferencesTabId}
+                  hidden={activeSettingsTab !== 'preferences'}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <PreferencesContainer>
+                    <PreferenceItem>
+                      <PreferenceLabel htmlFor="reduced-motion-switch">
+                        <FiZap aria-hidden="true" />
+                        {t('settings.preferences.reducedMotion')}
+                      </PreferenceLabel>
+                      <Switch
+                        id="reduced-motion-switch"
+                        type="checkbox"
+                        checked={reducedMotion}
+                        onChange={handleReducedMotionChange}
+                        aria-label={t('settings.preferences.reducedMotion')}
+                      />
+                    </PreferenceItem>
+                  </PreferencesContainer>
+                </motion.div>
               </PanelContent>
             </Panel>
             </FocusTrap>
