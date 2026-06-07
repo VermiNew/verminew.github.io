@@ -103,9 +103,13 @@ const Description = styled(motion.p)`
   margin: 0 auto;
 `;
 
-const PreviewCard = styled(motion.div) <{ $isDark: boolean }>`
+const PreviewCard = styled(motion.button) <{ $isDark: boolean }>`
+  appearance: none;
   width: 100%;
   padding: 2.5rem;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
   border-radius: 20px;
   background: ${({ theme, $isDark }) =>
     $isDark ? `${theme.colors.surface}80` : `${theme.colors.background}80`};
@@ -125,6 +129,11 @@ const PreviewCard = styled(motion.div) <{ $isDark: boolean }>`
   &:hover {
     border-color: ${({ theme }) => `${theme.colors.primary}50`};
     box-shadow: ${({ theme }) => theme.shadows.large};
+  }
+
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 4px;
   }
 
   transition: border-color 0.25s, box-shadow 0.25s;
@@ -1008,13 +1017,11 @@ export const OrderSection: React.FC = () => {
 
         {/* ── Preview card (always visible, triggers modal) ── */}
         <PreviewCard
+          type="button"
           $isDark={isDark}
           variants={!reducedMotion ? itemVariants : undefined}
           onClick={openModal}
-          role="button"
-          tabIndex={0}
           aria-label={t('order.preview.cta')}
-          onKeyDown={(e) => e.key === 'Enter' && openModal()}
         >
           {/* Skeleton fields */}
           <PreviewField>
