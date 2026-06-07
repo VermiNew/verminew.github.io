@@ -737,6 +737,7 @@ export const OrderSection: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewButtonRef = useRef<HTMLButtonElement>(null);
+  const confirmBoxRef = useRef<HTMLDivElement>(null);
 
   // ── Modal state ──────────────────────────────────────────────────────────────
   const [modalOpen, setModalOpen] = useState(false);
@@ -761,6 +762,8 @@ export const OrderSection: React.FC = () => {
   // ── Legal modals state ────────────────────────────────────────────────────
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const modalTitleId = 'order-modal-title';
+  const confirmMessageId = 'order-confirm-message';
+  const confirmHintId = 'order-confirm-hint';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -791,14 +794,24 @@ export const OrderSection: React.FC = () => {
     setModalOpen(false);
   }, [isFormDirty, step]);
 
+  const handleConfirmNo = useCallback(() => {
+    setConfirmAction(null);
+  }, []);
+
   // ── Close on Escape ──────────────────────────────────────────────────────────
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && modalOpen) confirmClose();
+      if (e.key !== 'Escape' || !modalOpen) return;
+
+      if (confirmAction) {
+        handleConfirmNo();
+      } else {
+        confirmClose();
+      }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [modalOpen, confirmClose]);
+  }, [modalOpen, confirmAction, confirmClose, handleConfirmNo]);
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
   const openModal = useCallback(() => setModalOpen(true), []);
@@ -825,10 +838,6 @@ export const OrderSection: React.FC = () => {
     }
     setConfirmAction(null);
   }, [confirmAction, handleClearForm]);
-
-  const handleConfirmNo = useCallback(() => {
-    setConfirmAction(null);
-  }, []);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -1743,35 +1752,51 @@ export const OrderSection: React.FC = () => {
             exit={{ opacity: 0, transition: { duration: 0.12 } }}
             onClick={handleConfirmNo}
           >
-            <ConfirmBox
-              $isDark={isDark}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } }}
-              exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.15 } }}
-              onClick={(e) => e.stopPropagation()}
+            <FocusTrap
+              focusTrapOptions={{
+                initialFocus: () => confirmBoxRef.current?.querySelector('button') ?? false,
+                returnFocusOnDeactivate: true,
+                escapeDeactivates: false,
+                allowOutsideClick: true,
+              }}
             >
-              <ConfirmIcon>
-                <MdWarningAmber />
-              </ConfirmIcon>
-              <ConfirmMessage>
-                {confirmAction === 'close'
-                  ? t('order.modal.confirmClose')
-                  : t('order.modal.confirmClear')}
-              </ConfirmMessage>
-              {confirmAction === 'close' && (
-                <ConfirmHint>{t('order.modal.confirmCloseHint')}</ConfirmHint>
-              )}
-              <ConfirmActions>
-                <Button size="medium" variant="outline" onClick={handleConfirmNo}>
-                  {t('order.modal.confirmNo')}
-                </Button>
-                <Button size="medium" onClick={handleConfirmYes}>
+              <ConfirmBox
+                ref={confirmBoxRef}
+                $isDark={isDark}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } }}
+                exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.15 } }}
+                onClick={(e) => e.stopPropagation()}
+                role="alertdialog"
+                aria-modal="true"
+                aria-labelledby={confirmMessageId}
+                aria-describedby={confirmAction === 'close' ? confirmHintId : undefined}
+              >
+                <ConfirmIcon aria-hidden="true">
+                  <MdWarningAmber />
+                </ConfirmIcon>
+                <ConfirmMessage id={confirmMessageId}>
                   {confirmAction === 'close'
-                    ? t('order.modal.confirmYesClose')
-                    : t('order.modal.confirmYesClear')}
-                </Button>
-              </ConfirmActions>
-            </ConfirmBox>
+                    ? t('order.modal.confirmClose')
+                    : t('order.modal.confirmClear')}
+                </ConfirmMessage>
+                {confirmAction === 'close' && (
+                  <ConfirmHint id={confirmHintId}>
+                    {t('order.modal.confirmCloseHint')}
+                  </ConfirmHint>
+                )}
+                <ConfirmActions>
+                  <Button size="medium" variant="outline" onClick={handleConfirmNo}>
+                    {t('order.modal.confirmNo')}
+                  </Button>
+                  <Button size="medium" onClick={handleConfirmYes}>
+                    {confirmAction === 'close'
+                      ? t('order.modal.confirmYesClose')
+                      : t('order.modal.confirmYesClear')}
+                  </Button>
+                </ConfirmActions>
+              </ConfirmBox>
+            </FocusTrap>
           </ConfirmBackdrop>
         )}
       </AnimatePresence>
