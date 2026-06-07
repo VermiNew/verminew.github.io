@@ -465,36 +465,56 @@ const FieldError = styled(motion.span)`
   margin-top: -0.15rem;
 `;
 
-const CheckboxLabel = styled.label`
+const CheckboxRow = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  cursor: pointer;
 `;
 
-const CheckboxInput = styled.div<{ $checked: boolean }>`
+const CheckboxInput = styled.input`
+  appearance: none;
   width: 1.25rem;
   height: 1.25rem;
   min-width: 1.25rem;
   border-radius: 5px;
-  border: 2px solid ${({ theme, $checked }) =>
-    $checked ? theme.colors.primary : `${theme.colors.primary}40`};
-  background: ${({ theme, $checked }) =>
-    $checked ? theme.colors.primary : 'transparent'};
+  border: 2px solid ${({ theme }) => `${theme.colors.primary}40`};
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
   margin-top: 0.1rem;
+  cursor: pointer;
+
+  &:checked {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
 
   &::after {
     content: '';
     width: 0.4rem;
     height: 0.65rem;
-    border: solid ${({ theme, $checked }) =>
-      $checked ? (theme.colors.background) : 'transparent'};
+    border: solid transparent;
     border-width: 0 2.5px 2.5px 0;
     transform: rotate(45deg) translateY(-1px);
+  }
+
+  &:checked::after {
+    border-color: ${({ theme }) => theme.colors.background};
+  }
+`;
+
+const CheckboxText = styled(FieldHint)`
+  opacity: 1;
+
+  label {
+    cursor: pointer;
   }
 `;
 // ───────────────────────────────────────────────────────────────────────────────
@@ -1603,23 +1623,29 @@ export const OrderSection: React.FC = () => {
                       </Field>
 
                       <Field>
-                        <CheckboxLabel onClick={() => setRodoConsent((v) => !v)}>
-                          <CheckboxInput $checked={rodoConsent} />
-                          <FieldHint style={{ opacity: 1 }}>
-                            {t('order.form.rodoConsentBefore')}
+                        <CheckboxRow>
+                          <CheckboxInput
+                            id="order-rodo-consent"
+                            type="checkbox"
+                            checked={rodoConsent}
+                            onChange={(event) => setRodoConsent(event.target.checked)}
+                            required
+                          />
+                          <CheckboxText>
+                            <label htmlFor="order-rodo-consent">
+                              {t('order.form.rodoConsentBefore')}
+                            </label>
                             <InlineLinkButton
                               type="button"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setPrivacyOpen(true);
-                              }}
+                              onClick={() => setPrivacyOpen(true)}
                             >
                               {t('order.form.rodoConsentLink')}
                             </InlineLinkButton>
-                            {t('order.form.rodoConsentAfter')}
-                          </FieldHint>
-                        </CheckboxLabel>
+                            <label htmlFor="order-rodo-consent">
+                              {t('order.form.rodoConsentAfter')}
+                            </label>
+                          </CheckboxText>
+                        </CheckboxRow>
                         {!rodoConsent && touched.has('hasDomain') && (
                           <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                             {t('order.form.rodoRequired')}
