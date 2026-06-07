@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import FocusTrap from 'focus-trap-react';
 import { useTheme } from '@/context/ThemeContext';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
@@ -735,6 +736,7 @@ export const OrderSection: React.FC = () => {
   const { reducedMotion } = useAnimation();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewButtonRef = useRef<HTMLButtonElement>(null);
 
   // ── Modal state ──────────────────────────────────────────────────────────────
   const [modalOpen, setModalOpen] = useState(false);
@@ -758,6 +760,7 @@ export const OrderSection: React.FC = () => {
 
   // ── Legal modals state ────────────────────────────────────────────────────
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const modalTitleId = 'order-modal-title';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -1017,6 +1020,7 @@ export const OrderSection: React.FC = () => {
 
         {/* ── Preview card (always visible, triggers modal) ── */}
         <PreviewCard
+          ref={previewButtonRef}
           type="button"
           $isDark={isDark}
           variants={!reducedMotion ? itemVariants : undefined}
@@ -1067,24 +1071,35 @@ export const OrderSection: React.FC = () => {
             exit="exit"
             onClick={confirmClose}
           >
-            <ModalContainer
-              $isDark={isDark}
-              variants={!reducedMotion ? modalVariants : undefined}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              onClick={(e) => e.stopPropagation()}
+            <FocusTrap
+              paused={Boolean(confirmAction || privacyOpen)}
+              focusTrapOptions={{
+                allowOutsideClick: true,
+                returnFocusOnDeactivate: true,
+                setReturnFocus: () => previewButtonRef.current ?? false,
+              }}
             >
-              <ModalCloseButton
-                onClick={confirmClose}
-                aria-label={t('order.modal.close')}
-                type="button"
+              <ModalContainer
+                $isDark={isDark}
+                variants={!reducedMotion ? modalVariants : undefined}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={modalTitleId}
               >
-                <MdClose />
-              </ModalCloseButton>
+                <ModalCloseButton
+                  onClick={confirmClose}
+                  aria-label={t('order.modal.close')}
+                  type="button"
+                >
+                  <MdClose aria-hidden="true" />
+                </ModalCloseButton>
 
-              <ModalHeader>
-                <ModalTitle>{t('order.title')}</ModalTitle>
+                <ModalHeader>
+                  <ModalTitle id={modalTitleId}>{t('order.title')}</ModalTitle>
                 {step !== 'summary' && isFormDirty && (
                   <ClearButton type="button" onClick={handleClearRequest}>
                     <MdDeleteOutline size={16} />
@@ -1712,7 +1727,8 @@ export const OrderSection: React.FC = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </ModalContainer>
+              </ModalContainer>
+            </FocusTrap>
           </ModalBackdrop>
         )}
       </AnimatePresence>
