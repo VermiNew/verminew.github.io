@@ -565,6 +565,8 @@
   "theme": {
     "toggleDark": "Toggle dark mode",
     "toggleLight": "Toggle light mode",
+    "openMenu": "Open theme selector",
+    "closeMenu": "Close theme selector",
     "groups": {
       "basic": "Basic",
       "professional": "Professional",

@@ -299,6 +299,8 @@ export const ThemeToggle: React.FC = () => {
   const { themeMode, setThemeMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const toggleButtonRef = React.useRef<HTMLButtonElement>(null);
+  const themeMenuId = React.useId();
   const isDark = themeMode.includes('dark');
   const { t } = useTranslation();
 
@@ -312,6 +314,7 @@ export const ThemeToggle: React.FC = () => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsMenuOpen(false);
+        requestAnimationFrame(() => toggleButtonRef.current?.focus());
       }
     };
 
@@ -331,6 +334,7 @@ export const ThemeToggle: React.FC = () => {
   const handleThemeChange = (newTheme: ThemeMode) => {
     setThemeMode(newTheme);
     setIsMenuOpen(false);
+    requestAnimationFrame(() => toggleButtonRef.current?.focus());
   };
 
   const themeGroups = {
@@ -343,6 +347,8 @@ export const ThemeToggle: React.FC = () => {
   return (
     <ThemeContainer ref={containerRef}>
       <ToggleButton
+        ref={toggleButtonRef}
+        type="button"
         $isDark={isDark}
         onClick={(e) => {
           e.stopPropagation();
@@ -350,10 +356,12 @@ export const ThemeToggle: React.FC = () => {
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        aria-label="Toggle theme menu"
+        aria-label={t(isMenuOpen ? 'theme.closeMenu' : 'theme.openMenu')}
         aria-expanded={isMenuOpen}
+        aria-controls={themeMenuId}
       >
         <motion.div
+          aria-hidden="true"
           key={themeMode}
           initial="initial"
           animate="animate"
@@ -370,6 +378,7 @@ export const ThemeToggle: React.FC = () => {
       <AnimatePresence mode="wait">
         {isMenuOpen && (
           <ThemeMenu
+            id={themeMenuId}
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -400,7 +409,7 @@ export const ThemeToggle: React.FC = () => {
                     e.stopPropagation();
                     handleThemeChange(mode as ThemeMode);
                   }}
-                  aria-label={`${getThemeName(mode as ThemeMode, t)} theme${mode === themeMode ? ' (current)' : ''}`}
+                  type="button"
                   aria-pressed={mode === themeMode}
                   as={motion.button}
                   initial={{ opacity: 0, x: -10 }}
@@ -446,6 +455,8 @@ export const ThemeToggle: React.FC = () => {
                     e.stopPropagation();
                     handleThemeChange(mode as ThemeMode);
                   }}
+                  type="button"
+                  aria-pressed={mode === themeMode}
                   as={motion.button}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ 
@@ -490,6 +501,8 @@ export const ThemeToggle: React.FC = () => {
                     e.stopPropagation();
                     handleThemeChange(mode as ThemeMode);
                   }}
+                  type="button"
+                  aria-pressed={mode === themeMode}
                   as={motion.button}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ 
@@ -534,6 +547,8 @@ export const ThemeToggle: React.FC = () => {
                     e.stopPropagation();
                     handleThemeChange(mode as ThemeMode);
                   }}
+                  type="button"
+                  aria-pressed={mode === themeMode}
                   as={motion.button}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ 
@@ -557,4 +572,4 @@ export const ThemeToggle: React.FC = () => {
       </AnimatePresence>
     </ThemeContainer>
   );
-}; 
+};

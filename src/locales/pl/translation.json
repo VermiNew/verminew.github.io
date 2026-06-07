@@ -567,6 +567,8 @@
   "theme": {
     "toggleDark": "Przełącz na tryb ciemny",
     "toggleLight": "Przełącz na tryb jasny",
+    "openMenu": "Otwórz wybór motywu",
+    "closeMenu": "Zamknij wybór motywu",
     "groups": {
       "basic": "Podstawowe",
       "professional": "Profesjonalne",
