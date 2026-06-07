@@ -33,6 +33,12 @@ const SettingsButton = styled(motion.button)`
   &:hover {
     opacity: 1;
   }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 3px;
+  }
 `;
 
 const Overlay = styled(motion.div)`
@@ -89,6 +95,12 @@ const CloseButton = styled(motion.button)`
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 `;
 
@@ -336,9 +348,9 @@ const Settings: React.FC = () => {
           transition: { duration: 0.3 }
         }}
         whileTap={{ scale: 0.9 }}
-        aria-label="Open Settings"
+        aria-label={t('settings.open')}
       >
-        <FiSettings />
+        <FiSettings aria-hidden="true" />
       </SettingsButton>
 
       <AnimatePresence>
@@ -372,7 +384,7 @@ const Settings: React.FC = () => {
                   onClick={closePanel}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  aria-label={t('navigation.close')}
+                  aria-label={t('settings.close')}
                 >
                   <FiX aria-hidden="true" />
                 </CloseButton>

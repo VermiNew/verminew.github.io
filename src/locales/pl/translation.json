@@ -272,6 +272,8 @@
   },
   "settings": {
     "title": "Ustawienia",
+    "open": "Otwórz ustawienia",
+    "close": "Zamknij ustawienia",
     "language": "Język",
     "tabs": {
       "language": "Język",

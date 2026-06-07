@@ -271,6 +271,8 @@
   },
   "settings": {
     "title": "Settings",
+    "open": "Open settings",
+    "close": "Close settings",
     "language": "Language",
     "tabs": {
       "language": "Language",
