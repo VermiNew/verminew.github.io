@@ -784,6 +784,8 @@ export const OrderSection: React.FC = () => {
   const modalTitleId = 'order-modal-title';
   const confirmMessageId = 'order-confirm-message';
   const confirmHintId = 'order-confirm-hint';
+  const nameErrorId = 'order-name-error';
+  const emailErrorId = 'order-email-error';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -889,6 +891,8 @@ export const OrderSection: React.FC = () => {
     () => touched.has('email') && form.email.trim() !== '' && !isEmailValid(form.email),
     [form.email, touched, isEmailValid]
   );
+  const isNameMissing = isFieldMissing('name');
+  const isEmailMissing = isFieldMissing('email');
 
   const isBasicsValid = useMemo(
     () => requiredBasics.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
@@ -1163,12 +1167,18 @@ export const OrderSection: React.FC = () => {
                         name="name"
                         type="text"
                         required
+                        aria-invalid={isNameMissing || undefined}
+                        aria-describedby={isNameMissing ? nameErrorId : undefined}
                         placeholder={t('order.form.namePlaceholder')}
                         value={form.name}
                         onChange={handleChange}
                       />
-                      {isFieldMissing('name') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isNameMissing && (
+                        <FieldError
+                          id={nameErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
@@ -1182,17 +1192,29 @@ export const OrderSection: React.FC = () => {
                         name="email"
                         type="email"
                         required
+                        aria-invalid={isEmailMissing || isEmailError || undefined}
+                        aria-describedby={
+                          isEmailMissing || isEmailError ? emailErrorId : undefined
+                        }
                         placeholder={t('order.form.emailPlaceholder')}
                         value={form.email}
                         onChange={handleChange}
                       />
-                      {isFieldMissing('email') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isEmailMissing && (
+                        <FieldError
+                          id={emailErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
                       {isEmailError && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <FieldError
+                          id={emailErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.invalidEmail')}
                         </FieldError>
                       )}
