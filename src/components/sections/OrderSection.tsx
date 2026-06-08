@@ -788,6 +788,9 @@ export const OrderSection: React.FC = () => {
   const emailErrorId = 'order-email-error';
   const clientTypeErrorId = 'order-client-type-error';
   const contactMethodErrorId = 'order-contact-method-error';
+  const projectTypeErrorId = 'order-project-type-error';
+  const existingProjectErrorId = 'order-existing-project-error';
+  const budgetErrorId = 'order-budget-error';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -897,6 +900,9 @@ export const OrderSection: React.FC = () => {
   const isEmailMissing = isFieldMissing('email');
   const isClientTypeMissing = isFieldMissing('clientType');
   const isContactMethodMissing = isFieldMissing('contactMethod');
+  const isProjectTypeMissing = isFieldMissing('type');
+  const isExistingProjectMissing = isFieldMissing('existingProject');
+  const isBudgetMissing = isFieldMissing('budget');
 
   const isBasicsValid = useMemo(
     () => requiredBasics.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
@@ -1383,6 +1389,10 @@ export const OrderSection: React.FC = () => {
                         id="order-type"
                         name="type"
                         required
+                        aria-invalid={isProjectTypeMissing || undefined}
+                        aria-describedby={
+                          isProjectTypeMissing ? projectTypeErrorId : undefined
+                        }
                         value={form.type}
                         onChange={handleChange}
                       >
@@ -1397,8 +1407,12 @@ export const OrderSection: React.FC = () => {
                           )
                         )}
                       </Select>
-                      {isFieldMissing('type') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isProjectTypeMissing && (
+                        <FieldError
+                          id={projectTypeErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
@@ -1411,6 +1425,10 @@ export const OrderSection: React.FC = () => {
                         id="order-existingProject"
                         name="existingProject"
                         required
+                        aria-invalid={isExistingProjectMissing || undefined}
+                        aria-describedby={
+                          isExistingProjectMissing ? existingProjectErrorId : undefined
+                        }
                         value={form.existingProject}
                         onChange={handleChange}
                       >
@@ -1421,8 +1439,12 @@ export const OrderSection: React.FC = () => {
                           (opt) => <option key={opt} value={opt}>{opt}</option>
                         )}
                       </Select>
-                      {isFieldMissing('existingProject') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isExistingProjectMissing && (
+                        <FieldError
+                          id={existingProjectErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
@@ -1436,6 +1458,8 @@ export const OrderSection: React.FC = () => {
                         id="order-budget"
                         name="budget"
                         required
+                        aria-invalid={isBudgetMissing || undefined}
+                        aria-describedby={isBudgetMissing ? budgetErrorId : undefined}
                         value={form.budget}
                         onChange={handleChange}
                       >
@@ -1450,8 +1474,12 @@ export const OrderSection: React.FC = () => {
                           </option>
                         ))}
                       </Select>
-                      {isFieldMissing('budget') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isBudgetMissing && (
+                        <FieldError
+                          id={budgetErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
