@@ -786,6 +786,8 @@ export const OrderSection: React.FC = () => {
   const confirmHintId = 'order-confirm-hint';
   const nameErrorId = 'order-name-error';
   const emailErrorId = 'order-email-error';
+  const clientTypeErrorId = 'order-client-type-error';
+  const contactMethodErrorId = 'order-contact-method-error';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -893,6 +895,8 @@ export const OrderSection: React.FC = () => {
   );
   const isNameMissing = isFieldMissing('name');
   const isEmailMissing = isFieldMissing('email');
+  const isClientTypeMissing = isFieldMissing('clientType');
+  const isContactMethodMissing = isFieldMissing('contactMethod');
 
   const isBasicsValid = useMemo(
     () => requiredBasics.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
@@ -1267,6 +1271,10 @@ export const OrderSection: React.FC = () => {
                         id="order-clientType"
                         name="clientType"
                         required
+                        aria-invalid={isClientTypeMissing || undefined}
+                        aria-describedby={
+                          isClientTypeMissing ? clientTypeErrorId : undefined
+                        }
                         value={form.clientType}
                         onChange={handleChange}
                       >
@@ -1277,8 +1285,12 @@ export const OrderSection: React.FC = () => {
                           (opt) => <option key={opt} value={opt}>{opt}</option>
                         )}
                       </Select>
-                      {isFieldMissing('clientType') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isClientTypeMissing && (
+                        <FieldError
+                          id={clientTypeErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
@@ -1291,6 +1303,10 @@ export const OrderSection: React.FC = () => {
                         id="order-contactMethod"
                         name="contactMethod"
                         required
+                        aria-invalid={isContactMethodMissing || undefined}
+                        aria-describedby={
+                          isContactMethodMissing ? contactMethodErrorId : undefined
+                        }
                         value={form.contactMethod}
                         onChange={handleChange}
                       >
@@ -1301,8 +1317,12 @@ export const OrderSection: React.FC = () => {
                           (opt) => <option key={opt} value={opt}>{opt}</option>
                         )}
                       </Select>
-                      {isFieldMissing('contactMethod') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isContactMethodMissing && (
+                        <FieldError
+                          id={contactMethodErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
