@@ -226,9 +226,13 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const isTouchDevice = window.matchMedia('(hover: none)').matches;
 
   const handleHoverStart = useCallback(() => {
-    if (isTouchDevice && containerRef.current) {
+    if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      setTooltipPos({ x: rect.right + 8, y: rect.top + rect.height / 2 });
+      if (isTouchDevice) {
+        setTooltipPos({ x: rect.right + 8, y: rect.top + rect.height / 2 });
+      } else {
+        setTooltipPos({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
+      }
     }
     setShowTooltip(true);
   }, [isTouchDevice]);
