@@ -12,8 +12,8 @@ export const socialConfig = {
     username: 'verminew'
   },
   email: {
-    address: 'verminewfey@gmail.com',
-    url: 'mailto:verminewfey@gmail.com'
+    address: 'werminew@protonmail.com',
+    url: 'mailto:werminew@protonmail.com'
   }
 } as const;
 

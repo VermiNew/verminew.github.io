@@ -33,7 +33,7 @@
     "title": "About Me",
     "name": "Michael Oslizlo",
     "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
-    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and has written the INF.04 exam (awaiting results), I find the greatest satisfaction in seeing the results of my work. I actively use AI through vibecoding - it helps me learn faster, but more importantly, it allows me to build projects significantly faster and more effectively than I would without it. This approach allows me to turn ideas into reality and learn by doing.",
+    "focus": "I focus on web and application development, constantly expanding my knowledge and skills. I have passed both INF.03 and INF.04 qualifications (practical and theoretical exams). I find the greatest satisfaction in seeing the results of my work. I actively use AI tools as part of my workflow — it lets me deliver projects faster and more effectively, and this portfolio is exactly the proof of that.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
       "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for growth and constant improvement."
@@ -56,14 +56,14 @@
       "languages": {
         "title": "Languages",
         "native": "Polish (Native)",
-        "english": "English (Good - B1/B2 level)"
+        "english": "English (B2 — extended-level school exam)"
       },
       "interests": {
         "title": "Interests & Technologies",
         "list": [
-          "Vibecoding - turning ideas into working projects",
-          "Graphic design with Canva",
-          "ESP32 microcontroller projects (C++)"
+          "Building projects with AI as a tool",
+          "Microcontrollers — ESP32, STM32 (hobby projects)",
+          "Exploring new technologies through practice"
         ]
       },
       "strengths": {
@@ -451,7 +451,7 @@
         "title": "Data controller",
         "paragraphs": [
           "The controller of your personal data is Michał Oślizło — a natural person conducting unregistered economic activity within the meaning of art. 5 sec. 1 of the Polish Act of 6 March 2018 — Entrepreneurs' Law.",
-          "Contact: verminewfey@gmail.com. The correspondence address is provided on request after a contract is concluded."
+          "Contact: werminew@protonmail.com. The correspondence address is provided on request after a contract is concluded."
         ]
       },
       {

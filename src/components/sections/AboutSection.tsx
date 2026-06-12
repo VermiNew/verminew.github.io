@@ -5,7 +5,7 @@ import { Section } from '../layout/Section';
 import { SectionTitle } from '../ui/SectionTitle';
 import { Button } from '../ui/Button';
 import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
-import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdTrendingUp, MdWork, MdLabel } from 'react-icons/md';
+import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
 import { useAnimation } from '../../context/AnimationContext';
@@ -361,14 +361,6 @@ export const AboutSection: React.FC = () => {
                     {t('about.background.strengths.title')}
                   </BackgroundTitle>
                   <p>{t('about.background.strengths.description')}</p>
-                </BackgroundSection>
-
-                <BackgroundSection>
-                  <BackgroundTitle>
-                    <MdTrendingUp />
-                    {t('about.background.growth.title')}
-                  </BackgroundTitle>
-                  <p>{t('about.background.growth.description')}</p>
                 </BackgroundSection>
 
                 <HighlightedSection variants={!reducedMotion ? itemVariants : undefined}>

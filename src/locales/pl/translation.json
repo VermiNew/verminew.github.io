@@ -33,7 +33,7 @@
     "title": "O mnie",
     "name": "Michał Oślizło",
     "intro": "Jestem Michał, entuzjasta programowania z Podkarpacia. Urodziłem się w październiku 2006 roku i obecnie uczę się w technikum na kierunku programistycznym.",
-    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i napisał egzamin INF.04 (czekam na wynik), największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie wykorzystuję AI poprzez vibecoding - pomaga mi to szybciej się uczyć, ale co ważniejsze, pozwala budować projekty znacznie szybciej i sprawniej, niż gdybym pracował bez niego. Takie podejście umożliwia mi przekuwanie pomysłów w rzeczywistość i naukę przez praktykę.",
+    "focus": "Skupiam się na tworzeniu stron internetowych i aplikacji, stale poszerzając swoją wiedzę i umiejętności. Zdałem kwalifikacje INF.03 i INF.04 (egzamin praktyczny i teoretyczny). Największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie używam narzędzi AI jako części swojego workflow — pozwala mi to dostarczać projekty szybciej i sprawniej, i dokładnie tak powstało to portfolio.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
       "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
@@ -56,14 +56,14 @@
       "languages": {
         "title": "Języki",
         "native": "Polski (ojczysty)",
-        "english": "Angielski (Dobry - poziom B1/B2)"
+        "english": "Angielski (B2 — matura rozszerzona)"
       },
       "interests": {
         "title": "Zainteresowania i technologie",
         "list": [
-          "Vibecoding - przekuwanie pomysłów w działające projekty",
-          "Projektowanie graficzne w Canvie",
-          "Projekty z mikrokontrolerami ESP32 (C++)"
+          "Budowanie projektów z AI jako narzędziem",
+          "Mikrokontrolery — ESP32, STM32 (projekty hobbystyczne)",
+          "Eksplorowanie nowych technologii przez praktykę"
         ]
       },
       "strengths": {
@@ -453,7 +453,7 @@
         "title": "Administrator danych",
         "paragraphs": [
           "Administratorem Twoich danych osobowych jest Michał Oślizło — osoba fizyczna prowadząca działalność nierejestrowaną w rozumieniu art. 5 ust. 1 ustawy z dnia 6 marca 2018 r. Prawo przedsiębiorców.",
-          "Kontakt z administratorem: verminewfey@gmail.com. Adres do korespondencji udostępniany jest na żądanie po zawarciu umowy."
+          "Kontakt z administratorem: werminew@protonmail.com. Adres do korespondencji udostępniany jest na żądanie po zawarciu umowy."
         ]
       },
       {
