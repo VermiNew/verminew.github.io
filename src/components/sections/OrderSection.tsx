@@ -791,6 +791,9 @@ export const OrderSection: React.FC = () => {
   const projectTypeErrorId = 'order-project-type-error';
   const existingProjectErrorId = 'order-existing-project-error';
   const budgetErrorId = 'order-budget-error';
+  const deadlineErrorId = 'order-deadline-error';
+  const descriptionErrorId = 'order-description-error';
+  const contentReadyErrorId = 'order-content-ready-error';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -903,6 +906,9 @@ export const OrderSection: React.FC = () => {
   const isProjectTypeMissing = isFieldMissing('type');
   const isExistingProjectMissing = isFieldMissing('existingProject');
   const isBudgetMissing = isFieldMissing('budget');
+  const isDeadlineMissing = isFieldMissing('deadline');
+  const isDescriptionMissing = isFieldMissing('description');
+  const isContentReadyMissing = isFieldMissing('contentReady');
 
   const isBasicsValid = useMemo(
     () => requiredBasics.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
@@ -1522,6 +1528,8 @@ export const OrderSection: React.FC = () => {
                         id="order-deadline"
                         name="deadline"
                         required
+                        aria-invalid={isDeadlineMissing || undefined}
+                        aria-describedby={isDeadlineMissing ? deadlineErrorId : undefined}
                         value={form.deadline}
                         onChange={handleChange}
                       >
@@ -1532,8 +1540,12 @@ export const OrderSection: React.FC = () => {
                           <option key={opt} value={opt}>{opt}</option>
                         ))}
                       </Select>
-                      {isFieldMissing('deadline') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isDeadlineMissing && (
+                        <FieldError
+                          id={deadlineErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
@@ -1561,12 +1573,20 @@ export const OrderSection: React.FC = () => {
                         id="order-description"
                         name="description"
                         required
+                        aria-invalid={isDescriptionMissing || undefined}
+                        aria-describedby={
+                          isDescriptionMissing ? descriptionErrorId : undefined
+                        }
                         placeholder={t('order.form.descriptionPlaceholder')}
                         value={form.description}
                         onChange={handleChange}
                       />
-                      {isFieldMissing('description') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isDescriptionMissing && (
+                        <FieldError
+                          id={descriptionErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
@@ -1579,6 +1599,10 @@ export const OrderSection: React.FC = () => {
                         id="order-contentReady"
                         name="contentReady"
                         required
+                        aria-invalid={isContentReadyMissing || undefined}
+                        aria-describedby={
+                          isContentReadyMissing ? contentReadyErrorId : undefined
+                        }
                         value={form.contentReady}
                         onChange={handleChange}
                       >
@@ -1589,8 +1613,12 @@ export const OrderSection: React.FC = () => {
                           (opt) => <option key={opt} value={opt}>{opt}</option>
                         )}
                       </Select>
-                      {isFieldMissing('contentReady') && (
-                        <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      {isContentReadyMissing && (
+                        <FieldError
+                          id={contentReadyErrorId}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
                           {t('order.form.requiredField')}
                         </FieldError>
                       )}
