@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
@@ -100,10 +100,10 @@ const Level = styled(motion.span)<{ $levelColor: string }>`
 
 
 
-const Tooltip = styled(motion.div)<{ $isDark: boolean }>`
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 50%;
+const Tooltip = styled(motion.div)<{ $isDark: boolean; $x: number; $y: number }>`
+  position: fixed;
+  top: ${({ $y }) => $y}px;
+  left: ${({ $x }) => $x}px;
   translate: -50% 0;
   background: ${({ theme, $isDark }) => $isDark
     ? theme.colors.surface
@@ -114,13 +114,12 @@ const Tooltip = styled(motion.div)<{ $isDark: boolean }>`
   border-radius: 8px;
   width: max-content;
   max-width: 220px;
-  z-index: 10;
+  z-index: 500;
   box-shadow: ${({ theme }) => theme.shadows.large};
   text-align: center;
   font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   pointer-events: none;
-  transform-origin: top center;
 `;
 
 const containerVariants = {
@@ -168,10 +167,11 @@ const iconVariants = {
     }
   },
   hover: {
-    rotate: [0, -10, 10, 0],
+    rotate: 12,
     transition: {
-      duration: 0.5,
-      ease: "easeInOut"
+      type: "spring",
+      stiffness: 300,
+      damping: 15
     }
   }
 };
@@ -223,7 +223,21 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { t } = useTranslation();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
   const isTouchDevice = 'ontouchstart' in window;
+
+  const handleHoverStart = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setTooltipPos({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
+    }
+    setShowTooltip(true);
+  }, []);
+
+  const handleHoverEnd = useCallback(() => {
+    setShowTooltip(false);
+  }, []);
 
   const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
 
@@ -244,9 +258,10 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
 
   return (
     <Container
+      ref={containerRef}
       $isDark={isDark}
-      onHoverStart={!isTouchDevice ? () => setShowTooltip(true) : undefined}
-      onHoverEnd={!isTouchDevice ? () => setShowTooltip(false) : undefined}
+      onHoverStart={!isTouchDevice ? handleHoverStart : undefined}
+      onHoverEnd={!isTouchDevice ? handleHoverEnd : undefined}
       onClick={isTouchDevice ? () => setShowTooltip(prev => !prev) : undefined}
       variants={containerVariants}
       whileHover="hover"
@@ -271,6 +286,8 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
         {showTooltip && (
           <Tooltip
             $isDark={isDark}
+            $x={tooltipPos.x}
+            $y={tooltipPos.y}
             variants={tooltipVariants}
             initial="initial"
             animate="animate"
