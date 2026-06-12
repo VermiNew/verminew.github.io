@@ -18,17 +18,19 @@ const Container = styled(motion.div)<{ $isDark: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 1rem 0.75rem;
   border-radius: 12px;
-  background: ${({ theme, $isDark }) => $isDark 
+  background: ${({ theme, $isDark }) => $isDark
     ? `${theme.colors.surface}80`
     : `${theme.colors.background}80`
   };
   border: 1px solid ${({ theme }) => `${theme.colors.primary}10`};
   transition: all ${({ theme }) => theme.transitions.default};
   cursor: pointer;
-  width: 120px;
+  width: 110px;
+  min-height: 110px;
   z-index: 1;
 
   &:hover {
@@ -43,7 +45,8 @@ const Container = styled(motion.div)<{ $isDark: boolean }>`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 100px;
+    width: 95px;
+    min-height: 95px;
   }
 `;
 
@@ -68,45 +71,56 @@ const IconWrapper = styled(motion.div)<{ $levelColor: string }>`
 `;
 
 const Name = styled(motion.span)`
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.text};
   font-weight: 500;
   text-align: center;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  hyphens: auto;
+  width: 100%;
 `;
 
 const Level = styled(motion.span)<{ $levelColor: string }>`
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: ${({ $levelColor }) => $levelColor};
   font-weight: 500;
-  height: 1rem;
+  min-height: 1rem;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+  width: 100%;
 `;
 
 
 
 const Tooltip = styled(motion.div)<{ $isDark: boolean }>`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   left: 50%;
-  transform: translateX(-50%);
-  background: ${({ theme, $isDark }) => $isDark 
-    ? theme.colors.surface 
+  translate: -50% 0;
+  background: ${({ theme, $isDark }) => $isDark
+    ? theme.colors.surface
     : theme.colors.background
   };
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
   padding: 0.75rem;
   border-radius: 8px;
   width: max-content;
-  max-width: 250px;
+  max-width: 220px;
   z-index: 10;
   box-shadow: ${({ theme }) => theme.shadows.large};
-  margin-top: 0.5rem;
   text-align: center;
   font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   pointer-events: none;
-  backdrop-filter: blur(8px);
+  transform-origin: top center;
 `;
 
 const containerVariants = {
@@ -178,27 +192,23 @@ const textVariants = {
 };
 
 const tooltipVariants = {
-  initial: { 
+  initial: {
     opacity: 0,
-    y: -10,
-    scale: 0.9
+    y: -6,
   },
-  animate: { 
+  animate: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      type: "spring",
-      stiffness: 500,
-      damping: 30
+      duration: 0.15,
+      ease: 'easeOut'
     }
   },
-  exit: { 
+  exit: {
     opacity: 0,
-    y: -10,
-    scale: 0.9,
+    y: -6,
     transition: {
-      duration: 0.2
+      duration: 0.1
     }
   }
 };
