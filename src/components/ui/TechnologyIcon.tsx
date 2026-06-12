@@ -100,11 +100,11 @@ const Level = styled(motion.span)<{ $levelColor: string }>`
 
 
 
-const Tooltip = styled(motion.div)<{ $isDark: boolean; $x: number; $y: number }>`
+const Tooltip = styled(motion.div)<{ $isDark: boolean; $x: number; $y: number; $touch: boolean }>`
   position: fixed;
   top: ${({ $y }) => $y}px;
   left: ${({ $x }) => $x}px;
-  translate: -50% 0;
+  translate: ${({ $touch }) => $touch ? '0 -50%' : '0 0'};
   background: ${({ theme, $isDark }) => $isDark
     ? theme.colors.surface
     : theme.colors.background
@@ -194,22 +194,19 @@ const textVariants = {
 const tooltipVariants = {
   initial: {
     opacity: 0,
-    y: -6,
   },
   animate: {
     opacity: 1,
-    y: 0,
     transition: {
       delay: 0.15,
-      duration: 0.15,
+      duration: 0.12,
       ease: 'easeOut'
     }
   },
   exit: {
     opacity: 0,
-    y: -6,
     transition: {
-      duration: 0.1
+      duration: 0.08
     }
   }
 };
@@ -229,16 +226,22 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const isTouchDevice = window.matchMedia('(hover: none)').matches;
 
   const handleHoverStart = useCallback(() => {
-    if (containerRef.current) {
+    if (isTouchDevice && containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      setTooltipPos({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
+      setTooltipPos({ x: rect.right + 8, y: rect.top + rect.height / 2 });
     }
     setShowTooltip(true);
-  }, []);
+  }, [isTouchDevice]);
 
   const handleHoverEnd = useCallback(() => {
     setShowTooltip(false);
   }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isTouchDevice) {
+      setTooltipPos({ x: e.clientX + 12, y: e.clientY + 12 });
+    }
+  }, [isTouchDevice]);
 
   const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
 
@@ -263,7 +266,14 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
       $isDark={isDark}
       onHoverStart={!isTouchDevice ? handleHoverStart : undefined}
       onHoverEnd={!isTouchDevice ? handleHoverEnd : undefined}
-      onClick={isTouchDevice ? () => setShowTooltip(prev => !prev) : undefined}
+      onMouseMove={!isTouchDevice ? handleMouseMove : undefined}
+      onClick={isTouchDevice ? () => {
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          setTooltipPos({ x: rect.right + 8, y: rect.top + rect.height / 2 });
+        }
+        setShowTooltip(prev => !prev);
+      } : undefined}
       variants={containerVariants}
       whileHover="hover"
       whileTap="tap"
@@ -289,6 +299,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
             $isDark={isDark}
             $x={tooltipPos.x}
             $y={tooltipPos.y}
+            $touch={isTouchDevice}
             variants={tooltipVariants}
             initial="initial"
             animate="animate"
