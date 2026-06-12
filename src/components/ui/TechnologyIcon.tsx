@@ -1,5 +1,6 @@
 import React, { useState, useMemo, memo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
@@ -300,18 +301,20 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
       )}
       <AnimatePresence>
         {showTooltip && createPortal(
-          <Tooltip
-            $isDark={isDark}
-            $x={tooltipPos.x}
-            $y={tooltipPos.y}
-            $touch={isTouchDevice}
-            variants={tooltipVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            {description}
-          </Tooltip>,
+          <ThemeProvider theme={theme}>
+            <Tooltip
+              $isDark={isDark}
+              $x={tooltipPos.x}
+              $y={tooltipPos.y}
+              $touch={isTouchDevice}
+              variants={tooltipVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              {description}
+            </Tooltip>
+          </ThemeProvider>,
           document.body
         )}
       </AnimatePresence>

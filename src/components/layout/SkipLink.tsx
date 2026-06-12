@@ -6,18 +6,22 @@ const SkipLinkElement = styled.a`
   top: -40px;
   left: 0;
   background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.background} !important;
   padding: 8px 16px;
   text-decoration: none;
+  font-weight: 600;
   z-index: ${({ theme }) => theme.zIndices.modal + 1};
   border-radius: 0 0 4px 0;
+  outline: none;
 
   &:focus {
     top: 0;
   }
 
-  &:hover:focus {
-    background: ${({ theme }) => theme.colors.primaryHover || theme.colors.primary};
+  &:hover,
+  &:visited,
+  &:active {
+    color: ${({ theme }) => theme.colors.background} !important;
   }
 `;
 
