@@ -23,7 +23,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Programming Enthusiast & Vibecoder - Building Ideas into Reality",
+    "title": "I build working web products — fast, with AI, deliberately",
     "cta": {
       "about": "Get to know me",
       "projects": "View projects"
@@ -33,7 +33,7 @@
     "title": "About Me",
     "name": "Michael Oslizlo",
     "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
-    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and has written the INF.04 exam (awaiting results), I find the greatest satisfaction in seeing the results of my work. I actively use AI through vibecoding - it helps me learn faster, but more importantly, it enables me to build projects I wouldn't normally be able to create on my own. This approach allows me to turn ideas into reality and learn by doing.",
+    "focus": "I focus on web development, constantly expanding my knowledge and skills. As a high school student who has already completed the INF.03 qualification and has written the INF.04 exam (awaiting results), I find the greatest satisfaction in seeing the results of my work. I actively use AI through vibecoding - it helps me learn faster, but more importantly, it allows me to build projects significantly faster and more effectively than I would without it. This approach allows me to turn ideas into reality and learn by doing.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
       "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for growth and constant improvement."
@@ -51,7 +51,7 @@
       "education": {
         "title": "Education",
         "current": "Technical school student, specialization: IT technician-programmer",
-        "achievements": "INF.03 qualification passed, INF.04 qualification passed"
+        "achievements": "INF.03 qualification passed, INF.04 qualification passed (both practical and theoretical)"
       },
       "languages": {
         "title": "Languages",
@@ -121,19 +121,19 @@
           "skills": {
             "html5": {
               "name": "HTML5",
-              "description": "INF.03 qualification, creating semantic and accessible websites"
+              "description": "INF.03 qualification, semantic markup and accessibility in daily use"
             },
             "css3": {
               "name": "CSS3",
-              "description": "INF.03 qualification, styling and responsive design"
+              "description": "INF.03 qualification, responsive design and animations"
             },
             "javascript": {
               "name": "JavaScript",
-              "description": "INF.03 qualification, interactivity and dynamic features"
+              "description": "INF.03 qualification, used daily across web projects"
             },
             "typescript": {
               "name": "TypeScript",
-              "description": "Currently learning through React and Vue projects"
+              "description": "Daily use — this portfolio is written in TypeScript strict mode"
             }
           }
         },
@@ -143,7 +143,11 @@
           "skills": {
             "react": {
               "name": "React",
-              "description": "Actively learning by building projects with AI assistance"
+              "description": "Actively building for months — this portfolio is the proof"
+            },
+            "nextjs": {
+              "name": "Next.js",
+              "description": "Shipped a project with AI assistance — learning through practice"
             },
             "tailwindcss": {
               "name": "Tailwind CSS",
@@ -227,13 +231,9 @@
           "title": "Planned Skills",
           "description": "Technologies I plan to learn",
           "skills": {
-            "nextjs": {
-              "name": "Next.js",
-              "description": "React framework for building full web applications"
-            },
             "bash": {
               "name": "Bash",
-              "description": "Linux shell scripting, used once with AI assistance"
+              "description": "Linux shell scripting — useful for servers and cross-platform repos"
             }
           }
         }

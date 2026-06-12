@@ -113,13 +113,14 @@ const categoryVariants = {
 
 const technologies = {
   frontendCore: [
-    { id: 'html5', icon: <SiHtml5 />, level: 'intermediate' as const },
-    { id: 'css3', icon: <SiCss3 />, level: 'intermediate' as const },
-    { id: 'javascript', icon: <SiJavascript />, level: 'beginner' as const },
-    { id: 'typescript', icon: <SiTypescript />, level: 'learning' as const }
+    { id: 'html5', icon: <SiHtml5 />, level: 'advanced' as const },
+    { id: 'css3', icon: <SiCss3 />, level: 'advanced' as const },
+    { id: 'javascript', icon: <SiJavascript />, level: 'intermediate' as const },
+    { id: 'typescript', icon: <SiTypescript />, level: 'intermediate' as const }
   ],
   frontendFrameworks: [
     { id: 'react', icon: <SiReact />, level: 'learning' as const },
+    { id: 'nextjs', icon: <SiNextdotjs />, level: 'learning' as const },
     { id: 'tailwindcss', icon: <SiTailwindcss />, level: 'learning' as const },
     { id: 'angular', icon: <SiAngular />, level: 'learning' as const },
     { id: 'bootstrap', icon: <SiBootstrap />, level: 'beginner' as const }
@@ -140,10 +141,9 @@ const technologies = {
   ],
   systemDevops: [
     { id: 'androidStudio', icon: <SiAndroidstudio />, level: 'beginner' as const },
-    { id: 'batch', icon: <IoTerminal />, level: 'beginner' as const }
+    { id: 'batch', icon: <IoTerminal />, level: 'intermediate' as const }
   ],
   plannedSkills: [
-    { id: 'nextjs', icon: <SiNextdotjs />, level: 'planned' as const },
     { id: 'bash', icon: <SiGnubash />, level: 'planned' as const }
   ]
 };

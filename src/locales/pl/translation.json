@@ -23,7 +23,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Entuzjasta programowania i Vibecoder - Przekuwam pomysły w rzeczywistość",
+    "title": "Buduję działające produkty webowe — szybko, z AI, z głową",
     "cta": {
       "about": "Poznaj mnie",
       "projects": "Zobacz projekty"
@@ -33,7 +33,7 @@
     "title": "O mnie",
     "name": "Michał Oślizło",
     "intro": "Jestem Michał, entuzjasta programowania z Podkarpacia. Urodziłem się w październiku 2006 roku i obecnie uczę się w technikum na kierunku programistycznym.",
-    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i napisał egzamin INF.04 (czekam na wynik), największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie wykorzystuję AI poprzez vibecoding - pomaga mi to szybciej się uczyć, ale co ważniejsze, pozwala budować projekty, których normalnie nie byłbym w stanie stworzyć samodzielnie. Takie podejście umożliwia mi przekuwanie pomysłów w rzeczywistość i naukę przez praktykę.",
+    "focus": "Skupiam się na tworzeniu stron internetowych, stale poszerzając swoją wiedzę i umiejętności. Jako uczeń technikum, który zdał już kwalifikację INF.03 i napisał egzamin INF.04 (czekam na wynik), największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie wykorzystuję AI poprzez vibecoding - pomaga mi to szybciej się uczyć, ale co ważniejsze, pozwala budować projekty znacznie szybciej i sprawniej, niż gdybym pracował bez niego. Takie podejście umożliwia mi przekuwanie pomysłów w rzeczywistość i naukę przez praktykę.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
       "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
@@ -51,7 +51,7 @@
       "education": {
         "title": "Edukacja",
         "current": "Uczeń technikum, kierunek: technik-programista",
-        "achievements": "Kwalifikacja INF.03 zdana, kwalifikacja INF.04 zdana"
+        "achievements": "Kwalifikacja INF.03 zdana, kwalifikacja INF.04 zdana (egzamin praktyczny i teoretyczny)"
       },
       "languages": {
         "title": "Języki",
@@ -121,19 +121,19 @@
           "skills": {
             "html5": {
               "name": "HTML5",
-              "description": "Kwalifikacja INF.03, tworzenie semantycznych i dostępnych stron"
+              "description": "Kwalifikacja INF.03, semantyczny markup i dostępność na co dzień"
             },
             "css3": {
               "name": "CSS3",
-              "description": "Kwalifikacja INF.03, stylowanie i responsywny design"
+              "description": "Kwalifikacja INF.03, responsywny design i animacje"
             },
             "javascript": {
               "name": "JavaScript",
-              "description": "Kwalifikacja INF.03, interaktywność i dynamiczne funkcje"
+              "description": "Kwalifikacja INF.03, codzienne użycie w projektach webowych"
             },
             "typescript": {
               "name": "TypeScript",
-              "description": "Aktualnie uczę się przy tworzeniu projektów React i Vue"
+              "description": "Używam na co dzień — to portfolio napisane w TypeScript strict mode"
             }
           }
         },
@@ -143,7 +143,11 @@
           "skills": {
             "react": {
               "name": "React",
-              "description": "Aktywna nauka poprzez budowanie projektów z pomocą AI"
+              "description": "Buduję aktywnie od kilku miesięcy — to portfolio jest dowodem"
+            },
+            "nextjs": {
+              "name": "Next.js",
+              "description": "Zrealizowany projekt z agentem — uczę się przez praktykę"
             },
             "tailwindcss": {
               "name": "Tailwind CSS",
@@ -227,13 +231,9 @@
           "title": "Planowane Umiejętności",
           "description": "Technologie, których planuję się nauczyć",
           "skills": {
-            "nextjs": {
-              "name": "Next.js",
-              "description": "Framework React do tworzenia pełnych aplikacji webowych"
-            },
             "bash": {
               "name": "Bash",
-              "description": "Skrypty powłoki Linux, używany jednorazowo z pomocą AI"
+              "description": "Skrypty powłoki Linux — przydatne przy pracy z serwerami i repo"
             }
           }
         }
