@@ -453,7 +453,7 @@
         "title": "Administrator danych",
         "paragraphs": [
           "Administratorem Twoich danych osobowych jest Michał Oślizło — osoba fizyczna prowadząca działalność nierejestrowaną w rozumieniu art. 5 ust. 1 ustawy z dnia 6 marca 2018 r. Prawo przedsiębiorców.",
-          "Kontakt z administratorem: werminew@protonmail.com. Adres do korespondencji udostępniany jest na żądanie po zawarciu umowy."
+          "Kontakt z administratorem: {{adminEmail}}. Adres do korespondencji udostępniany jest na żądanie po zawarciu umowy."
         ]
       },
       {

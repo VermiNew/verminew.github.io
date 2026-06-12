@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { LegalModal } from './LegalModal';
+import { socialConfig } from '@/config/social';
 
 interface PrivacyPolicyModalProps {
   isOpen: boolean;
@@ -15,7 +16,8 @@ interface Section {
 
 export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const sections = t('privacy.sections', { returnObjects: true }) as Section[];
+  const interpolation = { adminEmail: socialConfig.email.address };
+  const sections = t('privacy.sections', { returnObjects: true, ...interpolation }) as Section[];
 
   return (
     <LegalModal
