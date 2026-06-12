@@ -116,7 +116,7 @@ const Tooltip = styled(motion.div)<{ $isDark: boolean; $x: number; $y: number; $
   border-radius: 8px;
   width: max-content;
   max-width: 220px;
-  z-index: 500;
+  z-index: 9999;
   box-shadow: ${({ theme }) => theme.shadows.large};
   text-align: center;
   font-size: 0.85rem;

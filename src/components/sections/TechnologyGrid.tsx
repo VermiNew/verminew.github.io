@@ -41,7 +41,7 @@ const Container = styled(motion.div)`
 `;
 
 const CategorySection = styled(motion.div)<{ $isPlanned?: boolean }>`
-  background: ${({ theme, $isPlanned }) => $isPlanned 
+  background: ${({ theme, $isPlanned }) => $isPlanned
     ? `${theme.colors.surface}20`
     : `${theme.colors.surface}40`
   };
@@ -51,15 +51,15 @@ const CategorySection = styled(motion.div)<{ $isPlanned?: boolean }>`
     ? `${theme.colors.textSecondary}15`
     : `${theme.colors.primary}10`
   };
-  transition: all ${({ theme }) => theme.transitions.default};
+  transition: border-color ${({ theme }) => theme.transitions.default};
   opacity: ${({ $isPlanned }) => $isPlanned ? 0.8 : 1};
+  will-change: auto;
 
   &:hover {
     border-color: ${({ theme, $isPlanned }) => $isPlanned
       ? `${theme.colors.textSecondary}30`
       : `${theme.colors.primary}30`
     };
-    transform: translateY(-2px);
   }
 `;
 
