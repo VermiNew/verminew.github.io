@@ -4,264 +4,100 @@
 
 - [x] Konfiguracja React + TypeScript + Vite
 - [x] Styled-components setup
-- [x] System motywów
-  - [x] Jasny/ciemny motyw
-  - [x] Rozszerzony system motywów:
-    - [x] Corporate Modern
-    - [x] Tech Minimal
-    - [x] Professional Dark
-    - [x] Modern Neutral
-    - [x] E-Ink (Light/Dark)
-    - [x] Nord
-    - [x] Solarized (Light/Dark)
-    - [x] Sezonowe (Winter, Spring, Summer, Autumn)
-    - [x] Pastel
-  - [x] Menu wyboru motywu
-  - [x] Zapisywanie preferencji
-  - [ ] Optymalizacja kontrastu dla dostępności
+- [x] System motywów (16 motywów)
 - [x] Podstawowe komponenty UI
-  - [x] Container
-  - [x] Section
-  - [x] Button
-  - [x] SectionTitle
+- [x] Footer z copyright, social links, wersją aplikacji
 
-## Sekcje strony
+---
 
-### 1. Hero Section ✅
+## 🔴 Aktywny problem: Tooltip w Skills (TechnologyIcon)
 
-- [x] Interaktywne tło z cząsteczkami
-- [x] Animowane logo
-- [x] Responsywny układ
-- [x] Przyciski nawigacji
-- [x] Efekty hover i animacje
-
-### 2. About Section ✅
-
-- [x] Podstawowy układ
-- [x] Zdjęcie profilowe (ava.jpg)
-- [x] Opis osobisty
-- [x] Animowane ikony technologii
-- [x] Sekcja "Obecnie uczę się"
-- [x] Responsywny układ
-- [x] Animacje wejścia elementów
-
-### 3. Skills Section ✅
-
-- [x] Grid technologii
-- [x] Grupowanie umiejętności:
-  - [x] Web Development
-  - [x] AI/ML
-  - [x] Desktop Development
-  - [x] Inne
-- [x] Poziomy zaawansowania
-- [x] Animacje ikon
-- [x] Responsywny układ
-
-### 4. Projects Section ✅
-
-- [x] Filtrowanie projektów:
-  - [x] Po technologii
-  - [x] Po typie (web, AI, desktop)
-- [x] Karty projektów z:
-  - [x] Tytułem
-  - [x] Opisem
-  - [x] Użytymi technologiami
-  - [x] Linkiem do GitHub
-- [x] Animacje hover
-- [x] Responsywny grid
-- [x] Wyróżnione projekty (np. Luna)
-
-### 5. Blog/Dziennik nauki ✅
-
-- [x] Lista wpisów
-- [x] System tagów
-- [x] System komentarzy (Giscus)
-- [x] Responsywny układ
+Tooltip renderowany przez React Portal do `document.body` z `ThemeProvider` — nadal nie widoczny.
+Próbowane podejścia: position fixed, portal, z-index 9999, usunięcie backdrop-filter i will-change z CategorySection.
+**Podejście do wypróbowania jutro:** porzucić portal/fixed, zrobić tooltip jako `position: absolute` na poziomie sekcji z `overflow: visible` na Grid, albo użyć biblioteki floating-ui/popper.
 
 ---
 
 ## 🔴 Krytyczne do naprawy
 
-### Ostrzeżenia ESLint
+### Pozostałe bugi wizualne
+- [ ] Logo — hover animation stuck (ikona zostaje pod kątem gdy hover przerwany)
+- [ ] "Zleć projekt" button — podwójny border psuje UX
+- [ ] Filtry projektów — wyglądają jak prototyp
+- [ ] "Wyróżniony" odznaka — wygląda jak AI generated
+- [ ] Projekty — za dużo repozytoriów, potrzebny limit/paginacja (max ~6-9 aktywnych)
+- [ ] Sekcja Usługi — wygląda jak template, za pusta
+- [ ] Marginesy w About — "Urodzony" ma inne marginesy niż reszta
+- [ ] Dostępność/warunki — za duża czcionka względem reszty
 
-- [ ] `TechnologyIcon.tsx`: Przenieść `levelFallbackMap` do wnętrza `useMemo`
-- [ ] `ThemeContext.tsx` → oddzielić `useTheme` hook do osobnego pliku
-- [ ] `ToastContext.tsx` → oddzielić `useToast` hook do osobnego pliku
+### ESLint warnings (pozostałe)
+- [ ] `ThemeContext.tsx` → wydzielić `useTheme` hook do osobnego pliku
+- [ ] `ToastContext.tsx` → wydzielić `useToast` hook do osobnego pliku
 
 ---
 
 ## 🟠 Ważne ulepszenia
 
-### Wydajność (Bundle size: 509KB → cel <300KB)
-
-- [ ] Code splitting - dynamiczne importy dla sekcji:
-
-  ```tsx
-  const AboutSection = lazy(() => import('./sections/AboutSection'));
-  ```
-
+### Wydajność (Bundle: ~696KB → cel <300KB)
+- [ ] Code splitting — `React.lazy()` dla sekcji
 - [ ] Rozdzielić vendor chunks w vite.config.ts (framer-motion, react-icons)
-- [ ] Lazy loading dla ikon technologii (react-icons)
-- [ ] Optymalizacja obrazów - użyć srcset dla różnych rozmiarów
+- [ ] Lazy loading ikon (react-icons)
 
-### Dostępność (A11y) - SZCZEGÓŁOWO
+### Treść i UX
+- [ ] FAQ — rozszerzyć o więcej pytań (tematyka: proces, płatności, technologie, czas realizacji)
+- [ ] Formularz zamówień — poprawić UX
+- [ ] Nawigacja — dodać wyraźny CTA "Zleć projekt" w navbarze
+- [ ] Model płatności w OrderSection — zmienić na 40/40/20 lub 50/50
+- [ ] Kontakt — poprawić UX sekcji
+- [ ] Wersja aplikacji — zmienić z 0.0.0 na 1.0.0 w package.json
 
-#### Skip Link ✅
-- [x] Dodać "Skip to main content" link na początku strony (commit 112cc6f)
-
-#### Focus States ✅
-- [x] `Button.tsx` - `:focus-visible` styles dodane (commit ed58d8c)
-- [x] `NavLink`, `FilterButton`, `ContactCard`, `MobileNavLink` - focus states (commit ed58d8c)
-
-#### ARIA Attributes ✅
-- [x] `Toast.tsx` - `role="alert"` dodane (commit 63b9582)
-- [x] `LoadingSpinner` - `aria-busy="true"` i `aria-label` (commit 63b9582)
-- [x] `ErrorMessage` - `role="alert"` (commit 63b9582)
-- [x] Ikony - `aria-hidden="true"` lub `aria-label` (commit fbe7832)
-- [x] Menu button - `aria-expanded` (commit fbe7832)
-
-#### Nawigacja klawiaturą ✅
-- [x] Menu mobilne - focus trap gdy otwarte (commit 0458b18)
-- [x] Escape key zamyka menu mobilne (commit 0458b18)
-- [x] Theme toggle - `aria-label` z aktualnym stanem (commit fbe7832)
-
-#### Animacje i ruch
-- [x] `reducedMotion` - zaimplementowane ✅
+### Dostępność (A11y)
 - [ ] Sprawdzić czy WSZYSTKIE animacje respektują `prefers-reduced-motion`
-- [ ] `HeroBackground` z cząsteczkami - czy wyłącza się przy reduced motion?
-
-#### Semantyka HTML
-- [ ] Sprawdzić hierarchię nagłówków (h1 → h2 → h3, bez przeskoków)
-- [ ] Sekcje strony - dodać `aria-labelledby` wskazujące na SectionTitle
-- [ ] `FAQSection` - rozważyć użycie `<details>/<summary>` lub ARIA accordion
-- [ ] Listy kontaktów - mogłyby być `<ul>` zamiast grid divów
+- [ ] Hierarchia nagłówków (h1→h2→h3 bez przeskoków)
+- [ ] `aria-labelledby` na sekcjach wskazujące na SectionTitle
+- [ ] `FaqSection` — rozważyć `<details>/<summary>` lub ARIA accordion
 
 ### SEO
-
-- [ ] Dynamiczne meta tagi dla języka (hreflang)
-- [ ] Sitemap.xml generator w build pipeline
-- [ ] Robots.txt w folderze public
-- [ ] Dodać og:locale:alternate dla PL/EN
+- [ ] Dynamiczne meta tagi hreflang PL/EN
+- [ ] Sitemap.xml w build pipeline
+- [ ] robots.txt w public/
+- [ ] og:locale:alternate
 
 ---
 
-## Funkcjonalności globalne
-
-### Nawigacja 🧭
-
-- [x] Sticky header
-- [x] Menu mobilne
-- [x] Płynne przewijanie
-- [x] Wskaźnik aktywnej sekcji
-- [ ] Animacja progress bar przewijania strony (góra ekranu)
-
-### Internacjonalizacja 🌍
-
-- [x] System i18n
-- [x] Tłumaczenia PL/EN
-- [x] Przełącznik języków
-- [ ] Poprawić wykrywanie języka przeglądarki
-
-### Dodatkowe elementy 🎨
+## 🟡 Przyszłe rozszerzenia
 
 - [ ] Licznik odwiedzin
-- [ ] Statystyki GitHub
-- [x] Linki społecznościowe:
-  - [x] GitHub
-  - [x] Discord
-  - [x] Email
-  - [x] LinkedIn
-
-### Optymalizacja 🚀
-
-- [ ] Lazy loading komponentów
-- [ ] Optymalizacja obrazów
-- [ ] SEO
-- [ ] Testy wydajności
-
----
-
-## Deployment 🌐
-
-- [x] Konfiguracja GitHub Pages
-- [x] GitHub Actions dla automatycznego deploymentu
-- [x] Lighthouse CI
-- [ ] Testy przed deploymentem
-- [ ] Dependabot dla aktualizacji zależności
-
----
-
-## Dokumentacja 📚
-
-- [ ] README.md
-  - [ ] Screenshots/GIF demo
-  - [ ] Instrukcja instalacji
-  - [ ] Opis struktury projektu
-  - [ ] Jak dodać nowy motyw
-  - [ ] Jak dodać nowy projekt
-- [ ] Komentarze w kodzie
-- [ ] Instrukcje deploymentu
-- [ ] CONTRIBUTING.md
-- [ ] CHANGELOG.md
-
----
-
-## Refaktoryzacja i jakość kodu 🔧
-
-### Struktura projektu
-
-- [ ] Utworzyć barrel exports (`index.ts`) dla folderów:
-  - `components/ui/index.ts`
-  - `components/sections/index.ts`
-  - `hooks/index.ts`
-- [ ] Przenieść styled-components do osobnych plików `.styles.ts` dla większych komponentów
-- [ ] Dodać testy jednostkowe (Vitest):
-  - `useRepos.test.ts`
-  - `themeUtils.test.ts`
-  - Komponenty UI
-
-### TypeScript
-
-- [ ] Włączyć strict mode w tsconfig (strictNullChecks już jest)
-- [ ] Usunąć `any` types jeśli występują
-- [ ] Dodać JSDoc komentarze do eksportowanych funkcji
-
----
-
-## Przyszłe rozszerzenia 🔮
-
-- [ ] System powiadomień o nowych wpisach
-- [ ] Integracja z API GitHub dla automatycznych aktualizacji projektów
+- [ ] GitHub Statistics section
+- [ ] Animacja progress bar przewijania (góra ekranu)
 - [ ] Sekcja doświadczenia zawodowego (timeline)
-- [ ] Dark mode toggle animation (sun/moon)
-- [ ] Strona 404 custom
-- [ ] Tryb offline (Service Worker)
-- [ ] Motywy sezonowe auto-switch (based on date)
+- [ ] Snake game (Easter egg)
+- [ ] Custom 404
+- [ ] Service Worker (offline)
+- [ ] Sezonowy auto-switch motywów
 - [ ] Świąteczny motyw (grudzień)
+- [ ] Testy (Vitest): `useRepos.test.ts`, `themeUtils.test.ts`
+- [ ] CONTRIBUTING.md, CHANGELOG.md
 
 ---
 
-## 📊 Metryki do osiągnięcia
+## ✅ Ukończone (ta sesja)
 
-### Lighthouse Scores (cel)
-
-- Performance: 90+
-- Accessibility: 95+
-- Best Practices: 95+
-- SEO: 95+
-
-### Core Web Vitals
-
-- LCP (Largest Contentful Paint): <2.5s
-- FID (First Input Delay): <100ms
-- CLS (Cumulative Layout Shift): <0.1
-
----
-
-## ✅ Ukończone niedawno
-
-- [x] Dodanie kolorów semantycznych (warning, info, special, professional)
-- [x] Dostosowanie kolorów do każdego motywu
-- [x] e-Ink motywy w pełnej skali szarości
-- [x] Nord z paletą Aurora
-- [x] Solarized z oryginalnymi kolorami
+- [x] Footer z copyright © 2026, email, GitHub, wersja aplikacji
+- [x] Skills — poziomy zaktualizowane (HTML/CSS advanced, JS/TS intermediate)
+- [x] Skills — Next.js przeniesiony z Planned do Frameworks (learning)
+- [x] Skills — Docker usunięty, Bash zostaje w Planned
+- [x] Skills — naprawione wysokości kart (min-height, word-break)
+- [x] Skills — animacje ikon przez parent-driven variants (brak mrugania)
+- [x] Skills — ikona hover rotation nie stuck po przerwaniu
+- [x] About — INF.04 zdany (praktyczny i teoretyczny)
+- [x] About — angielski B2 (matura rozszerzona)
+- [x] About — zainteresowania zaktualizowane (AI, ESP32/STM32, eksploracja)
+- [x] About — sekcja "Obszary rozwoju" usunięta
+- [x] About — tekst o AI przepisany bez przepraszania
+- [x] Email — zmieniony na werminew@protonmail.com
+- [x] Email — połączony z socialConfig (jeden punkt zmiany)
+- [x] Hero title — nowy, konkretny, bez "entuzjasta"
+- [x] Skip link — kolor tekstu naprawiony
+- [x] OrderSection — a11y (aria-invalid/describedby na deadline, description, contentReady)
+- [x] PrivacyPolicy — email przez interpolację z socialConfig
