@@ -124,12 +124,12 @@ const Tooltip = styled(motion.div)<{ $isDark: boolean }>`
 `;
 
 const containerVariants = {
-  initial: { 
+  hidden: {
     scale: 0.8,
     opacity: 0,
     y: 20
   },
-  animate: { 
+  visible: {
     scale: 1,
     opacity: 1,
     y: 0,
@@ -154,11 +154,11 @@ const containerVariants = {
 };
 
 const iconVariants = {
-  initial: { 
+  hidden: {
     rotate: -30,
     opacity: 0
   },
-  animate: { 
+  visible: {
     rotate: 0,
     opacity: 1,
     transition: {
@@ -177,11 +177,11 @@ const iconVariants = {
 };
 
 const textVariants = {
-  initial: { 
+  hidden: {
     opacity: 0,
     x: -20
   },
-  animate: { 
+  visible: {
     opacity: 1,
     x: 0,
     transition: {
@@ -227,22 +227,20 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
 
   const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
 
-  const levelFallbackMap: Record<TechnologyIconProps['level'], string> = {
-    'planned': 'Planned',
-    'learning': 'Learning',
-    'beginner': 'Beginner',
-    'intermediate': 'Intermediate',
-    'advanced': 'Advanced',
-    'expert': 'Expert',
-    'master': 'Master',
-    'hobby': 'Hobby',
-    'professional': 'Professional'
-  };
-
-  const levelText = useMemo(
-    () => t(`about.skills.levels.${level}`, levelFallbackMap[level]),
-    [level, t, levelFallbackMap]
-  );
+  const levelText = useMemo(() => {
+    const fallbacks: Record<TechnologyIconProps['level'], string> = {
+      'planned': 'Planned',
+      'learning': 'Learning',
+      'beginner': 'Beginner',
+      'intermediate': 'Intermediate',
+      'advanced': 'Advanced',
+      'expert': 'Expert',
+      'master': 'Master',
+      'hobby': 'Hobby',
+      'professional': 'Professional'
+    };
+    return t(`about.skills.levels.${level}`, fallbacks[level]);
+  }, [level, t]);
 
   return (
     <Container
@@ -251,12 +249,10 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
       onHoverEnd={!isTouchDevice ? () => setShowTooltip(false) : undefined}
       onClick={isTouchDevice ? () => setShowTooltip(prev => !prev) : undefined}
       variants={containerVariants}
-      initial="initial"
-      animate="animate"
       whileHover="hover"
       whileTap="tap"
     >
-      <IconWrapper 
+      <IconWrapper
         $levelColor={levelColor}
         variants={iconVariants}
       >
@@ -264,7 +260,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
       </IconWrapper>
       <Name variants={textVariants}>{name}</Name>
       {level !== 'planned' && (
-        <Level 
+        <Level
           $levelColor={levelColor}
           variants={textVariants}
         >

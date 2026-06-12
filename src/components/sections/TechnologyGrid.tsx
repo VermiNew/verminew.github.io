@@ -78,7 +78,7 @@ const CategoryDescription = styled.p`
   line-height: 1.5;
 `;
 
-const Grid = styled.div`
+const Grid = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -88,6 +88,16 @@ const Grid = styled.div`
     gap: 1rem;
   }
 `;
+
+const gridVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06
+    }
+  }
+};
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -173,7 +183,7 @@ export const TechnologyGrid: React.FC = () => {
           <CategoryDescription>
             {t(`about.skills.categories.${category}.description`)}
           </CategoryDescription>
-          <Grid>
+          <Grid variants={!reducedMotion ? gridVariants : undefined}>
             {techs.map((tech) => (
               <TechnologyIcon
                 key={tech.id}
