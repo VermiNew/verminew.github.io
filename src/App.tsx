@@ -21,6 +21,7 @@ import { ReloadPopup } from '@/components/ui/ReloadPopup';
 import { LanguageNotification } from '@/components/ui/LanguageNotification';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SkipLink } from '@/components/layout/SkipLink';
+import { Footer } from '@/components/layout/Footer';
 
 const AppContent: React.FC = () => {
   const { theme } = useTheme();
@@ -81,6 +82,7 @@ const AppContent: React.FC = () => {
           </ErrorBoundary>
         </main>
       </AnimatePresence>
+      <Footer />
       <Settings />
       <ReloadPopup />
       <LanguageNotification />
