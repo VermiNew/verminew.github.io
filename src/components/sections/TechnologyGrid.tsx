@@ -47,7 +47,6 @@ const CategorySection = styled(motion.div)<{ $isPlanned?: boolean }>`
   };
   border-radius: 16px;
   padding: 2rem;
-  backdrop-filter: blur(8px);
   border: 1px solid ${({ theme, $isPlanned }) => $isPlanned
     ? `${theme.colors.textSecondary}15`
     : `${theme.colors.primary}10`

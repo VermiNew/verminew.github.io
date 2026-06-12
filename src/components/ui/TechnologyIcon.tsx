@@ -1,4 +1,5 @@
 import React, { useState, useMemo, memo, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
@@ -298,7 +299,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
         </Level>
       )}
       <AnimatePresence>
-        {showTooltip && (
+        {showTooltip && createPortal(
           <Tooltip
             $isDark={isDark}
             $x={tooltipPos.x}
@@ -310,7 +311,8 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
             exit="exit"
           >
             {description}
-          </Tooltip>
+          </Tooltip>,
+          document.body
         )}
       </AnimatePresence>
     </Container>
