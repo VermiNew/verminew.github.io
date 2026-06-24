@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GlobalStyle } from '@/styles/GlobalStyle';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
 import { AnimationProvider } from '@/context/AnimationContext';
@@ -25,7 +26,13 @@ import { Footer } from '@/components/layout/Footer';
 
 const AppContent: React.FC = () => {
   const { theme } = useTheme();
-  
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const lang = i18n.language.split('-')[0];
+    document.documentElement.lang = lang;
+  }, [i18n.language]);
+
   return (
     <>
       <GlobalStyle theme={theme} />
