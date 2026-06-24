@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
@@ -163,10 +163,10 @@ const itemVariants = {
 export const ContactSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const isDark = isDarkTheme(themeMode);
+  const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { reducedMotion } = useAnimation();
 
-  const contacts = [
+  const contacts = useMemo(() => [
     {
       title: t('contact.github'),
       value: socialConfig.github.username,
@@ -191,7 +191,7 @@ export const ContactSection: React.FC = () => {
       icon: <MdEmail />,
       link: `mailto:${socialConfig.email.address}`,
     },
-  ];
+  ], [t]);
 
   return (
     <SectionContainer id="contact">

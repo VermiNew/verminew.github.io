@@ -305,7 +305,7 @@ const Settings: React.FC = () => {
     };
   }, [isSettingsOpen, closePanel]);
 
-  const handleButtonVisibility = () => {
+  const handleButtonVisibility = useCallback(() => {
     setIsButtonVisible(true);
     if (buttonTimer.current) {
       clearTimeout(buttonTimer.current);
@@ -315,10 +315,10 @@ const Settings: React.FC = () => {
         setIsButtonVisible(false);
       }
     }, 3000);
-  };
+  }, [isSettingsOpen]);
 
   useEffect(() => {
-    setTimeout(() => {
+    buttonTimer.current = setTimeout(() => {
       if (!isSettingsOpen) {
         setIsButtonVisible(false);
       }
