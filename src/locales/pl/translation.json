@@ -646,5 +646,9 @@
   "sections": {
     "contact": "Kontakt",
     "services": "Zleć projekt"
+  },
+  "footer": {
+    "sendEmail": "Wyślij e-mail",
+    "githubProfile": "GitHub VermiNew"
   }
 }

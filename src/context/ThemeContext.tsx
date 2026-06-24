@@ -13,11 +13,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
-    // Sprawdź zapisany motyw
     const savedTheme = localStorage.getItem('theme') as ThemeMode;
     if (savedTheme) return savedTheme;
-    
-    // Sprawdź preferencje systemowe
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }

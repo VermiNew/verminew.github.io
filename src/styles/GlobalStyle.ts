@@ -13,6 +13,12 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     scroll-behavior: smooth;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   section[id] {
     scroll-margin-top: 70px;
   }

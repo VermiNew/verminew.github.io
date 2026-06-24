@@ -54,7 +54,7 @@ export const HeroBackground: React.FC = () => {
         const y = Math.random() * canvas.height;
         const radius = Math.random() * 2 + 1;
         
-        // Dostosuj kolory cząsteczek w zależności od motywu
+        // Adjust particle colours based on the current theme
         const color = isDark
           ? `rgba(${Math.random() * 50 + 150}, ${Math.random() * 50 + 150}, ${
               Math.random() * 50 + 200

@@ -19,8 +19,8 @@ export const useGithubDiscussions = () => {
   useEffect(() => {
     const fetchDiscussions = async () => {
       try {
-        // GitHub GraphQL API wymaga tokena, więc na razie zwracamy przykładowe dane
-        // TODO: Dodać prawdziwą integrację z GitHub Discussions API
+        // GitHub GraphQL API requires a token — using mock data until integrated
+        // TODO: add real GitHub Discussions API integration
         const mockPosts: Post[] = [
           {
             id: '1',

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { MdEmail } from 'react-icons/md';
 import { SiGithub } from 'react-icons/si';
 import { socialConfig } from '@/config/social';
+import { useTranslation } from 'react-i18next';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 const FooterWrapper = styled.footer`
   background: ${({ theme }) => theme.colors.surface};
@@ -66,16 +69,16 @@ const Meta = styled.p`
 `;
 
 export const Footer: React.FC = () => {
-  const year = new Date().getFullYear();
+  const { t } = useTranslation();
 
   return (
     <FooterWrapper>
       <Inner>
         <Copyright>
-          © {year} Michał Oślizło / VermiNew
+          © {CURRENT_YEAR} Michał Oślizło / VermiNew
         </Copyright>
         <Links>
-          <FooterLink href={socialConfig.email.url} aria-label="Wyślij e-mail">
+          <FooterLink href={socialConfig.email.url} aria-label={t('footer.sendEmail')}>
             <MdEmail aria-hidden="true" />
             {socialConfig.email.address}
           </FooterLink>
@@ -83,13 +86,13 @@ export const Footer: React.FC = () => {
             href={socialConfig.github.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub VermiNew"
+            aria-label={t('footer.githubProfile')}
           >
             <SiGithub aria-hidden="true" />
             {socialConfig.github.username}
           </FooterLink>
         </Links>
-        <Meta>v{__APP_VERSION__} · {year}</Meta>
+        <Meta>v{__APP_VERSION__} · {CURRENT_YEAR}</Meta>
       </Inner>
     </FooterWrapper>
   );

@@ -20,7 +20,6 @@ const resources = {
 export type TranslationKeys = keyof typeof translationEN;
 
 const normalizeLanguage = (lang: string): SupportedLanguage => {
-  // Usuń region z kodu języka (np. pl-PL -> pl)
   const baseLang = lang.split('-')[0].toLowerCase();
   return SUPPORTED_LANGUAGES.includes(baseLang as SupportedLanguage)
     ? (baseLang as SupportedLanguage)
@@ -49,18 +48,6 @@ i18n
       useSuspense: true
     }
   });
-
-export const changeLanguageWithReload = async (language: SupportedLanguage) => {
-  if (!SUPPORTED_LANGUAGES.includes(language)) {
-    console.error(`Unsupported language: ${language}`);
-    return;
-  }
-
-  const normalizedLang = normalizeLanguage(language);
-  await i18n.changeLanguage(normalizedLang);
-  localStorage.setItem('i18nextLng', normalizedLang);
-  // react-i18next automatically updates all connected components
-};
 
 export const getBrowserLanguage = (): SupportedLanguage => {
   const browserLang = navigator.language.toLowerCase();

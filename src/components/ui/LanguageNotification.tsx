@@ -210,13 +210,16 @@ export const LanguageNotification: React.FC = () => {
         >
           <NotificationContainer
             $isDark={isDark}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="lang-notification-title"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 20 }}
           >
-            <Title>
-              <span>🌍</span> {t('notifications.language.available')}
+            <Title id="lang-notification-title">
+              <span aria-hidden="true">🌍</span> {t('notifications.language.available')}
             </Title>
             <Message>
               {t('notifications.language.detected')}
