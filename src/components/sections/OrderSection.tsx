@@ -719,6 +719,31 @@ const BackRow = styled.div`
 `;
 // ───────────────────────────────────────────────────────────────────────────────
 
+// ── Stable IDs for aria relationships ─────────────────────────────────────────
+const MODAL_TITLE_ID = 'order-modal-title';
+const CONFIRM_MESSAGE_ID = 'order-confirm-message';
+const CONFIRM_HINT_ID = 'order-confirm-hint';
+const NAME_ERROR_ID = 'order-name-error';
+const EMAIL_ERROR_ID = 'order-email-error';
+const CLIENT_TYPE_ERROR_ID = 'order-client-type-error';
+const CONTACT_METHOD_ERROR_ID = 'order-contact-method-error';
+const PROJECT_TYPE_ERROR_ID = 'order-project-type-error';
+const EXISTING_PROJECT_ERROR_ID = 'order-existing-project-error';
+const BUDGET_ERROR_ID = 'order-budget-error';
+const DEADLINE_ERROR_ID = 'order-deadline-error';
+const DESCRIPTION_ERROR_ID = 'order-description-error';
+const CONTENT_READY_ERROR_ID = 'order-content-ready-error';
+const DOMAIN_ERROR_ID = 'order-domain-error';
+// ───────────────────────────────────────────────────────────────────────────────
+
+// ── Required field lists per step ─────────────────────────────────────────────
+const REQUIRED_BASICS: (keyof FormData)[] = ['name', 'email'];
+const REQUIRED_CONTACT: (keyof FormData)[] = ['clientType', 'contactMethod'];
+const REQUIRED_PROJECT: (keyof FormData)[] = ['type', 'existingProject', 'budget'];
+const REQUIRED_DETAILS: (keyof FormData)[] = ['deadline', 'description', 'contentReady'];
+const REQUIRED_EXTRAS: (keyof FormData)[] = ['hasDomain'];
+// ───────────────────────────────────────────────────────────────────────────────
+
 // ── Animation variants ─────────────────────────────────────────────────────────
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -781,19 +806,6 @@ export const OrderSection: React.FC = () => {
 
   // ── Legal modals state ────────────────────────────────────────────────────
   const [privacyOpen, setPrivacyOpen] = useState(false);
-  const modalTitleId = 'order-modal-title';
-  const confirmMessageId = 'order-confirm-message';
-  const confirmHintId = 'order-confirm-hint';
-  const nameErrorId = 'order-name-error';
-  const emailErrorId = 'order-email-error';
-  const clientTypeErrorId = 'order-client-type-error';
-  const contactMethodErrorId = 'order-contact-method-error';
-  const projectTypeErrorId = 'order-project-type-error';
-  const existingProjectErrorId = 'order-existing-project-error';
-  const budgetErrorId = 'order-budget-error';
-  const deadlineErrorId = 'order-deadline-error';
-  const descriptionErrorId = 'order-description-error';
-  const contentReadyErrorId = 'order-content-ready-error';
 
   // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
@@ -879,12 +891,6 @@ export const OrderSection: React.FC = () => {
   );
 
   // ── Validation ──────────────────────────────────────────────────────────────
-  const requiredBasics: (keyof FormData)[] = ['name', 'email'];
-  const requiredContact: (keyof FormData)[] = ['clientType', 'contactMethod'];
-  const requiredProject: (keyof FormData)[] = ['type', 'existingProject', 'budget'];
-  const requiredDetails: (keyof FormData)[] = ['deadline', 'description', 'contentReady'];
-  const requiredExtras: (keyof FormData)[] = ['hasDomain'];
-
   const isEmailValid = useCallback(
     (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
     []
@@ -911,31 +917,31 @@ export const OrderSection: React.FC = () => {
   const isContentReadyMissing = isFieldMissing('contentReady');
 
   const isBasicsValid = useMemo(
-    () => requiredBasics.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
+    () => REQUIRED_BASICS.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.name, form.email, isEmailValid]
   );
 
   const isContactValid = useMemo(
-    () => requiredContact.every((f) => form[f].trim() !== ''),
+    () => REQUIRED_CONTACT.every((f) => form[f].trim() !== ''),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.clientType, form.contactMethod]
   );
 
   const isProjectValid = useMemo(
-    () => requiredProject.every((f) => form[f].trim() !== ''),
+    () => REQUIRED_PROJECT.every((f) => form[f].trim() !== ''),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.type, form.budget, form.existingProject]
   );
 
   const isDetailsValid = useMemo(
-    () => requiredDetails.every((f) => form[f].trim() !== ''),
+    () => REQUIRED_DETAILS.every((f) => form[f].trim() !== ''),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.deadline, form.description, form.contentReady]
   );
 
   const isExtrasValid = useMemo(
-    () => requiredExtras.every((f) => form[f].trim() !== '') && !fileSizeError && rodoConsent,
+    () => REQUIRED_EXTRAS.every((f) => form[f].trim() !== '') && !fileSizeError && rodoConsent,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.hasDomain, fileSizeError, rodoConsent]
   );
@@ -959,28 +965,28 @@ export const OrderSection: React.FC = () => {
   }, []);
 
   const handleNextToContact = useCallback(() => {
-    markTouched(requiredBasics);
+    markTouched(REQUIRED_BASICS);
     if (!isBasicsValid) return;
     goNext('contact');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBasicsValid, markTouched, goNext]);
 
   const handleNextToProject = useCallback(() => {
-    markTouched(requiredContact);
+    markTouched(REQUIRED_CONTACT);
     if (!isContactValid) return;
     goNext('project');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isContactValid, markTouched, goNext]);
 
   const handleNextToDetails = useCallback(() => {
-    markTouched(requiredProject);
+    markTouched(REQUIRED_PROJECT);
     if (!isProjectValid) return;
     goNext('details');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isProjectValid, markTouched, goNext]);
 
   const handleNextToExtras = useCallback(() => {
-    markTouched(requiredDetails);
+    markTouched(REQUIRED_DETAILS);
     if (!isDetailsValid) return;
     goNext('extras');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1001,7 +1007,7 @@ export const OrderSection: React.FC = () => {
   const handleGenerate = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      markTouched(requiredExtras);
+      markTouched(REQUIRED_EXTRAS);
       if (!isExtrasValid) return;
       const id = crypto.randomUUID();
       setOrderId(id);
@@ -1137,7 +1143,7 @@ export const OrderSection: React.FC = () => {
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
-                aria-labelledby={modalTitleId}
+                aria-labelledby={MODAL_TITLE_ID}
               >
                 <ModalCloseButton
                   onClick={confirmClose}
@@ -1148,7 +1154,7 @@ export const OrderSection: React.FC = () => {
                 </ModalCloseButton>
 
                 <ModalHeader>
-                  <ModalTitle id={modalTitleId}>{t('order.title')}</ModalTitle>
+                  <ModalTitle id={MODAL_TITLE_ID}>{t('order.title')}</ModalTitle>
                 {step !== 'summary' && isFormDirty && (
                   <ClearButton type="button" onClick={handleClearRequest}>
                     <MdDeleteOutline size={16} />
@@ -1184,14 +1190,14 @@ export const OrderSection: React.FC = () => {
                         type="text"
                         required
                         aria-invalid={isNameMissing || undefined}
-                        aria-describedby={isNameMissing ? nameErrorId : undefined}
+                        aria-describedby={isNameMissing ? NAME_ERROR_ID : undefined}
                         placeholder={t('order.form.namePlaceholder')}
                         value={form.name}
                         onChange={handleChange}
                       />
                       {isNameMissing && (
                         <FieldError
-                          id={nameErrorId}
+                          id={NAME_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1210,7 +1216,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isEmailMissing || isEmailError || undefined}
                         aria-describedby={
-                          isEmailMissing || isEmailError ? emailErrorId : undefined
+                          isEmailMissing || isEmailError ? EMAIL_ERROR_ID : undefined
                         }
                         placeholder={t('order.form.emailPlaceholder')}
                         value={form.email}
@@ -1218,7 +1224,7 @@ export const OrderSection: React.FC = () => {
                       />
                       {isEmailMissing && (
                         <FieldError
-                          id={emailErrorId}
+                          id={EMAIL_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1227,7 +1233,7 @@ export const OrderSection: React.FC = () => {
                       )}
                       {isEmailError && (
                         <FieldError
-                          id={emailErrorId}
+                          id={EMAIL_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1285,7 +1291,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isClientTypeMissing || undefined}
                         aria-describedby={
-                          isClientTypeMissing ? clientTypeErrorId : undefined
+                          isClientTypeMissing ? CLIENT_TYPE_ERROR_ID : undefined
                         }
                         value={form.clientType}
                         onChange={handleChange}
@@ -1299,7 +1305,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isClientTypeMissing && (
                         <FieldError
-                          id={clientTypeErrorId}
+                          id={CLIENT_TYPE_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1317,7 +1323,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isContactMethodMissing || undefined}
                         aria-describedby={
-                          isContactMethodMissing ? contactMethodErrorId : undefined
+                          isContactMethodMissing ? CONTACT_METHOD_ERROR_ID : undefined
                         }
                         value={form.contactMethod}
                         onChange={handleChange}
@@ -1331,7 +1337,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isContactMethodMissing && (
                         <FieldError
-                          id={contactMethodErrorId}
+                          id={CONTACT_METHOD_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1397,7 +1403,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isProjectTypeMissing || undefined}
                         aria-describedby={
-                          isProjectTypeMissing ? projectTypeErrorId : undefined
+                          isProjectTypeMissing ? PROJECT_TYPE_ERROR_ID : undefined
                         }
                         value={form.type}
                         onChange={handleChange}
@@ -1415,7 +1421,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isProjectTypeMissing && (
                         <FieldError
-                          id={projectTypeErrorId}
+                          id={PROJECT_TYPE_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1433,7 +1439,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isExistingProjectMissing || undefined}
                         aria-describedby={
-                          isExistingProjectMissing ? existingProjectErrorId : undefined
+                          isExistingProjectMissing ? EXISTING_PROJECT_ERROR_ID : undefined
                         }
                         value={form.existingProject}
                         onChange={handleChange}
@@ -1447,7 +1453,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isExistingProjectMissing && (
                         <FieldError
-                          id={existingProjectErrorId}
+                          id={EXISTING_PROJECT_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1465,7 +1471,7 @@ export const OrderSection: React.FC = () => {
                         name="budget"
                         required
                         aria-invalid={isBudgetMissing || undefined}
-                        aria-describedby={isBudgetMissing ? budgetErrorId : undefined}
+                        aria-describedby={isBudgetMissing ? BUDGET_ERROR_ID : undefined}
                         value={form.budget}
                         onChange={handleChange}
                       >
@@ -1482,7 +1488,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isBudgetMissing && (
                         <FieldError
-                          id={budgetErrorId}
+                          id={BUDGET_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1529,7 +1535,7 @@ export const OrderSection: React.FC = () => {
                         name="deadline"
                         required
                         aria-invalid={isDeadlineMissing || undefined}
-                        aria-describedby={isDeadlineMissing ? deadlineErrorId : undefined}
+                        aria-describedby={isDeadlineMissing ? DEADLINE_ERROR_ID : undefined}
                         value={form.deadline}
                         onChange={handleChange}
                       >
@@ -1542,7 +1548,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isDeadlineMissing && (
                         <FieldError
-                          id={deadlineErrorId}
+                          id={DEADLINE_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1575,7 +1581,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isDescriptionMissing || undefined}
                         aria-describedby={
-                          isDescriptionMissing ? descriptionErrorId : undefined
+                          isDescriptionMissing ? DESCRIPTION_ERROR_ID : undefined
                         }
                         placeholder={t('order.form.descriptionPlaceholder')}
                         value={form.description}
@@ -1583,7 +1589,7 @@ export const OrderSection: React.FC = () => {
                       />
                       {isDescriptionMissing && (
                         <FieldError
-                          id={descriptionErrorId}
+                          id={DESCRIPTION_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1601,7 +1607,7 @@ export const OrderSection: React.FC = () => {
                         required
                         aria-invalid={isContentReadyMissing || undefined}
                         aria-describedby={
-                          isContentReadyMissing ? contentReadyErrorId : undefined
+                          isContentReadyMissing ? CONTENT_READY_ERROR_ID : undefined
                         }
                         value={form.contentReady}
                         onChange={handleChange}
@@ -1615,7 +1621,7 @@ export const OrderSection: React.FC = () => {
                       </Select>
                       {isContentReadyMissing && (
                         <FieldError
-                          id={contentReadyErrorId}
+                          id={CONTENT_READY_ERROR_ID}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -1664,6 +1670,8 @@ export const OrderSection: React.FC = () => {
                           required
                           value={form.hasDomain}
                           onChange={handleChange}
+                          aria-invalid={isFieldMissing('hasDomain') || undefined}
+                          aria-describedby={isFieldMissing('hasDomain') ? DOMAIN_ERROR_ID : undefined}
                         >
                           <option value="" disabled>
                             {t('order.form.hasDomainPlaceholder')}
@@ -1673,7 +1681,7 @@ export const OrderSection: React.FC = () => {
                           )}
                         </Select>
                         {isFieldMissing('hasDomain') && (
-                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          <FieldError id={DOMAIN_ERROR_ID} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                             {t('order.form.requiredField')}
                           </FieldError>
                         )}
@@ -1893,19 +1901,19 @@ export const OrderSection: React.FC = () => {
                 onClick={(e) => e.stopPropagation()}
                 role="alertdialog"
                 aria-modal="true"
-                aria-labelledby={confirmMessageId}
-                aria-describedby={confirmAction === 'close' ? confirmHintId : undefined}
+                aria-labelledby={CONFIRM_MESSAGE_ID}
+                aria-describedby={confirmAction === 'close' ? CONFIRM_HINT_ID : undefined}
               >
                 <ConfirmIcon aria-hidden="true">
                   <MdWarningAmber />
                 </ConfirmIcon>
-                <ConfirmMessage id={confirmMessageId}>
+                <ConfirmMessage id={CONFIRM_MESSAGE_ID}>
                   {confirmAction === 'close'
                     ? t('order.modal.confirmClose')
                     : t('order.modal.confirmClear')}
                 </ConfirmMessage>
                 {confirmAction === 'close' && (
-                  <ConfirmHint id={confirmHintId}>
+                  <ConfirmHint id={CONFIRM_HINT_ID}>
                     {t('order.modal.confirmCloseHint')}
                   </ConfirmHint>
                 )}
