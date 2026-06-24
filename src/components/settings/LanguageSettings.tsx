@@ -87,17 +87,8 @@ export const LanguageSettings: React.FC = () => {
 
   const handleLanguageChange = async (langCode: string) => {
     if (langCode !== i18n.language) {
-      // Najpierw zmień język w i18n
       await i18n.changeLanguage(langCode);
       localStorage.setItem('i18nextLng', langCode);
-      
-      // Pokaż popup
-      window.dispatchEvent(new Event('languageChanged'));
-      
-      // Poczekaj 3 sekundy i odśwież
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
     }
   };
 
