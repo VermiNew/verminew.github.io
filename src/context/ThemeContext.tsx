@@ -28,8 +28,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     localStorage.setItem('theme', themeMode);
-    // Aktualizuj klasę na body dla globalnych styli
-    document.body.className = themeMode;
+    document.body.setAttribute('data-theme', themeMode);
   }, [themeMode]);
 
   return (

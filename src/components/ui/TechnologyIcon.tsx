@@ -225,7 +225,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const isTouchDevice = window.matchMedia('(hover: none)').matches;
+  const isTouchDevice = useRef(window.matchMedia('(hover: none)').matches).current;
 
   const handleHoverStart = useCallback(() => {
     if (containerRef.current) {

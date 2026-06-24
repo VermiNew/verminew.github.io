@@ -144,16 +144,26 @@ export const HeroBackground: React.FC = () => {
       };
     };
 
-    window.addEventListener('resize', resizeCanvas);
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resizeCanvas();
+        createParticles();
+      }, 150);
+    };
+
+    window.addEventListener('resize', handleResize);
     canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     resizeCanvas();
     createParticles();
     animate();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      clearTimeout(resizeTimer);
+      window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
       if (animationFrameId.current) {

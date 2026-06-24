@@ -9,7 +9,7 @@ import { FiMenu, FiX } from 'react-icons/fi';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { isDarkTheme } from '@/utils/themeUtils';
 
-const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: boolean }>`
+const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -28,11 +28,7 @@ const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean; $isDark: b
     inset: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: ${({ $isScrolled }) => ($isScrolled ? 1 : 0)};
-    background: ${({ theme, $isDark }) => 
-      $isDark
-        ? `${theme.colors.background}f0`
-        : `${theme.colors.background}f0`
-    };
+    background: ${({ theme }) => `${theme.colors.background}f0`};
     backdrop-filter: blur(10px);
     z-index: -1;
   }
@@ -379,7 +375,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <HeaderContainer $isScrolled={isScrolled} $isDark={isDark}>
+      <HeaderContainer $isScrolled={isScrolled}>
         <LogoContainer
           href="#home"
           aria-label={t('navigation.homeLabel')}
