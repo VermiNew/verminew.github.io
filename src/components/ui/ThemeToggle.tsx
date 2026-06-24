@@ -49,7 +49,7 @@ const ToggleButton = styled(motion.button)<{ $isDark: boolean }>`
     };
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
@@ -154,7 +154,7 @@ const ThemeOption = styled(motion.button)<{ $isActive: boolean }>`
     transform: translateX(4px);
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: -2px;
   }
