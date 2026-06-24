@@ -33,9 +33,14 @@ const Description = styled(motion.p)<{ $isDark: boolean }>`
 
 const ContactGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
   width: 100%;
+  max-width: 700px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const ContactCard = styled(motion.a)<{ $isDark: boolean }>`
@@ -104,10 +109,14 @@ const ContactValue = styled.p`
 
 const AdditionalInfo = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   width: 100%;
-  margin-top: 2rem;
+  max-width: 700px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const InfoItem = styled.div<{ $isDark: boolean }>`
@@ -238,9 +247,6 @@ export const ContactSection: React.FC = () => {
             <MdSchedule />
             <InfoText>{t('contact.info.preferred_hours')}</InfoText>
           </InfoItem>
-        </AdditionalInfo>
-
-        <AdditionalInfo variants={!reducedMotion ? itemVariants : undefined}>
           <InfoItem $isDark={isDark}>
             <MdSchedule />
             <InfoText>{t('contact.info.response_time')}</InfoText>
