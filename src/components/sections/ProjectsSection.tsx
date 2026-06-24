@@ -91,12 +91,24 @@ const ProjectsCategory = styled.div`
 `;
 
 const CategoryTitle = styled.h3`
-  font-size: 1.5rem;
-  color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
   font-weight: 600;
-  text-align: center;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
   width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: ${({ theme }) => `${theme.colors.primary}25`};
+  }
 `;
 
 const LoadingContainer = styled.div`
