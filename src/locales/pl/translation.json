@@ -26,7 +26,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Buduję działające produkty webowe — szybko, z AI, z głową",
+    "title": "Buduję działające strony i aplikacje\nszybko, z AI, konkretnie",
     "cta": {
       "about": "Poznaj mnie",
       "projects": "Zobacz projekty"
@@ -35,11 +35,11 @@
   "about": {
     "title": "O mnie",
     "name": "Michał Oślizło",
-    "intro": "Jestem Michał, entuzjasta programowania z Podkarpacia. Urodziłem się w październiku 2006 roku i obecnie uczę się w technikum na kierunku programistycznym.",
-    "focus": "Skupiam się na tworzeniu stron internetowych i aplikacji, stale poszerzając swoją wiedzę i umiejętności. Zdałem kwalifikacje INF.03 i INF.04 (egzamin praktyczny i teoretyczny). Największą satysfakcję czerpię z obserwowania efektów swojej pracy. Aktywnie używam narzędzi AI jako części swojego workflow — pozwala mi to dostarczać projekty szybciej i sprawniej, i dokładnie tak powstało to portfolio.",
+    "intro": "Jestem Michał, programista-amator z Podkarpacia. Urodziłem się w październiku 2006 roku i uczę się w technikum na kierunku programistycznym.",
+    "focus": "Skupiam się na stronach internetowych i aplikacjach webowych. Zdałem kwalifikacje INF.03 i INF.04. Używam AI jako narzędzia pracy — nie po to żeby zastąpiło myślenie, ale żeby robić więcej rzeczy szybciej. Właśnie tak powstało to portfolio.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
-      "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Ta kombinacja odzwierciedla moją pasję do rozwoju i ciągłego doskonalenia."
+      "description": "Ver - Version, Mi - Michał, New - ciągła nauka nowych rzeczy. Krótko: zawsze jakaś nowa wersja siebie."
     },
     "birthInfo": "Urodzony w październiku 2006",
     "profiles": {
@@ -53,8 +53,8 @@
       "title": "O sobie",
       "education": {
         "title": "Edukacja",
-        "current": "Uczeń technikum, kierunek: technik-programista",
-        "achievements": "Kwalifikacja INF.03 zdana, kwalifikacja INF.04 zdana (egzamin praktyczny i teoretyczny)"
+        "current": "Technikum, kierunek: technik-programista",
+        "achievements": "Kwalifikacja INF.03 zdana, INF.04 zdana (egzamin praktyczny i teoretyczny)"
       },
       "languages": {
         "title": "Języki",
@@ -62,37 +62,37 @@
         "english": "Angielski (B2 — matura rozszerzona)"
       },
       "interests": {
-        "title": "Zainteresowania i technologie",
+        "title": "Zainteresowania",
         "list": [
-          "Budowanie projektów z AI jako narzędziem",
-          "Mikrokontrolery — ESP32, STM32 (projekty hobbystyczne)",
-          "Eksplorowanie nowych technologii przez praktykę"
+          "Projekty webowe z AI jako narzędziem",
+          "Mikrokontrolery — ESP32, STM32 (hobbystycznie)",
+          "Nowe technologie — uczę się przez robienie, nie przez czytanie"
         ]
       },
       "strengths": {
-        "title": "Co sprawia mi satysfakcję",
-        "description": "Koduję bo chcę i lubię jak coś działa. Największa satysfakcja to obserwowanie jak mój kod działa i przynosi realne efekty. To takie proste."
+        "title": "Co mnie kręci",
+        "description": "Koduję bo lubię jak coś działa. Satysfakcja z widzenia efektu pracy jest po prostu dobra i tyle."
       },
       "growth": {
-        "title": "Obszary rozwoju",
-        "description": "Otwarcie przyznaję, że mam obszary wymagające doskonalenia: praca pod presją, działanie w bardzo dużych zespołach oraz niektóre aspekty matematyki. Chociaż praca w grupie początkowo sprawia mi trudność, aktywnie pracuję nad rozwojem umiejętności współpracy zespołowej i dostosowuję się do dynamiki grupy. Traktuję te wyzwania jako możliwości do rozwoju i systematycznie nad nimi pracuję."
+        "title": "Czego nie udaję że potrafię",
+        "description": "Praca pod dużą presją czasową, duże zespoły (dopiero się uczę), zaawansowana matematyka. Nie udaję inaczej. Natomiast działam sam albo w małych grupach sprawnie i chętnie."
       },
       "availability": {
-        "title": "Dostępność i warunki współpracy",
-        "description": "Jako uczeń technikum, oferuję elastyczne godziny pracy dostosowane do mojego planu zajęć. Nie jestem w stanie pracować w pełnym wymiarze godzin ze względu na obowiązki szkolne i czas potrzebny na naukę. Pracuję wyłącznie zdalnie.",
+        "title": "Dostępność",
+        "description": "Jestem uczniem, więc mogę pracować kilka godzin dziennie — nie pełny etat. Wyłącznie zdalnie.",
         "workConditions": [
-          "Elastyczne godziny pracy",
-          "Wyłącznie praca zdalna",
-          "Dostępność w wybrane dni tygodnia",
-          "Preferowana praca projektowa"
+          "Elastyczne godziny",
+          "Tylko zdalnie",
+          "Preferuję projekty, nie zlecenia godzinowe",
+          "Dostępność w wybrane dni tygodnia"
         ],
         "freelance": {
-          "title": "Zlecenia freelancerskie",
-          "description": "Przyjmuję również zlecenia freelancerskie. Model płatności: 50% zaliczki na start, 50% po zakończeniu i akceptacji.",
+          "title": "Freelance",
+          "description": "Przyjmuję zlecenia. Model płatności: 50% na start, 50% po akceptacji gotowego projektu.",
           "highlights": [
-            "Jasne warunki współpracy",
-            "Transparentny model płatności",
-            "Regularna komunikacja podczas realizacji projektu",
+            "Konkretne warunki przed startem",
+            "Płatność podzielona na dwie transze",
+            "Regularny kontakt w trakcie projektu",
             "Poprawki w ramach ustalonego zakresu"
           ]
         }
@@ -100,12 +100,18 @@
     },
     "order": {
       "button": "Zleć projekt",
-      "tooltip": "Opisz mi swój pomysł na aplikację"
+      "tooltip": "Opisz mi swój pomysł"
     },
     "skills": {
       "title": "Umiejętności",
-      "description": "Moje umiejętności techniczne obejmują szeroki zakres technologii i narzędzi",
-      "aiNote": "Aktywnie rozwijam swoje umiejętności, pracując z narzędziami AI. Pozwala mi to realizować projekty wykraczające poza moje obecne doświadczenie, jednocześnie ucząc się nowych technologii w praktyce.",
+      "description": "Technologie z którymi faktycznie pracuję",
+      "aiNote": "Używam AI jako narzędzia — to pozwala mi robić rzeczy które technicznie wykraczają poza moje obecne doświadczenie, ucząc się przy okazji.",
+      "filterAll": "Wszystkie",
+      "filterFrontend": "Frontend",
+      "filterBackend": "Backend",
+      "filterLanguages": "Języki",
+      "filterTools": "Narzędzia",
+      "filterPlanned": "Planowane",
       "levels": {
         "planned": "Planowane",
         "beginner": "Początkujący",
@@ -119,7 +125,7 @@
       },
       "categories": {
         "frontendCore": {
-          "title": "Frontend - Podstawy",
+          "title": "Frontend — Podstawy",
           "description": "Fundamentalne technologie frontendowe",
           "skills": {
             "html5": {
@@ -141,16 +147,16 @@
           }
         },
         "frontendFrameworks": {
-          "title": "Frontend - Frameworki i Biblioteki",
+          "title": "Frontend — Frameworki i Biblioteki",
           "description": "Zaawansowane narzędzia do tworzenia interfejsów",
           "skills": {
             "react": {
               "name": "React",
-              "description": "Buduję aktywnie od kilku miesięcy — to portfolio jest dowodem"
+              "description": "Aktywnie buduję od kilku miesięcy — to portfolio jest dowodem"
             },
             "nextjs": {
               "name": "Next.js",
-              "description": "Zrealizowany projekt z agentem — uczę się przez praktykę"
+              "description": "Zrealizowany projekt z pomocą AI — uczę się przez praktykę"
             },
             "tailwindcss": {
               "name": "Tailwind CSS",
@@ -182,19 +188,19 @@
         },
         "programming": {
           "title": "Języki Programowania",
-          "description": "Główne języki programowania",
+          "description": "Główne języki w których piszę",
           "skills": {
             "cpp": {
               "name": "C++",
-              "description": "Zaawansowane programowanie, algorytmy i struktury danych"
+              "description": "Algorytmy, struktury danych, mikrokontrolery"
             },
             "csharp": {
               "name": "C#",
-              "description": "Tworzenie aplikacji desktopowych"
+              "description": "Aplikacje desktopowe (WPF, WinForms)"
             },
             "python": {
               "name": "Python",
-              "description": "Skrypty, automatyzacja i projekty wspierane przez AI"
+              "description": "Skrypty, automatyzacja, projekty z AI"
             },
             "java": {
               "name": "Java",
@@ -203,12 +209,12 @@
           }
         },
         "devTools": {
-          "title": "Narzędzia Programistyczne",
-          "description": "Narzędzia wspierające proces rozwoju oprogramowania",
+          "title": "Narzędzia",
+          "description": "Codzienne narzędzia programistyczne",
           "skills": {
             "git": {
               "name": "Git",
-              "description": "Kontrola wersji i praca zespołowa"
+              "description": "Wersjonowanie, branching, GitHub Actions"
             },
             "markdown": {
               "name": "Markdown",
@@ -217,12 +223,12 @@
           }
         },
         "systemDevops": {
-          "title": "System i DevOps",
-          "description": "Narzędzia systemowe i operacyjne",
+          "title": "System i Automatyzacja",
+          "description": "Skrypty i narzędzia systemowe",
           "skills": {
             "batch": {
               "name": "Batch",
-              "description": "Skrypty Windows i automatyzacja"
+              "description": "Skrypty Windows, automatyzacja zadań"
             },
             "androidStudio": {
               "name": "Android Studio",
@@ -231,12 +237,12 @@
           }
         },
         "plannedSkills": {
-          "title": "Planowane Umiejętności",
-          "description": "Technologie, których planuję się nauczyć",
+          "title": "Planowane",
+          "description": "Technologie które chcę opanować",
           "skills": {
             "bash": {
               "name": "Bash",
-              "description": "Skrypty powłoki Linux — przydatne przy pracy z serwerami i repo"
+              "description": "Linux shell — przydatny przy serwerach i CI/CD"
             }
           }
         }
@@ -253,9 +259,11 @@
     "resultsCount_few": "{{count}} projekty",
     "resultsCount_many": "{{count}} projektów",
     "featured": "Wyróżniony",
-    "featuredTitle": "Wyróżnione Projekty",
-    "otherTitle": "Aktywne Projekty",
-    "plannedTitle": "Planowane Projekty",
+    "featuredTitle": "Wyróżnione",
+    "otherTitle": "Pozostałe projekty",
+    "plannedTitle": "Planowane",
+    "showMore": "Pokaż więcej ({{count}})",
+    "showLess": "Zwiń",
     "tags": {
       "archived": "Zarchiwizowany",
       "visibility": {
@@ -289,158 +297,160 @@
       "system": "Systemowy"
     },
     "preferences": {
-      "reducedMotion": "Zredukowane animacje"
+      "reducedMotion": "Zredukowane animacje",
+      "smoothScroll": "Płynne przewijanie"
     }
   },
   "order": {
-    "title": "Zamówienie",
-    "description": "Zainteresowany współpracą? Wypełnij formularz, a wygeneruję dla Ciebie paczkę z zamówieniem gotową do wysyłki mailem. Model płatności: 30% na rozpoczęcie prac, 50% przy kończeniu, 20% po przekazaniu kodu i praw autorskich.",
+    "title": "Zleć projekt",
+    "description": "Masz pomysł na stronę lub aplikację? Wypełnij formularz — wygeneruję paczkę z detalami zamówienia gotową do wysyłki e-mailem. Wycenę podaję po zapoznaniu się ze szczegółami. Model płatności: 50% na start, 50% po akceptacji.",
     "preview": {
       "cta": "Wypełnij formularz",
       "hint": "Kliknij, aby otworzyć"
     },
     "modal": {
       "close": "Zamknij",
-      "confirmClose": "Formularz nie został jeszcze ukończony.\nNa pewno chcesz zamknąć?",
-      "confirmCloseHint": "Twoje dane zostaną zapamiętane.",
-      "confirmClear": "Wszystkie wpisane dane zostaną usunięte.\nNa pewno chcesz wyczyścić formularz?",
+      "confirmClose": "Formularz nie jest ukończony.\nZamknąć bez zapisywania?",
+      "confirmCloseHint": "Twoje dane zostaną zapamiętane w tej sesji.",
+      "confirmClear": "Wszystkie dane formularza zostaną usunięte.\nNa pewno?",
       "confirmNo": "Anuluj",
       "confirmYesClose": "Tak, zamknij",
       "confirmYesClear": "Tak, wyczyść"
     },
     "form": {
-      "name": "Pełne imię i nazwisko",
-      "namePlaceholder": "Z kim mam przyjemność?",
+      "name": "Imię i nazwisko",
+      "namePlaceholder": "Jak mam się do Ciebie zwracać?",
       "email": "Adres e-mail",
-      "emailPlaceholder": "nazwa@firma.com",
-      "type": "Rodzaj usługi",
-      "typePlaceholder": "Czego dotyczy zlecenie?",
+      "emailPlaceholder": "twoj@email.com",
+      "type": "Czego potrzebujesz?",
+      "typePlaceholder": "Wybierz rodzaj zlecenia",
       "typeOptions": [
-        "Strona / Aplikacja Webowa (React, Vue, Next.js)",
+        "Strona / Aplikacja Webowa (React, Next.js, Vue)",
         "Aplikacja Desktopowa (WPF, WinForms, Tauri)",
         "Aplikacja Mobilna (Android, React Native, PWA)",
         "Backend / API (Python, PHP, Node.js)",
-        "Skrypt / Automatyzacja (Python, C++)",
-        "IoT / Embedded (ESP32, mikrokontrolery)",
-        "Inne zapotrzebowanie"
+        "Skrypt / Automatyzacja (Python, Batch, C++)",
+        "IoT / Mikrokontrolery (ESP32, STM32)",
+        "Coś innego — opisz poniżej"
       ],
-      "budget": "Szacowany budżet",
-      "budgetPlaceholder": "Określ ramy budżetowe (opcjonalnie)",
-      "budgetHint": "Model płatności: 30% na start · 50% przy kończeniu · 20% po przekazaniu kodu",
+      "budget": "Orientacyjny budżet",
+      "budgetPlaceholder": "Wybierz przedział (opcjonalne)",
+      "budgetHint": "Wycenę podaję po analizie. Model płatności: 50% na start · 50% po akceptacji",
       "budgetOptions": [
-        "Poniżej 1 000 zł (Proste landing page/poprawki)",
-        "1 000 zł - 3 500 zł (Standardowa strona/nieduża aplikacja)",
-        "3 500 zł - 8 000 zł (Zaawansowana aplikacja B2B/B2C)",
-        "Powyżej 8 000 zł (Złożone wdrożenia platform/architektury)",
-        "Jeszcze nie wiem / Do wyceny"
+        "Do 500 zł (mała strona, landing page, poprawki)",
+        "500 zł – 1 500 zł (standardowa strona wizytówkowa)",
+        "1 500 zł – 4 000 zł (aplikacja webowa, sklep, panel)",
+        "4 000 zł – 8 000 zł (zaawansowany projekt, integracje)",
+        "Powyżej 8 000 zł (duże wdrożenie, architektura)",
+        "Nie wiem jeszcze / proszę o wycenę"
       ],
-      "description": "Szczegóły zlecenia",
-      "descriptionPlaceholder": "Napisz mi czego potrzebujesz. Jaką funkcję ma spełniać program/strona? Kto będzie głównym użytkownikiem? Co jest dla Ciebie najważniejsze?",
+      "description": "Opis zlecenia",
+      "descriptionPlaceholder": "Co ma robić ta strona/aplikacja? Kto będzie z niej korzystać? Co jest dla Ciebie najważniejsze?",
       "attachments": "Załączniki (opcjonalne)",
-      "attachmentsHint": "Możesz dołączyć obrazy, PDF, ZIP — maks. 20 MB łącznie",
+      "attachmentsHint": "Obrazy, PDF, ZIP — maks. 20 MB łącznie",
       "attachmentsCount_zero": "Brak plików",
-      "attachmentsCount_one": "1 plik wybrany",
-      "attachmentsCount_few": "{{count}} pliki wybrane",
-      "attachmentsCount_many": "{{count}} plików wybranych",
-      "attachmentsTooBig": "Łączny rozmiar plików przekracza 20 MB",
+      "attachmentsCount_one": "1 plik",
+      "attachmentsCount_few": "{{count}} pliki",
+      "attachmentsCount_many": "{{count}} plików",
+      "attachmentsTooBig": "Łączny rozmiar przekracza 20 MB",
       "generate": "Generuj zamówienie",
       "next": "Dalej",
       "back": "Wstecz",
-      "stepBasic": "Dane podstawowe",
+      "stepBasic": "Dane",
       "stepContact": "Kontakt",
-      "stepProject": "O projekcie",
+      "stepProject": "Projekt",
       "stepDetails": "Szczegóły",
       "stepExtras": "Dodatki",
       "stepLabel": "Krok {{current}} z {{total}}",
-      "requiredField": "To pole jest wymagane",
+      "requiredField": "Pole wymagane",
       "invalidEmail": "Podaj prawidłowy adres e-mail",
       "clear": "Wyczyść",
       "deadline": "Termin realizacji",
       "deadlinePlaceholder": "Kiedy projekt ma być gotowy?",
       "deadlineOptions": [
-        "Do 2 tygodni (pilne)",
+        "Do 2 tygodni (pilne — może wpłynąć na cenę)",
         "Do 1 miesiąca",
         "2–3 miesiące",
         "Powyżej 3 miesięcy",
-        "Termin elastyczny / do ustalenia"
+        "Elastyczny / do ustalenia"
       ],
-      "deadlineWarning": "Uwaga: ten termin może być trudny do realizacji. Zastrzeżam sobie prawo do odrzucenia propozycji lub zaproponowania dłuższego czasu realizacji po analizie projektu.",
-      "clientType": "Typ klienta",
-      "clientTypePlaceholder": "Kto składa zamówienie?",
+      "deadlineWarning": "Krótki termin może być trudny do realizacji. Zastrzegam sobie prawo do odrzucenia zlecenia lub zaproponowania dłuższego czasu po analizie zakresu.",
+      "clientType": "Kim jesteś?",
+      "clientTypePlaceholder": "Osoba prywatna czy firma?",
       "clientTypeOptions": [
         "Osoba prywatna",
         "Firma / Organizacja",
         "Startup",
         "Instytucja publiczna"
       ],
-      "references": "Linki referencyjne (opcjonalne)",
-      "referencesPlaceholder": "Wklej linki do stron lub aplikacji, które Ci się podobają (po jednym w linii)",
+      "references": "Inspiracje / linki referencyjne (opcjonalne)",
+      "referencesPlaceholder": "Linki do stron które Ci się podobają (po jednym w linii)",
       "existingProject": "Stan projektu",
-      "existingProjectPlaceholder": "Od zera czy rozbudowa?",
+      "existingProjectPlaceholder": "Nowy projekt czy rozbudowa?",
       "existingProjectOptions": [
         "Nowy projekt — zaczynamy od zera",
         "Rozbudowa istniejącego projektu",
         "Naprawa / przepisanie obecnego kodu",
-        "Nie wiem jeszcze"
+        "Jeszcze nie wiem"
       ],
-      "phone": "Numer telefonu (opcjonalne)",
+      "phone": "Telefon (opcjonalne)",
       "phonePlaceholder": "+48 000 000 000",
-      "contactMethod": "Preferowana forma kontaktu",
+      "contactMethod": "Preferowany kontakt",
       "contactMethodPlaceholder": "Jak wolisz się komunikować?",
       "contactMethodOptions": [
         "E-mail",
         "Telefon",
         "Discord",
-        "Inna"
+        "Inna forma"
       ],
-      "source": "Skąd o mnie wiesz? (opcjonalne)",
+      "source": "Skąd wiesz o mnie? (opcjonalne)",
       "sourcePlaceholder": "Jak mnie znalazłeś/aś?",
       "sourceOptions": [
         "Polecenie znajomego",
         "GitHub",
         "Social media",
-        "Wyszukiwarka (Google itp.)",
+        "Wyszukiwarka",
         "Inne"
       ],
-      "contentReady": "Czy treści są gotowe?",
+      "contentReady": "Czy masz gotowe materiały?",
       "contentReadyPlaceholder": "Teksty, logo, zdjęcia...",
       "contentReadyOptions": [
         "Tak, mam wszystko gotowe",
-        "Częściowo — część materiałów mam",
+        "Częściowo — część mam",
         "Nie, potrzebuję pomocy z treściami"
       ],
-      "hasDomain": "Czy masz domenę i/lub hosting?",
+      "hasDomain": "Masz domenę i/lub hosting?",
       "hasDomainPlaceholder": "Domena i hosting...",
       "hasDomainOptions": [
         "Tak, mam domenę i hosting",
         "Mam tylko domenę",
         "Mam tylko hosting",
-        "Nie, potrzebuję pomocy"
+        "Nie mam — mogę pomóc to ogarnąć"
       ],
-      "rodoConsent": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji zamówienia, zgodnie z RODO.",
+      "rodoConsent": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji zamówienia zgodnie z RODO.",
       "rodoConsentBefore": "Zapoznałem/-am się z ",
       "rodoConsentLink": "Polityką Prywatności",
-      "rodoConsentAfter": " i wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji zamówienia (RODO).",
+      "rodoConsentAfter": " i wyrażam zgodę na przetwarzanie moich danych w celu realizacji zamówienia (RODO).",
       "rodoRequired": "Zgoda jest wymagana"
     },
     "summary": {
       "title": "Zamówienie gotowe!",
-      "subtitle": "Poniżej znajdziesz swoje zamówienie. Pobierz paczkę ZIP i wyślij ją do mnie mailem.",
-      "idLabel": "Identyfikator zamówienia",
+      "subtitle": "Pobierz paczkę ZIP i wyślij ją na podany adres e-mail.",
+      "idLabel": "Numer zamówienia",
       "idCopied": "Skopiowano!",
       "idCopy": "Kliknij, aby skopiować",
       "downloadZip": "Pobierz paczkę (.zip)",
       "sendEmail": "Otwórz klienta poczty",
-      "sendEmailHint": "Otworzy Twój program pocztowy z wypełnionym tytułem",
+      "sendEmailHint": "Otworzy program pocztowy z wypełnionym tytułem",
       "manual": "Wyślij ręcznie",
-      "manualTitle": "Instrukcja ręcznego wysłania",
+      "manualTitle": "Jak wysłać ręcznie",
       "manualTo": "Do:",
-      "manualSubject": "Tytuł maila:",
+      "manualSubject": "Temat:",
       "manualAttach": "Pobierz i dołącz paczkę ZIP",
       "manualBody": "Treść: (zawartość pliku JSON z paczki)",
-      "back": "Wróć i edytuj formularz",
+      "back": "Wróć i popraw",
       "mailSubject": "Zamówienie {{id}}",
-      "mailBody": "ID zamówienia: {{id}}\n\nPobierz i dołącz plik files_for_order.zip\n\nWygenerowano: {{date}}"
+      "mailBody": "Numer zamówienia: {{id}}\n\nDołącz plik files_for_order.zip\n\nWygenerowano: {{date}}"
     }
   },
   "privacy": {
@@ -465,8 +475,8 @@
           "Twoje dane przetwarzam w następujących celach:"
         ],
         "list": [
-          "Realizacja zamówienia, przygotowanie wyceny i ewentualne zawarcie umowy o dzieło — podstawa: art. 6 ust. 1 lit. b RODO (niezbędność do podjęcia działań na żądanie osoby przed zawarciem umowy oraz wykonania umowy).",
-          "Kontakt zwrotny i obsługa korespondencji — podstawa: art. 6 ust. 1 lit. f RODO (uzasadniony interes administratora polegający na udzieleniu odpowiedzi).",
+          "Realizacja zamówienia, przygotowanie wyceny i ewentualne zawarcie umowy o dzieło — podstawa: art. 6 ust. 1 lit. b RODO.",
+          "Kontakt zwrotny i obsługa korespondencji — podstawa: art. 6 ust. 1 lit. f RODO.",
           "Wypełnienie obowiązków podatkowych i ewidencyjnych w przypadku zawarcia umowy — podstawa: art. 6 ust. 1 lit. c RODO."
         ]
       },
@@ -486,85 +496,85 @@
       {
         "title": "Odbiorcy danych",
         "paragraphs": [
-          "Twoje dane mogą zostać udostępnione następującym podmiotom przetwarzającym, których usługi są niezbędne do obsługi zamówienia:"
+          "Twoje dane mogą zostać udostępnione następującym podmiotom przetwarzającym:"
         ],
         "list": [
-          "FormSubmit.co — dostawca usługi przekazywania formularzy. Serwis ma siedzibę poza Europejskim Obszarem Gospodarczym; transfer danych odbywa się na podstawie standardowych klauzul umownych zatwierdzonych przez Komisję Europejską.",
-          "Google LLC (Gmail) — dostawca usługi poczty elektronicznej, na którą trafia treść formularza."
+          "FormSubmit.co — dostawca usługi przekazywania formularzy. Serwis ma siedzibę poza EOG; transfer odbywa się na podstawie standardowych klauzul umownych KE.",
+          "Google LLC (Gmail) — dostawca poczty elektronicznej."
         ]
       },
       {
         "title": "Okres przechowywania",
         "paragraphs": [
           "Dane przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
-          "W przypadku zawarcia umowy dane niezbędne do celów księgowych i podatkowych przechowywane są przez 5 lat od końca roku kalendarzowego, w którym powstał obowiązek podatkowy (zgodnie z przepisami Ordynacji podatkowej)."
+          "W przypadku zawarcia umowy — dane niezbędne do celów księgowych i podatkowych przechowywane są przez 5 lat od końca roku kalendarzowego, w którym powstał obowiązek podatkowy."
         ]
       },
       {
         "title": "Twoje prawa",
         "paragraphs": [
-          "W związku z przetwarzaniem danych przysługują Ci następujące prawa:"
+          "Przysługują Ci następujące prawa:"
         ],
         "list": [
           "Prawo dostępu do danych (art. 15 RODO)",
           "Prawo do sprostowania danych (art. 16 RODO)",
-          "Prawo do usunięcia danych — \"prawo do bycia zapomnianym\" (art. 17 RODO)",
+          "Prawo do usunięcia danych (art. 17 RODO)",
           "Prawo do ograniczenia przetwarzania (art. 18 RODO)",
           "Prawo do przenoszenia danych (art. 20 RODO)",
-          "Prawo do wniesienia sprzeciwu wobec przetwarzania (art. 21 RODO)",
-          "Prawo do cofnięcia zgody w dowolnym momencie (jeśli przetwarzanie odbywa się na jej podstawie)"
+          "Prawo do wniesienia sprzeciwu (art. 21 RODO)",
+          "Prawo do cofnięcia zgody w dowolnym momencie"
         ]
       },
       {
         "title": "Cookies i pamięć przeglądarki",
         "paragraphs": [
           "Strona nie używa plików cookies do celów reklamowych ani analitycznych.",
-          "Wykorzystywana jest pamięć przeglądarki (localStorage / sessionStorage) wyłącznie do zapisywania Twoich preferencji (wybrany motyw kolorystyczny, język interfejsu) oraz do tymczasowego przechowywania częściowo wypełnionego formularza zamówienia, abyś nie utracił/-a wprowadzonych danych przy odświeżeniu strony.",
-          "Dane te nigdy nie są wysyłane na serwer i pozostają wyłącznie w Twojej przeglądarce."
+          "Pamięć przeglądarki (localStorage / sessionStorage) służy wyłącznie do zapisywania Twoich preferencji (motyw, język) i tymczasowego przechowywania wypełnionego formularza.",
+          "Dane te nigdy nie są wysyłane na serwer."
         ]
       },
       {
         "title": "Brak profilowania",
         "paragraphs": [
-          "Twoje dane nie są wykorzystywane do profilowania ani podejmowania decyzji w sposób zautomatyzowany w rozumieniu art. 22 RODO."
+          "Twoje dane nie są wykorzystywane do profilowania ani automatycznego podejmowania decyzji (art. 22 RODO)."
         ]
       }
     ]
   },
   "services": {
-    "title": "Moje Usługi",
-    "subtitle": "Co mogę dla Ciebie zbudować?",
+    "title": "Usługi",
+    "subtitle": "Co mogę zbudować?",
     "items": {
       "web": {
-        "title": "Aplikacje Webowe",
-        "description": "Strony, panele, formularze – dobieram technologię do projektu. Dbam o to, żeby działało szybko i wyglądało dobrze na każdym ekranie."
+        "title": "Strony i aplikacje webowe",
+        "description": "Strony, panele, formularze — dobieram technologię do projektu. Dbam o to, żeby działało szybko i wyglądało dobrze na każdym ekranie."
       },
       "desktop": {
-        "title": "Aplikacje Desktopowe",
-        "description": "Programy na Windows, a w razie potrzeby też wieloplatformowe. Narzędzia wewnętrzne, automatyzacja, cokolwiek potrzebujesz na komputer."
+        "title": "Aplikacje desktopowe",
+        "description": "Programy na Windows (i wieloplatformowe jeśli trzeba). Narzędzia wewnętrzne, automatyzacja, cokolwiek potrzebujesz na komputer."
       },
       "mobile": {
-        "title": "Aplikacje Mobilne",
-        "description": "Apki na telefon – od PWA działających z przeglądarki, przez React Native, po rozwiązania natywne na Androida."
+        "title": "Aplikacje mobilne",
+        "description": "Od PWA działającego z przeglądarki, przez React Native, po natywne rozwiązania na Androida."
       }
     }
   },
   "contact": {
     "title": "Kontakt",
     "social": {
-      "title": "Media społecznościowe i kontakt",
-      "description": "Możesz się ze mną skontaktować przez dowolną z tych platform"
+      "title": "Gdzie mnie znaleźć",
+      "description": "Napisz do mnie przez dowolną z tych platform"
     },
     "info": {
-      "title": "Dodatkowe informacje",
-      "description": "Więcej sposobów na nawiązanie współpracy",
-      "location": "Polska, Europa",
-      "availability": "Otwarty na ciekawe projekty i współpracę",
-      "response_time": "Czas odpowiedzi: zazwyczaj do 48 godzin",
-      "preferred_hours": "Preferowane godziny kontaktu: 16:00 - 20:00\n(dni robocze)",
-      "student_note": "Jestem uczniem, więc moja dostępność może być ograniczona w okresach intensywnej nauki"
+      "title": "Informacje",
+      "description": "Kilka praktycznych rzeczy przed kontaktem",
+      "location": "Polska (praca tylko zdalnie)",
+      "availability": "Otwarty na zlecenia i ciekawe projekty",
+      "response_time": "Odpowiadam zazwyczaj w ciągu 24–48 godzin",
+      "preferred_hours": "Preferowane godziny kontaktu: 16:00–20:00 (dni robocze)",
+      "student_note": "Jestem uczniem — dostępność może być ograniczona w sesjach i przed egzaminami"
     },
-    "email": "Email",
+    "email": "E-mail",
     "discord": "Discord",
     "linkedin": "LinkedIn",
     "github": "GitHub"
@@ -601,7 +611,7 @@
   },
   "language": {
     "switchTo": "Przełącz na angielski",
-    "reloadMessage": "Odświeżanie strony, aby zastosować zmiany języka...",
+    "reloadMessage": "Ładowanie nowego języka...",
     "settings": {
       "title": "Ustawienia języka",
       "select": "Wybierz język",
@@ -626,20 +636,44 @@
     "title": "Najczęściej zadawane pytania",
     "questions": [
       {
-        "question": "Jakie projekty preferuję?",
-        "answer": "Najbardziej interesują mnie projekty związane z tworzeniem stron internetowych, aplikacji webowych oraz rozwiązań wykorzystujących sztuczną inteligencję. Jestem otwarty na projekty edukacyjne i innowacyjne rozwiązania."
+        "question": "Ile kosztuje strona internetowa?",
+        "answer": "Koszt zależy od zakresu projektu. Prosta strona wizytówkowa mieści się zazwyczaj w przedziale 500–1 500 zł, aplikacja webowa z panelem lub sklepem to zwykle 1 500–4 000 zł, a bardziej rozbudowane wdrożenia wyceniam indywidualnie. Dokładną kwotę podaję po zapoznaniu się z opisem projektu — formularz zamówienia jest do tego najwygodniejszą drogą."
       },
       {
-        "question": "Jak wygląda proces współpracy?",
-        "answer": "Proces rozpoczyna się od wstępnej rozmowy o projekcie, ustalenia zakresu i harmonogramu. Ze względu na naukę, preferuję projekty z elastycznym harmonogramem."
+        "question": "Jak wygląda współpraca od początku do końca?",
+        "answer": "Po otrzymaniu formularza wracam z pytaniami lub od razu z wyceną. Jeśli warunki nam odpowiadają, ustalamy zakres, termin i szczegóły współpracy. Realizację rozpoczynam po wpłacie zaliczki w wysokości 50%, na bieżąco informując o postępach. Po zaakceptowaniu efektu końcowego przekazuję pełny kod źródłowy wraz z prawami autorskimi."
       },
       {
-        "question": "Jakie technologie preferuję?",
-        "answer": "Głównie pracuję z React, TypeScript i Node.js. Jestem też zainteresowany projektami wykorzystującymi Python, szczególnie w kontekście wsparcia AI."
+        "question": "Jak długo trwa realizacja projektu?",
+        "answer": "Prosta strona wizytówkowa zajmuje zazwyczaj 1–3 tygodnie. Aplikacja webowa — od miesiąca do trzech. Czas realizacji zależy od zakresu projektu, dostępności materiałów po stronie klienta oraz aktualnej kolejki zleceń. Termin zawsze ustalamy przed rozpoczęciem prac."
       },
       {
-        "question": "Czy podejmuję się komercyjnych projektów?",
-        "answer": "Tak, ale selektywnie i w ograniczonym zakresie ze względu na naukę. Każdy projekt rozpatruję indywidualnie."
+        "question": "Czy pracujesz samodzielnie?",
+        "answer": "Tak, pracuję samodzielnie, korzystając z narzędzi AI jako wsparcia w codziennej pracy. Dla projektów mieszczących się w moich kompetencjach jest to w pełni wystarczające. Jeśli zgłoszenie wymaga umiejętności poza moim aktualnym zakresem, poinformuję o tym wprost — zamiast podejmować się czegoś, czego nie byłbym w stanie wykonać rzetelnie."
+      },
+      {
+        "question": "Czy przyjmujesz komercyjne zlecenia?",
+        "answer": "Tak. Jako uczeń mam ograniczoną dostępność czasową, jednak zlecenia komercyjne przyjmuję i traktuję z pełną powagą. Każde zgłoszenie oceniam pod kątem realności wykonania w ustalonym terminie."
+      },
+      {
+        "question": "Co z poprawkami po zakończeniu projektu?",
+        "answer": "Poprawki mieszczące się w uzgodnionym zakresie projektu są bezpłatne. Zmiany wykraczające poza pierwotne ustalenia lub nowe wymagania wyceniam osobno. Precyzyjne określenie zakresu przed startem leży w interesie obu stron."
+      },
+      {
+        "question": "Czy pomożesz z domeną i hostingiem?",
+        "answer": "Tak. Nie sprzedaję domen ani usług hostingowych, ale chętnie pomogę wybrać odpowiedniego dostawcę i przeprowadzić przez cały proces konfiguracji. W przypadku stron statycznych płatny hosting często nie jest potrzebny — GitHub Pages czy Vercel w zupełności wystarczą."
+      },
+      {
+        "question": "Jakich technologii używasz?",
+        "answer": "Po stronie frontendu pracuję głównie w React z TypeScript, po stronie serwera — w Pythonie lub PHP. Staram się dobierać narzędzia do potrzeb projektu. Jeśli masz wymagania dotyczące konkretnego stosu technologicznego, napisz — sprawdzę, czy jestem w stanie je spełnić."
+      },
+      {
+        "question": "Czy otrzymam kod źródłowy po zakończeniu projektu?",
+        "answer": "Tak. Pełny kod źródłowy oraz prawa autorskie przechodzą na Ciebie z chwilą finalizacji płatności."
+      },
+      {
+        "question": "Jak się z Tobą skontaktować?",
+        "answer": "Najszybciej przez e-mail (werminew@protonmail.com) lub Discord. Odpowiadam zazwyczaj w ciągu 24–48 godzin, w dni robocze w godzinach 16:00–20:00."
       }
     ]
   },

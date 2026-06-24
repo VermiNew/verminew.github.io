@@ -50,6 +50,7 @@ const Subtitle = styled(motion.p)`
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  white-space: pre-line;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: 1.25rem;
