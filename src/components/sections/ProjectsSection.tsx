@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { useTranslation } from 'react-i18next';
@@ -8,16 +8,15 @@ import { useRepos } from '@/hooks/useRepos';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import { useAnimation } from '@/context/AnimationContext';
 import { Repo } from '@/types/repo';
 
-const Content = styled(motion.div)`
+const Content = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 0;
 `;
 
-const FilterContainer = styled(motion.div)`
+const FilterContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -91,7 +90,7 @@ const ProjectsCategory = styled.div`
   gap: 1rem;
 `;
 
-const CategoryTitle = styled(motion.h3)`
+const CategoryTitle = styled.h3`
   font-size: 1.5rem;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 1rem;
@@ -107,45 +106,74 @@ const LoadingContainer = styled.div`
   min-height: 300px;
 `;
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+const ShowMoreButton = styled.button`
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all ${({ theme }) => theme.transitions.default};
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95, filter: 'blur(4px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    filter: 'blur(0px)',
-    transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94]
-    }
+  &:hover {
+    background: ${({ theme }) => `${theme.colors.primary}15`};
   }
-};
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+`;
 
 const gridVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.15
+      staggerChildren: 0.06,
+      delayChildren: 0.05
     }
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.15 }
   }
 };
 
-const EXCLUDED_TECHNOLOGIES = ['unknown', 'config', 'github-config'];
+const cardVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.35,
+      ease: [0.25, 0.46, 0.45, 0.94]
+    }
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.97,
+    transition: { duration: 0.15 }
+  }
+};
 
-const filterValidTechnology = (tech: string) => 
-  !EXCLUDED_TECHNOLOGIES.includes(tech.toLowerCase());
+const ACTIVE_REPO_LIMIT = 10;
+
+const ALLOWED_FILTER_TECHNOLOGIES = [
+  'javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'php', 'go', 'rust', 'ruby',
+  'html', 'css', 'react', 'vue', 'angular', 'nextjs', 'next.js', 'svelte',
+  'node.js', 'express', 'django', 'flask', 'fastapi', 'laravel',
+  'mysql', 'postgresql', 'mongodb', 'sqlite',
+  'docker', 'kubernetes', 'bash', 'shell', 'powershell',
+];
+
+const filterValidTechnology = (tech: string) =>
+  ALLOWED_FILTER_TECHNOLOGIES.includes(tech.toLowerCase());
 
 interface OrganizedProjects {
   featured: Repo[];
@@ -153,31 +181,11 @@ interface OrganizedProjects {
   planned: Repo[];
 }
 
-const titleVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: -30,
-    scale: 0.9
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 20,
-      duration: 0.6,
-      delay: 0.3
-    }
-  }
-};
-
 export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
+  const [showAllActive, setShowAllActive] = useState(false);
   const { data, isLoading, error } = useRepos();
-  const { reducedMotion } = useAnimation();
 
   const availableTechnologies = useMemo(() => {
     if (!data?.repos) return [];
@@ -197,15 +205,15 @@ export const ProjectsSection: React.FC = () => {
     return Array.from(technologies).sort();
   }, [data?.repos]);
 
-  const filters = [
+  const filters = useMemo(() => [
     { id: 'all', label: t('projects.filters.all') },
     ...availableTechnologies.map(tech => ({
       id: tech.toLowerCase(),
       label: tech
     }))
-  ];
+  ], [availableTechnologies, t]);
 
-  const handleFilterClick = (filterId: string) => {
+  const handleFilterClick = useCallback((filterId: string) => {
     if (filterId === 'all') {
       setActiveFilters(['all']);
     } else {
@@ -217,48 +225,52 @@ export const ProjectsSection: React.FC = () => {
       
       setActiveFilters(newFilters.length === 0 ? ['all'] : newFilters);
     }
-  };
+    setShowAllActive(false);
+  }, [activeFilters]);
 
-  const filteredProjects = data?.repos
-    ? data.repos.filter(project => {
-        if (activeFilters.includes('all')) return true;
-        
-        const projectTechnologies = [
-          ...(project.language ? [project.language] : []),
-          ...project.technologies
-        ].map(tech => tech.toLowerCase());
-        
-        return activeFilters.some(filter => 
-          projectTechnologies.includes(filter.toLowerCase())
-        );
-      })
-    : [];
+  const filteredProjects = useMemo(() => {
+    if (!data?.repos) return [];
+    if (activeFilters.includes('all')) return data.repos;
+    return data.repos.filter(project => {
+      const projectTechnologies = [
+        ...(project.language ? [project.language] : []),
+        ...project.technologies
+      ].map(tech => tech.toLowerCase());
+      return activeFilters.some(filter =>
+        projectTechnologies.includes(filter.toLowerCase())
+      );
+    });
+  }, [data?.repos, activeFilters]);
 
-  const organizedProjects = filteredProjects.reduce<OrganizedProjects>((acc, project) => {
-    if (project.featured) {
-      acc.featured.push(project);
-    } else if (project.status === 'planned') {
-      acc.planned.push(project);
-    } else {
-      acc.active.push(project);
-    }
-    return acc;
-  }, { featured: [], active: [], planned: [] });
+  const organizedProjects = useMemo(() => {
+    const all = filteredProjects.reduce<OrganizedProjects>((acc, project) => {
+      if (project.featured) {
+        acc.featured.push(project);
+      } else if (project.status === 'planned') {
+        acc.planned.push(project);
+      } else {
+        acc.active.push(project);
+      }
+      return acc;
+    }, { featured: [], active: [], planned: [] });
+
+    all.featured = all.featured.slice(0, 3);
+    return all;
+  }, [filteredProjects]);
+
+  const { visibleActive, hiddenActiveCount } = useMemo(() => ({
+    visibleActive: showAllActive
+      ? organizedProjects.active
+      : organizedProjects.active.slice(0, ACTIVE_REPO_LIMIT),
+    hiddenActiveCount: Math.max(0, organizedProjects.active.length - ACTIVE_REPO_LIMIT),
+  }), [organizedProjects.active, showAllActive]);
 
   return (
     <Section id="projects">
-      <Content
-        variants={!reducedMotion ? containerVariants : undefined}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        <SectionTitle variants={!reducedMotion ? itemVariants : undefined}>
-          {t('projects.title')}
-        </SectionTitle>
-        
+      <Content>
+        <SectionTitle>{t('projects.title')}</SectionTitle>
+
         <FilterContainer
-          variants={!reducedMotion ? itemVariants : undefined}
           role="group"
           aria-label={t('projects.filters.label')}
         >
@@ -295,84 +307,73 @@ export const ProjectsSection: React.FC = () => {
           <ProjectsContainer>
             {organizedProjects.featured.length > 0 && (
               <ProjectsCategory>
-                <CategoryTitle
-                  variants={!reducedMotion ? titleVariants : undefined}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-100px" }}
-                >
-                  {t('projects.featuredTitle')}
-                </CategoryTitle>
+                <CategoryTitle>{t('projects.featuredTitle')}</CategoryTitle>
                 <ProjectsGrid
-                   variants={!reducedMotion ? gridVariants : undefined}
-                   initial="hidden"
-                   whileInView="visible"
-                   viewport={{ once: true, margin: "-50px" }}
-                 >
-                  {organizedProjects.featured.map((project) => (
-                    <motion.div
-                      key={project.id}
-                      variants={!reducedMotion ? itemVariants : undefined}
-                    >
-                      <ProjectCard project={project} />
-                    </motion.div>
-                  ))}
+                  variants={gridVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <AnimatePresence mode="popLayout">
+                    {organizedProjects.featured.map((project) => (
+                      <motion.div key={project.id} variants={cardVariants} layout>
+                        <ProjectCard project={project} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </ProjectsGrid>
               </ProjectsCategory>
             )}
 
             {organizedProjects.active.length > 0 && (
               <ProjectsCategory>
-                <CategoryTitle
-                  variants={!reducedMotion ? titleVariants : undefined}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-100px" }}
-                >
-                  {t('projects.otherTitle')}
-                </CategoryTitle>
+                <CategoryTitle>{t('projects.otherTitle')}</CategoryTitle>
                 <ProjectsGrid
-                   variants={!reducedMotion ? gridVariants : undefined}
-                   initial="hidden"
-                   whileInView="visible"
-                   viewport={{ once: true, margin: "-50px" }}
-                 >
-                  {organizedProjects.active.map((project) => (
-                    <motion.div
-                      key={project.id}
-                      variants={!reducedMotion ? itemVariants : undefined}
-                    >
-                      <ProjectCard project={project} />
-                    </motion.div>
-                  ))}
+                  variants={gridVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <AnimatePresence mode="popLayout">
+                    {visibleActive.map((project) => (
+                      <motion.div key={project.id} variants={cardVariants} layout>
+                        <ProjectCard project={project} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </ProjectsGrid>
+                {!showAllActive && hiddenActiveCount > 0 && (
+                  <ShowMoreButton
+                    type="button"
+                    onClick={() => setShowAllActive(true)}
+                  >
+                    {t('projects.showMore', { count: hiddenActiveCount })}
+                  </ShowMoreButton>
+                )}
+                {showAllActive && hiddenActiveCount > 0 && (
+                  <ShowMoreButton
+                    type="button"
+                    onClick={() => setShowAllActive(false)}
+                  >
+                    {t('projects.showLess')}
+                  </ShowMoreButton>
+                )}
               </ProjectsCategory>
             )}
 
             {organizedProjects.planned.length > 0 && (
               <ProjectsCategory>
-                <CategoryTitle
-                  variants={!reducedMotion ? titleVariants : undefined}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-100px" }}
-                >
-                  {t('projects.plannedTitle')}
-                </CategoryTitle>
+                <CategoryTitle>{t('projects.plannedTitle')}</CategoryTitle>
                 <ProjectsGrid
-                   variants={!reducedMotion ? gridVariants : undefined}
-                   initial="hidden"
-                   whileInView="visible"
-                   viewport={{ once: true, margin: "-50px" }}
-                 >
-                  {organizedProjects.planned.map((project) => (
-                    <motion.div
-                      key={project.id}
-                      variants={!reducedMotion ? itemVariants : undefined}
-                    >
-                      <ProjectCard project={project} />
-                    </motion.div>
-                  ))}
+                  variants={gridVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <AnimatePresence mode="popLayout">
+                    {organizedProjects.planned.map((project) => (
+                      <motion.div key={project.id} variants={cardVariants} layout>
+                        <ProjectCard project={project} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </ProjectsGrid>
               </ProjectsCategory>
             )}
