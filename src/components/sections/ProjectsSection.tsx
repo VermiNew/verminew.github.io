@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
@@ -179,10 +179,10 @@ export const ProjectsSection: React.FC = () => {
   const { data, isLoading, error } = useRepos();
   const { reducedMotion } = useAnimation();
 
-  const getAvailableTechnologies = () => {
+  const availableTechnologies = useMemo(() => {
     if (!data?.repos) return [];
     const technologies = new Set<string>();
-    
+
     data.repos.forEach(project => {
       if (project.language && filterValidTechnology(project.language)) {
         technologies.add(project.language);
@@ -193,13 +193,13 @@ export const ProjectsSection: React.FC = () => {
         }
       });
     });
-    
+
     return Array.from(technologies).sort();
-  };
+  }, [data?.repos]);
 
   const filters = [
     { id: 'all', label: t('projects.filters.all') },
-    ...getAvailableTechnologies().map(tech => ({
+    ...availableTechnologies.map(tech => ({
       id: tech.toLowerCase(),
       label: tech
     }))

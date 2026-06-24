@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Section } from '../layout/Section';
-import { SectionTitle } from '../ui/SectionTitle';
-import { Button } from '../ui/Button';
+import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+import { Button } from '@/components/ui/Button';
 import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../../context/ThemeContext';
-import { useAnimation } from '../../context/AnimationContext';
-import { getSocialUrl } from '../../config/social';
+import { useTheme } from '@/context/ThemeContext';
+import { useAnimation } from '@/context/AnimationContext';
+import { getSocialUrl } from '@/config/social';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 const Content = styled.div`
   display: grid;
@@ -284,7 +285,7 @@ export const AboutSection: React.FC = () => {
         <SectionTitle>{t('about.title')}</SectionTitle>
         <Content>
           <ImageContainer
-            $isDark={themeMode === 'dark'}
+            $isDark={isDarkTheme(themeMode)}
             variants={!reducedMotion ? itemVariants : undefined}
           >
             <Image 
