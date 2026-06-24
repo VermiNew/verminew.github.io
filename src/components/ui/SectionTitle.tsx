@@ -54,29 +54,28 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
     const cursorControls = useAnimation();
 
     useEffect(() => {
-      if (isInView) {
-        controls.start(i => ({
-          opacity: 1,
-          transition: { delay: i * 0.05 }
-        }));
+      if (!isInView) return;
 
-        const textLength = typeof children === 'string' ? children.length : 0;
-        const typingDuration = textLength * 0.05 + 0.3;
+      controls.start(i => ({
+        opacity: 1,
+        transition: { delay: i * 0.05 }
+      }));
 
-        cursorControls.start({
-          opacity: [1, 0],
-          transition: {
-            duration: 0.8,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }
-        }).then(() => {
-          // stop after 3 blinks
-          setTimeout(() => {
-            cursorControls.start({ opacity: 0, transition: { duration: 0.3 } });
-          }, Math.max(typingDuration * 1000, 2400));
-        });
-      }
+      const textLength = typeof children === 'string' ? children.length : 0;
+      // wait for typing to finish, then blink 3 times (3 × 0.8s × 2 = 4.8s), then hide
+      const stopDelay = textLength * 50 + 4800;
+
+      cursorControls.start({
+        opacity: [1, 0],
+        transition: { duration: 0.8, repeat: Infinity, repeatType: 'reverse' }
+      });
+
+      const timer = setTimeout(() => {
+        cursorControls.stop();
+        cursorControls.start({ opacity: 0, transition: { duration: 0.2 } });
+      }, stopDelay);
+
+      return () => clearTimeout(timer);
     }, [isInView, controls, cursorControls, children]);
 
     return (
