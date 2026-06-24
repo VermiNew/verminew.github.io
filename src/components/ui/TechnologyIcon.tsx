@@ -8,6 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { Theme } from '@/types/theme';
 
+const TOOLTIP_W = 220;
+const TOOLTIP_H = 80;
+const TOOLTIP_MARGIN = 8;
+
 interface TechnologyIconProps {
   name: string;
   description: string;
@@ -227,17 +231,28 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const isTouchDevice = useRef(window.matchMedia('(hover: none)').matches).current;
 
+  const clampTooltipPos = useCallback((x: number, y: number) => ({
+    x: Math.min(x, window.innerWidth - TOOLTIP_W - TOOLTIP_MARGIN),
+    y: Math.min(Math.max(y, TOOLTIP_MARGIN), window.innerHeight - TOOLTIP_H - TOOLTIP_MARGIN),
+  }), []);
+
+  const calcTouchPos = useCallback((rect: DOMRect) => {
+    const raw = { x: rect.right + 8, y: rect.top + rect.height / 2 };
+    const fits = raw.x + TOOLTIP_W + TOOLTIP_MARGIN < window.innerWidth;
+    return fits ? raw : clampTooltipPos(rect.left - TOOLTIP_W - 8, raw.y);
+  }, [clampTooltipPos]);
+
   const handleHoverStart = useCallback(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      if (isTouchDevice) {
-        setTooltipPos({ x: rect.right + 8, y: rect.top + rect.height / 2 });
-      } else {
-        setTooltipPos({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
-      }
+      setTooltipPos(
+        isTouchDevice
+          ? calcTouchPos(rect)
+          : clampTooltipPos(rect.left + rect.width / 2 - TOOLTIP_W / 2, rect.bottom + 8)
+      );
     }
     setShowTooltip(true);
-  }, [isTouchDevice]);
+  }, [isTouchDevice, clampTooltipPos, calcTouchPos]);
 
   const handleHoverEnd = useCallback(() => {
     setShowTooltip(false);
@@ -245,9 +260,16 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isTouchDevice) {
-      setTooltipPos({ x: e.clientX + 12, y: e.clientY + 12 });
+      setTooltipPos(clampTooltipPos(e.clientX + 12, e.clientY + 12));
     }
-  }, [isTouchDevice]);
+  }, [isTouchDevice, clampTooltipPos]);
+
+  const handleTouchClick = useCallback(() => {
+    if (containerRef.current) {
+      setTooltipPos(calcTouchPos(containerRef.current.getBoundingClientRect()));
+    }
+    setShowTooltip(prev => !prev);
+  }, [calcTouchPos]);
 
   const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
 
@@ -273,13 +295,7 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
       onHoverStart={!isTouchDevice ? handleHoverStart : undefined}
       onHoverEnd={!isTouchDevice ? handleHoverEnd : undefined}
       onMouseMove={!isTouchDevice ? handleMouseMove : undefined}
-      onClick={isTouchDevice ? () => {
-        if (containerRef.current) {
-          const rect = containerRef.current.getBoundingClientRect();
-          setTooltipPos({ x: rect.right + 8, y: rect.top + rect.height / 2 });
-        }
-        setShowTooltip(prev => !prev);
-      } : undefined}
+      onClick={isTouchDevice ? handleTouchClick : undefined}
       variants={containerVariants}
       whileHover="hover"
       whileTap="tap"
