@@ -108,13 +108,17 @@ export const useRepos = () => {
         }
       }
 
-      // All retries failed, use cache as fallback or show error
+      // All retries failed — try stale cache as last resort
       const cachedFallback = localStorage.getItem(CACHE_KEY);
       if (cachedFallback) {
         try {
           const parsed = JSON.parse(cachedFallback);
-          setData(parsed.data);
-          setError(new Error('Using cached data - network unavailable'));
+          if (isValidReposData(parsed.data)) {
+            setData(parsed.data);
+            setError(new Error('Using cached data - network unavailable'));
+          } else {
+            setError(lastError || new Error('Failed to fetch repos after retries'));
+          }
         } catch {
           setError(lastError || new Error('Failed to fetch repos after retries'));
         }

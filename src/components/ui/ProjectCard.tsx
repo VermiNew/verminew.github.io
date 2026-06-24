@@ -185,7 +185,7 @@ const Link = styled.a`
     color: ${({ theme }) => theme.colors.accent};
   }
 
-  &:focus {
+  &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
     border-radius: 4px;
@@ -203,7 +203,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {project.featured && (
         <>
           <FeaturedBadge>
-            <PriorityIndicator $priority={project.priority as 1 | 2 | 3} />
+            <PriorityIndicator $priority={(project.priority ?? 3) as 1 | 2 | 3} />
             {t('projects.featured')}
           </FeaturedBadge>
           {project.category && (

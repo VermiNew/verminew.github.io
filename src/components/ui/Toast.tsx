@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
@@ -67,24 +67,9 @@ export const Toast: React.FC<ToastProps> = ({
   duration = 3000,
   onClose
 }) => {
-  const [, setProgress] = useState(0);
-
   useEffect(() => {
     const timer = setTimeout(onClose, duration);
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + (100 / duration) * 100;
-      });
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
+    return () => clearTimeout(timer);
   }, [duration, onClose]);
 
   const getIcon = () => {
