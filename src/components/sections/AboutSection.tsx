@@ -109,7 +109,6 @@ const NameOriginTitle = styled.h3`
 `;
 
 const BirthInfoSection = styled(motion.div)`
-  margin-top: 1rem;
   padding: 1.5rem;
   border-radius: 16px;
   background: ${({ theme }) => `${theme.colors.surface}80`};
@@ -118,7 +117,7 @@ const BirthInfoSection = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 1rem;
-  
+
   svg {
     font-size: 1.5rem;
     color: ${({ theme }) => theme.colors.primary};
@@ -173,10 +172,9 @@ const ProfileLink = styled.a`
 `;
 
 const Background = styled(motion.div)`
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 const BackgroundSection = styled(motion.div)`
