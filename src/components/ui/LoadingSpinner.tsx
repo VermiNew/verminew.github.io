@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const spin = keyframes`
   0% { transform: rotate(0deg); }
@@ -23,12 +24,14 @@ const Spinner = styled.div`
 `;
 
 export const LoadingSpinner: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
-    <SpinnerContainer 
-      role="status" 
-      aria-live="polite" 
+    <SpinnerContainer
+      role="status"
+      aria-live="polite"
       aria-busy="true"
-      aria-label="Loading..."
+      aria-label={t('common.loading')}
     >
       <Spinner aria-hidden="true" />
     </SpinnerContainer>

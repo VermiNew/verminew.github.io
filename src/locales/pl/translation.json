@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Ładowanie..."
+  },
   "accessibility": {
     "skipToContent": "Przejdź do treści",
     "skipContentLabel": "Przejdź do głównej treści"
