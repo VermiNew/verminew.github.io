@@ -22,13 +22,13 @@ const TagsContainer = styled.div`
   justify-content: center;
 `;
 
-const Tag = styled(motion.button)<{ isActive: boolean }>`
+const Tag = styled(motion.button)<{ $isActive: boolean }>`
   padding: 0.25rem 0.75rem;
   border: 1px solid ${({ theme }) => theme['colors'].primary};
-  background: ${({ theme, isActive }) => 
-    isActive ? theme['colors'].primary : 'transparent'};
-  color: ${({ theme, isActive }) => 
-    isActive ? theme['colors'].background : theme['colors'].primary};
+  background: ${({ theme, $isActive }) =>
+    $isActive ? theme['colors'].primary : 'transparent'};
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme['colors'].background : theme['colors'].primary};
   border-radius: 15px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -109,6 +109,12 @@ const ReadMore = styled(motion.a)`
   }
 `;
 
+const ErrorMessage = styled.p`
+  text-align: center;
+  padding: 2rem;
+  color: ${({ theme }) => theme['colors'].error ?? 'red'};
+`;
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -154,7 +160,8 @@ export const BlogSection: React.FC = () => {
 
           <TagsContainer>
             <Tag
-              isActive={activeTag === 'all'}
+              $isActive={activeTag === 'all'}
+              aria-pressed={activeTag === 'all'}
               onClick={() => setActiveTag('all')}
               variants={!reducedMotion ? itemVariants : undefined}
               whileHover={!reducedMotion ? { scale: 1.05 } : undefined}
@@ -165,7 +172,8 @@ export const BlogSection: React.FC = () => {
             {tags.map((tag: string) => (
               <Tag
                 key={tag}
-                isActive={activeTag === tag}
+                $isActive={activeTag === tag}
+                aria-pressed={activeTag === tag}
                 onClick={() => setActiveTag(tag)}
                 variants={!reducedMotion ? itemVariants : undefined}
                 whileHover={!reducedMotion ? { scale: 1.05 } : undefined}
@@ -183,9 +191,9 @@ export const BlogSection: React.FC = () => {
           )}
 
           {error && (
-            <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+            <ErrorMessage role="alert">
               {t('blog.error')}
-            </div>
+            </ErrorMessage>
           )}
 
           {!isLoading && !error && (

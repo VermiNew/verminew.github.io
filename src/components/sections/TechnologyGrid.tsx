@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { TechnologyIcon } from '@/components/ui/TechnologyIcon';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/context/ThemeContext';
-import { isDarkTheme } from '@/utils/themeUtils';
 import { useAnimation } from '@/context/AnimationContext';
 import {
   // Frontend Core
@@ -63,7 +61,7 @@ const CategorySection = styled(motion.div)<{ $isPlanned?: boolean }>`
   }
 `;
 
-const CategoryTitle = styled.h3<{ $isDark: boolean }>`
+const CategoryTitle = styled.h3`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.primary};
   margin-bottom: 0.5rem;
@@ -159,8 +157,6 @@ const technologies = {
 
 export const TechnologyGrid: React.FC = () => {
   const { t } = useTranslation();
-  const { themeMode } = useTheme();
-  const isDark = isDarkTheme(themeMode);
   const { reducedMotion } = useAnimation();
 
   return (
@@ -176,7 +172,7 @@ export const TechnologyGrid: React.FC = () => {
           variants={!reducedMotion ? categoryVariants : undefined}
           $isPlanned={category === 'plannedSkills'}
         >
-          <CategoryTitle $isDark={isDark}>
+          <CategoryTitle>
             {t(`about.skills.categories.${category}.title`)}
           </CategoryTitle>
           <CategoryDescription>
