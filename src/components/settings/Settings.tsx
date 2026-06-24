@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useAnimation } from '@/context/AnimationContext';
 import { useSettings } from '@/context/SettingsContext';
 
-const SettingsButton = styled(motion.button)`
+const SettingsButton = styled(motion.button)<{ $visible: boolean }>`
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -27,7 +27,7 @@ const SettingsButton = styled(motion.button)`
   cursor: pointer;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
   box-shadow: ${({ theme }) => theme.shadows.medium};
-  opacity: 0.3;
+  opacity: ${({ $visible }) => $visible ? 1 : 0.3};
   transition: opacity 0.3s ease;
 
   &:hover {
@@ -256,7 +256,7 @@ type SettingsTab = 'language' | 'preferences';
 
 const Settings: React.FC = () => {
   const { isSettingsOpen, activeSettingsTab, openSettings, closeSettings } = useSettings();
-  const { reducedMotion, setReducedMotion } = useAnimation();
+  const { reducedMotion, setReducedMotion, smoothScroll, setSmoothScroll } = useAnimation();
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const buttonTimer = useRef<NodeJS.Timeout | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -335,6 +335,10 @@ const Settings: React.FC = () => {
     setReducedMotion(e.target.checked);
   };
 
+  const handleSmoothScrollChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSmoothScroll(e.target.checked);
+  };
+
   const selectSettingsTab = (tab: SettingsTab) => {
     openSettings(tab);
     const tabRef = tab === 'language' ? languageTabRef : preferencesTabRef;
@@ -364,23 +368,20 @@ const Settings: React.FC = () => {
   return (
     <>
       <SettingsButton
+        $visible={isButtonVisible}
         onClick={() => openSettings()}
         onMouseEnter={handleButtonVisibility}
         ref={buttonRef}
         aria-haspopup="dialog"
         initial={{ scale: 0, rotate: -180 }}
-        animate={{ 
-          scale: 1, 
-          rotate: 0,
-          opacity: isButtonVisible ? 1 : 0.3
-        }}
-        transition={{ 
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{
           type: "spring",
           stiffness: 260,
           damping: 20,
           duration: 1
         }}
-        whileHover={{ 
+        whileHover={{
           scale: 1.1,
           rotate: 180,
           transition: { duration: 0.3 }
@@ -496,6 +497,19 @@ const Settings: React.FC = () => {
                         checked={reducedMotion}
                         onChange={handleReducedMotionChange}
                         aria-label={t('settings.preferences.reducedMotion')}
+                      />
+                    </PreferenceItem>
+                    <PreferenceItem>
+                      <PreferenceLabel htmlFor="smooth-scroll-switch">
+                        <FiZap aria-hidden="true" />
+                        {t('settings.preferences.smoothScroll')}
+                      </PreferenceLabel>
+                      <Switch
+                        id="smooth-scroll-switch"
+                        type="checkbox"
+                        checked={smoothScroll}
+                        onChange={handleSmoothScrollChange}
+                        aria-label={t('settings.preferences.smoothScroll')}
                       />
                     </PreferenceItem>
                   </PreferencesContainer>
