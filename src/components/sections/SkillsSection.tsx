@@ -33,6 +33,13 @@ const AiNote = styled(motion.p)`
   line-height: 1.6;
   font-style: italic;
   opacity: 0.85;
+  transition: color ${({ theme }) => theme.transitions.default},
+              opacity ${({ theme }) => theme.transitions.default};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+    opacity: 1;
+  }
 `;
 
 const GridContainer = styled(motion.div)`
