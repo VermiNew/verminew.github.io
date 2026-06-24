@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiGlobe, FiMonitor, FiSmartphone } from 'react-icons/fi';
-import { Section } from '../layout/Section';
-import { SectionTitle } from '../ui/SectionTitle';
-import { useAnimation } from '../../context/AnimationContext';
-import { useTheme } from '../../context/ThemeContext';
-import { isDarkTheme } from '../../utils/themeUtils';
+import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+import { useAnimation } from '@/context/AnimationContext';
+import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 const ServicesGrid = styled.div`
   display: grid;

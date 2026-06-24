@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown } from 'react-icons/fi';
-import { Section } from '../layout/Section';
-import { SectionTitle } from '../ui/SectionTitle';
-import { useAnimation } from '../../context/AnimationContext';
-import { useTheme } from '../../context/ThemeContext';
-import { isDarkTheme } from '../../utils/themeUtils';
+import { Section } from '@/components/layout/Section';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+import { useAnimation } from '@/context/AnimationContext';
+import { useTheme } from '@/context/ThemeContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 const FaqList = styled.div`
   display: flex;
@@ -142,6 +142,8 @@ export const FaqSection: React.FC = () => {
                   $isOpen={isOpen}
                   onClick={() => handleToggle(index)}
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                  id={`faq-question-${index}`}
                 >
                   {faq.question}
                   <ChevronIcon
@@ -154,6 +156,9 @@ export const FaqSection: React.FC = () => {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <AnswerWrapper
+                      id={`faq-answer-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${index}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
