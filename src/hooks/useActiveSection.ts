@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useActiveSection = () => {
   const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
+    const observedSections = new Set<Element>();
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -14,18 +15,38 @@ export const useActiveSection = () => {
       },
       {
         rootMargin: '-50% 0px -50% 0px',
-        threshold: 0
-      }
+        threshold: 0,
+      },
     );
 
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach((section) => observer.observe(section));
+    const syncObservedSections = () => {
+      const currentSections = new Set(document.querySelectorAll('section[id]'));
+
+      observedSections.forEach((section) => {
+        if (!currentSections.has(section)) {
+          observer.unobserve(section);
+          observedSections.delete(section);
+        }
+      });
+
+      currentSections.forEach((section) => {
+        if (!observedSections.has(section)) {
+          observedSections.add(section);
+          observer.observe(section);
+        }
+      });
+    };
+
+    syncObservedSections();
+    const mutationObserver = new MutationObserver(syncObservedSections);
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     return () => {
-      sections.forEach((section) => observer.unobserve(section));
+      mutationObserver.disconnect();
       observer.disconnect();
+      observedSections.clear();
     };
   }, []);
 
   return activeSection;
-}; 
+};

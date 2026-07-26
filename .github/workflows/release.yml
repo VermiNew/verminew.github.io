@@ -1,0 +1,83 @@
+name: Publish GitHub Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to publish
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout tagged source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Resolve release tag
+        id: release
+        env:
+          REQUESTED_TAG: ${{ inputs.tag }}
+          PUSHED_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          tag="${REQUESTED_TAG:-$PUSHED_TAG}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Verify release metadata
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: node .github/scripts/verify-release-version.js
+
+      - name: Rebuild assets and verify project
+        run: |
+          npm run assets:check
+          npm run verify
+
+      - name: Create source archive
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          mkdir -p release-artifacts
+          git archive --format=zip --prefix="verminew-${RELEASE_TAG#v}/" \
+            --output="release-artifacts/verminew-${RELEASE_TAG#v}-source.zip" HEAD
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; uploading the refreshed source archive."
+            gh release upload "$RELEASE_TAG" release-artifacts/* --clobber
+          else
+            gh release create "$RELEASE_TAG" release-artifacts/* \
+              --verify-tag \
+              --generate-notes \
+              --title "VermiNew ${RELEASE_TAG#v}"
+          fi

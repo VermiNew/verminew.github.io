@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://verminew.github.io/sitemap.xml

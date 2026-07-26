@@ -2,129 +2,66 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths-ignore:
       - '**.md'
       - '.gitignore'
-      - 'LICENSE'
+      - 'LICENCE*'
       - '.github/workflows/update-repos.yml'
   workflow_dispatch:
+  repository_dispatch:
+    types: [deploy_pages]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 15
+
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 10  # Ostatnie 10 commitów dla changelog
+          fetch-depth: 10
 
       - name: 🟢 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version-file: .nvmrc
+          cache: npm
 
-      - name: 💾 Restore cached dependencies
-        id: cache-deps
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      - name: 📦 Install dependencies
+        run: npm ci --no-audit --no-fund
 
-      - name: 📦 Install Dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
-        run: |
-          npm ci
-          npm install terser sharp --save-dev
+      - name: 🖼️ Generate optimized assets
+        run: npm run assets:check
 
-      - name: 🖼️ Generate PWA Assets
-        run: node scripts/convert-images.js
-
-      - name: 🔍 Lint
-        run: npm run lint
-        continue-on-error: false
-
-      - name: 🔎 Type Check
-        run: npm run typecheck
-        continue-on-error: false
-
-      - name: 📝 Generate Changelog
-        run: |
-          echo "### 📝 Recent Changes" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          git log --oneline --no-decorate -10 >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-
-      - name: 🏗️ Build
+      - name: ✅ Verify and build
         env:
-          VITE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production
-        run: npm run build
+        run: npm run verify
 
-      - name: 💾 Cache build output
-        uses: actions/cache@v3
-        with:
-          path: dist
-          key: ${{ runner.os }}-dist-${{ github.sha }}
-
-      - name: 🎨 Setup Image Optimization Tools
-        uses: actions/cache@v3
-        id: cache-image-tools
-        with:
-          path: |
-            /usr/bin/convert
-            /usr/bin/svgo
-          key: ${{ runner.os }}-image-tools-v1
-
-      - name: 📥 Install Image Tools (if not cached)
-        if: steps.cache-image-tools.outputs.cache-hit != 'true'
+      - name: 📝 Build summary
         run: |
-          sudo apt-get update
-          sudo apt-get install -y imagemagick
-          npm install -g svgo
-
-      - name: 🖼️ Optimize Images
-        run: |
-          echo "Optimizing PNG images..."
-          find dist -type f -name "*.png" -exec convert {} -strip -quality 85 {} \; 2>/dev/null || true
-          
-          echo "Optimizing JPG/JPEG images..."
-          find dist -type f \( -name "*.jpg" -o -name "*.jpeg" \) -exec convert {} -strip -quality 85 {} \; 2>/dev/null || true
-          
-          echo "Optimizing SVG images..."
-          find dist -type f -name "*.svg" -exec svgo {} --quiet \; 2>/dev/null || true
-          
-          echo "✅ Image optimization complete!"
-
-      - name: 📊 Build Size Report
-        run: |
-          echo "### 📦 Build Size Report" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Total Size:**" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          du -sh dist >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Top 10 Largest Files/Folders:**" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          du -sh dist/* | sort -rh | head -10 >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "### 📝 Recent Changes" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git log --oneline --no-decorate -10 >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### 📦 Build Size" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          du -sh dist >> "$GITHUB_STEP_SUMMARY"
+          find dist -type f -printf '%s %p\n' | sort -nr | head -10 | numfmt --field=1 --to=iec >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: 📄 Setup Pages
         uses: actions/configure-pages@v4
@@ -140,61 +77,37 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 10
+
     steps:
       - name: 🚀 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: ✅ Deployment Summary
+      - name: ✅ Deployment summary
         run: |
-          echo "### 🚀 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| **Environment** | github-pages |" >> $GITHUB_STEP_SUMMARY
-          echo "| **URL** | ${{ steps.deployment.outputs.page_url }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Branch** | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Deployed at** | $(date -u +'%Y-%m-%d %H:%M:%S UTC') |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Triggered by** | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
-
-      - name: 💬 PR Comment (if applicable)
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const status = '✅ Deploy successful';
-            const url = '${{ steps.deployment.outputs.page_url }}';
-            const message = `
-            ### ${status}
-            
-            🌐 **Preview URL**: ${url}
-            📦 **Environment**: github-pages
-            🔗 **Commit**: \`${{ github.sha }}\`
-            ⏰ **Deployed at**: ${new Date().toISOString()}
-            👤 **Triggered by**: ${{ github.actor }}
-            `;
-            
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.name,
-              issue_number: context.issue.number,
-              body: message
-            });
+          echo "### 🚀 Deployment Successful" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Property | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| URL | ${{ steps.deployment.outputs.page_url }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Commit | \`${{ github.sha }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Branch | \`${{ github.ref_name }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Trigger | ${{ github.event_name }} |" >> "$GITHUB_STEP_SUMMARY"
 
   lighthouse:
     needs: deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
-      - name: 📥 Checkout
+      - name: 📥 Checkout configuration
         uses: actions/checkout@v4
 
       - name: 🔍 Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: |
-            https://verminew.github.io
-          artifactName: lighthousereport${{ github.run_id }}
+          configPath: ./lighthouserc.json
+          artifactName: lighthouse-report-${{ github.run_id }}
           uploadArtifacts: true
           temporaryPublicStorage: true

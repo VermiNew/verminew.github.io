@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { FiChevronDown } from 'react-icons/fi';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
-import { useAnimation } from '@/context/AnimationContext';
-import { useTheme } from '@/context/ThemeContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
+import { isRecord } from '@/utils/translationValues';
 
 const FaqList = styled.div`
   display: flex;
@@ -110,10 +111,11 @@ export const FaqSection: React.FC = () => {
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const questions = t('faq.questions', { returnObjects: true }) as Array<{
-    question: string;
-    answer: string;
-  }>;
+  const rawQuestions = t('faq.questions', { returnObjects: true }) as unknown;
+  const questions = Array.isArray(rawQuestions)
+    ? rawQuestions.filter((item): item is { question: string; answer: string } =>
+        isRecord(item) && typeof item.question === 'string' && typeof item.answer === 'string')
+    : [];
 
   const handleToggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);

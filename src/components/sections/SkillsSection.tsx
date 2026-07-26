@@ -5,7 +5,7 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { TechnologyGrid } from '@/components/sections/TechnologyGrid';
 import { useTranslation } from 'react-i18next';
-import { useAnimation } from '@/context/AnimationContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
 const Content = styled.div`
   max-width: 1200px;

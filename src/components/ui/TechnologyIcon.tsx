@@ -1,10 +1,10 @@
-import React, { useState, useMemo, memo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, memo, useRef, useCallback, useId } from 'react';
 import { createPortal } from 'react-dom';
-import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { useTranslation } from 'react-i18next';
+import { useAnimation } from '@/context/hooks/useAnimation';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { Theme } from '@/types/theme';
 
@@ -19,8 +19,11 @@ interface TechnologyIconProps {
   level: 'learning' | 'beginner' | 'intermediate' | 'advanced' | 'expert' | 'master' | 'hobby' | 'professional' | 'planned';
 }
 
-const Container = styled(motion.div)<{ $isDark: boolean }>`
+const Container = styled(motion.button)<{ $isDark: boolean }>`
   position: relative;
+  appearance: none;
+  font: inherit;
+  color: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,13 +43,18 @@ const Container = styled(motion.div)<{ $isDark: boolean }>`
   z-index: 1;
 
   &:hover {
-    transform: translateY(-5px);
     background: ${({ theme, $isDark }) => $isDark
       ? theme.colors.surface
       : theme.colors.background
     };
     border-color: ${({ theme }) => `${theme.colors.primary}30`};
     box-shadow: ${({ theme }) => theme.shadows.medium};
+    z-index: 2;
+  }
+
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.focusRing};
+    outline-offset: 3px;
     z-index: 2;
   }
 
@@ -147,6 +155,7 @@ const containerVariants = {
   },
   hover: {
     scale: 1.05,
+    y: -5,
     transition: {
       type: "spring",
       stiffness: 400,
@@ -226,13 +235,17 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
   const { themeMode, theme } = useTheme();
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { t } = useTranslation();
+  const { reducedMotion } = useAnimation();
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isTouchDevice = useRef(window.matchMedia('(hover: none)').matches).current;
+  const containerRef = useRef<HTMLButtonElement>(null);
+  const tooltipId = useId();
+  const isTouchDevice = useRef(
+    typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches,
+  ).current;
 
   const clampTooltipPos = useCallback((x: number, y: number) => ({
-    x: Math.min(x, window.innerWidth - TOOLTIP_W - TOOLTIP_MARGIN),
+    x: Math.max(TOOLTIP_MARGIN, Math.min(x, window.innerWidth - TOOLTIP_W - TOOLTIP_MARGIN)),
     y: Math.min(Math.max(y, TOOLTIP_MARGIN), window.innerHeight - TOOLTIP_H - TOOLTIP_MARGIN),
   }), []);
 
@@ -271,6 +284,13 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
     setShowTooltip(prev => !prev);
   }, [calcTouchPos]);
 
+  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setShowTooltip(false);
+    }
+  }, []);
+
   const levelColor = useMemo(() => getLevelColor(level, theme), [level, theme]);
 
   const levelText = useMemo(() => {
@@ -285,53 +305,59 @@ const TechnologyIconComponent: React.FC<TechnologyIconProps> = ({
       'hobby': 'Hobby',
       'professional': 'Professional'
     };
-    return t(`about.skills.levels.${level}`, fallbacks[level]);
+    return t(`about.skills.levels.${level}`, { defaultValue: fallbacks[level] });
   }, [level, t]);
 
   return (
     <Container
       ref={containerRef}
+      type="button"
       $isDark={isDark}
       onHoverStart={!isTouchDevice ? handleHoverStart : undefined}
       onHoverEnd={!isTouchDevice ? handleHoverEnd : undefined}
       onMouseMove={!isTouchDevice ? handleMouseMove : undefined}
+      onFocus={!isTouchDevice ? handleHoverStart : undefined}
+      onBlur={handleHoverEnd}
       onClick={isTouchDevice ? handleTouchClick : undefined}
-      variants={containerVariants}
-      whileHover="hover"
-      whileTap="tap"
+      onKeyDown={handleKeyDown}
+      aria-describedby={showTooltip ? tooltipId : undefined}
+      aria-expanded={showTooltip}
+      variants={reducedMotion ? undefined : containerVariants}
+      whileHover={reducedMotion ? undefined : 'hover'}
+      whileTap={reducedMotion ? undefined : 'tap'}
     >
       <IconWrapper
         $levelColor={levelColor}
-        variants={iconVariants}
+        variants={reducedMotion ? undefined : iconVariants}
       >
         {icon}
       </IconWrapper>
-      <Name variants={textVariants}>{name}</Name>
+      <Name variants={reducedMotion ? undefined : textVariants}>{name}</Name>
       {level !== 'planned' && (
         <Level
           $levelColor={levelColor}
-          variants={textVariants}
+          variants={reducedMotion ? undefined : textVariants}
         >
           {levelText}
         </Level>
       )}
       <AnimatePresence>
         {showTooltip && createPortal(
-          <ThemeProvider theme={theme}>
-            <Tooltip
-              $isDark={isDark}
-              $x={tooltipPos.x}
-              $y={tooltipPos.y}
-              $touch={isTouchDevice}
-              variants={tooltipVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {description}
-            </Tooltip>
-          </ThemeProvider>,
-          document.body
+          <Tooltip
+            id={tooltipId}
+            role="tooltip"
+            $isDark={isDark}
+            $x={tooltipPos.x}
+            $y={tooltipPos.y}
+            $touch={isTouchDevice}
+            variants={reducedMotion ? undefined : tooltipVariants}
+            initial={reducedMotion ? false : 'initial'}
+            animate={reducedMotion ? undefined : 'animate'}
+            exit={reducedMotion ? undefined : 'exit'}
+          >
+            {description}
+          </Tooltip>,
+          document.body,
         )}
       </AnimatePresence>
     </Container>

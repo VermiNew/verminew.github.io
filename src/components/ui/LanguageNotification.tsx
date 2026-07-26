@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import FocusTrap from 'focus-trap-react';
 import { useTranslation } from 'react-i18next';
 import { FiSettings, FiX, FiXCircle } from 'react-icons/fi';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
-import { useSettings } from '@/context/SettingsContext';
+import { useSettings } from '@/context/hooks/useSettings';
+import { useAnimation } from '@/context/hooks/useAnimation';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { safeStorage } from '@/utils/storage';
 
 const pulse = keyframes`
   0% { transform: scale(1); }
@@ -19,8 +23,8 @@ const NotificationOverlay = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100;
+  background-color: ${({ theme }) => theme.colors.overlay};
+  z-index: ${({ theme }) => theme.zIndices.modal + 200};
 `;
 
 const NotificationContainer = styled(motion.div)<{ $isDark: boolean }>`
@@ -86,8 +90,8 @@ const IconWrapper = styled.div`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-const PulsingIconWrapper = styled(IconWrapper)`
-  animation: ${pulse} 2s infinite;
+const PulsingIconWrapper = styled(IconWrapper)<{ $animate: boolean }>`
+  animation: ${({ $animate }) => $animate ? pulse : 'none'} 2s infinite;
 `;
 
 const ButtonsContainer = styled.div`
@@ -111,7 +115,7 @@ const Button = styled(motion.button)<{ $variant?: 'primary' | 'secondary' }>`
     $variant === 'primary' ? theme.colors.primary : 'transparent'
   };
   color: ${({ theme, $variant }) => 
-    $variant === 'primary' ? '#fff' : theme.colors.textSecondary
+    $variant === 'primary' ? theme.colors.onPrimary : theme.colors.textSecondary
   };
   border: 1px solid ${({ theme, $variant }) => 
     $variant === 'primary' ? 'transparent' : theme.colors.textSecondary + '40'
@@ -124,6 +128,11 @@ const Button = styled(motion.button)<{ $variant?: 'primary' | 'secondary' }>`
         : theme.colors.textSecondary + '10'
     };
   }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
+    outline-offset: 2px;
+  }
 `;
 
 const highlight = keyframes`
@@ -132,8 +141,8 @@ const highlight = keyframes`
   100% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
 `;
 
-const IUnderstandButton = styled(Button)`
-  animation: ${highlight} 2s infinite;
+const IUnderstandButton = styled(Button)<{ $animate: boolean }>`
+  animation: ${({ $animate }) => $animate ? highlight : 'none'} 2s infinite;
 `;
 
 const CloseButton = styled(motion.button)`
@@ -158,6 +167,12 @@ const CloseButton = styled(motion.button)`
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
+    outline-offset: 2px;
+    border-radius: 50%;
+  }
 `;
 
 export const LanguageNotification: React.FC = () => {
@@ -166,24 +181,40 @@ export const LanguageNotification: React.FC = () => {
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { openSettings } = useSettings();
+  const { reducedMotion } = useAnimation();
+  useBodyScrollLock(isVisible);
 
   useEffect(() => {
+    let timer: number | undefined;
     const showNotification = () => {
       const browserLang = navigator.language.toLowerCase().startsWith('pl');
-      const isEnglish = i18n.language === 'en';
-      const viewCount = parseInt(localStorage.getItem('langNotificationViews') || '0');
-      const hasSeenNotification = localStorage.getItem('hasSeenLangNotification');
+      const isEnglish = i18n.language.toLowerCase().startsWith('en');
+      const parsedViewCount = Number.parseInt(safeStorage.get('langNotificationViews') ?? '0', 10);
+      const viewCount = Number.isFinite(parsedViewCount) ? parsedViewCount : 0;
+      const hasSeenNotification = safeStorage.get('hasSeenLangNotification');
 
       if (browserLang && isEnglish && !hasSeenNotification && viewCount < 3) {
-        setTimeout(() => {
+        timer = window.setTimeout(() => {
           setIsVisible(true);
-          localStorage.setItem('langNotificationViews', (viewCount + 1).toString());
+          safeStorage.set('langNotificationViews', (viewCount + 1).toString());
         }, 2000);
       }
     };
 
     showNotification();
+    return () => {
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
   }, [i18n.language]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsVisible(false);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isVisible]);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -191,7 +222,7 @@ export const LanguageNotification: React.FC = () => {
 
   const handleDontShowAgain = () => {
     setIsVisible(false);
-    localStorage.setItem('hasSeenLangNotification', 'true');
+    safeStorage.set('hasSeenLangNotification', 'true');
   };
 
   const handleIUnderstand = () => {
@@ -204,19 +235,22 @@ export const LanguageNotification: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <NotificationOverlay
-          initial={{ opacity: 0 }}
+          initial={reducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={reducedMotion ? undefined : { opacity: 0 }}
+          onClick={handleClose}
         >
+          <FocusTrap focusTrapOptions={{ allowOutsideClick: true, returnFocusOnDeactivate: true, escapeDeactivates: false }}>
           <NotificationContainer
             $isDark={isDark}
             role="dialog"
             aria-modal="true"
             aria-labelledby="lang-notification-title"
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={reducedMotion ? false : { scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: 'spring', damping: 20 }}
+            exit={reducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
+            transition={reducedMotion ? { duration: 0 } : { type: 'spring', damping: 20 }}
+            onClick={(event) => event.stopPropagation()}
           >
             <Title id="lang-notification-title">
               <span aria-hidden="true">🌍</span> {t('notifications.language.available')}
@@ -226,34 +260,38 @@ export const LanguageNotification: React.FC = () => {
             </Message>
             <Tutorial>
               <Step>
-                <PulsingIconWrapper>
-                  <FiSettings />
+                <PulsingIconWrapper $animate={!reducedMotion}>
+                  <FiSettings aria-hidden="true" />
                 </PulsingIconWrapper>
                 <span>{t('notifications.language.settingsHint')}</span>
               </Step>
             </Tutorial>
             <ButtonsContainer>
               <Button onClick={handleDontShowAgain}>
-                <FiXCircle />
+                <FiXCircle aria-hidden="true" />
                 {t('notifications.language.dontShowAgain')}
               </Button>
-              <IUnderstandButton 
+              <IUnderstandButton
+                $animate={!reducedMotion}
                 $variant="primary" 
                 onClick={handleIUnderstand}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={reducedMotion ? undefined : { scale: 1.05 }}
+                whileTap={reducedMotion ? undefined : { scale: 0.95 }}
               >
                 {t('notifications.language.understand')}
               </IUnderstandButton>
             </ButtonsContainer>
             <CloseButton
+              type="button"
+              aria-label={t('notifications.language.close')}
               onClick={handleClose}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={reducedMotion ? undefined : { scale: 1.1 }}
+              whileTap={reducedMotion ? undefined : { scale: 0.9 }}
             >
-              <FiX />
+              <FiX aria-hidden="true" />
             </CloseButton>
           </NotificationContainer>
+          </FocusTrap>
         </NotificationOverlay>
       )}
     </AnimatePresence>

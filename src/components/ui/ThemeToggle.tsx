@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSun, FiMoon, FiMonitor, FiBook, FiCloud, FiDroplet, FiWind, FiSunrise } from 'react-icons/fi';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { ThemeMode } from '@/types/theme';
 import { useTranslation } from 'react-i18next';
+import { isDarkTheme } from '@/utils/themeUtils';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
 const ThemeContainer = styled.div`
   position: relative;
@@ -50,7 +52,7 @@ const ToggleButton = styled(motion.button)<{ $isDark: boolean }>`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 
@@ -155,7 +157,7 @@ const ThemeOption = styled(motion.button)<{ $isActive: boolean }>`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: -2px;
   }
 
@@ -301,7 +303,8 @@ export const ThemeToggle: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const toggleButtonRef = React.useRef<HTMLButtonElement>(null);
   const themeMenuId = React.useId();
-  const isDark = themeMode.includes('dark');
+  const isDark = isDarkTheme(themeMode);
+  const { reducedMotion } = useAnimation();
   const { t } = useTranslation();
 
   React.useEffect(() => {
@@ -354,8 +357,8 @@ export const ThemeToggle: React.FC = () => {
           e.stopPropagation();
           setIsMenuOpen(!isMenuOpen);
         }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={reducedMotion ? undefined : { scale: 1.1 }}
+        whileTap={reducedMotion ? undefined : { scale: 0.9 }}
         aria-label={t(isMenuOpen ? 'theme.closeMenu' : 'theme.openMenu')}
         aria-expanded={isMenuOpen}
         aria-controls={themeMenuId}
@@ -363,9 +366,9 @@ export const ThemeToggle: React.FC = () => {
         <motion.div
           aria-hidden="true"
           key={themeMode}
-          initial="initial"
-          animate="animate"
-          exit="exit"
+          initial={reducedMotion ? false : 'initial'}
+          animate={reducedMotion ? undefined : 'animate'}
+          exit={reducedMotion ? undefined : 'exit'}
           variants={iconVariants}
           transition={{ duration: 0.3 }}
         >
@@ -379,9 +382,9 @@ export const ThemeToggle: React.FC = () => {
         {isMenuOpen && (
           <ThemeMenu
             id={themeMenuId}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={reducedMotion ? false : 'hidden'}
+            animate={reducedMotion ? undefined : 'visible'}
+            exit={reducedMotion ? undefined : 'exit'}
             variants={menuVariants}
           >
             <ThemeGroup

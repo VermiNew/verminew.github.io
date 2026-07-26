@@ -16,15 +16,17 @@ Follow this cycle for every piece of work:
    - `npm run build`
    - Playwright — open the app and visually inspect the result
    - **Look at how it works** — visual verification is not optional
-6. **Fix or commit:**
+6. **Fix or hand off:**
    - If something is broken → fix it and go back to step 5.
-   - If everything works → commit with a conventional commit message.
-7. **Repeat** — Pick the next small piece. Improve the prototype toward the final version.
+   - If the agent is authorized to commit and everything works → commit with a conventional commit message.
+   - If the repository owner reserves commits → present the reviewed diff, verification results, and proposed conventional commit message; the owner performs the commit.
+7. **Repeat** — Pick the next small piece only after the previous one has been verified or explicitly handed off.
 
 ### Key Principles
 
 - **A commit is a reward for working code**, not for written code.
 - **Every commit must be a working state** of the application.
+- **Never commit when the repository owner has reserved commit access** — prepare a clean handoff instead.
 - **Verification is the heart of the process** — code that compiles but looks wrong is still broken.
 - **Small steps prevent compounding errors** — never build on an unverified foundation.
 

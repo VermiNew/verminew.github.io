@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Toast } from '@/components/ui/Toast';
-import { ToastType, ToastContextType } from './types';
+import type { ToastType } from './types';
+import { ToastContext } from './ToastContextValue';
+import { useTranslation } from 'react-i18next';
 
 interface ToastMessage {
   message: string;
@@ -8,10 +10,10 @@ interface ToastMessage {
   id: string;
 }
 
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const { t } = useTranslation();
 
   const showToast = useCallback((message: string, type: ToastType = 'info') => {
     const id = `${Date.now()}-${Math.random()}`;
@@ -27,7 +29,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {children}
       <div
         role="region"
-        aria-label="Notifications"
+        aria-label={t('notifications.regionLabel')}
         aria-live="polite"
         aria-atomic="false"
         style={{ position: 'fixed', bottom: 0, left: 0, right: 0, pointerEvents: 'none', zIndex: 2000 }}
@@ -44,11 +46,3 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     </ToastContext.Provider>
   );
 };
-
-export const useToast = () => {
-  const context = useContext(ToastContext);
-  if (context === undefined) {
-    throw new Error('useToast must be used within a ToastProvider');
-  }
-  return context;
-}; 

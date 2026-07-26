@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSettings, FiX, FiGlobe, FiZap } from 'react-icons/fi';
 import FocusTrap from 'focus-trap-react';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { LanguageSettings } from '@/components/settings/LanguageSettings';
 import { useTranslation } from 'react-i18next';
-import { useAnimation } from '@/context/AnimationContext';
-import { useSettings } from '@/context/SettingsContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
+import { useSettings } from '@/context/hooks/useSettings';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 const SettingsButton = styled(motion.button)<{ $visible: boolean }>`
   position: fixed;
@@ -18,7 +19,7 @@ const SettingsButton = styled(motion.button)<{ $visible: boolean }>`
   height: 50px;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.onPrimary};
   border: none;
   display: flex;
   align-items: center;
@@ -36,7 +37,7 @@ const SettingsButton = styled(motion.button)<{ $visible: boolean }>`
 
   &:focus-visible {
     opacity: 1;
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline: 3px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 3px;
   }
 `;
@@ -47,7 +48,7 @@ const Overlay = styled(motion.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ theme }) => theme.colors.overlay};
   backdrop-filter: blur(5px);
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
 `;
@@ -65,6 +66,15 @@ const Panel = styled(motion.div)<{ $isDark: boolean }>`
   box-shadow: ${({ theme }) => theme.shadows.large};
   z-index: ${({ theme }) => theme.zIndices.modal};
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    width: auto;
+    max-height: calc(100dvh - 2rem);
+    padding: 1.25rem;
+  }
 `;
 
 const PanelHeader = styled.div`
@@ -98,7 +108,7 @@ const CloseButton = styled(motion.button)`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -139,7 +149,8 @@ const panelVariants = {
 
 const PanelContent = styled.div`
   overflow: hidden;
-  max-height: calc(100vh - 15rem);
+  max-height: calc(100dvh - 15rem);
+  overflow-y: auto;
 `;
 
 const TabContainer = styled.div`
@@ -160,7 +171,7 @@ const Tab = styled(motion.button)<{ $isActive: boolean }>`
     $isActive ? theme.colors.primary : 'transparent'
   };
   color: ${({ theme, $isActive }) => 
-    $isActive ? '#fff' : theme.colors.text
+    $isActive ? theme.colors.onPrimary : theme.colors.text
   };
   cursor: pointer;
   font-size: 0.9rem;
@@ -177,7 +188,7 @@ const Tab = styled(motion.button)<{ $isActive: boolean }>`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 `;
@@ -209,6 +220,21 @@ const PreferenceLabel = styled.label`
   color: ${({ theme }) => theme.colors.text};
   font-size: 0.9rem;
   cursor: pointer;
+`;
+
+const PreferenceSelect = styled.select`
+  min-width: 8.5rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  font: inherit;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
+    outline-offset: 2px;
+  }
 `;
 
 const Switch = styled.input`
@@ -247,7 +273,7 @@ const Switch = styled.input`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 `;
@@ -256,9 +282,9 @@ type SettingsTab = 'language' | 'preferences';
 
 const Settings: React.FC = () => {
   const { isSettingsOpen, activeSettingsTab, openSettings, closeSettings } = useSettings();
-  const { reducedMotion, setReducedMotion, smoothScroll, setSmoothScroll } = useAnimation();
+  const { motionPreference, setMotionPreference, reducedMotion, smoothScroll, setSmoothScroll } = useAnimation();
   const [isButtonVisible, setIsButtonVisible] = useState(true);
-  const buttonTimer = useRef<NodeJS.Timeout | null>(null);
+  const buttonTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const languageTabRef = useRef<HTMLButtonElement>(null);
@@ -266,6 +292,7 @@ const Settings: React.FC = () => {
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
+  useBodyScrollLock(isSettingsOpen);
   const panelTitleId = 'settings-panel-title';
   const languageTabId = 'settings-language-tab';
   const languagePanelId = 'settings-language-panel';
@@ -331,10 +358,6 @@ const Settings: React.FC = () => {
     };
   }, [isSettingsOpen]);
 
-  const handleReducedMotionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReducedMotion(e.target.checked);
-  };
-
   const handleSmoothScrollChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSmoothScroll(e.target.checked);
   };
@@ -373,20 +396,20 @@ const Settings: React.FC = () => {
         onMouseEnter={handleButtonVisibility}
         ref={buttonRef}
         aria-haspopup="dialog"
-        initial={{ scale: 0, rotate: -180 }}
+        initial={reducedMotion ? false : { scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
-        transition={{
-          type: "spring",
+        transition={reducedMotion ? { duration: 0 } : {
+          type: 'spring',
           stiffness: 260,
           damping: 20,
           duration: 1
         }}
-        whileHover={{
+        whileHover={reducedMotion ? undefined : {
           scale: 1.1,
           rotate: 180,
           transition: { duration: 0.3 }
         }}
-        whileTap={{ scale: 0.9 }}
+        whileTap={reducedMotion ? undefined : { scale: 0.9 }}
         aria-label={t('settings.open')}
       >
         <FiSettings aria-hidden="true" />
@@ -396,9 +419,10 @@ const Settings: React.FC = () => {
         {isSettingsOpen && (
           <>
             <Overlay
-              initial={{ opacity: 0 }}
+              initial={reducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={reducedMotion ? undefined : { opacity: 0 }}
+              onClick={closePanel}
             />
             <FocusTrap
               focusTrapOptions={{
@@ -409,10 +433,10 @@ const Settings: React.FC = () => {
             <Panel
               ref={panelRef}
               $isDark={isDark}
-              variants={panelVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+              variants={reducedMotion ? undefined : panelVariants}
+              initial={reducedMotion ? false : 'hidden'}
+              animate={reducedMotion ? undefined : 'visible'}
+              exit={reducedMotion ? undefined : 'exit'}
               role="dialog"
               aria-modal="true"
               aria-labelledby={panelTitleId}
@@ -421,8 +445,8 @@ const Settings: React.FC = () => {
                 <PanelTitle id={panelTitleId}>{t('settings.title')}</PanelTitle>
                 <CloseButton
                   onClick={closePanel}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={reducedMotion ? undefined : { scale: 1.1 }}
+                  whileTap={reducedMotion ? undefined : { scale: 0.9 }}
                   aria-label={t('settings.close')}
                 >
                   <FiX aria-hidden="true" />
@@ -437,7 +461,7 @@ const Settings: React.FC = () => {
                   $isActive={activeSettingsTab === 'language'}
                   onClick={() => openSettings('language')}
                   onKeyDown={(event) => handleTabKeyDown(event, 'language')}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={reducedMotion ? undefined : { scale: 0.95 }}
                   role="tab"
                   aria-selected={activeSettingsTab === 'language'}
                   aria-controls={languagePanelId}
@@ -453,7 +477,7 @@ const Settings: React.FC = () => {
                   $isActive={activeSettingsTab === 'preferences'}
                   onClick={() => openSettings('preferences')}
                   onKeyDown={(event) => handleTabKeyDown(event, 'preferences')}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={reducedMotion ? undefined : { scale: 0.95 }}
                   role="tab"
                   aria-selected={activeSettingsTab === 'preferences'}
                   aria-controls={preferencesPanelId}
@@ -470,9 +494,9 @@ const Settings: React.FC = () => {
                   role="tabpanel"
                   aria-labelledby={languageTabId}
                   hidden={activeSettingsTab !== 'language'}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={reducedMotion ? false : { opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.2 }}
                 >
                   <LanguageSettings />
                 </motion.div>
@@ -481,23 +505,26 @@ const Settings: React.FC = () => {
                   role="tabpanel"
                   aria-labelledby={preferencesTabId}
                   hidden={activeSettingsTab !== 'preferences'}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={reducedMotion ? false : { opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.2 }}
                 >
                   <PreferencesContainer>
                     <PreferenceItem>
-                      <PreferenceLabel htmlFor="reduced-motion-switch">
+                      <PreferenceLabel htmlFor="motion-preference-select">
                         <FiZap aria-hidden="true" />
-                        {t('settings.preferences.reducedMotion')}
+                        {t('settings.preferences.motionPreference')}
                       </PreferenceLabel>
-                      <Switch
-                        id="reduced-motion-switch"
-                        type="checkbox"
-                        checked={reducedMotion}
-                        onChange={handleReducedMotionChange}
-                        aria-label={t('settings.preferences.reducedMotion')}
-                      />
+                      <PreferenceSelect
+                        id="motion-preference-select"
+                        value={motionPreference}
+                        onChange={(event) => setMotionPreference(event.target.value as 'system' | 'full' | 'reduced')}
+                        aria-label={t('settings.preferences.motionPreference')}
+                      >
+                        <option value="system">{t('settings.preferences.motionSystem')}</option>
+                        <option value="full">{t('settings.preferences.motionFull')}</option>
+                        <option value="reduced">{t('settings.preferences.motionReduced')}</option>
+                      </PreferenceSelect>
                     </PreferenceItem>
                     <PreferenceItem>
                       <PreferenceLabel htmlFor="smooth-scroll-switch">

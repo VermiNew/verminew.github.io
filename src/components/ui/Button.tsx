@@ -1,23 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/context/ThemeContext';
-import { isDarkTheme } from '@/utils/themeUtils';
+import styled from 'styled-components';
 
-interface ButtonProps {
+interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'small' | 'medium' | 'large';
-  children: React.ReactNode;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
-  disabled?: boolean;
-  style?: React.CSSProperties;
+  children: ReactNode;
 }
 
 const StyledButton = styled.button<{
-  $variant?: 'primary' | 'secondary' | 'outline';
-  $size?: 'small' | 'medium' | 'large';
-  $isDark?: boolean;
+  $variant: 'primary' | 'secondary' | 'outline';
+  $size: 'small' | 'medium' | 'large';
 }>`
   display: inline-flex;
   align-items: center;
@@ -26,8 +19,7 @@ const StyledButton = styled.button<{
   font-weight: 500;
   cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.default};
-  
-  /* Size variants */
+
   padding: ${({ $size }) => {
     switch ($size) {
       case 'small': return '0.5rem 1rem';
@@ -35,7 +27,7 @@ const StyledButton = styled.button<{
       default: return '0.75rem 1.5rem';
     }
   }};
-  
+
   font-size: ${({ $size }) => {
     switch ($size) {
       case 'small': return '0.875rem';
@@ -44,37 +36,38 @@ const StyledButton = styled.button<{
     }
   }};
 
-  /* Style variants */
-  ${({ $variant, theme, $isDark }) => {
+  ${({ $variant, theme }) => {
     switch ($variant) {
       case 'secondary':
         return `
           background: ${theme.colors.secondary};
-          color: ${$isDark ? theme.colors.background : '#ffffff'};
+          color: ${theme.colors.onSecondary};
           border: none;
           &:hover {
             background: ${theme.colors.accent};
+            color: ${theme.colors.onAccent};
             transform: translateY(-2px);
           }
         `;
       case 'outline':
         return `
           background: transparent;
-          color: ${theme.colors.primary};
+          color: ${theme.colors.link};
           border: 2px solid ${theme.colors.primary};
           &:hover {
             background: ${theme.colors.primary};
-            color: ${$isDark ? theme.colors.background : '#ffffff'};
+            color: ${theme.colors.onPrimary};
             transform: translateY(-2px);
           }
         `;
       default:
         return `
           background: ${theme.colors.primary};
-          color: ${$isDark ? theme.colors.background : '#ffffff'};
+          color: ${theme.colors.onPrimary};
           border: none;
           &:hover {
             background: ${theme.colors.accent};
+            color: ${theme.colors.onAccent};
             transform: translateY(-2px);
           }
         `;
@@ -82,12 +75,12 @@ const StyledButton = styled.button<{
   }}
 
   &:focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline: 3px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.55;
     cursor: not-allowed;
     background: ${({ theme }) => `${theme.colors.textSecondary}30`};
     color: ${({ theme }) => theme.colors.textSecondary};
@@ -108,27 +101,23 @@ const StyledButton = styled.button<{
 
 const MotionButton = motion.create(StyledButton);
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   variant = 'primary',
   size = 'medium',
   children,
-  disabled,
+  disabled = false,
+  type = 'button',
   ...props
-}) => {
-  const { themeMode } = useTheme();
-  const isDark = isDarkTheme(themeMode);
-
-  return (
-    <MotionButton
-      $variant={variant}
-      $size={size}
-      $isDark={isDark}
-      disabled={disabled}
-      whileHover={disabled ? undefined : { scale: 1.05 }}
-      whileTap={disabled ? undefined : { scale: 0.95 }}
-      {...props}
-    >
-      {children}
-    </MotionButton>
-  );
-}; 
+}: ButtonProps) => (
+  <MotionButton
+    $variant={variant}
+    $size={size}
+    type={type}
+    disabled={disabled}
+    whileHover={disabled ? undefined : { scale: 1.05 }}
+    whileTap={disabled ? undefined : { scale: 0.95 }}
+    {...(props as Record<string, unknown>)}
+  >
+    {children}
+  </MotionButton>
+);

@@ -1,136 +1,108 @@
-import { useState, useEffect } from 'react';
-import { ReposData, Repo } from '@/types/repo';
+import { useCallback, useEffect, useState } from 'react';
+import type { ReposData } from '@/types/repo';
+import { isValidReposData } from '@/utils/repoValidation';
+import { safeStorage } from '@/utils/storage';
 
-const REPOS_URL = 'https://raw.githubusercontent.com/VermiNew/verminew.github.io/refs/heads/main/public/data/repos.json';
-const CACHE_KEY = 'repos_cache';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const FETCH_TIMEOUT = 10000; // 10 seconds
-const MAX_RETRIES = 3;
+const REPOS_URL = '/data/repos.json';
+const CACHE_KEY = 'verminew:repos-cache:v1';
+const FETCH_TIMEOUT = 8_000;
 
-const isValidRepo = (repo: unknown): repo is Repo => {
-  if (typeof repo !== 'object' || repo === null) return false;
-  
-  const r = repo as Record<string, unknown>;
-  return (
-    typeof r.id === 'string' &&
-    typeof r.title === 'string' &&
-    typeof r.description === 'string' &&
-    Array.isArray(r.technologies) &&
-    typeof r.githubUrl === 'string' &&
-    typeof r.featured === 'boolean'
-  );
-};
+interface CachedRepos {
+  data: ReposData;
+  timestamp: number;
+}
 
-const isValidReposData = (data: unknown): data is ReposData => {
-  if (typeof data !== 'object' || data === null) return false;
-  
-  const d = data as Record<string, unknown>;
-  return (
-    typeof d.lastUpdated === 'string' &&
-    Array.isArray(d.repos) &&
-    d.repos.every(isValidRepo)
-  );
-};
+const readCache = (): CachedRepos | null => {
+  const raw = safeStorage.get(CACHE_KEY);
+  if (!raw) return null;
 
-const getCachedRepos = (): { data: ReposData; timestamp: number } | null => {
   try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (!cached) return null;
-    
-    const parsed = JSON.parse(cached);
-    const isExpired = Date.now() - parsed.timestamp > CACHE_DURATION;
-    
-    return isExpired ? null : parsed;
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null) return null;
+
+    const candidate = parsed as Record<string, unknown>;
+    if (typeof candidate.timestamp !== 'number' || !isValidReposData(candidate.data)) {
+      safeStorage.remove(CACHE_KEY);
+      return null;
+    }
+
+    return { data: candidate.data, timestamp: candidate.timestamp };
   } catch {
+    safeStorage.remove(CACHE_KEY);
     return null;
   }
 };
 
-const setCachedRepos = (data: ReposData): void => {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
-  } catch {
-    // Silent fail if localStorage is unavailable
-  }
+const writeCache = (data: ReposData): void => {
+  safeStorage.set(CACHE_KEY, JSON.stringify({
+    data,
+    timestamp: Date.now(),
+  } satisfies CachedRepos));
 };
 
 export const useRepos = () => {
-  const [data, setData] = useState<ReposData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialCache] = useState(readCache);
+  const [data, setData] = useState<ReposData | null>(initialCache?.data ?? null);
+  const [isLoading, setIsLoading] = useState(initialCache === null);
   const [error, setError] = useState<Error | null>(null);
+  const [warning, setWarning] = useState<'cached' | null>(null);
+  const [refreshToken, setRefreshToken] = useState(0);
 
   useEffect(() => {
-    const fetchReposWithRetry = async () => {
-      // Try cache first
-      const cached = getCachedRepos();
-      if (cached) {
-        setData(cached.data);
-        setIsLoading(false);
-        return;
-      }
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+    let active = true;
 
-      let lastError: Error | null = null;
+    const fetchRepos = async (): Promise<void> => {
+      try {
+        const response = await fetch(REPOS_URL, {
+          signal: controller.signal,
+          cache: 'no-cache',
+          headers: { Accept: 'application/json' },
+        });
 
-      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        let timeoutId: ReturnType<typeof setTimeout> | null = null;
-        
-        try {
-          const controller = new AbortController();
-          timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+        if (!response.ok) throw new Error(`Repository data request failed (${response.status})`);
 
-          const response = await fetch(REPOS_URL, { signal: controller.signal });
-          if (timeoutId) clearTimeout(timeoutId);
+        const payload: unknown = await response.json();
+        if (!isValidReposData(payload)) throw new Error('Repository data has an invalid format');
+        if (!active) return;
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+        setData(payload);
+        writeCache(payload);
+        setError(null);
+        setWarning(null);
+      } catch (reason) {
+        if (!active) return;
 
-          const jsonData: unknown = await response.json();
-          
-          if (!isValidReposData(jsonData)) {
-            throw new Error('Invalid repos data format received');
-          }
-          
-          setData(jsonData);
-          setCachedRepos(jsonData);
+        const cached = readCache();
+        if (cached) {
+          setData(cached.data);
           setError(null);
-          setIsLoading(false);
-          return;
-        } catch (err) {
-          if (timeoutId) clearTimeout(timeoutId);
-          
-          lastError = err instanceof Error ? err : new Error('Failed to fetch repos');
-          
-          // Exponential backoff: 1s, 2s, 4s
-          if (attempt < MAX_RETRIES) {
-            await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt - 1) * 1000));
-          }
+          setWarning('cached');
+        } else {
+          setError(reason instanceof Error ? reason : new Error('Repository data could not be loaded'));
+          setWarning(null);
         }
+      } finally {
+        if (active) setIsLoading(false);
       }
-
-      // All retries failed — try stale cache as last resort
-      const cachedFallback = localStorage.getItem(CACHE_KEY);
-      if (cachedFallback) {
-        try {
-          const parsed = JSON.parse(cachedFallback);
-          if (isValidReposData(parsed.data)) {
-            setData(parsed.data);
-            setError(new Error('Using cached data - network unavailable'));
-          } else {
-            setError(lastError || new Error('Failed to fetch repos after retries'));
-          }
-        } catch {
-          setError(lastError || new Error('Failed to fetch repos after retries'));
-        }
-      } else {
-        setError(lastError || new Error('Failed to fetch repos'));
-      }
-
-      setIsLoading(false);
     };
 
-    fetchReposWithRetry();
-  }, []);
+    void fetchRepos();
 
-  return { data, isLoading, error };
-}; 
+    return () => {
+      active = false;
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [refreshToken]);
+
+  const retry = useCallback(() => {
+    setError(null);
+    setWarning(null);
+    setIsLoading(data === null);
+    setRefreshToken((value) => value + 1);
+  }, [data]);
+
+  return { data, isLoading, error, warning, retry };
+};

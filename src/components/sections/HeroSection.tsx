@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { motion, Variants } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/Button';
+import { useAnimation } from '@/context/hooks/useAnimation';
+import { scrollToSection } from '@/utils/scroll';
 import { HeroBackground } from '@/components/sections/HeroBackground';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
-import { useAnimation as useReducedMotion } from '@/context/AnimationContext';
 
 const HeroContainer = styled(motion.div)`
   min-height: 100vh;
@@ -131,10 +132,10 @@ const itemVariants: Variants = {
 };
 
 export const HeroSection: React.FC = () => {
+  const { reducedMotion, smoothScroll } = useAnimation();
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
-  const { reducedMotion } = useReducedMotion();
 
   return (
     <Section fullWidth id="home">
@@ -173,13 +174,13 @@ export const HeroSection: React.FC = () => {
           
           <ButtonContainer variants={!reducedMotion ? itemVariants : undefined}>
             <Button 
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => scrollToSection('about', smoothScroll && !reducedMotion)}
             >
               {t('hero.cta.about')}
             </Button>
             <Button 
               variant="outline"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => scrollToSection('projects', smoothScroll && !reducedMotion)}
             >
               {t('hero.cta.projects')}
             </Button>

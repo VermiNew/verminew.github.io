@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
+import type { SupportedLanguage } from '@/i18n';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ const LanguageButton = styled(motion.button)<{ $isActive: boolean; $isDark: bool
     $isActive ? theme.colors.primary : 'transparent'
   };
   color: ${({ $isActive, theme }) => 
-    $isActive ? '#fff' : theme.colors.text
+    $isActive ? theme.colors.onPrimary : theme.colors.text
   };
   cursor: pointer;
   width: 100%;
@@ -85,11 +86,14 @@ export const LanguageSettings: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLanguageChange = async (langCode: string) => {
-    if (langCode !== i18n.language) {
+  const handleLanguageChange = async (langCode: SupportedLanguage) => {
+    if (langCode !== getCurrentLanguage()) {
       await i18n.changeLanguage(langCode);
-      localStorage.setItem('i18nextLng', langCode);
     }
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', langCode);
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
   };
 
   const getCurrentLanguage = () => {
@@ -97,7 +101,7 @@ export const LanguageSettings: React.FC = () => {
     return lang === 'pl' ? 'pl' : 'en';
   };
 
-  const languages = [
+  const languages: Array<{ code: SupportedLanguage; name: string }> = [
     { code: 'en', name: t('language.settings.en') },
     { code: 'pl', name: t('language.settings.pl') }
   ];

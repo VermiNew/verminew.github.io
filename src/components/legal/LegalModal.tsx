@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import FocusTrap from 'focus-trap-react';
 import { MdClose } from 'react-icons/md';
-import { useTheme } from '@/context/ThemeContext';
-import { useAnimation } from '@/context/AnimationContext';
+import { useTheme } from '@/context/hooks/useTheme';
+import { useAnimation } from '@/context/hooks/useAnimation';
 import { isDarkTheme } from '@/utils/themeUtils';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 // ── Reusable legal modal shell (Privacy Policy / Terms of Service) ─────────────
 // Visual style mirrors the modal used in OrderSection for consistency.
@@ -21,14 +22,19 @@ interface LegalModalProps {
 const Backdrop = styled(motion.div)`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: ${({ theme }) => theme.colors.overlay};
   backdrop-filter: blur(4px);
-  z-index: 1200;
+  z-index: ${({ theme }) => theme.zIndices.modal + 200};
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding: 2rem;
   overflow-y: auto;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 0;
+    align-items: stretch;
+  }
 `;
 
 const Container = styled(motion.div)<{ $isDark: boolean }>`
@@ -43,6 +49,15 @@ const Container = styled(motion.div)<{ $isDark: boolean }>`
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
   position: relative;
   flex-shrink: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    min-height: 100dvh;
+    margin: 0;
+    padding: 4.25rem 1.25rem 1.5rem;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -68,7 +83,7 @@ const CloseButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 `;
@@ -115,7 +130,7 @@ const Body = styled.div`
   }
 
   a {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.link};
     text-decoration: underline;
   }
 
@@ -148,13 +163,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const titleId = React.useId();
 
-  // Lock body scroll while open
-  useEffect(() => {
-    if (!isOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   // Close on Escape
   useEffect(() => {
@@ -172,9 +181,9 @@ export const LegalModal: React.FC<LegalModalProps> = ({
         <Backdrop
           key="legal-backdrop"
           variants={!reducedMotion ? backdropVariants : undefined}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
+          initial={reducedMotion ? false : 'hidden'}
+          animate={reducedMotion ? undefined : 'visible'}
+          exit={reducedMotion ? undefined : 'exit'}
           onClick={onClose}
         >
           <FocusTrap
@@ -187,9 +196,9 @@ export const LegalModal: React.FC<LegalModalProps> = ({
             <Container
               $isDark={isDark}
               variants={!reducedMotion ? modalVariants : undefined}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+              initial={reducedMotion ? false : 'hidden'}
+              animate={reducedMotion ? undefined : 'visible'}
+              exit={reducedMotion ? undefined : 'exit'}
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"

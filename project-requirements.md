@@ -1,174 +1,212 @@
-# Portfolio Website Requirements
+# VermiNew Portfolio — wymagania produktu
 
-## Project Overview
+## 1. Cel
 
-- Purpose: Personal portfolio website showcasing skills and projects
-- Target Audience: Potential employers, fellow developers, tech community
-- Key Features: Bilingual (PL/EN), responsive, modern design, 16 theme variants
-- Core Values: Professionalism, creativity, continuous learning
+Strona ma przedstawiać Michała Oślizło (VermiNew), jego umiejętności, sposób pracy i wybrane projekty. Drugim głównym celem jest umożliwienie potencjalnemu klientowi przygotowania kompletnego briefu zlecenia bez wysyłania danych do własnego backendu strony.
 
-## Technical Stack
+## 2. Odbiorcy
 
-- React 18 with TypeScript
-- Styled-components
-- Framer Motion for animations
-- React-i18next for translations
-- Vite as build tool
-- GitHub Pages hosting
-- GitHub Actions CI/CD
+- rekruterzy i pracodawcy,
+- osoby szukające wykonawcy strony lub aplikacji webowej,
+- programiści i osoby zainteresowane projektami autora.
 
-## Current Sections
+## 3. Zakres funkcjonalny
 
-1. **Hero Section**
-   - Animated logo
-   - Interactive particle background
-   - CTA buttons
+### 3.1 Sekcje
 
-2. **About Section**
-   - Personal introduction
-   - Education info (technical school, INF.03/INF.04)
-   - Name origin explanation
-   - Availability & collaboration terms
+1. Hero — identyfikacja autora, CTA i animowane tło.
+2. O mnie — edukacja, kwalifikacje, sposób pracy i dostępność.
+3. Usługi — zakres możliwej współpracy.
+4. Umiejętności — technologie pogrupowane według kategorii i poziomu.
+5. Projekty — dane techniczne z GitHuba oraz kuratorowane treści PL/EN.
+6. Zleć projekt — wieloetapowy lokalny generator briefu.
+7. FAQ — warunki współpracy i odpowiedzi na najważniejsze pytania.
+8. Kontakt — kanały kontaktu i dostępność.
 
-3. **Skills Section**
-   - Grouped by categories (Frontend Core, Frameworks, Backend, Programming, DevTools, System)
-   - Skill levels (Beginner → Expert)
-   - Planned skills section
+### 3.2 Języki
 
-4. **Projects Section**
-   - Featured/Active/Planned categories
-   - Technology filtering
-   - GitHub integration (repos fetched from GitHub)
-   - Project cards with tech icons
+- polski,
+- angielski,
+- zapamiętanie wyboru w bezpiecznym storage,
+- spójna treść biznesowa i prawna w obu językach,
+- metadane strony aktualizowane razem z językiem.
 
-5. **Contact Section**
-   - Social links (GitHub, LinkedIn, Discord, Email)
-   - Location info
-   - FAQ section
-   - Availability hours
+### 3.3 Motywy
 
-## Theme System
+Projekt utrzymuje 16 motywów:
 
-16 available themes:
-- Basic: Light, Dark
-- Professional: Corporate Modern, Tech Minimal, Professional Dark, Modern Neutral
-- Special: E-Ink Light/Dark, Nord, Solarized Light/Dark
-- Seasonal: Winter, Spring, Summer, Autumn, Pastel
+- Light,
+- Dark,
+- Corporate Modern,
+- Tech Minimal,
+- Professional Dark,
+- Modern Neutral,
+- E-Ink Light,
+- E-Ink Dark,
+- Nord,
+- Solarized Light,
+- Solarized Dark,
+- Winter,
+- Spring,
+- Summer,
+- Autumn,
+- Pastel.
 
-## Design Style
+Każdy motyw musi spełniać wspólny kontrakt semantycznych tokenów, mieć czytelne stany focus/hover oraz właściwy kontrast tekstu i elementów sterujących.
 
-Modern minimalistic with technological accents
+### 3.4 Ustawienia ruchu
 
-### Typography
-- Primary Font: Poppins (headers)
-- Secondary Font: Space Grotesk (body)
-- Code Font: Fira Code
+- tryb systemowy,
+- pełne animacje,
+- ograniczone animacje,
+- osobne ustawienie płynnego przewijania,
+- reakcja na zmianę preferencji systemowej,
+- brak ciągłych animacji w niewidocznej karcie.
 
-### Colors (Light Theme)
-- Background: #ffffff
-- Primary: #2563eb
-- Text: #2c3e50
-- Accent: #8b5cf6
+### 3.5 Projekty
 
-### Colors (Dark Theme)
-- Background: #0a1929
-- Primary: #60a5fa
-- Text: #e2e8f0
-- Accent: #8b5cf6
+- dane publikowane w `public/data/repos.json`,
+- aktualizacja przez GitHub Actions,
+- brak bezpośredniego pobierania danych z gałęzi `main` w runtime,
+- walidacja pełnego schematu,
+- cache jako fallback z czytelnym ostrzeżeniem,
+- ręczna lista projektów wyróżnionych,
+- archiwalne repozytoria niewidoczne w aktywnych projektach,
+- pusty stan filtrów oraz możliwość ponowienia pobrania.
 
-## Personal Information
+### 3.6 Generator briefu
 
-### About Me
-- Name: Michał Oślizło (VermiNew)
-- Born: October 2006
-- Location: Podkarpacie, Poland
-- Education: Technical school (IT technician-programmer)
-- Qualifications: INF.03 completed, preparing for INF.04
+- pięć kroków formularza,
+- walidacja po próbie przejścia dalej,
+- fokus na pierwszym błędnym polu,
+- stabilne identyfikatory wartości niezależne od języka,
+- wersjonowany szkic w `sessionStorage`,
+- walidacja i migracja szkicu,
+- obsługa załączników z limitami typu i rozmiaru,
+- generowanie ZIP dopiero na żądanie,
+- stabilny identyfikator oraz daty utworzenia i aktualizacji,
+- JSON techniczny oraz czytelne briefy PL/EN,
+- jasna informacja, że pobranie nie oznacza wysłania zgłoszenia.
 
-### Name Origin
-Ver (Version) + Mi (Michael) + New (continuous learning)
+## 4. Stos technologiczny
 
-### Approach to Programming
-- **Vibecoder** - uses AI chatbots to accelerate learning and build projects
-- Focus on practical results and seeing code work
-- Self-taught, project-based learning
+- React 18,
+- TypeScript 5.6,
+- Vite 6,
+- styled-components,
+- Framer Motion,
+- i18next oraz react-i18next,
+- JSZip ładowany dynamicznie,
+- GitHub Pages,
+- GitHub Actions,
+- Node.js 26 i npm 11.
 
-### Communication Channels
-- GitHub: github.com/VermiNew
-- LinkedIn: Michał Oślizło
-- Discord: verminew
-- Email: verminewfey@gmail.com
+## 5. Jakość techniczna
 
-### Availability
-- Flexible hours (adapted to school schedule)
-- Remote work only
-- Project-based work preferred
-- Freelance: 50% upfront, 50% on completion
+### 5.1 TypeScript
 
-## Skills Overview
+- project references dla aplikacji i konfiguracji Vite,
+- brak `TS6310`,
+- brak emitowanych plików obok źródeł,
+- cache kompilatora w katalogu ignorowanym przez Git,
+- brak niejawnego omijania plików podczas typechecku.
 
-### Current Skills
-- **Frontend**: HTML5, CSS3, JavaScript, TypeScript (learning)
-- **Frameworks**: Angular (basic), Bootstrap
-- **Backend**: PHP, MySQL
-- **Languages**: C++, C#, Python, Java
-- **Tools**: Git, Markdown, Batch
+### 5.2 Build
 
-### Planned Skills
-- React, Next.js, Vue.js
-- Tailwind CSS
-- FastAPI, Docker
-- TensorFlow, PyTorch (integration, not development)
+- czysty build z `npm ci`,
+- hashowane nazwy assetów,
+- brak generowanych śmieci w repozytorium,
+- progresywne ładowanie cięższych sekcji,
+- dynamiczny import JSZip,
+- zoptymalizowane obrazy publikowane w `public`.
 
-## Browser Support
+### 5.3 Kontrola jakości
 
-- Chrome (last 2 versions)
-- Firefox (last 2 versions)
-- Safari (last 2 versions)
-- Edge (last 2 versions)
-- iOS Safari, Chrome for Android
+Przed wydaniem muszą przejść:
 
-## Performance Targets
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run validate
+npm run build
+```
 
-### Lighthouse Scores
-- Performance: 90+
-- Accessibility: 95+
-- Best Practices: 95+
-- SEO: 95+
+GitHub Actions musi wykonywać ten sam zestaw kontroli na czystej instalacji.
 
-## Features Implemented ✅
+## 6. Automatyzacja GitHub
 
-- [x] Bilingual support (PL/EN)
-- [x] 16 theme variants with persistence
-- [x] System theme detection
-- [x] Responsive design
-- [x] Smooth animations with reduced-motion support
-- [x] Sticky header with active section indicator
-- [x] Mobile menu
-- [x] GitHub repos integration
-- [x] Error boundaries
-- [x] GitHub Actions deployment
-- [x] Lighthouse CI
+### 6.1 Aktualizacja danych projektów
 
-## Planned Features
+- harmonogram codzienny,
+- uruchomienie ręczne i dry run,
+- opcjonalny token z bezpiecznym fallbackiem do limitu publicznego API,
+- paginacja wyników,
+- odrzucanie forków i repozytoriów archiwalnych,
+- atomowy zapis JSON,
+- brak commita przy niezmienionych danych,
+- commit ograniczony do `public/data/repos.json`,
+- jawne uruchomienie deploymentu po commicie automatyzacji.
 
-- [ ] Visit counter
-- [ ] Footer with copyright
-- [ ] Skip link (accessibility)
-- [ ] Code splitting for performance
-- [ ] Professional experience section (timeline)
-- [ ] Snake game (Easter egg)
+### 6.2 Quality i deployment
 
-## Content Management
+- jedna wersja Node z `.nvmrc`,
+- `npm ci` bez cache `node_modules`,
+- testy oraz build na pull requestach i `main`,
+- publikacja przez oficjalne GitHub Pages actions,
+- Lighthouse po wdrożeniu,
+- progi minimalne:
+  - Performance: 90,
+  - Accessibility: 95,
+  - Best Practices: 95,
+  - SEO: 95.
 
-- GitHub-based content management
-- Markdown familiar
-- Easy content updates via translation files
-- Projects fetched automatically from GitHub
+### 6.3 Wydania
 
-## Mobile Optimization
+- tag w formacie `vX.Y.Z`,
+- zgodność wersji taga z `package.json` i `package-lock.json`,
+- pełna weryfikacja przed utworzeniem GitHub Release,
+- archiwum źródłowe generowane z oznaczonego commita.
 
-- Sections stacked vertically
-- Full-width project cards
-- Optimized animations
-- Touch-friendly interactions
+## 7. Dostępność
+
+- semantyczna hierarchia nagłówków,
+- Skip Link,
+- pełna obsługa klawiatury,
+- widoczny focus we wszystkich motywach,
+- focus trap, Escape i przywrócenie fokusu w dialogach,
+- dostępne tooltipy,
+- regiony live dla statusów,
+- lokalizowane etykiety ARIA,
+- obsługa reduced motion,
+- kontrast zgodny co najmniej z WCAG AA dla zwykłego tekstu.
+
+## 8. SEO i publikacja
+
+- dynamiczne title i description PL/EN,
+- canonical, hreflang, Open Graph i Twitter Card,
+- lokalizowany JSON-LD,
+- grafika social preview 1200 × 630,
+- `robots.txt`, `sitemap.xml` i strona 404,
+- manifest oraz osobne ikony maskable,
+- service worker z kontrolowanym cache i poprawną aktualizacją wersji.
+
+## 9. Wsparcie przeglądarek
+
+- aktualne stabilne wersje Chrome, Edge i Firefox,
+- Safari i iOS Safari w zakresie możliwości użytych API,
+- Chrome na Androidzie,
+- bezpieczne fallbacki dla Clipboard API, storage i service workera.
+
+## 10. Definicja wersji 1.0
+
+Wersja 1.0 jest gotowa, gdy:
+
+- pełny pipeline przechodzi na czystym checkoutcie,
+- wszystkie workflowy są zielone,
+- 16 motywów przechodzi kontrolę wizualną,
+- formularz działa od otwarcia do poprawnego ZIP w PL i EN,
+- projekty aktualizują się i działają z cache,
+- interfejs przechodzi kontrolę klawiaturową i mobilną,
+- publiczny deployment odpowiada oznaczonemu commitowi,
+- checklista wydania jest kompletna.

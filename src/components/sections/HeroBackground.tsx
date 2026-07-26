@@ -1,16 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useTheme } from '@/context/ThemeContext';
-import { isDarkTheme } from '@/utils/themeUtils';
-import { useAnimation } from '@/context/AnimationContext';
+import { useTheme } from '@/context/hooks/useTheme';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
 const Canvas = styled.canvas`
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
+  pointer-events: auto;
 `;
 
 interface Particle {
@@ -24,153 +23,157 @@ interface Particle {
   originalY: number;
 }
 
+const hexToRgb = (hex: string): [number, number, number] => {
+  const normalized = hex.replace('#', '');
+  const value = normalized.length === 3
+    ? normalized.split('').map((character) => character + character).join('')
+    : normalized;
+  const parsed = Number.parseInt(value, 16);
+  return [(parsed >> 16) & 255, (parsed >> 8) & 255, parsed & 255];
+};
+
 export const HeroBackground: React.FC = () => {
-  const { themeMode } = useTheme();
+  const { theme } = useTheme();
   const { reducedMotion } = useAnimation();
-  const isDark = isDarkTheme(themeMode);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
-  const mousePosition = useRef({ x: 0, y: 0 });
-  const animationFrameId = useRef<number>();
+  const pointerPosition = useRef({ x: -1_000, y: -1_000 });
+  const animationFrameId = useRef<number | null>(null);
+  const visible = useRef(document.visibilityState === 'visible');
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    let width = 0;
+    let height = 0;
+    const [red, green, blue] = hexToRgb(theme.colors.primary);
+
+    const resizeCanvas = (): void => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = Math.max(1, Math.round(rect.width));
+      height = Math.max(1, Math.round(rect.height));
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const createParticles = () => {
-      const numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000);
-      particles.current = [];
-
-      for (let i = 0; i < numberOfParticles; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const radius = Math.random() * 2 + 1;
-        
-        // Adjust particle colours based on the current theme
-        const color = isDark
-          ? `rgba(${Math.random() * 50 + 150}, ${Math.random() * 50 + 150}, ${
-              Math.random() * 50 + 200
-            }, 0.5)`
-          : `rgba(${Math.random() * 50 + 100}, ${Math.random() * 50 + 150}, ${
-              Math.random() * 50 + 200
-            }, 0.3)`;
-
-        particles.current.push({
+    const createParticles = (): void => {
+      const count = Math.min(90, Math.max(24, Math.floor((width * height) / 18_000)));
+      particles.current = Array.from({ length: count }, () => {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        return {
           x,
           y,
-          radius,
-          color,
+          radius: Math.random() * 1.8 + 0.8,
+          color: `rgba(${red}, ${green}, ${blue}, ${0.2 + Math.random() * 0.28})`,
           vx: 0,
           vy: 0,
           originalX: x,
           originalY: y,
-        });
-      }
+        };
+      });
     };
 
-    const animate = () => {
-      if (reducedMotion) {
-        // If reduced motion is enabled, just draw static particles
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.current.forEach((particle) => {
-          ctx.beginPath();
-          ctx.arc(particle.originalX, particle.originalY, particle.radius, 0, Math.PI * 2);
-          ctx.fillStyle = particle.color;
-          ctx.fill();
-        });
-        return;
-      }
+    const draw = (animateParticles: boolean): void => {
+      context.clearRect(0, 0, width, height);
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const particle of particles.current) {
+        if (animateParticles) {
+          const deltaX = pointerPosition.current.x - particle.x;
+          const deltaY = pointerPosition.current.y - particle.y;
+          const distance = Math.hypot(deltaX, deltaY);
+          const maxDistance = 150;
 
-      particles.current.forEach((particle) => {
-        const dx = mousePosition.current.x - particle.x;
-        const dy = mousePosition.current.y - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDistance = 150;
+          if (distance > 0 && distance < maxDistance) {
+            const force = (maxDistance - distance) / maxDistance;
+            const angle = Math.atan2(deltaY, deltaX);
+            particle.vx -= Math.cos(angle) * force * 0.45;
+            particle.vy -= Math.sin(angle) * force * 0.45;
+          }
 
-        if (distance < maxDistance) {
-          const force = (maxDistance - distance) / maxDistance;
-          const angle = Math.atan2(dy, dx);
-          particle.vx -= Math.cos(angle) * force * 0.5;
-          particle.vy -= Math.sin(angle) * force * 0.5;
+          particle.vx += (particle.originalX - particle.x) * 0.04;
+          particle.vy += (particle.originalY - particle.y) * 0.04;
+          particle.vx *= 0.94;
+          particle.vy *= 0.94;
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+        } else {
+          particle.x = particle.originalX;
+          particle.y = particle.originalY;
         }
 
-        // Return to original position
-        particle.vx += (particle.originalX - particle.x) * 0.05;
-        particle.vy += (particle.originalY - particle.y) * 0.05;
-
-        // Apply friction
-        particle.vx *= 0.95;
-        particle.vy *= 0.95;
-
-        // Update position
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
-        ctx.fill();
-      });
-
-      animationFrameId.current = requestAnimationFrame(animate);
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fillStyle = particle.color;
+        context.fill();
+      }
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const animate = (): void => {
+      if (!visible.current) return;
+      draw(!reducedMotion);
+      if (!reducedMotion) animationFrameId.current = requestAnimationFrame(animate);
+    };
+
+    const restartAnimation = (): void => {
+      if (animationFrameId.current !== null) cancelAnimationFrame(animationFrameId.current);
+      animationFrameId.current = null;
+      if (visible.current) animate();
+    };
+
+    const updatePointer = (clientX: number, clientY: number): void => {
       if (reducedMotion) return;
       const rect = canvas.getBoundingClientRect();
-      mousePosition.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
+      pointerPosition.current = { x: clientX - rect.left, y: clientY - rect.top };
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (reducedMotion) return;
-      const rect = canvas.getBoundingClientRect();
-      mousePosition.current = {
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      };
+    const handlePointerMove = (event: PointerEvent): void => {
+      updatePointer(event.clientX, event.clientY);
     };
 
-    let resizeTimer: ReturnType<typeof setTimeout>;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        resizeCanvas();
-        createParticles();
-      }, 150);
+    const handlePointerLeave = (): void => {
+      pointerPosition.current = { x: -1_000, y: -1_000 };
     };
 
-    window.addEventListener('resize', handleResize);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
+    const handleVisibilityChange = (): void => {
+      visible.current = document.visibilityState === 'visible';
+      if (!visible.current && animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      } else if (visible.current) {
+        restartAnimation();
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      resizeCanvas();
+      createParticles();
+      restartAnimation();
+    });
+
+    resizeObserver.observe(canvas);
+    canvas.addEventListener('pointermove', handlePointerMove);
+    canvas.addEventListener('pointerleave', handlePointerLeave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     resizeCanvas();
     createParticles();
-    animate();
+    restartAnimation();
 
     return () => {
-      clearTimeout(resizeTimer);
-      window.removeEventListener('resize', handleResize);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('touchmove', handleTouchMove);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      resizeObserver.disconnect();
+      canvas.removeEventListener('pointermove', handlePointerMove);
+      canvas.removeEventListener('pointerleave', handlePointerLeave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (animationFrameId.current !== null) cancelAnimationFrame(animationFrameId.current);
     };
-  }, [isDark, reducedMotion]);
+  }, [reducedMotion, theme.colors.primary]);
 
-  return <Canvas ref={canvasRef} />;
-}; 
+  return <Canvas ref={canvasRef} aria-hidden="true" />;
+};

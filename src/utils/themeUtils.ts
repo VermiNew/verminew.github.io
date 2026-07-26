@@ -18,6 +18,28 @@ import {
   pastelTheme,
 } from '@/styles/themes';
 
+export const THEME_MODES: readonly ThemeMode[] = [
+  'light',
+  'dark',
+  'corporateModern',
+  'techMinimal',
+  'professionalDark',
+  'modernNeutral',
+  'eInkLight',
+  'eInkDark',
+  'nord',
+  'solarizedLight',
+  'solarizedDark',
+  'winter',
+  'spring',
+  'summer',
+  'autumn',
+  'pastel',
+] as const;
+
+export const isThemeMode = (value: unknown): value is ThemeMode =>
+  typeof value === 'string' && THEME_MODES.includes(value as ThemeMode);
+
 export const isDarkTheme = (themeMode: ThemeMode): boolean => {
   const darkThemes: ThemeMode[] = [
     'dark',

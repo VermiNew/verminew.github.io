@@ -1,5 +1,5 @@
-export type ThemeMode = 
-  | 'light' 
+export type ThemeMode =
+  | 'light'
   | 'dark'
   | 'corporateModern'
   | 'techMinimal'
@@ -16,23 +16,37 @@ export type ThemeMode =
   | 'autumn'
   | 'pastel';
 
+export interface ThemeColors {
+  background: string;
+  surface: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  text: string;
+  textSecondary: string;
+  border: string;
+  success: string;
+  error: string;
+  warning: string;
+  info: string;
+  special: string;
+  professional: string;
+  onPrimary: string;
+  onSecondary: string;
+  onAccent: string;
+  onSuccess: string;
+  onWarning: string;
+  onError: string;
+  onInfo: string;
+  link: string;
+  linkHover: string;
+  focusRing: string;
+  overlay: string;
+  mobileMenuBackground: string;
+}
+
 export interface Theme {
-  colors: {
-    background: string;
-    surface: string;
-    primary: string;
-    secondary: string;
-    accent: string;
-    text: string;
-    textSecondary: string;
-    border: string;
-    success: string;
-    error: string;
-    warning: string;
-    info: string;
-    special: string;
-    professional: string;
-  };
+  colors: ThemeColors;
   shadows: {
     small: string;
     medium: string;
@@ -54,4 +68,4 @@ export interface Theme {
     tooltip: number;
   };
   logoFilter: string;
-} 
+}

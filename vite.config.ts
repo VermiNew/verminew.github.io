@@ -1,22 +1,23 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import { readFileSync } from 'fs'
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
-const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as { version: string };
+const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const packagePath = path.join(currentDirectory, 'package.json');
+const pkg = JSON.parse(readFileSync(packagePath, 'utf-8')) as { version: string };
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
-  base: '',
+  base: '/',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
-    }
+      '@': path.resolve(currentDirectory, './src'),
+    },
   },
   build: {
     outDir: 'dist',
@@ -25,10 +26,17 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name].js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`
-      }
-    }
-  }
-})
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-i18n': ['i18next', 'react-i18next'],
+          'vendor-ui': ['styled-components', 'focus-trap-react'],
+          'vendor-icons': ['react-icons'],
+        },
+      },
+    },
+  },
+});

@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { LegalModal } from './LegalModal';
 import { socialConfig } from '@/config/social';
+import { isRecord } from '@/utils/translationValues';
 
 interface PrivacyPolicyModalProps {
   isOpen: boolean;
@@ -17,7 +18,19 @@ interface Section {
 export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const interpolation = { adminEmail: socialConfig.email.address };
-  const sections = t('privacy.sections', { returnObjects: true, ...interpolation }) as Section[];
+  const rawSections = t('privacy.sections', { returnObjects: true, ...interpolation }) as unknown;
+  const sections: Section[] = Array.isArray(rawSections)
+    ? rawSections.flatMap((item) => {
+        if (!isRecord(item) || typeof item.title !== 'string') return [];
+        const paragraphs = Array.isArray(item.paragraphs)
+          ? item.paragraphs.filter((value): value is string => typeof value === 'string')
+          : undefined;
+        const list = Array.isArray(item.list)
+          ? item.list.filter((value): value is string => typeof value === 'string')
+          : undefined;
+        return [{ title: item.title, paragraphs, list }];
+      })
+    : [];
 
   return (
     <LegalModal

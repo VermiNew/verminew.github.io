@@ -8,7 +8,7 @@ import { useRepos } from '@/hooks/useRepos';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import { Repo } from '@/types/repo';
+import type { Repo } from '@/types/repo';
 
 const Content = styled.div`
   max-width: 1200px;
@@ -36,7 +36,7 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
   background: ${({ theme, $isActive }) => 
     $isActive ? theme.colors.primary : 'transparent'};
   color: ${({ theme, $isActive }) => 
-    $isActive ? '#fff' : theme.colors.text};
+    $isActive ? theme.colors.onPrimary : theme.colors.text};
   cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.default};
   font-weight: 500;
@@ -48,7 +48,7 @@ const FilterButton = styled.button<{ $isActive: boolean }>`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 `;
@@ -111,11 +111,45 @@ const CategoryTitle = styled.h3`
   }
 `;
 
+const DataWarning = styled.p`
+  margin: 0 auto 1.5rem;
+  padding: 0.75rem 1rem;
+  max-width: 720px;
+  border: 1px solid ${({ theme }) => theme.colors.warning};
+  border-radius: 10px;
+  background: ${({ theme }) => `${theme.colors.warning}12`};
+  color: ${({ theme }) => theme.colors.text};
+  text-align: center;
+  font-size: 0.9rem;
+`;
+
+const VisuallyHidden = styled.div`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 300px;
+`;
+
+const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-align: center;
 `;
 
 const ShowMoreButton = styled.button`
@@ -136,7 +170,7 @@ const ShowMoreButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
     outline-offset: 2px;
   }
 `;
@@ -197,22 +231,24 @@ export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
   const [showAllActive, setShowAllActive] = useState(false);
-  const { data, isLoading, error } = useRepos();
+  const { data, isLoading, error, warning, retry } = useRepos();
 
   const availableTechnologies = useMemo(() => {
     if (!data?.repos) return [];
     const technologies = new Set<string>();
 
-    data.repos.forEach(project => {
-      if (project.language && filterValidTechnology(project.language)) {
-        technologies.add(project.language);
-      }
-      project.technologies.forEach((tech: string) => {
-        if (filterValidTechnology(tech)) {
-          technologies.add(tech);
+    data.repos
+      .filter((project) => !project.archived && project.status !== 'archived')
+      .forEach((project) => {
+        if (project.language && filterValidTechnology(project.language)) {
+          technologies.add(project.language);
         }
+        project.technologies.forEach((technology) => {
+          if (filterValidTechnology(technology)) {
+            technologies.add(technology);
+          }
+        });
       });
-    });
 
     return Array.from(technologies).sort();
   }, [data?.repos]);
@@ -226,24 +262,23 @@ export const ProjectsSection: React.FC = () => {
   ], [availableTechnologies, t]);
 
   const handleFilterClick = useCallback((filterId: string) => {
-    if (filterId === 'all') {
-      setActiveFilters(['all']);
-    } else {
-      const newFilters = activeFilters.includes('all') 
+    setActiveFilters((current) => {
+      if (filterId === 'all') return ['all'];
+      const next = current.includes('all')
         ? [filterId]
-        : activeFilters.includes(filterId)
-          ? activeFilters.filter(f => f !== filterId)
-          : [...activeFilters, filterId];
-      
-      setActiveFilters(newFilters.length === 0 ? ['all'] : newFilters);
-    }
+        : current.includes(filterId)
+          ? current.filter((filter) => filter !== filterId)
+          : [...current, filterId];
+      return next.length === 0 ? ['all'] : next;
+    });
     setShowAllActive(false);
-  }, [activeFilters]);
+  }, []);
 
   const filteredProjects = useMemo(() => {
     if (!data?.repos) return [];
-    if (activeFilters.includes('all')) return data.repos;
-    return data.repos.filter(project => {
+    const visibleRepositories = data.repos.filter((project) => !project.archived && project.status !== 'archived');
+    if (activeFilters.includes('all')) return visibleRepositories;
+    return visibleRepositories.filter(project => {
       const projectTechnologies = [
         ...(project.language ? [project.language] : []),
         ...project.technologies
@@ -300,21 +335,31 @@ export const ProjectsSection: React.FC = () => {
           ))}
         </FilterContainer>
 
-        <div 
-          role="status" 
-          aria-live="polite" 
-          aria-atomic="true"
-          style={{ display: 'none' }}
-        >
+        <VisuallyHidden role="status" aria-live="polite" aria-atomic="true">
           {t('projects.resultsCount', { count: filteredProjects.length })}
-        </div>
+        </VisuallyHidden>
+
+        {warning && data && (
+          <DataWarning role="status">{t('projects.cachedWarning')}</DataWarning>
+        )}
 
         {isLoading ? (
           <LoadingContainer>
             <LoadingSpinner />
           </LoadingContainer>
         ) : error ? (
-          <ErrorMessage message={error.message} />
+          <ErrorMessage
+            message={t('projects.loadError')}
+            actionLabel={t('projects.retry')}
+            onAction={retry}
+          />
+        ) : filteredProjects.length === 0 ? (
+          <EmptyState role="status">
+            <p>{t('projects.noResults')}</p>
+            <ShowMoreButton type="button" onClick={() => setActiveFilters(['all'])}>
+              {t('projects.clearFilters')}
+            </ShowMoreButton>
+          </EmptyState>
         ) : (
           <ProjectsContainer>
             {organizedProjects.featured.length > 0 && (

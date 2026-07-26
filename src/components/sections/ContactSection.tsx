@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
 import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdLocationOn, MdSchedule } from 'react-icons/md';
-import { SectionContainer } from '@/components/layout/SectionContainer';
+import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
-import { useAnimation } from '@/context/AnimationContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
 import { socialConfig } from '@/config/social';
 
 const ContactContainer = styled(motion.div)`
@@ -181,29 +181,33 @@ export const ContactSection: React.FC = () => {
       value: socialConfig.github.username,
       icon: <SiGithub />,
       link: socialConfig.github.url,
+      external: true,
     },
     {
       title: t('contact.linkedin'),
       value: socialConfig.linkedin.username,
       icon: <SiLinkedin />,
       link: socialConfig.linkedin.url,
+      external: true,
     },
     {
       title: t('contact.discord'),
       value: socialConfig.discord.username,
       icon: <SiDiscord />,
       link: socialConfig.discord.url,
+      external: true,
     },
     {
       title: t('contact.email'),
       value: socialConfig.email.address,
       icon: <MdEmail />,
-      link: `mailto:${socialConfig.email.address}`,
+      link: socialConfig.email.url,
+      external: false,
     },
   ], [t]);
 
   return (
-    <SectionContainer id="contact">
+    <Section id="contact">
       <SectionTitle>{t('sections.contact')}</SectionTitle>
       <ContactContainer
         variants={!reducedMotion ? containerVariants : undefined}
@@ -223,8 +227,8 @@ export const ContactSection: React.FC = () => {
             <ContactCard 
               key={contact.title}
               href={contact.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={contact.external ? '_blank' : undefined}
+              rel={contact.external ? 'noopener noreferrer' : undefined}
               $isDark={isDark}
               variants={!reducedMotion ? itemVariants : undefined}
               custom={index}
@@ -258,6 +262,6 @@ export const ContactSection: React.FC = () => {
         </AdditionalInfo>
 
       </ContactContainer>
-    </SectionContainer>
+    </Section>
   );
 }; 

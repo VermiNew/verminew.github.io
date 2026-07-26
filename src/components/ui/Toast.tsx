@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
-type ToastType = 'success' | 'info' | 'error';
+export type ToastType = 'success' | 'info' | 'error';
 
 interface ToastProps {
   message: string;
@@ -20,21 +21,20 @@ const ToastContainer = styled(motion.div)<{ $type: ToastType }>`
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   background: ${({ theme, $type }) => {
-    switch ($type) {
-      case 'success':
-        return theme.colors.success || '#10B981';
-      case 'error':
-        return theme.colors.error || '#EF4444';
-      default:
-        return theme.colors.primary;
-    }
+    if ($type === 'success') return theme.colors.success;
+    if ($type === 'error') return theme.colors.error;
+    return theme.colors.info;
   }};
-  color: white;
+  color: ${({ theme, $type }) => {
+    if ($type === 'success') return theme.colors.onSuccess;
+    if ($type === 'error') return theme.colors.onError;
+    return theme.colors.onInfo;
+  }};
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1100;
   min-width: 200px;
   max-width: 90%;
 `;
@@ -57,7 +57,8 @@ const ProgressBar = styled(motion.div)`
   bottom: 0;
   left: 0;
   height: 3px;
-  background: rgba(255, 255, 255, 0.5);
+  background: currentColor;
+  opacity: 0.45;
   border-radius: 0 0 0.5rem 0.5rem;
 `;
 
@@ -65,41 +66,43 @@ export const Toast: React.FC<ToastProps> = ({
   message,
   type = 'info',
   duration = 3000,
-  onClose
+  onClose,
 }) => {
+  const { reducedMotion } = useAnimation();
+
   useEffect(() => {
-    const timer = setTimeout(onClose, duration);
-    return () => clearTimeout(timer);
+    const timer = window.setTimeout(onClose, duration);
+    return () => window.clearTimeout(timer);
   }, [duration, onClose]);
 
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return <FiCheck />;
-      case 'error':
-        return <FiAlertCircle />;
-      default:
-        return <FiInfo />;
-    }
-  };
+  const icon = type === 'success'
+    ? <FiCheck aria-hidden="true" />
+    : type === 'error'
+      ? <FiAlertCircle aria-hidden="true" />
+      : <FiInfo aria-hidden="true" />;
 
   return (
     <AnimatePresence>
       <ToastContainer
         $type={type}
-        initial={{ opacity: 0, y: 50 }}
+        role={type === 'error' ? 'alert' : 'status'}
+        aria-live={type === 'error' ? 'assertive' : 'polite'}
+        initial={reducedMotion ? false : { opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ type: 'spring', damping: 20 }}
+        exit={reducedMotion ? undefined : { opacity: 0, y: 20 }}
+        transition={reducedMotion ? { duration: 0 } : { type: 'spring', damping: 20 }}
       >
-        <IconWrapper>{getIcon()}</IconWrapper>
+        <IconWrapper>{icon}</IconWrapper>
         <Message>{message}</Message>
-        <ProgressBar
-          initial={{ width: '100%' }}
-          animate={{ width: '0%' }}
-          transition={{ duration: duration / 1000, ease: 'linear' }}
-        />
+        {!reducedMotion && (
+          <ProgressBar
+            aria-hidden="true"
+            initial={{ width: '100%' }}
+            animate={{ width: '0%' }}
+            transition={{ duration: duration / 1000, ease: 'linear' }}
+          />
+        )}
       </ToastContainer>
     </AnimatePresence>
   );
-}; 
+};

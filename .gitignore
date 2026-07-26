@@ -17,8 +17,10 @@ dist-ssr
 .cache
 .temp
 *.cache
-tsconfig.tsbuildinfo
-tsconfig.node.tsbuildinfo
+*.tsbuildinfo
+.vite/
+.eslintcache
+.lighthouseci/
 
 # Editor directories and files
 .idea/
@@ -48,13 +50,17 @@ tsconfig.node.tsbuildinfo
 .env.production.local
 
 # Test and coverage
+test-results/
+playwright-report/
+
 coverage
 .nyc_output
 __snapshots__
 *.test.js.snap
 
 # Auto-generated files
-public/data/repos.json
+vite.config.js
+vite.config.d.ts
 
 # Agent directories
 .agents/

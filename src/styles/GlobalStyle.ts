@@ -10,11 +10,15 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 
   html {
     font-size: 16px;
+    scroll-behavior: auto;
+  }
+
+  html[data-smooth-scroll='true'] {
     scroll-behavior: smooth;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
+    html[data-smooth-scroll='true'] {
       scroll-behavior: auto;
     }
   }
@@ -51,12 +55,12 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
   }
 
   a {
-    color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.link};
     text-decoration: none;
     transition: color ${({ theme }) => theme.transitions.fast};
 
     &:hover {
-      color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.linkHover};
     }
   }
 
@@ -72,7 +76,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 
   ::selection {
     background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.onPrimary};
   }
 
   ::-webkit-scrollbar {

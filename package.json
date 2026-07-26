@@ -1,20 +1,25 @@
 {
   "name": "verminew.github.io",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "clean": "node scripts/clean.js",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "assets": "node scripts/convert-images.js",
+    "assets:check": "npm run assets && git diff --exit-code -- public/assets",
+    "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
+    "build": "npm run clean && npm run typecheck && vite build",
+    "verify": "npm run lint && npm run test && npm run validate && npm run build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "validate": "node scripts/validate-project.js",
+    "test": "node --test tests/*.test.mjs tests/*.test.ts"
   },
   "dependencies": {
     "focus-trap-react": "^12.0.0",
     "framer-motion": "^12.0.6",
     "i18next": "^24.2.2",
-    "i18next-browser-languagedetector": "^8.0.2",
     "jszip": "^3.10.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -28,7 +33,6 @@
     "@types/node": "^22.12.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@types/styled-components": "^5.1.34",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
@@ -38,7 +42,11 @@
     "terser": "^5.37.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5",
-    "vite-tsconfig-paths": "^4.3.1"
-  }
+    "vite": "^6.0.5"
+  },
+  "engines": {
+    "node": ">=26.0.0 <27",
+    "npm": ">=11.0.0"
+  },
+  "packageManager": "npm@11.17.0"
 }

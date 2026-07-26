@@ -4,11 +4,13 @@ import { motion } from 'framer-motion';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Button } from '@/components/ui/Button';
+import { useAnimation } from '@/context/hooks/useAnimation';
+import { scrollToSection } from '@/utils/scroll';
+import { asStringArray } from '@/utils/translationValues';
 import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/context/ThemeContext';
-import { useAnimation } from '@/context/AnimationContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { getSocialUrl } from '@/config/social';
 import { isDarkTheme } from '@/utils/themeUtils';
 
@@ -261,16 +263,11 @@ const itemVariants = {
 };
 
 export const AboutSection: React.FC = () => {
+  const { reducedMotion, smoothScroll } = useAnimation();
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const { reducedMotion } = useAnimation();
 
-  const scrollToOrder = () => {
-    const element = document.querySelector('#order');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const scrollToOrder = () => scrollToSection('order', smoothScroll && !reducedMotion);
 
   return (
     <Section id="about">
@@ -347,7 +344,7 @@ export const AboutSection: React.FC = () => {
                     {t('about.background.interests.title')}
                   </BackgroundTitle>
                   <List>
-                    {(t('about.background.interests.list', { returnObjects: true }) as string[])
+                    {asStringArray(t('about.background.interests.list', { returnObjects: true }) as unknown)
                       .map((interest, index) => (
                         <ListItem key={index}>{String(interest)}</ListItem>
                       ))}
@@ -372,7 +369,7 @@ export const AboutSection: React.FC = () => {
                   </Paragraph>
                   
                   <List>
-                    {(t('about.background.availability.workConditions', { returnObjects: true }) as string[])
+                    {asStringArray(t('about.background.availability.workConditions', { returnObjects: true }) as unknown)
                       .map((condition, index) => (
                         <ListItem key={index}>{condition}</ListItem>
                       ))}
@@ -387,7 +384,7 @@ export const AboutSection: React.FC = () => {
                   </Paragraph>
                   
                   <List>
-                    {(t('about.background.availability.freelance.highlights', { returnObjects: true }) as string[])
+                    {asStringArray(t('about.background.availability.freelance.highlights', { returnObjects: true }) as unknown)
                       .map((highlight, index) => (
                         <ListItem key={index}>{highlight}</ListItem>
                       ))}
@@ -408,7 +405,7 @@ export const AboutSection: React.FC = () => {
                     href={getSocialUrl('github')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${t('about.profiles.github')} (opens in new tab)`}
+                    aria-label={t('about.profiles.externalLabel', { profile: t('about.profiles.github') })}
                   >
                     <SiGithub aria-hidden="true" />
                     {t('about.profiles.github')}
@@ -417,7 +414,7 @@ export const AboutSection: React.FC = () => {
                     href={getSocialUrl('discord')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${t('about.profiles.discord')} (opens in new tab)`}
+                    aria-label={t('about.profiles.externalLabel', { profile: t('about.profiles.discord') })}
                   >
                     <SiDiscord aria-hidden="true" />
                     {t('about.profiles.discord')}
@@ -426,7 +423,7 @@ export const AboutSection: React.FC = () => {
                     href={getSocialUrl('linkedin')}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${t('about.profiles.linkedin')} (opens in new tab)`}
+                    aria-label={t('about.profiles.externalLabel', { profile: t('about.profiles.linkedin') })}
                   >
                     <SiLinkedin aria-hidden="true" />
                     {t('about.profiles.linkedin')}

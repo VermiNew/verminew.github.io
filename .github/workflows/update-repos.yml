@@ -2,130 +2,110 @@ name: Update Repository Data
 
 on:
   schedule:
-    # Raz dziennie o 2:00 UTC (3:00 CET / 4:00 CEST dla Polski)
     - cron: '0 2 * * *'
-  
   workflow_dispatch:
     inputs:
       force_update:
-        description: 'Force update even if no changes'
+        description: Refresh the timestamp even when repository data is unchanged
         required: false
         type: boolean
         default: false
-  
+      dry_run:
+        description: Generate and validate data without committing it
+        required: false
+        type: boolean
+        default: false
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - '.github/scripts/fetch-repos.js'
       - '.github/workflows/update-repos.yml'
-  
+      - 'scripts/validate-project.js'
   repository_dispatch:
     types: [update_projects]
-  
-  # Opcjonalnie: po nowym repo lub update'cie repo
-  # watch:
-  #   types: [started]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-repository-data
+  cancel-in-progress: false
 
 jobs:
-  update-repos:
+  update:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    
+    timeout-minutes: 20
+
     steps:
-      - name: 📥 Checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version-file: .nvmrc
+          cache: npm
 
-      - name: 💾 Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-update-deps-${{ hashFiles('.github/scripts/package*.json') }}
-          restore-keys: |
-            ${{ runner.os }}-update-deps-
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
 
-      - name: 📦 Install dependencies
-        working-directory: .github/scripts
-        run: |
-          if [ -f package.json ]; then
-            npm ci
-          else
-            npm install @octokit/rest
-          fi
-
-      - name: 📡 Fetch repository data
+      - name: Fetch repository data
         env:
+          FORCE_UPDATE: ${{ inputs.force_update || false }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
-        working-directory: .github/scripts
-        run: |
-          echo "📊 Starting repository data fetch..."
-          node fetch-repos.js
-          echo "✅ Fetch complete!"
+        run: node .github/scripts/fetch-repos.js
 
-      - name: 🔍 Check for changes
-        id: check_changes
+      - name: Validate generated data
+        run: npm run validate
+
+      - name: Detect changes
+        id: changes
+        shell: bash
         run: |
-          if git diff --quiet public/data/repos.json; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            echo "ℹ️  No changes detected in repos.json"
+          if git diff --quiet -- public/data/repos.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "changed=true" >> $GITHUB_OUTPUT
-            echo "✅ Changes detected in repos.json"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 📊 Generate diff summary
-        if: steps.check_changes.outputs.changed == 'true'
+      - name: Summarize changes
+        if: steps.changes.outputs.changed == 'true'
         run: |
-          echo "### 📊 Repository Data Changes" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`diff" >> $GITHUB_STEP_SUMMARY
-          git diff public/data/repos.json | head -50 >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "### Repository data changes" >> "$GITHUB_STEP_SUMMARY"
+          echo '```diff' >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat -- public/data/repos.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: 💾 Commit and push changes
-        if: steps.check_changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+      - name: Commit and push data
+        if: steps.changes.outputs.changed == 'true' && inputs.dry_run != true
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           git config --local user.name 'github-actions[bot]'
-          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
-          
+          git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add public/data/repos.json
-          
-          # Commit message z datą
-          COMMIT_DATE=$(date -u +'%Y-%m-%d %H:%M UTC')
-          git commit -m "chore: update repository data [skip ci]
-
-          - Updated at: ${COMMIT_DATE}
-          - Triggered by: ${{ github.event_name }}
-          - Workflow: ${{ github.workflow }}"
-          
+          git commit -m "chore(automation): update repository data" -m "Triggered by: ${EVENT_NAME}"
           git push
 
-      - name: ✅ Success summary
-        if: steps.check_changes.outputs.changed == 'true'
+      # A push made with GITHUB_TOKEN does not start normal push workflows.
+      # repository_dispatch is one of the documented exceptions, so deployment is explicit.
+      - name: Trigger Pages deployment
+        if: steps.changes.outputs.changed == 'true' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "### ✅ Repository Data Updated" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Updated at**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Changes**: Yes" >> $GITHUB_STEP_SUMMARY
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" \
+            -f event_type='deploy_pages' \
+            -F client_payload[source_workflow]="${GITHUB_WORKFLOW}" \
+            -F client_payload[source_run_id]="${GITHUB_RUN_ID}"
 
-      - name: ℹ️ No changes summary
-        if: steps.check_changes.outputs.changed == 'false'
+      - name: Summary
+        if: always()
         run: |
-          echo "### ℹ️  No Changes Detected" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Repository data is already up to date." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Checked at**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "### Update result" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Changed: ${{ steps.changes.outputs.changed || 'unknown' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dry run: ${{ inputs.dry_run || false }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Trigger: ${{ github.event_name }}" >> "$GITHUB_STEP_SUMMARY"

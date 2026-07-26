@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { FiGlobe, FiMonitor, FiSmartphone } from 'react-icons/fi';
 import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
-import { useAnimation } from '@/context/AnimationContext';
-import { useTheme } from '@/context/ThemeContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
+import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
 
 const ServicesGrid = styled.div`

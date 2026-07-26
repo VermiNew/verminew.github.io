@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { motion, useScroll, AnimatePresence } from 'framer-motion';
 import FocusTrap from 'focus-trap-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/context/hooks/useTheme';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { isDarkTheme } from '@/utils/themeUtils';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 const HeaderContainer = styled(motion.header)<{ $isScrolled: boolean }>`
   position: fixed;
@@ -213,37 +214,38 @@ const MobileMenuButton = styled.button`
   }
 `;
 
-const MobileMenu = styled(motion.nav)<{ $isDark: boolean }>`
+const MobileMenuCloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.focusRing};
+    outline-offset: 3px;
+  }
+`;
+
+const MobileMenu = styled(motion.nav)`
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: ${({ theme, $isDark }) => {
-    const bg = theme.colors.background;
-    switch (bg) {
-      // E-ink themes
-      case '#121212': return 'rgba(0, 0, 0, 0.95)';
-      // Nord theme
-      case '#2E3440': return 'rgba(46, 52, 64, 0.95)';
-      // Solarized themes
-      case '#002B36': return 'rgba(0, 43, 54, 0.95)';
-      case '#FDF6E3': return 'rgba(253, 246, 227, 0.95)';
-      // Winter theme
-      case '#f0f8ff': return 'rgba(240, 248, 255, 0.95)';
-      // Spring theme
-      case '#f8fff8': return 'rgba(248, 255, 248, 0.95)';
-      // Summer theme
-      case '#fffaf0': return 'rgba(255, 250, 240, 0.95)';
-      // Autumn theme
-      case '#fdf5e6': return 'rgba(253, 245, 230, 0.95)';
-      // Pastel theme
-      case '#fef6ff': return 'rgba(254, 246, 255, 0.95)';
-      // Default
-      default: return $isDark ? 'rgba(18, 18, 18, 0.95)' : 'rgba(255, 255, 255, 0.95)';
-    }
-  }};
+  inset: 0;
+  background: ${({ theme }) => theme.colors.mobileMenuBackground};
   backdrop-filter: blur(20px);
   padding: 5rem 1.5rem 1.5rem;
   z-index: ${({ theme }) => theme.zIndices.header - 1};
@@ -330,17 +332,7 @@ export const Header: React.FC = () => {
   const { t } = useTranslation();
   const activeSection = useActiveSection();
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMobileMenuOpen]);
+  useBodyScrollLock(isMobileMenuOpen);
 
   useEffect(() => {
     const unsubscribe = scrollY.on('change', (latest: number) => {
@@ -436,16 +428,28 @@ export const Header: React.FC = () => {
 
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <FocusTrap>
+          <FocusTrap
+            focusTrapOptions={{
+              allowOutsideClick: true,
+              escapeDeactivates: false,
+              returnFocusOnDeactivate: true,
+            }}
+          >
             <MobileMenu
               id="mobile-menu"
               aria-label={t('navigation.mobileLabel')}
-              $isDark={isDark}
               variants={menuVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
+              <MobileMenuCloseButton
+                type="button"
+                onClick={() => setIsMobileMenuOpen(false)}
+                aria-label={t('navigation.close')}
+              >
+                <FiX aria-hidden="true" size={24} />
+              </MobileMenuCloseButton>
               {navItems.map((item, index) => (
                 <MobileNavLink
                   $isDark={isDark}

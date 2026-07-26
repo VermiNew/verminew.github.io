@@ -8,11 +8,11 @@
   },
   "navigation": {
     "start": "Start",
-    "background": "Background",
+    "background": "About",
     "skills": "Skills",
     "projects": "Projects",
     "services": "Services",
-    "order": "Start a Project",
+    "order": "Hire Me",
     "faq": "FAQ",
     "contact": "Contact",
     "homeLabel": "VermiNew — go to the top of the page",
@@ -26,20 +26,21 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "I build working web products — fast, with AI, deliberately",
+    "title": "I build websites and web apps — fast, with AI, no fluff",
     "cta": {
-      "about": "Get to know me",
+      "about": "About me",
       "projects": "View projects"
     }
   },
   "about": {
     "title": "About Me",
-    "name": "Michael Oslizlo",
-    "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
-    "focus": "I focus on web and application development, constantly expanding my knowledge and skills. I have passed both INF.03 and INF.04 qualifications (practical and theoretical exams). I find the greatest satisfaction in seeing the results of my work. I actively use AI tools as part of my workflow — it lets me deliver projects faster and more effectively, and this portfolio is exactly the proof of that.",
+    "imageAlt": "Portrait of Michał Oślizło (VermiNew)",
+    "name": "Michał Oślizło",
+    "intro": "I'm Michał, a self-taught developer from Poland. Born in October 2006, currently in technical school studying software development.",
+    "focus": "I focus on websites and web applications. Passed INF.03 and INF.04 qualifications. I use AI as a tool — not to replace thinking, but to ship things faster. This portfolio is proof of that.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
-      "description": "Ver - Version, Mi - Michael, New - continuous learning of new things. This combination reflects my passion for growth and constant improvement."
+      "description": "Ver - Version, Mi - Michał, New - always learning something new. Always a new version of myself."
     },
     "birthInfo": "Born in October 2006",
     "profiles": {
@@ -47,14 +48,15 @@
       "github": "GitHub",
       "linkedin": "LinkedIn",
       "discord": "Discord",
-      "email": "Email"
+      "email": "Email",
+      "externalLabel": "{{profile}} — opens in a new tab"
     },
     "background": {
       "title": "About Me",
       "education": {
         "title": "Education",
-        "current": "Technical school student, specialization: IT technician-programmer",
-        "achievements": "INF.03 qualification passed, INF.04 qualification passed (both practical and theoretical)"
+        "current": "Technical school, specialization: IT technician-programmer",
+        "achievements": "INF.03 qualification passed, INF.04 qualification passed (practical and theoretical)"
       },
       "languages": {
         "title": "Languages",
@@ -62,50 +64,56 @@
         "english": "English (B2 — extended-level school exam)"
       },
       "interests": {
-        "title": "Interests & Technologies",
+        "title": "Interests",
         "list": [
-          "Building projects with AI as a tool",
-          "Microcontrollers — ESP32, STM32 (hobby projects)",
-          "Exploring new technologies through practice"
+          "Web projects with AI as a tool",
+          "Microcontrollers — ESP32, STM32 (hobby)",
+          "New tech — I learn by building, not by reading"
         ]
       },
       "strengths": {
-        "title": "What I Find Satisfying",
-        "description": "I code because I want to and because I enjoy seeing things work. The biggest satisfaction comes from watching my code run and deliver real results. It's that simple."
+        "title": "What I enjoy",
+        "description": "I code because I like it when things work. Seeing the result of my work is genuinely satisfying. That's it."
       },
       "growth": {
-        "title": "Growth Areas",
-        "description": "I openly acknowledge areas that need improvement: working under pressure, operating in very large teams, and certain aspects of mathematics. While group work initially poses a challenge for me, I actively work on developing my teamwork skills and adapting to group dynamics. I treat these challenges as opportunities for growth and systematically work on them."
+        "title": "What I won't pretend I'm good at",
+        "description": "Working under tight deadlines, large teams (still learning), advanced math. I don't pretend otherwise. Solo or small team work? That I handle well."
       },
       "availability": {
-        "title": "Availability & Collaboration Terms",
-        "description": "As a technical school student, I offer flexible working hours adapted to my class schedule. I am unable to work full-time due to school commitments and study requirements. I work exclusively remotely.",
+        "title": "Availability",
+        "description": "I'm a student, so I can work a few hours a day — not full-time. Remote only.",
         "workConditions": [
-          "Flexible working hours",
-          "Remote work only",
-          "Available on selected days",
-          "Project-based work preferred"
+          "Flexible hours",
+          "Remote only",
+          "Project-based work preferred",
+          "Available on selected days"
         ],
         "freelance": {
-          "title": "Freelance Projects",
-          "description": "I also accept freelance projects. Payment model: 50% upfront deposit, 50% on completion and acceptance.",
+          "title": "Freelance",
+          "description": "I take freelance projects. Payment model: 50% upfront, 50% on acceptance.",
           "highlights": [
-            "Clear collaboration terms",
-            "Transparent payment model",
-            "Regular communication during project execution",
+            "Clear terms before we start",
+            "Two-instalment payment",
+            "Regular updates during the project",
             "Revisions within agreed scope"
           ]
         }
       }
     },
     "order": {
-      "button": "Get a Free Quote",
-      "tooltip": "Describe your app idea to me"
+      "button": "Hire Me",
+      "tooltip": "Tell me about your idea"
     },
     "skills": {
       "title": "Skills",
-      "description": "My technical skills cover a wide range of technologies and tools",
-      "aiNote": "I actively develop my skills by working with AI tools. This allows me to deliver projects beyond my current experience while learning new technologies in practice.",
+      "description": "Technologies I actually work with",
+      "aiNote": "I use AI as a tool — it lets me ship things beyond my current experience level while learning along the way.",
+      "filterAll": "All",
+      "filterFrontend": "Frontend",
+      "filterBackend": "Backend",
+      "filterLanguages": "Languages",
+      "filterTools": "Tools",
+      "filterPlanned": "Planned",
       "levels": {
         "planned": "Planned",
         "beginner": "Beginner",
@@ -142,7 +150,7 @@
         },
         "frontendFrameworks": {
           "title": "Frontend Frameworks & Libraries",
-          "description": "Advanced tools for building user interfaces",
+          "description": "Advanced tools for building interfaces",
           "skills": {
             "react": {
               "name": "React",
@@ -162,7 +170,7 @@
             },
             "bootstrap": {
               "name": "Bootstrap",
-              "description": "Creating responsive interfaces"
+              "description": "Responsive interface development"
             }
           }
         },
@@ -182,19 +190,19 @@
         },
         "programming": {
           "title": "Programming Languages",
-          "description": "Core programming languages",
+          "description": "Languages I write in",
           "skills": {
             "cpp": {
               "name": "C++",
-              "description": "Advanced programming, algorithms and data structures"
+              "description": "Algorithms, data structures, microcontrollers"
             },
             "csharp": {
               "name": "C#",
-              "description": "Desktop application development"
+              "description": "Desktop application development (WPF, WinForms)"
             },
             "python": {
               "name": "Python",
-              "description": "Scripts, automation and AI-assisted projects"
+              "description": "Scripts, automation, AI-assisted projects"
             },
             "java": {
               "name": "Java",
@@ -203,12 +211,12 @@
           }
         },
         "devTools": {
-          "title": "Development Tools",
-          "description": "Tools supporting the software development process",
+          "title": "Tools",
+          "description": "Everyday development tools",
           "skills": {
             "git": {
               "name": "Git",
-              "description": "Version control and team collaboration"
+              "description": "Version control, branching, GitHub Actions"
             },
             "markdown": {
               "name": "Markdown",
@@ -217,12 +225,12 @@
           }
         },
         "systemDevops": {
-          "title": "System & DevOps",
-          "description": "System and operational tools",
+          "title": "System & Automation",
+          "description": "Scripting and system tools",
           "skills": {
             "batch": {
               "name": "Batch",
-              "description": "Windows scripting and automation"
+              "description": "Windows scripting and task automation"
             },
             "androidStudio": {
               "name": "Android Studio",
@@ -231,12 +239,12 @@
           }
         },
         "plannedSkills": {
-          "title": "Planned Skills",
+          "title": "Planned",
           "description": "Technologies I plan to learn",
           "skills": {
             "bash": {
               "name": "Bash",
-              "description": "Linux shell scripting — useful for servers and cross-platform repos"
+              "description": "Linux shell scripting — useful for servers and CI/CD"
             }
           }
         }
@@ -252,9 +260,11 @@
     "resultsCount_one": "1 project",
     "resultsCount_other": "{{count}} projects",
     "featured": "Featured",
-    "featuredTitle": "Featured Projects",
-    "otherTitle": "Active Projects",
-    "plannedTitle": "Planned Projects",
+    "featuredTitle": "Featured",
+    "otherTitle": "Other projects",
+    "plannedTitle": "Planned",
+    "showMore": "Show more ({{count}})",
+    "showLess": "Show less",
     "tags": {
       "archived": "Archived",
       "visibility": {
@@ -263,14 +273,20 @@
       }
     },
     "viewGithub": "View on GitHub",
-    "visitLive": "Visit Live",
+    "visitLive": "Live demo",
     "categories": {
       "frontend": "Frontend",
       "backend": "Backend",
       "fullstack": "Full Stack",
       "tools": "Tools",
       "ai": "AI-Powered"
-    }
+    },
+    "cachedWarning": "Showing the most recently saved data. The online update is temporarily unavailable.",
+    "linkLabel": "{{action}} for {{title}} — opens in a new tab",
+    "loadError": "Projects could not be loaded.",
+    "retry": "Try again",
+    "noResults": "No projects match the selected filters.",
+    "clearFilters": "Clear filters"
   },
   "settings": {
     "title": "Settings",
@@ -288,83 +304,89 @@
       "system": "System"
     },
     "preferences": {
-      "reducedMotion": "Reduced Motion"
+      "reducedMotion": "Reduced Motion",
+      "smoothScroll": "Smooth Scrolling",
+      "motionPreference": "Animations",
+      "motionSystem": "System preference",
+      "motionFull": "Full",
+      "motionReduced": "Reduced"
     }
   },
   "order": {
-    "title": "Start a Project",
-    "description": "Interested in working together? Fill out the form and I'll generate an order package ready to send by email. Payment model: 30% upfront, 50% near completion, 20% upon delivery of code and copyright transfer.",
+    "title": "Hire Me",
+    "description": "Got a project idea? Fill out the form and I'll generate an order package ready to send by email. I'll quote after reviewing the details. Payment: 50% upfront, 50% on acceptance.",
     "preview": {
       "cta": "Fill out the form",
       "hint": "Click to open"
     },
     "modal": {
       "close": "Close",
-      "confirmClose": "The form has not been completed yet.\nAre you sure you want to close?",
-      "confirmCloseHint": "Your data will be remembered.",
-      "confirmClear": "All entered data will be deleted.\nAre you sure you want to clear the form?",
+      "confirmClose": "The form isn't finished yet.\nClose without saving?",
+      "confirmCloseHint": "Your data will be kept for this session.",
+      "confirmClear": "All form data will be deleted.\nAre you sure?",
       "confirmNo": "Cancel",
       "confirmYesClose": "Yes, close",
       "confirmYesClear": "Yes, clear"
     },
     "form": {
-      "name": "Full Name",
-      "namePlaceholder": "What is your or your company's name?",
-      "email": "Email Address",
-      "emailPlaceholder": "name@company.com",
-      "type": "Required Service",
-      "typePlaceholder": "What do you need built?",
+      "name": "Your name",
+      "namePlaceholder": "What should I call you?",
+      "email": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "type": "What do you need?",
+      "typePlaceholder": "Select type of project",
       "typeOptions": [
-        "Website / Web App (React, Vue, Next.js)",
+        "Website / Web App (React, Next.js, Vue)",
         "Desktop Application (WPF, WinForms, Tauri)",
-        "Mobile Application (Android, React Native, PWA)",
+        "Mobile App (Android, React Native, PWA)",
         "Backend / API (Python, PHP, Node.js)",
-        "Script / Automation (Python, C++)",
-        "IoT / Embedded (ESP32, microcontrollers)",
-        "Other request"
+        "Script / Automation (Python, Batch, C++)",
+        "IoT / Microcontrollers (ESP32, STM32)",
+        "Something else — describe below"
       ],
-      "budget": "Estimated Budget",
-      "budgetPlaceholder": "Set your budget frames (optional)",
-      "budgetHint": "Payment model: 30% upfront · 50% near completion · 20% on code delivery",
+      "budget": "Rough budget",
+      "budgetPlaceholder": "Select a range",
+      "budgetHint": "I'll quote after reviewing. Payment: 50% upfront · 50% on acceptance",
       "budgetOptions": [
-        "Under 250$ (Simple iterations/Landing Pages)",
-        "250$ - 700$ (Standard website / small app)",
-        "700$ - 1500$ (Advanced B2B/B2C app)",
-        "1500$+ (Complex enterprise web architectures)",
-        "Not sure yet / Need a quote"
+        "Under €120 (small page, landing, minor fixes)",
+        "€120 – €350 (standard website)",
+        "€350 – €1 000 (web app, store, dashboard)",
+        "€1 000 – €2 000 (advanced project, integrations)",
+        "Over €2 000 (large build, architecture)",
+        "Not sure yet / please quote"
       ],
-      "description": "Project Details",
-      "descriptionPlaceholder": "Tell me what you need. What's the main function of your software? Who will be the end user? What is absolutely crucial for you?",
+      "description": "Project description",
+      "descriptionPlaceholder": "What should this site/app do? Who will use it? What matters most to you?",
       "attachments": "Attachments (optional)",
-      "attachmentsHint": "You can attach images, PDFs, ZIPs — max 20 MB total",
+      "attachmentsHint": "Images, PDFs, ZIPs — max 20 MB total",
       "attachmentsCount_zero": "No files",
-      "attachmentsCount_one": "1 file selected",
-      "attachmentsCount_other": "{{count}} files selected",
+      "attachmentsCount_one": "1 file",
+      "attachmentsCount_other": "{{count}} files",
       "attachmentsTooBig": "Total file size exceeds 20 MB",
       "generate": "Generate order",
       "next": "Next",
       "back": "Back",
-      "stepBasic": "Basic info",
+      "stepBasic": "Info",
       "stepContact": "Contact",
-      "stepProject": "About the project",
+      "stepProject": "Project",
       "stepDetails": "Details",
       "stepExtras": "Extras",
       "stepLabel": "Step {{current}} of {{total}}",
-      "requiredField": "This field is required",
+      "requiredField": "Required",
       "invalidEmail": "Please enter a valid email address",
       "clear": "Clear",
-      "deadline": "Project deadline",
-      "deadlinePlaceholder": "When does the project need to be done?",
+      "deadline": "Deadline",
+      "deadlinePlaceholder": "When does it need to be done?",
       "deadlineOptions": [
-        "Within 2 weeks (urgent)",
+        "Within 2 weeks (urgent — may affect price)",
         "Within 1 month",
         "2–3 months",
         "More than 3 months",
         "Flexible / to be discussed"
       ],
-      "deadlineWarning": "Note: this deadline may be difficult to meet. I reserve the right to decline the proposal or suggest a longer timeline after reviewing the project scope.",
-      "clientType": "Client type",
-      "clientTypePlaceholder": "Who is placing the order?",
+      "deadlineWarning": "Short deadlines can be difficult to meet. I reserve the right to decline or propose a longer timeline after reviewing the scope.",
+      "clientType": "Who are you?",
+      "clientTypePlaceholder": "Individual or company?",
       "clientTypeOptions": [
         "Private individual",
         "Company / Organisation",
@@ -372,18 +394,18 @@
         "Public institution"
       ],
       "references": "Reference links (optional)",
-      "referencesPlaceholder": "Paste links to sites or apps you like (one per line)",
+      "referencesPlaceholder": "Links to sites you like (one per line)",
       "existingProject": "Project status",
-      "existingProjectPlaceholder": "Starting fresh or expanding?",
+      "existingProjectPlaceholder": "New or existing?",
       "existingProjectOptions": [
         "New project — starting from scratch",
         "Expanding an existing project",
         "Fixing / rewriting existing code",
         "Not sure yet"
       ],
-      "phone": "Phone number (optional)",
+      "phone": "Phone (optional)",
       "phonePlaceholder": "+1 000 000 0000",
-      "contactMethod": "Preferred contact method",
+      "contactMethod": "Preferred contact",
       "contactMethodPlaceholder": "How do you prefer to communicate?",
       "contactMethodOptions": [
         "Email",
@@ -394,36 +416,44 @@
       "source": "How did you find me? (optional)",
       "sourcePlaceholder": "How did you discover me?",
       "sourceOptions": [
-        "Referral from a friend",
+        "Referral",
         "GitHub",
         "Social media",
-        "Search engine (Google etc.)",
+        "Search engine",
         "Other"
       ],
-      "contentReady": "Is your content ready?",
+      "contentReady": "Do you have content ready?",
       "contentReadyPlaceholder": "Texts, logo, images...",
       "contentReadyOptions": [
         "Yes, everything is ready",
         "Partially — I have some materials",
         "No, I need help with content"
       ],
-      "hasDomain": "Do you have a domain and/or hosting?",
+      "hasDomain": "Do you have a domain / hosting?",
       "hasDomainPlaceholder": "Domain and hosting...",
       "hasDomainOptions": [
-        "Yes, I have both domain and hosting",
-        "I only have a domain",
-        "I only have hosting",
-        "No, I need help"
+        "Yes, I have both",
+        "Domain only",
+        "Hosting only",
+        "No — I can help sort that out"
       ],
-      "rodoConsent": "I consent to the processing of my personal data for the purpose of order fulfilment, in accordance with GDPR.",
+      "rodoConsent": "I consent to the processing of my personal data for order fulfilment in accordance with GDPR.",
       "rodoConsentBefore": "I have read the ",
       "rodoConsentLink": "Privacy Policy",
-      "rodoConsentAfter": " and consent to the processing of my personal data for the purpose of order fulfilment (GDPR).",
-      "rodoRequired": "Consent is required"
+      "rodoConsentAfter": " and consent to the processing of my personal data for order fulfilment (GDPR).",
+      "rodoRequired": "Consent is required",
+      "draftRestored": "Your saved draft from this browser session has been restored.",
+      "fixErrors": "Review the highlighted fields and complete the required information.",
+      "attachmentErrors": {
+        "total-size": "The selected files were not added: the combined attachment size exceeds 20 MB.",
+        "file-size": "The selected file was not added: a single file cannot exceed 10 MB.",
+        "type": "The selected file was not added: its format is not supported.",
+        "duplicate": "The selected file was not added: an attachment with that name already exists."
+      }
     },
     "summary": {
       "title": "Order ready!",
-      "subtitle": "Your order is below. Download the ZIP package and send it to me by email.",
+      "subtitle": "Download the ZIP package and send it to the email address below.",
       "idLabel": "Order ID",
       "idCopied": "Copied!",
       "idCopy": "Click to copy",
@@ -431,14 +461,23 @@
       "sendEmail": "Open mail client",
       "sendEmailHint": "Opens your mail app with the subject pre-filled",
       "manual": "Send manually",
-      "manualTitle": "Manual send instructions",
+      "manualTitle": "How to send manually",
       "manualTo": "To:",
-      "manualSubject": "Email subject:",
+      "manualSubject": "Subject:",
       "manualAttach": "Download and attach the ZIP package",
       "manualBody": "Body: (contents of the JSON file from the package)",
-      "back": "Go back and edit the form",
+      "back": "Back to edit",
       "mailSubject": "Order {{id}}",
-      "mailBody": "Order ID: {{id}}\n\nPlease download and attach the file files_for_order.zip\n\nGenerated: {{date}}"
+      "mailBody": "Order ID: {{id}}\n\nAttach {{filename}}\n\nThe request was not sent automatically.\n\nGenerated: {{date}}",
+      "notSent": "The request has not been sent yet. Download the package first, then attach it to your email.",
+      "packageDownloaded": "The package has been downloaded. Open your mail app, attach the ZIP file and send the message.",
+      "preparingZip": "Preparing package… {{progress}}%",
+      "copySuccess": "The order ID has been copied.",
+      "copyError": "The order ID could not be copied.",
+      "downloadSuccess": "The order package is ready.",
+      "downloadError": "The package could not be created. Please try again.",
+      "downloadFirst": "Download the ZIP package first and attach it to the email.",
+      "copyId": "Copy order ID {{id}}"
     }
   },
   "privacy": {
@@ -446,7 +485,7 @@
     "close": "Close Privacy Policy",
     "openLink": "Privacy Policy",
     "lastUpdatedLabel": "Last updated",
-    "lastUpdated": "April 2026",
+    "lastUpdated": "July 2026",
     "intro": "This Policy describes the rules for processing personal data of persons using the order form and other forms of contact on the verminew.github.io website.",
     "puodoNote": "You also have the right to lodge a complaint with the Polish supervisory authority — the President of the Personal Data Protection Office (PUODO):",
     "sections": [
@@ -454,113 +493,113 @@
         "title": "Data controller",
         "paragraphs": [
           "The controller of your personal data is Michał Oślizło — a natural person conducting unregistered economic activity within the meaning of art. 5 sec. 1 of the Polish Act of 6 March 2018 — Entrepreneurs' Law.",
-          "Contact: {{adminEmail}}. The correspondence address is provided on request after a contract is concluded."
+          "Contact: {{adminEmail}}. Correspondence address provided on request after a contract is concluded."
         ]
       },
       {
-        "title": "Purpose and legal basis of processing",
+        "title": "Purpose and legal basis",
         "paragraphs": [
           "Your data is processed for the following purposes:"
         ],
         "list": [
-          "Order fulfilment, preparing a quote and possibly concluding a contract for specific work — basis: art. 6(1)(b) GDPR (necessity to take steps at the request of the data subject prior to entering into a contract and to perform the contract).",
-          "Reply and correspondence handling — basis: art. 6(1)(f) GDPR (legitimate interest of the controller in providing a response).",
-          "Fulfilling tax and record-keeping obligations if a contract is concluded — basis: art. 6(1)(c) GDPR."
+          "Order fulfilment, preparing a quote and possibly concluding a contract — basis: art. 6(1)(b) GDPR.",
+          "Reply and correspondence — basis: art. 6(1)(f) GDPR.",
+          "Tax and record-keeping obligations if a contract is concluded — basis: art. 6(1)(c) GDPR."
         ]
       },
       {
-        "title": "Scope of processed data",
+        "title": "Data collected",
         "paragraphs": [
-          "Only data you provide yourself in the form or correspondence is processed:"
+          "Only data you provide yourself in the form or correspondence:"
         ],
         "list": [
-          "First and last name (or company name)",
-          "E-mail address",
+          "Name (or company name)",
+          "Email address",
           "Phone number (optional)",
-          "Inquiry content / project description",
-          "Attached files (if you choose to attach them)"
+          "Project description",
+          "Attached files (if provided)"
         ]
       },
       {
-        "title": "Recipients of data",
+        "title": "Recipients",
         "paragraphs": [
-          "Your data may be shared with the following processors whose services are necessary to handle the order:"
+          "The data stays in your browser until you download the package and send it by email yourself. After sending, it may be processed by your email provider and by Proton AG as the controller’s receiving email provider."
         ],
         "list": [
-          "FormSubmit.co — form delivery service provider. The service is based outside the European Economic Area; data transfer is carried out on the basis of standard contractual clauses approved by the European Commission.",
-          "Google LLC (Gmail) — e-mail service provider receiving the form contents."
+          "Proton AG (Proton Mail) — the controller’s receiving email provider.",
+          "The email provider selected by you — if you use the button that opens your mail client."
         ]
       },
       {
-        "title": "Retention period",
+        "title": "Retention",
         "paragraphs": [
-          "Data is stored for up to 12 months from the last contact, after which it is deleted.",
-          "If a contract is concluded, data necessary for accounting and tax purposes is stored for 5 years from the end of the calendar year in which the tax obligation arose (in accordance with the Polish Tax Ordinance)."
+          "Data is stored for up to 12 months from last contact, then deleted.",
+          "If a contract is concluded, accounting data is stored for 5 years per Polish tax law."
         ]
       },
       {
         "title": "Your rights",
         "paragraphs": [
-          "In connection with the processing of your data, you have the following rights:"
+          "You have the following rights:"
         ],
         "list": [
           "Right of access (art. 15 GDPR)",
           "Right to rectification (art. 16 GDPR)",
-          "Right to erasure — \"right to be forgotten\" (art. 17 GDPR)",
-          "Right to restriction of processing (art. 18 GDPR)",
+          "Right to erasure (art. 17 GDPR)",
+          "Right to restriction (art. 18 GDPR)",
           "Right to data portability (art. 20 GDPR)",
-          "Right to object to processing (art. 21 GDPR)",
-          "Right to withdraw consent at any time (where processing is based on consent)"
+          "Right to object (art. 21 GDPR)",
+          "Right to withdraw consent at any time"
         ]
       },
       {
         "title": "Cookies and browser storage",
         "paragraphs": [
-          "The site does not use cookies for advertising or analytical purposes.",
-          "Browser storage (localStorage / sessionStorage) is used solely to save your preferences (selected colour theme, interface language) and to temporarily store a partially filled order form so that you do not lose entered data on page refresh.",
-          "This data is never sent to a server and remains exclusively in your browser."
+          "No advertising or analytics cookies are used.",
+          "Browser storage (localStorage / sessionStorage) is used only to save your preferences (theme, language) and temporarily hold the order form.",
+          "This data is never sent to a server."
         ]
       },
       {
         "title": "No profiling",
         "paragraphs": [
-          "Your data is not used for profiling or automated decision-making within the meaning of art. 22 GDPR."
+          "Your data is not used for profiling or automated decision-making (art. 22 GDPR)."
         ]
       }
     ]
   },
   "services": {
-    "title": "My Services",
+    "title": "Services",
     "subtitle": "What can I build for you?",
     "items": {
       "web": {
-        "title": "Web Applications",
-        "description": "Websites, panels, forms – I pick the right tech for the project. I make sure it loads fast and looks good on any screen."
+        "title": "Websites & Web Apps",
+        "description": "Sites, dashboards, forms — I pick the right tech for the job. Fast, responsive, works on every screen."
       },
       "desktop": {
         "title": "Desktop Apps",
-        "description": "Windows apps, or cross-platform if needed. Internal tools, automation, whatever you need on a computer."
+        "description": "Windows apps (and cross-platform if needed). Internal tools, automation, whatever you need on a computer."
       },
       "mobile": {
         "title": "Mobile Apps",
-        "description": "Phone apps – from PWAs running in the browser, through React Native, to native Android solutions."
+        "description": "From PWAs running in the browser, through React Native, to native Android."
       }
     }
   },
   "contact": {
     "title": "Contact",
     "social": {
-      "title": "Social Media & Contact",
-      "description": "Feel free to reach out through any of these platforms"
+      "title": "Where to find me",
+      "description": "Feel free to reach out through any of these"
     },
     "info": {
-      "title": "Additional Information",
-      "description": "More ways to connect and collaborate",
-      "location": "Poland, Europe",
-      "availability": "Available for interesting projects and collaborations",
-      "response_time": "Response time: typically within 48 hours",
-      "preferred_hours": "Preferred contact hours: 4 PM - 8 PM\n(workdays)",
-      "student_note": "As a student, my availability may be limited during intensive study periods"
+      "title": "Good to know",
+      "description": "A few practical things before you reach out",
+      "location": "Poland (remote only)",
+      "availability": "Open to projects and freelance work",
+      "response_time": "I usually reply within 24–48 hours",
+      "preferred_hours": "Preferred contact hours: 4 PM – 8 PM CET (workdays)",
+      "student_note": "I'm a student — availability may be limited during exam periods"
     },
     "email": "Email",
     "discord": "Discord",
@@ -599,7 +638,7 @@
   },
   "language": {
     "switchTo": "Switch to Polish",
-    "reloadMessage": "Reloading page to apply language changes...",
+    "reloadMessage": "Loading new language...",
     "settings": {
       "title": "Language Settings",
       "select": "Select Language",
@@ -614,30 +653,56 @@
     "preferencesUpdated": "Preferences updated",
     "language": {
       "available": "Polish language version available!",
-      "detected": "We noticed you're using a browser with Polish language. Our site is also available in Polish!",
-      "settingsHint": "Click the settings icon in the bottom right corner to change the language to Polish.",
+      "detected": "We noticed your browser uses Polish. This site is also available in Polish!",
+      "settingsHint": "Click the settings icon in the bottom right to switch to Polish.",
       "dontShowAgain": "Don't show again",
-      "understand": "I understand"
-    }
+      "understand": "Got it",
+      "close": "Close notification"
+    },
+    "regionLabel": "Notifications"
   },
   "faq": {
     "title": "Frequently Asked Questions",
     "questions": [
       {
-        "question": "What types of projects do I prefer?",
-        "answer": "I'm most interested in projects involving web development, web applications, and AI-powered solutions. I'm open to educational projects and innovative solutions."
+        "question": "How much does a website cost?",
+        "answer": "It depends on scope. A simple landing page is around €120–350, a standard site €120–350, a web app with a dashboard or store €350–1 000, larger projects are quoted individually. The order form is the fastest way to get a concrete quote."
       },
       {
-        "question": "How does the collaboration process work?",
-        "answer": "The process starts with an initial project discussion, establishing scope and timeline. Due to my studies, I prefer projects with flexible schedules."
+        "question": "How does working together actually go?",
+        "answer": "1. You send the order form. 2. I come back with questions or a quote. 3. We agree on scope, timeline and terms. 4. You pay 50% upfront. 5. I build it with regular updates. 6. You accept, pay the remaining 50%, I hand over the code."
       },
       {
-        "question": "What technologies do I prefer?",
-        "answer": "I mainly work with React, TypeScript, and Node.js. I'm also interested in projects using Python, especially in AI-assisted contexts."
+        "question": "How long does it take?",
+        "answer": "A simple site — 1–3 weeks. A web app — 1–3 months. Depends on scope, availability of materials and the current queue. We agree on a timeline before we start and I stick to it."
       },
       {
-        "question": "Do I take commercial projects?",
-        "answer": "Yes, but selectively and in a limited capacity due to my studies. Each project is considered individually."
+        "question": "Do you work alone?",
+        "answer": "Yes, with AI as a tool. For most projects in my range that's enough. If a project needs something I genuinely can't deliver, I'll say so upfront instead of overpromising."
+      },
+      {
+        "question": "Do you take commercial projects?",
+        "answer": "Yes. I'm a student so my availability is limited, but I take commercial work seriously. I evaluate each project individually based on whether I can realistically deliver it."
+      },
+      {
+        "question": "What if I need changes after delivery?",
+        "answer": "Revisions within the agreed scope are free. Changes beyond the original scope or new requirements are quoted separately. We define the scope before we start — that protects both of us."
+      },
+      {
+        "question": "Can you help with hosting and domain?",
+        "answer": "Yes. I don't sell domains or hosting, but I can help you pick and set them up. For static sites you often don't need paid hosting at all (GitHub Pages, Vercel)."
+      },
+      {
+        "question": "What technologies do you use?",
+        "answer": "Mainly React + TypeScript for frontend, Python or PHP for backend. I try to match the tech to the project, not the other way around. If you have stack requirements, mention them and I'll check if I can deliver."
+      },
+      {
+        "question": "Will I get the source code?",
+        "answer": "Yes — full code and copyright transfer on final payment. Do whatever you want with it."
+      },
+      {
+        "question": "How do I reach you?",
+        "answer": "Email (werminew@protonmail.com) or Discord. I usually reply within 24–48 hours, on workdays between 4 PM and 8 PM CET."
       }
     ]
   },
@@ -648,5 +713,12 @@
   "footer": {
     "sendEmail": "Send an email",
     "githubProfile": "GitHub VermiNew"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "sectionMessage": "The “{{section}}” section could not be loaded.",
+    "contentMessage": "An error occurred while displaying this content.",
+    "retry": "Try again",
+    "details": "Technical details"
   }
 }

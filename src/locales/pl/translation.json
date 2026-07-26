@@ -34,6 +34,7 @@
   },
   "about": {
     "title": "O mnie",
+    "imageAlt": "Portret Michała Oślizło (VermiNew)",
     "name": "Michał Oślizło",
     "intro": "Jestem Michał, programista-amator z Podkarpacia. Urodziłem się w październiku 2006 roku i uczę się w technikum na kierunku programistycznym.",
     "focus": "Skupiam się na stronach internetowych i aplikacjach webowych. Zdałem kwalifikacje INF.03 i INF.04. Używam AI jako narzędzia pracy — nie po to żeby zastąpiło myślenie, ale żeby robić więcej rzeczy szybciej. Właśnie tak powstało to portfolio.",
@@ -47,7 +48,8 @@
       "github": "GitHub",
       "linkedin": "LinkedIn",
       "discord": "Discord",
-      "email": "Email"
+      "email": "Email",
+      "externalLabel": "{{profile}} — otwiera się w nowej karcie"
     },
     "background": {
       "title": "O sobie",
@@ -279,7 +281,13 @@
       "fullstack": "Full Stack",
       "tools": "Narzędzia",
       "ai": "Wspierane AI"
-    }
+    },
+    "cachedWarning": "Wyświetlane są ostatnio zapisane dane. Aktualizacja online jest chwilowo niedostępna.",
+    "linkLabel": "{{action}} dla projektu {{title}} — otwiera się w nowej karcie",
+    "loadError": "Nie udało się wczytać projektów.",
+    "retry": "Spróbuj ponownie",
+    "noResults": "Żaden projekt nie pasuje do wybranych filtrów.",
+    "clearFilters": "Wyczyść filtry"
   },
   "settings": {
     "title": "Ustawienia",
@@ -298,7 +306,11 @@
     },
     "preferences": {
       "reducedMotion": "Zredukowane animacje",
-      "smoothScroll": "Płynne przewijanie"
+      "smoothScroll": "Płynne przewijanie",
+      "motionPreference": "Animacje",
+      "motionSystem": "Systemowe",
+      "motionFull": "Pełne",
+      "motionReduced": "Ograniczone"
     }
   },
   "order": {
@@ -334,7 +346,7 @@
         "Coś innego — opisz poniżej"
       ],
       "budget": "Orientacyjny budżet",
-      "budgetPlaceholder": "Wybierz przedział (opcjonalne)",
+      "budgetPlaceholder": "Wybierz przedział",
       "budgetHint": "Wycenę podaję po analizie. Model płatności: 50% na start · 50% po akceptacji",
       "budgetOptions": [
         "Do 500 zł (mała strona, landing page, poprawki)",
@@ -431,7 +443,15 @@
       "rodoConsentBefore": "Zapoznałem/-am się z ",
       "rodoConsentLink": "Polityką Prywatności",
       "rodoConsentAfter": " i wyrażam zgodę na przetwarzanie moich danych w celu realizacji zamówienia (RODO).",
-      "rodoRequired": "Zgoda jest wymagana"
+      "rodoRequired": "Zgoda jest wymagana",
+      "draftRestored": "Przywrócono szkic formularza zapisany w tej sesji.",
+      "fixErrors": "Sprawdź oznaczone pola i uzupełnij wymagane informacje.",
+      "attachmentErrors": {
+        "total-size": "Wybrane pliki nie zostały dodane: łączny rozmiar załączników przekracza 20 MB.",
+        "file-size": "Wybrany plik nie został dodany: pojedynczy plik nie może przekraczać 10 MB.",
+        "type": "Wybrany plik nie został dodany: format nie jest obsługiwany.",
+        "duplicate": "Wybrany plik nie został dodany: załącznik o tej nazwie już istnieje."
+      }
     },
     "summary": {
       "title": "Zamówienie gotowe!",
@@ -450,7 +470,16 @@
       "manualBody": "Treść: (zawartość pliku JSON z paczki)",
       "back": "Wróć i popraw",
       "mailSubject": "Zamówienie {{id}}",
-      "mailBody": "Numer zamówienia: {{id}}\n\nDołącz plik files_for_order.zip\n\nWygenerowano: {{date}}"
+      "mailBody": "Numer zamówienia: {{id}}\n\nDołącz plik {{filename}}\n\nZgłoszenie nie zostało wysłane automatycznie.\n\nWygenerowano: {{date}}",
+      "notSent": "Zgłoszenie nie zostało jeszcze wysłane. Najpierw pobierz paczkę, a następnie dołącz ją do wiadomości e-mail.",
+      "packageDownloaded": "Paczka została pobrana. Otwórz klienta poczty, dołącz plik ZIP i wyślij wiadomość.",
+      "preparingZip": "Przygotowywanie paczki… {{progress}}%",
+      "copySuccess": "Numer zamówienia został skopiowany.",
+      "copyError": "Nie udało się skopiować numeru zamówienia.",
+      "downloadSuccess": "Paczka zamówienia została przygotowana.",
+      "downloadError": "Nie udało się przygotować paczki. Spróbuj ponownie.",
+      "downloadFirst": "Najpierw pobierz paczkę ZIP i dołącz ją do wiadomości.",
+      "copyId": "Skopiuj identyfikator zlecenia {{id}}"
     }
   },
   "privacy": {
@@ -458,7 +487,7 @@
     "close": "Zamknij Politykę Prywatności",
     "openLink": "Polityka Prywatności",
     "lastUpdatedLabel": "Ostatnia aktualizacja",
-    "lastUpdated": "kwiecień 2026",
+    "lastUpdated": "lipiec 2026",
     "intro": "Niniejsza Polityka opisuje zasady przetwarzania danych osobowych osób korzystających z formularza zamówienia oraz innych form kontaktu na stronie verminew.github.io.",
     "puodoNote": "Masz również prawo wniesienia skargi do organu nadzorczego — Prezesa Urzędu Ochrony Danych Osobowych (PUODO):",
     "sections": [
@@ -496,11 +525,11 @@
       {
         "title": "Odbiorcy danych",
         "paragraphs": [
-          "Twoje dane mogą zostać udostępnione następującym podmiotom przetwarzającym:"
+          "Dane pozostają w przeglądarce do chwili, gdy samodzielnie pobierzesz paczkę i wyślesz ją e-mailem. Po wysłaniu mogą być przetwarzane przez dostawcę Twojej poczty oraz Proton AG jako dostawcę skrzynki odbiorczej administratora."
         ],
         "list": [
-          "FormSubmit.co — dostawca usługi przekazywania formularzy. Serwis ma siedzibę poza EOG; transfer odbywa się na podstawie standardowych klauzul umownych KE.",
-          "Google LLC (Gmail) — dostawca poczty elektronicznej."
+          "Proton AG (Proton Mail) — dostawca skrzynki pocztowej administratora.",
+          "Dostawca poczty wybrany przez Ciebie — jeżeli użyjesz przycisku otwierającego klienta pocztowego."
         ]
       },
       {
@@ -629,8 +658,10 @@
       "detected": "Zauważyliśmy, że używasz przeglądarki z polskim językiem. Nasza strona jest dostępna również po polsku!",
       "settingsHint": "Kliknij ikonę ustawień w prawym dolnym rogu, aby zmienić język na polski.",
       "dontShowAgain": "Nie pokazuj więcej",
-      "understand": "Rozumiem"
-    }
+      "understand": "Rozumiem",
+      "close": "Zamknij powiadomienie"
+    },
+    "regionLabel": "Powiadomienia"
   },
   "faq": {
     "title": "Najczęściej zadawane pytania",
@@ -684,5 +715,12 @@
   "footer": {
     "sendEmail": "Wyślij e-mail",
     "githubProfile": "GitHub VermiNew"
+  },
+  "errors": {
+    "title": "Coś poszło nie tak",
+    "sectionMessage": "Nie udało się wczytać sekcji „{{section}}”.",
+    "contentMessage": "Wystąpił błąd podczas wyświetlania tej zawartości.",
+    "retry": "Spróbuj ponownie",
+    "details": "Szczegóły techniczne"
   }
 }

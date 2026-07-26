@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AnimationContext } from '../AnimationContext';
+import { AnimationContext } from '../AnimationContextValue';
 
 export const useAnimation = () => {
   const context = useContext(AnimationContext);

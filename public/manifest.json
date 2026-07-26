@@ -1,6 +1,14 @@
 {
+  "id": "/",
   "short_name": "VermiNew",
   "name": "VermiNew Portfolio",
+  "description": "Bilingual portfolio of VermiNew showcasing web development projects, skills and services.",
+  "lang": "en",
+  "categories": [
+    "portfolio",
+    "developer",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "/assets/favicons/logo64.png",
@@ -9,25 +17,38 @@
     },
     {
       "src": "/assets/favicons/logo192.png",
-      "type": "image/png",
       "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/favicons/logo192.png",
+      "src": "/assets/favicons/logo512.png",
+      "sizes": "512x512",
       "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicons/logo192-maskable.png",
       "sizes": "192x192",
+      "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/assets/favicons/logo512.png",
+      "src": "/assets/favicons/logo512-maskable.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "maskable"
     }
   ],
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
   "theme_color": "#000000",
   "background_color": "#ffffff"
-} 
+}

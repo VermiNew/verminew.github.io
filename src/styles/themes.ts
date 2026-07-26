@@ -1,5 +1,38 @@
-import { Theme } from '@/types/theme';
+import type { Theme, ThemeColors } from '@/types/theme';
 import { getLogoFilter } from '@/utils/logoFilter';
+import { accessibleColor, readableText } from '@/utils/colorContrast';
+
+
+type BaseThemeColors = Omit<ThemeColors,
+  | 'onPrimary'
+  | 'onSecondary'
+  | 'onAccent'
+  | 'onSuccess'
+  | 'onWarning'
+  | 'onError'
+  | 'onInfo'
+  | 'link'
+  | 'linkHover'
+  | 'focusRing'
+  | 'overlay'
+  | 'mobileMenuBackground'
+>;
+
+const createThemeColors = (colors: BaseThemeColors, dark: boolean): ThemeColors => ({
+  ...colors,
+  onPrimary: readableText(colors.primary),
+  onSecondary: readableText(colors.secondary),
+  onAccent: readableText(colors.accent),
+  onSuccess: readableText(colors.success),
+  onWarning: readableText(colors.warning),
+  onError: readableText(colors.error),
+  onInfo: readableText(colors.info),
+  link: accessibleColor(colors.primary, colors.background, colors.text),
+  linkHover: accessibleColor(colors.accent, colors.background, colors.text),
+  focusRing: accessibleColor(colors.primary, colors.background, colors.text),
+  overlay: dark ? 'rgba(0, 0, 0, 0.72)' : 'rgba(15, 23, 42, 0.58)',
+  mobileMenuBackground: colors.surface,
+});
 
 const baseTheme = {
   breakpoints: {
@@ -26,7 +59,7 @@ const baseTheme = {
 
 export const lightTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#ffffff',
     surface: '#f8f9fa',
     primary: '#2563eb',
@@ -41,7 +74,7 @@ export const lightTheme: Theme = {
     info: '#0284c7',
     special: '#ea580c',
     professional: '#7c3aed',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.05)',
     medium: '0 4px 8px rgba(0,0,0,0.1)',
@@ -52,7 +85,7 @@ export const lightTheme: Theme = {
 
 export const darkTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#0a1929',
     surface: '#1a2736',
     primary: '#60a5fa',
@@ -67,7 +100,7 @@ export const darkTheme: Theme = {
     info: '#38bdf8',
     special: '#fb923c',
     professional: '#a78bfa',
-  },
+  }, true),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.2)',
     medium: '0 4px 8px rgba(0,0,0,0.3)',
@@ -78,7 +111,7 @@ export const darkTheme: Theme = {
 
 export const corporateModernTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#ffffff',
     surface: '#f5f7fa',
     primary: '#2c5282',
@@ -93,7 +126,7 @@ export const corporateModernTheme: Theme = {
     info: '#2b6cb0',
     special: '#b7791f',
     professional: '#553c9a',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.04)',
     medium: '0 4px 8px rgba(0,0,0,0.08)',
@@ -104,7 +137,7 @@ export const corporateModernTheme: Theme = {
 
 export const techMinimalTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#ffffff',
     surface: '#fafafa',
     primary: '#4f46e5',
@@ -119,7 +152,7 @@ export const techMinimalTheme: Theme = {
     info: '#0891b2',
     special: '#ea580c',
     professional: '#7c3aed',
-  },
+  }, false),
   shadows: {
     small: '0 1px 3px rgba(0,0,0,0.05)',
     medium: '0 4px 6px rgba(0,0,0,0.07)',
@@ -130,7 +163,7 @@ export const techMinimalTheme: Theme = {
 
 export const professionalDarkTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#111827',
     surface: '#1f2937',
     primary: '#6366f1',
@@ -145,7 +178,7 @@ export const professionalDarkTheme: Theme = {
     info: '#22d3ee',
     special: '#fb923c',
     professional: '#c4b5fd',
-  },
+  }, true),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.3)',
     medium: '0 4px 8px rgba(0,0,0,0.4)',
@@ -156,7 +189,7 @@ export const professionalDarkTheme: Theme = {
 
 export const modernNeutralTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#fafaf9',
     surface: '#f5f5f4',
     primary: '#44403c',
@@ -171,7 +204,7 @@ export const modernNeutralTheme: Theme = {
     info: '#1e40af',
     special: '#78350f',
     professional: '#581c87',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.03)',
     medium: '0 4px 6px rgba(0,0,0,0.06)',
@@ -182,7 +215,7 @@ export const modernNeutralTheme: Theme = {
 
 export const eInkLightTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#f8f9fa',
     surface: '#f1f3f5',
     primary: '#212529',
@@ -197,7 +230,7 @@ export const eInkLightTheme: Theme = {
     info: '#6a6a6a',
     special: '#3a3a3a',
     professional: '#505050',
-  },
+  }, false),
   shadows: {
     small: '0 1px 2px rgba(0,0,0,0.02)',
     medium: '0 2px 4px rgba(0,0,0,0.03)',
@@ -213,7 +246,7 @@ export const eInkLightTheme: Theme = {
 
 export const eInkDarkTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#121212',
     surface: '#1e1e1e',
     primary: '#e0e0e0',
@@ -228,7 +261,7 @@ export const eInkDarkTheme: Theme = {
     info: '#909090',
     special: '#d8d8d8',
     professional: '#a8a8a8',
-  },
+  }, true),
   shadows: {
     small: '0 1px 2px rgba(255,255,255,0.05)',
     medium: '0 2px 4px rgba(255,255,255,0.08)',
@@ -244,7 +277,7 @@ export const eInkDarkTheme: Theme = {
 
 export const nordTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#2E3440',
     surface: '#3B4252',
     primary: '#88C0D0',
@@ -259,7 +292,7 @@ export const nordTheme: Theme = {
     info: '#81A1C1',
     special: '#D08770',
     professional: '#B48EAD',
-  },
+  }, true),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.3)',
     medium: '0 4px 8px rgba(0,0,0,0.4)',
@@ -270,7 +303,7 @@ export const nordTheme: Theme = {
 
 export const solarizedLightTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#FDF6E3',
     surface: '#EEE8D5',
     primary: '#268BD2',
@@ -285,7 +318,7 @@ export const solarizedLightTheme: Theme = {
     info: '#268BD2',
     special: '#CB4B16',
     professional: '#6C71C4',
-  },
+  }, false),
   shadows: {
     small: '0 1px 3px rgba(0,0,0,0.1)',
     medium: '0 3px 6px rgba(0,0,0,0.15)',
@@ -296,7 +329,7 @@ export const solarizedLightTheme: Theme = {
 
 export const solarizedDarkTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#002B36',
     surface: '#073642',
     primary: '#839496',
@@ -311,7 +344,7 @@ export const solarizedDarkTheme: Theme = {
     info: '#268BD2',
     special: '#CB4B16',
     professional: '#6C71C4',
-  },
+  }, true),
   shadows: {
     small: '0 2px 4px rgba(0,0,0,0.3)',
     medium: '0 4px 8px rgba(0,0,0,0.4)',
@@ -322,7 +355,7 @@ export const solarizedDarkTheme: Theme = {
 
 export const winterTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#f0f8ff',
     surface: '#e6f3ff',
     primary: '#2c5282',
@@ -337,7 +370,7 @@ export const winterTheme: Theme = {
     info: '#2b6cb0',
     special: '#4c51bf',
     professional: '#553c9a',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(44,82,130,0.1)',
     medium: '0 4px 8px rgba(44,82,130,0.15)',
@@ -348,7 +381,7 @@ export const winterTheme: Theme = {
 
 export const springTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#f8fff8',
     surface: '#f0fff0',
     primary: '#2f855a',
@@ -363,7 +396,7 @@ export const springTheme: Theme = {
     info: '#319795',
     special: '#dd6b20',
     professional: '#805ad5',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(47,133,90,0.1)',
     medium: '0 4px 8px rgba(47,133,90,0.15)',
@@ -374,7 +407,7 @@ export const springTheme: Theme = {
 
 export const summerTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#fffaf0',
     surface: '#fff5eb',
     primary: '#c05621',
@@ -389,7 +422,7 @@ export const summerTheme: Theme = {
     info: '#2b6cb0',
     special: '#e53e3e',
     professional: '#6b46c1',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(192,86,33,0.1)',
     medium: '0 4px 8px rgba(192,86,33,0.15)',
@@ -400,7 +433,7 @@ export const summerTheme: Theme = {
 
 export const autumnTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#fdf5e6',
     surface: '#fff5eb',
     primary: '#9c4221',
@@ -415,7 +448,7 @@ export const autumnTheme: Theme = {
     info: '#2c5282',
     special: '#c05621',
     professional: '#744210',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(156,66,33,0.1)',
     medium: '0 4px 8px rgba(156,66,33,0.15)',
@@ -426,7 +459,7 @@ export const autumnTheme: Theme = {
 
 export const pastelTheme: Theme = {
   ...baseTheme,
-  colors: {
+  colors: createThemeColors({
     background: '#fef6ff',
     surface: '#fdf2ff',
     primary: '#805ad5',
@@ -441,7 +474,7 @@ export const pastelTheme: Theme = {
     info: '#63b3ed',
     special: '#f687b3',
     professional: '#b794f4',
-  },
+  }, false),
   shadows: {
     small: '0 2px 4px rgba(128,90,213,0.1)',
     medium: '0 4px 8px rgba(128,90,213,0.15)',
