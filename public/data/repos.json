@@ -1,7 +1,52 @@
 {
-  "lastUpdated": "2026-07-26T10:07:27.294Z",
+  "lastUpdated": "2026-07-27T05:41:42.139Z",
   "username": "VermiNew",
   "repos": [
+    {
+      "id": "w-chrystusie",
+      "title": "W Chrystusie",
+      "description": "Modlitwy, różaniec i pieśni w jednym miejscu.",
+      "technologies": [
+        "CSS",
+        "HTML",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "language": "TypeScript",
+      "githubUrl": "https://github.com/VermiNew/w-chrystusie",
+      "liveUrl": "",
+      "featured": true,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2026-03-04T20:09:23.000Z",
+      "updatedAt": "2026-07-26T12:24:27.000Z",
+      "priority": 1,
+      "status": "active",
+      "category": "frontend",
+      "featuredReason": "Catholic web app with prayers, rosary and hymns"
+    },
+    {
+      "id": "verminew.github.io",
+      "title": "Verminew.github.io",
+      "description": "My first full-fledged website.",
+      "technologies": [
+        "HTML",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "language": "TypeScript",
+      "githubUrl": "https://github.com/VermiNew/verminew.github.io",
+      "liveUrl": "https://verminew.github.io/",
+      "featured": true,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2023-02-12T14:30:29.000Z",
+      "updatedAt": "2026-07-26T10:07:52.000Z",
+      "priority": 1,
+      "status": "active",
+      "category": "frontend",
+      "featuredReason": "Portfolio website built with React, TypeScript and styled-components"
+    },
     {
       "id": "energy-monitoring-system",
       "title": "Energy Monitoring System",
@@ -28,67 +73,47 @@
       "featuredReason": "Smart-home energy monitoring dashboard built with React and TypeScript"
     },
     {
-      "id": "w-chrystusie",
-      "title": "W Chrystusie",
-      "description": "Modlitwy, różaniec i pieśni w jednym miejscu.",
-      "technologies": [
-        "CSS",
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/w-chrystusie",
-      "liveUrl": "",
-      "featured": true,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2026-03-04T20:09:23.000Z",
-      "updatedAt": "2026-07-13T19:42:03.000Z",
-      "priority": 1,
-      "status": "active",
-      "category": "frontend",
-      "featuredReason": "Catholic web app with prayers, rosary and hymns"
-    },
-    {
-      "id": "verminew.github.io",
-      "title": "Verminew.github.io",
-      "description": "My first full-fledged website.",
-      "technologies": [
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/verminew.github.io",
-      "liveUrl": "https://verminew.github.io/",
-      "featured": true,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2023-02-12T14:30:29.000Z",
-      "updatedAt": "2026-06-12T12:12:42.000Z",
-      "priority": 1,
-      "status": "active",
-      "category": "frontend",
-      "featuredReason": "Portfolio website built with React, TypeScript and styled-components"
-    },
-    {
       "id": "myMaps",
       "title": "MyMaps",
       "description": "",
       "technologies": [
         "CSS",
         "HTML",
-        "JavaScript"
+        "JavaScript",
+        "TypeScript"
       ],
-      "language": "JavaScript",
+      "language": "TypeScript",
       "githubUrl": "https://github.com/VermiNew/myMaps",
       "liveUrl": "",
       "featured": false,
       "archived": false,
       "visibility": "public",
       "createdAt": "2026-07-24T13:26:08.000Z",
-      "updatedAt": "2026-07-26T10:04:45.000Z",
+      "updatedAt": "2026-07-26T12:39:24.000Z",
+      "priority": 3,
+      "status": "active"
+    },
+    {
+      "id": "PRIVATE_elias-llm",
+      "title": "PRIVATE_elias Llm",
+      "description": "",
+      "technologies": [
+        "CSS",
+        "HTML",
+        "JavaScript",
+        "PowerShell",
+        "Python",
+        "Shell",
+        "TypeScript"
+      ],
+      "language": "JavaScript",
+      "githubUrl": "https://github.com/VermiNew/PRIVATE_elias-llm",
+      "liveUrl": "",
+      "featured": false,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2026-07-26T11:05:05.000Z",
+      "updatedAt": "2026-07-26T12:11:33.000Z",
       "priority": 3,
       "status": "active"
     },
@@ -109,7 +134,7 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2026-06-17T08:56:11.000Z",
-      "updatedAt": "2026-07-26T09:59:31.000Z",
+      "updatedAt": "2026-07-26T11:03:32.000Z",
       "priority": 3,
       "status": "active"
     },
