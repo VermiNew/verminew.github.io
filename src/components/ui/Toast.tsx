@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
-import { useAnimation } from '@/context/AnimationContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
 export type ToastType = 'success' | 'info' | 'error';
 

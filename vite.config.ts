@@ -32,7 +32,7 @@ export default defineConfig({
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-motion': ['framer-motion'],
-          'vendor-i18n': ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
+          'vendor-i18n': ['i18next', 'react-i18next'],
           'vendor-ui': ['styled-components', 'focus-trap-react'],
           'vendor-icons': ['react-icons'],
           'vendor-zip': ['jszip'],

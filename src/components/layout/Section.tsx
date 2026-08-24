@@ -2,14 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/layout/Container';
-import { useAnimation } from '@/context/AnimationContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
 interface SectionProps {
   children: React.ReactNode;
   id?: string;
   className?: string;
   fullWidth?: boolean;
-  animate?: boolean;
 }
 
 const StyledSection = styled(motion.section)`
@@ -24,15 +23,21 @@ const StyledSection = styled(motion.section)`
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut'
+    }
+  }
 };
 
 export const Section: React.FC<SectionProps> = ({
   children,
   id,
   className,
-  fullWidth = false,
-  animate = false,
+  fullWidth = false
 }) => {
   const { reducedMotion } = useAnimation();
 
@@ -45,7 +50,9 @@ export const Section: React.FC<SectionProps> = ({
       viewport={{ once: true, margin: "-100px" }}
       variants={reducedMotion ? undefined : sectionVariants}
     >
-      <Container fullWidth={fullWidth}>{children}</Container>
+      <Container fullWidth={fullWidth}>
+        {children}
+      </Container>
     </StyledSection>
   );
 };

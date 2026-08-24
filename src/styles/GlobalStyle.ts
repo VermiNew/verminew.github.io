@@ -55,12 +55,12 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
   }
 
   a {
-    color: ${({ theme }) => theme.colors.link};
+    color: ${({ theme }) => theme.colors.accent};
     text-decoration: none;
     transition: color ${({ theme }) => theme.transitions.fast};
 
     &:hover {
-      color: ${({ theme }) => theme.colors.linkHover};
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 
@@ -76,7 +76,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 
   ::selection {
     background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.onPrimary};
+    color: ${({ theme }) => theme.colors.background};
   }
 
   ::-webkit-scrollbar {

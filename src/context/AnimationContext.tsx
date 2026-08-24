@@ -29,12 +29,13 @@ export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   });
 
   useEffect(() => {
-    localStorage.setItem('reducedMotion', reducedMotion.toString());
-    document.documentElement.setAttribute(
-      'data-reduced-motion',
-      reducedMotion ? 'true' : 'false'
-    );
-  }, [reducedMotion]);
+    const mediaQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (!mediaQuery) return;
+
+    const handleChange = (event: MediaQueryListEvent) => setSystemReducedMotion(event.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     safeStorage.set(MOTION_STORAGE_KEY, motionPreference);
@@ -63,5 +64,3 @@ export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     </AnimationContext.Provider>
   );
 };
-
-export { useAnimation } from './hooks/useAnimationHook';

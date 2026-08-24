@@ -10,7 +10,7 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { useAnimation } from '@/context/hooks/useAnimation';
 import { socialConfig } from '@/config/social';
-import { useToast } from '@/context/ToastContext';
+import { useToast } from '@/context/hooks/useToast';
 
 const ContactContainer = styled(motion.div)`
   display: flex;

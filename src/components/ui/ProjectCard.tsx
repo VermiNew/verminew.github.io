@@ -4,9 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { SiGithub } from 'react-icons/si';
 import { HiExternalLink } from 'react-icons/hi';
-import type { Repo } from '@/types/repo';
-import type { SupportedLanguage } from '@/i18n';
-import { getProjectCopy } from '@/content/projectContent';
+import { Repo } from '@/types/repo';
 
 interface ProjectCardProps {
   project: Repo;
@@ -43,7 +41,7 @@ const FeaturedBadge = styled.div`
   top: 1rem;
   right: 1rem;
   background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.onPrimary};
+  color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.8rem;
@@ -54,7 +52,7 @@ const FeaturedBadge = styled.div`
   z-index: 2;
 `;
 
-const PriorityIndicator = styled.div<{ $priority: 1 | 2 | 3 | 4 | 5 }>`
+const PriorityIndicator = styled.div<{ $priority: 1 | 2 | 3 }>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -65,12 +63,8 @@ const PriorityIndicator = styled.div<{ $priority: 1 | 2 | 3 | 4 | 5 }>`
       case 2:
         return theme.colors.success;
       case 3:
-        return theme.colors.warning;
-      case 4:
-        return theme.colors.info;
-      case 5:
       default:
-        return theme.colors.textSecondary;
+        return theme.colors.warning;
     }
   }};
 `;
@@ -164,6 +158,14 @@ const Tag = styled.span<{ $variant?: 'archived' | 'visibility' }>`
   font-size: 0.8rem;
 `;
 
+const Stats = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
 const Links = styled.div`
   display: flex;
   gap: 1rem;
@@ -173,30 +175,25 @@ const Link = styled.a`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: ${({ theme }) => theme.colors.link};
+  color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   font-size: 0.9rem;
   transition: color ${({ theme }) => theme.transitions.default};
   font-weight: 500;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.linkHover};
+    color: ${({ theme }) => theme.colors.accent};
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
     border-radius: 4px;
   }
 `;
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { t, i18n } = useTranslation();
-  const language: SupportedLanguage = i18n.language.split('-')[0] === 'pl' ? 'pl' : 'en';
-  const copy = getProjectCopy(project.id, language, {
-    description: project.description,
-    featuredReason: project.featuredReason,
-  });
+  const { t } = useTranslation();
   const hasBadges = Boolean(project.featured || project.category);
   const description = project.description.trim() || project.featuredReason || t('projects.descriptionFallback');
   const hasStats = (project.stars ?? 0) > 0 || (project.forks ?? 0) > 0;
@@ -208,7 +205,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {project.featured && (
         <>
           <FeaturedBadge>
-            <PriorityIndicator $priority={project.priority ?? 3} />
+            <PriorityIndicator $priority={(project.priority ?? 3) as 1 | 2 | 3} />
             {t('projects.featured')}
           </FeaturedBadge>
           {project.category && (
@@ -253,7 +250,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={t('projects.linkLabel', { action: t('projects.viewGithub'), title: project.title })}
+              aria-label={`${t('projects.viewGithub')} for ${project.title} (opens in new tab)`}
             >
               <SiGithub aria-hidden="true" />
               {t('projects.viewGithub')}
@@ -263,7 +260,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={t('projects.linkLabel', { action: t('projects.visitLive'), title: project.title })}
+                aria-label={`${t('projects.visitLive')} for ${project.title} (opens in new tab)`}
               >
                 <HiExternalLink aria-hidden="true" />
                 {t('projects.visitLive')}

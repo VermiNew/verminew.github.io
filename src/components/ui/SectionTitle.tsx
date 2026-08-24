@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useInView, useAnimation as useAnimationControls, HTMLMotionProps } from 'framer-motion';
-import { useTheme } from '@/context/ThemeContext';
-import { useAnimation as useAnimationPreferences } from '@/context/AnimationContext';
+import { useTheme } from '@/context/hooks/useTheme';
+import { useAnimation as useAnimationPreferences } from '@/context/hooks/useAnimation';
 import { isDarkTheme } from '@/utils/themeUtils';
 
-interface SectionTitleProps extends HTMLMotionProps<'h2'> {
+interface SectionTitleProps extends HTMLMotionProps<"h2"> {
   children: React.ReactNode;
   className?: string;
 }
 
-const StyledTitle = styled(motion.h2)`
+const StyledTitle = styled(motion.h2)<{ $isDark: boolean }>`
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 2rem;
@@ -35,7 +35,7 @@ const StyledTitle = styled(motion.h2)`
   }
 `;
 
-const Cursor = styled(motion.span)`
+const Cursor = styled(motion.span)<{ $isDark: boolean }>`
   display: inline-block;
   width: 2px;
   height: 1em;
@@ -58,10 +58,9 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
     useEffect(() => {
       if (!isInView || reducedMotion) return;
 
-      void letterControls.start((index: number) => ({
+      controls.start(i => ({
         opacity: 1,
-        y: 0,
-        transition: { delay: index * 0.04, duration: 0.18 },
+        transition: { delay: i * 0.05 }
       }));
 
       const textLength = typeof children === 'string' ? children.length : 0;
@@ -69,13 +68,13 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
 
       cursorControls.start({
         opacity: [1, 0],
-        transition: { duration: 0.65, repeat: Infinity, repeatType: 'reverse' },
+        transition: { duration: 0.8, repeat: Infinity, repeatType: 'reverse' }
       });
 
-      const timer = window.setTimeout(() => {
+      const timer = setTimeout(() => {
         cursorControls.stop();
-        void cursorControls.start({ opacity: 0, transition: { duration: 0.2 } });
-      }, text.length * 40 + 3_000);
+        cursorControls.start({ opacity: 0, transition: { duration: 0.2 } });
+      }, stopDelay);
 
       return () => clearTimeout(timer);
     }, [isInView, reducedMotion, controls, cursorControls, children]);
@@ -84,10 +83,10 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
       <StyledTitle
         ref={resolvedRef}
         className={className}
-        aria-label={text ?? undefined}
+        $isDark={isDark}
         {...props}
       >
-        {text ? (
+        {typeof children === 'string' ? (
           <>
             {children.split('').map((char, i) => (
               <motion.span
@@ -107,15 +106,17 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
               />
             )}
           </>
-        ) : children}
+        ) : (
+          children
+        )}
       </StyledTitle>
     );
-  },
+  }
 );
 
 SectionTitle.displayName = 'SectionTitle';
 
-export const SectionTitleStyled = styled(motion.h2)`
+export const SectionTitleStyled = styled(motion.h2)<{ $isDark: boolean }>`
   font-size: 2.5rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.primary};

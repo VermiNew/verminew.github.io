@@ -1,56 +1,57 @@
 import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import FocusTrap from 'focus-trap-react';
 import { useTheme } from '@/context/hooks/useTheme';
 import { isDarkTheme } from '@/utils/themeUtils';
 import { useTranslation } from 'react-i18next';
-import { MdClose, MdDeleteOutline } from 'react-icons/md';
-import { Section } from '@/components/layout/Section';
+import {
+  MdDownload,
+  MdEmail,
+  MdContentCopy,
+  MdCheck,
+  MdArrowBack,
+  MdAttachFile,
+  MdChevronRight,
+  MdClose,
+  MdEdit,
+  MdWarningAmber,
+  MdDeleteOutline,
+} from 'react-icons/md';
+import { SectionContainer } from '@/components/layout/SectionContainer';
 import { SectionTitle } from '@/components/ui/SectionTitle';
+import { Button } from '@/components/ui/Button';
 import { useAnimation } from '@/context/hooks/useAnimation';
 import { socialConfig } from '@/config/social';
+import JSZip from 'jszip';
 import { PrivacyPolicyModal } from '@/components/legal/PrivacyPolicyModal';
-import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
-import { useToast } from '@/context/hooks/useToast';
-import { asStringArray } from '@/utils/translationValues';
-import { ORDER_OPTION_IDS, type OrderOptionField } from '@/features/order/options';
-import { buildOrderArchive } from '@/features/order/archive';
-import { createOrderId } from '@/features/order/payload';
-import { clearOrderDraft, loadOrderDraft, saveOrderDraft } from '@/features/order/storage';
-import {
-  hasRequiredValues,
-  isEmailValid,
-  validateFiles,
-  type FileValidationError,
-} from '@/features/order/validation';
-import { emptyOrderForm, type OrderFormData, type OrderStep } from '@/features/order/types';
-import { OrderPreview } from '@/features/order/OrderPreview';
-import { OrderSummary } from '@/features/order/OrderSummary';
-import { OrderConfirmDialog } from '@/features/order/OrderConfirmDialog';
-import { OrderBasicsStep } from '@/features/order/steps/OrderBasicsStep';
-import { OrderContactStep } from '@/features/order/steps/OrderContactStep';
-import { OrderProjectStep } from '@/features/order/steps/OrderProjectStep';
-import { OrderDetailsStep } from '@/features/order/steps/OrderDetailsStep';
-import { OrderExtrasStep } from '@/features/order/steps/OrderExtrasStep';
-import {
-  Wrapper,
-  Description,
-  ModalBackdrop,
-  ModalContainer,
-  ModalCloseButton,
-  ModalHeader,
-  ModalTitle,
-  ClearButton,
-  ValidationSummary,
-} from '@/features/order/styles';
 
-// ── Form configuration ────────────────────────────────────────────────────────
-type Step = OrderStep;
-type FormData = OrderFormData;
-const emptyForm = emptyOrderForm;
+// ── Constants ──────────────────────────────────────────────────────────────────
+const MAX_TOTAL_SIZE_BYTES = 20 * 1024 * 1024;
+const ACCEPTED_TYPES = 'image/*,.pdf,.zip,.txt,.doc,.docx';
+const SESSION_KEY = 'order-form-data';
 // ───────────────────────────────────────────────────────────────────────────────
 
+// ── Types ──────────────────────────────────────────────────────────────────────
+type Step = 'basics' | 'contact' | 'project' | 'details' | 'extras' | 'summary';
+const TOTAL_STEPS = 5;
 
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  clientType: string;
+  contactMethod: string;
+  source: string;
+  type: string;
+  deadline: string;
+  existingProject: string;
+  budget: string;
+  description: string;
+  contentReady: string;
+  hasDomain: string;
+  references: string;
+}
 
 interface OrderPayload extends FormData {
   id: string;
@@ -728,6 +729,20 @@ const BackRow = styled.div`
 
 // ── Stable IDs for aria relationships ─────────────────────────────────────────
 const MODAL_TITLE_ID = 'order-modal-title';
+const CONFIRM_MESSAGE_ID = 'order-confirm-message';
+const CONFIRM_HINT_ID = 'order-confirm-hint';
+const NAME_ERROR_ID = 'order-name-error';
+const EMAIL_ERROR_ID = 'order-email-error';
+const CLIENT_TYPE_ERROR_ID = 'order-client-type-error';
+const CONTACT_METHOD_ERROR_ID = 'order-contact-method-error';
+const PROJECT_TYPE_ERROR_ID = 'order-project-type-error';
+const EXISTING_PROJECT_ERROR_ID = 'order-existing-project-error';
+const BUDGET_ERROR_ID = 'order-budget-error';
+const DEADLINE_ERROR_ID = 'order-deadline-error';
+const DESCRIPTION_ERROR_ID = 'order-description-error';
+const CONTENT_READY_ERROR_ID = 'order-content-ready-error';
+const DOMAIN_ERROR_ID = 'order-domain-error';
+// ───────────────────────────────────────────────────────────────────────────────
 
 // ── Required field lists per step ─────────────────────────────────────────────
 const REQUIRED_BASICS: (keyof FormData)[] = ['name', 'email'];
@@ -761,76 +776,66 @@ const modalVariants = {
 };
 
 const slideVariants = {
-  initial: (direction: number) => ({ opacity: 0, x: direction * 40, y: 8 }),
+  initial: (dir: number) => ({ opacity: 0, x: dir * 40, y: 8 }),
   animate: { opacity: 1, x: 0, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
-  exit: (direction: number) => ({ opacity: 0, x: direction * -40, y: -8, transition: { duration: 0.25 } }),
+  exit: (dir: number) => ({ opacity: 0, x: dir * -40, y: -8, transition: { duration: 0.25 } }),
 };
-
 // ───────────────────────────────────────────────────────────────────────────────
 
 export const OrderSection: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { themeMode } = useTheme();
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { reducedMotion } = useAnimation();
-  const { showToast } = useToast();
-  const language = i18n.language.split('-')[0] === 'pl' ? 'pl' : 'en';
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewButtonRef = useRef<HTMLButtonElement>(null);
   const confirmBoxRef = useRef<HTMLDivElement>(null);
-  const stepHeadingRef = useRef<HTMLDivElement>(null);
-  const summaryHeadingRef = useRef<HTMLHeadingElement>(null);
-  const restoredDraftNotified = useRef(false);
 
-  // ── Modal and form state ─────────────────────────────────────────────────────
+  // ── Modal state ──────────────────────────────────────────────────────────────
   const [modalOpen, setModalOpen] = useState(false);
+
+  // ── Form state ───────────────────────────────────────────────────────────────
   const [step, setStep] = useState<Step>('basics');
   const [slideDir, setSlideDir] = useState(1);
   const [touched, setTouched] = useState<Set<string>>(new Set());
-  const [form, setForm] = useState<FormData>(loadOrderDraft);
+  const [form, setForm] = useState<FormData>(loadSavedForm);
   const [rodoConsent, setRodoConsent] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [fileError, setFileError] = useState<FileValidationError | null>(null);
-  const [validationMessage, setValidationMessage] = useState('');
+  const [fileSizeError, setFileSizeError] = useState(false);
 
   // ── Summary state ────────────────────────────────────────────────────────────
   const [orderId, setOrderId] = useState('');
-  const [orderCreatedAt, setOrderCreatedAt] = useState('');
-  const [archiveFilename, setArchiveFilename] = useState('');
-  const [isGeneratingArchive, setIsGeneratingArchive] = useState(false);
-  const [archiveProgress, setArchiveProgress] = useState(0);
-  const [hasDownloadedArchive, setHasDownloadedArchive] = useState(false);
   const [copied, setCopied] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
 
-  // ── Dialog state ─────────────────────────────────────────────────────────────
+  // ── Confirm dialog state ───────────────────────────────────────────────────
   const [confirmAction, setConfirmAction] = useState<'close' | 'clear' | null>(null);
+
+  // ── Legal modals state ────────────────────────────────────────────────────
   const [privacyOpen, setPrivacyOpen] = useState(false);
 
-  useBodyScrollLock(modalOpen || privacyOpen);
-
+  // ── Lock body scroll when modal is open ──────────────────────────────────────
   useEffect(() => {
-    saveOrderDraft(form);
+    document.body.style.overflow = modalOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [modalOpen]);
+
+  // ── Save form to sessionStorage ──────────────────────────────────────────────
+  useEffect(() => {
+    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(form)); }
+    catch { /* ignore */ }
   }, [form]);
 
-  useEffect(() => {
-    if (!modalOpen) return;
-    requestAnimationFrame(() => {
-      if (step === 'summary') summaryHeadingRef.current?.focus();
-      else stepHeadingRef.current?.focus();
-    });
-  }, [modalOpen, step]);
-
+  // ── Check if form has data ─────────────────────────────────────────────────
   const isFormDirty = useMemo(
-    () => (Object.values(form) as string[]).some((value) => value.trim() !== '') || files.length > 0 || rodoConsent,
-    [files.length, form, rodoConsent],
+    () => Object.values(form).some((v) => v.trim() !== ''),
+    [form]
   );
 
-  const hasRestoredDraft = useRef(
-    (Object.values(form) as string[]).some((value) => value.trim() !== ''),
-  ).current;
-
+  // ── Close with confirmation ────────────────────────────────────────────────
   const confirmClose = useCallback(() => {
     if (isFormDirty && step !== 'summary') {
       setConfirmAction('close');
@@ -839,70 +844,75 @@ export const OrderSection: React.FC = () => {
     setModalOpen(false);
   }, [isFormDirty, step]);
 
-  const handleConfirmNo = useCallback(() => setConfirmAction(null), []);
+  const handleConfirmNo = useCallback(() => {
+    setConfirmAction(null);
+  }, []);
 
+  // ── Close on Escape ──────────────────────────────────────────────────────────
   useEffect(() => {
-    const handleKey = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || !modalOpen || privacyOpen) return;
-      if (confirmAction) handleConfirmNo();
-      else confirmClose();
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || !modalOpen || privacyOpen) return;
+
+      if (confirmAction) {
+        handleConfirmNo();
+      } else {
+        confirmClose();
+      }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [confirmAction, confirmClose, handleConfirmNo, modalOpen, privacyOpen]);
+  }, [modalOpen, privacyOpen, confirmAction, confirmClose, handleConfirmNo]);
 
-  const openModal = useCallback(() => {
-    setModalOpen(true);
-    if (hasRestoredDraft && !restoredDraftNotified.current) {
-      restoredDraftNotified.current = true;
-      showToast(t('order.form.draftRestored'), 'info');
-    }
-  }, [hasRestoredDraft, showToast, t]);
+  // ── Handlers ─────────────────────────────────────────────────────────────────
+  const openModal = useCallback(() => setModalOpen(true), []);
 
-  const handleClearRequest = useCallback(() => setConfirmAction('clear'), []);
+  const handleClearRequest = useCallback(() => {
+    setConfirmAction('clear');
+  }, []);
 
   const handleClearForm = useCallback(() => {
-    setForm({ ...emptyForm });
+    setForm(emptyForm);
     setRodoConsent(false);
     setFiles([]);
-    setFileError(null);
-    setValidationMessage('');
+    setFileSizeError(false);
     setTouched(new Set());
     setStep('basics');
-    setOrderId('');
-    setOrderCreatedAt('');
-    setArchiveFilename('');
-    setArchiveProgress(0);
-    setHasDownloadedArchive(false);
-    clearOrderDraft();
-    if (fileInputRef.current) fileInputRef.current.value = '';
+    sessionStorage.removeItem(SESSION_KEY);
   }, []);
 
   const handleConfirmYes = useCallback(() => {
-    if (confirmAction === 'close') setModalOpen(false);
-    if (confirmAction === 'clear') handleClearForm();
+    if (confirmAction === 'close') {
+      setModalOpen(false);
+    } else if (confirmAction === 'clear') {
+      handleClearForm();
+    }
     setConfirmAction(null);
   }, [confirmAction, handleClearForm]);
 
   const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-      const { name, value } = event.target;
-      setForm((previous) => ({ ...previous, [name]: value }));
-      setTouched((previous) => new Set(previous).add(name));
-      setValidationMessage('');
-      setHasDownloadedArchive(false);
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setForm((prev) => ({ ...prev, [name]: value }));
+      setTouched((prev) => new Set(prev).add(name));
     },
-    [],
+    []
+  );
+
+  // ── Validation ──────────────────────────────────────────────────────────────
+  const isEmailValid = useCallback(
+    (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    []
   );
 
   const isFieldMissing = useCallback(
     (field: keyof FormData) => touched.has(field) && form[field].trim() === '',
-    [form, touched],
+    [form, touched]
   );
 
-  const isEmailError = touched.has('email')
-    && form.email.trim() !== ''
-    && !isEmailValid(form.email);
+  const isEmailError = useMemo(
+    () => touched.has('email') && form.email.trim() !== '' && !isEmailValid(form.email),
+    [form.email, touched, isEmailValid]
+  );
   const isNameMissing = isFieldMissing('name');
   const isEmailMissing = isFieldMissing('email');
   const isClientTypeMissing = isFieldMissing('clientType');
@@ -914,113 +924,101 @@ export const OrderSection: React.FC = () => {
   const isDescriptionMissing = isFieldMissing('description');
   const isContentReadyMissing = isFieldMissing('contentReady');
 
-  const isBasicsValid = hasRequiredValues(form, REQUIRED_BASICS) && isEmailValid(form.email);
-  const isContactValid = hasRequiredValues(form, REQUIRED_CONTACT);
-  const isProjectValid = hasRequiredValues(form, REQUIRED_PROJECT);
-  const isDetailsValid = hasRequiredValues(form, REQUIRED_DETAILS);
-  const isExtrasValid = hasRequiredValues(form, REQUIRED_EXTRAS) && rodoConsent;
+  const isBasicsValid = useMemo(
+    () => REQUIRED_BASICS.every((f) => form[f].trim() !== '') && isEmailValid(form.email),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.name, form.email, isEmailValid]
+  );
 
-  const markTouched = useCallback((fields: readonly string[]) => {
-    setTouched((previous) => {
-      const next = new Set(previous);
-      fields.forEach((field) => next.add(field));
+  const isContactValid = useMemo(
+    () => REQUIRED_CONTACT.every((f) => form[f].trim() !== ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.clientType, form.contactMethod]
+  );
+
+  const isProjectValid = useMemo(
+    () => REQUIRED_PROJECT.every((f) => form[f].trim() !== ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.type, form.budget, form.existingProject]
+  );
+
+  const isDetailsValid = useMemo(
+    () => REQUIRED_DETAILS.every((f) => form[f].trim() !== ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.deadline, form.description, form.contentReady]
+  );
+
+  const isExtrasValid = useMemo(
+    () => REQUIRED_EXTRAS.every((f) => form[f].trim() !== '') && !fileSizeError && rodoConsent,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.hasDomain, fileSizeError, rodoConsent]
+  );
+
+  const markTouched = useCallback((fields: (keyof FormData)[]) => {
+    setTouched((prev) => {
+      const next = new Set(prev);
+      fields.forEach((f) => next.add(f));
       return next;
     });
   }, []);
 
-  const focusFirstInvalid = useCallback((fields: readonly string[], includeConsent = false) => {
-    requestAnimationFrame(() => {
-      for (const field of fields) {
-        const element = document.querySelector<HTMLElement>(`[name="${field}"]`);
-        if (element && 'value' in element && String((element as HTMLInputElement).value).trim() === '') {
-          element.focus();
-          return;
-        }
-        if (field === 'email' && !isEmailValid(form.email)) {
-          element?.focus();
-          return;
-        }
-      }
-      if (includeConsent && !rodoConsent) {
-        document.getElementById('order-rodo-consent')?.focus();
-      }
-    });
-  }, [form.email, rodoConsent]);
-
   const goNext = useCallback((nextStep: Step) => {
     setSlideDir(1);
     setStep(nextStep);
-    setValidationMessage('');
   }, []);
 
-  const goBack = useCallback((previousStep: Step) => {
+  const goBack = useCallback((prevStep: Step) => {
     setSlideDir(-1);
-    setStep(previousStep);
-    setValidationMessage('');
+    setStep(prevStep);
   }, []);
 
-  const validateAndAdvance = useCallback((
-    fields: readonly (keyof FormData)[],
-    valid: boolean,
-    nextStep: Step,
-  ) => {
-    markTouched(fields);
-    if (!valid) {
-      setValidationMessage(t('order.form.fixErrors'));
-      focusFirstInvalid(fields);
-      return;
+  const handleNextToContact = useCallback(() => {
+    markTouched(REQUIRED_BASICS);
+    if (!isBasicsValid) return;
+    goNext('contact');
+  }, [isBasicsValid, markTouched, goNext]);
+
+  const handleNextToProject = useCallback(() => {
+    markTouched(REQUIRED_CONTACT);
+    if (!isContactValid) return;
+    goNext('project');
+  }, [isContactValid, markTouched, goNext]);
+
+  const handleNextToDetails = useCallback(() => {
+    markTouched(REQUIRED_PROJECT);
+    if (!isProjectValid) return;
+    goNext('details');
+  }, [isProjectValid, markTouched, goNext]);
+
+  const handleNextToExtras = useCallback(() => {
+    markTouched(REQUIRED_DETAILS);
+    if (!isDetailsValid) return;
+    goNext('extras');
+  }, [isDetailsValid, markTouched, goNext]);
+
+  const handleFiles = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? []);
+    const total = selected.reduce((acc, f) => acc + f.size, 0);
+    if (total > MAX_TOTAL_SIZE_BYTES) {
+      setFileSizeError(true);
+      setFiles([]);
+    } else {
+      setFileSizeError(false);
+      setFiles(selected);
     }
-    goNext(nextStep);
-  }, [focusFirstInvalid, goNext, markTouched, t]);
-
-  const handleNextToContact = useCallback(
-    () => validateAndAdvance(REQUIRED_BASICS, isBasicsValid, 'contact'),
-    [isBasicsValid, validateAndAdvance],
-  );
-  const handleNextToProject = useCallback(
-    () => validateAndAdvance(REQUIRED_CONTACT, isContactValid, 'project'),
-    [isContactValid, validateAndAdvance],
-  );
-  const handleNextToDetails = useCallback(
-    () => validateAndAdvance(REQUIRED_PROJECT, isProjectValid, 'details'),
-    [isProjectValid, validateAndAdvance],
-  );
-  const handleNextToExtras = useCallback(
-    () => validateAndAdvance(REQUIRED_DETAILS, isDetailsValid, 'extras'),
-    [isDetailsValid, validateAndAdvance],
-  );
-
-  const handleConsentChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setRodoConsent(event.target.checked);
-    setTouched((previous) => new Set(previous).add('rodoConsent'));
-    setValidationMessage('');
-    setHasDownloadedArchive(false);
   }, []);
 
-  const handleFiles = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(event.target.files ?? []);
-    const result = validateFiles([...files, ...selectedFiles]);
-    setFileError(result.error);
-    setValidationMessage('');
-    setHasDownloadedArchive(false);
-    if (!result.error) setFiles(result.files);
-    event.target.value = '';
-  }, [files]);
-
-  const handleGenerate = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
-    markTouched([...REQUIRED_EXTRAS, 'rodoConsent']);
-    if (!isExtrasValid) {
-      setValidationMessage(t('order.form.fixErrors'));
-      focusFirstInvalid(REQUIRED_EXTRAS, true);
-      return;
-    }
-
-    setOrderId((current) => current || createOrderId());
-    setOrderCreatedAt((current) => current || new Date().toISOString());
-    setHasDownloadedArchive(false);
-    goNext('summary');
-  }, [focusFirstInvalid, goNext, isExtrasValid, markTouched, t]);
+  const handleGenerate = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      markTouched(REQUIRED_EXTRAS);
+      if (!isExtrasValid) return;
+      const id = crypto.randomUUID();
+      setOrderId(id);
+      goNext('summary');
+    },
+    [isExtrasValid, markTouched, goNext]
+  );
 
   const handleBack = useCallback(() => {
     goBack('extras');
@@ -1028,99 +1026,44 @@ export const OrderSection: React.FC = () => {
     setManualOpen(false);
   }, [goBack]);
 
-  const copyText = useCallback(async (value: string): Promise<void> => {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(value);
-      return;
-    }
-
-    const textarea = document.createElement('textarea');
-    textarea.value = value;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.append(textarea);
-    textarea.select();
-    const copiedSuccessfully = document.execCommand('copy');
-    textarea.remove();
-    if (!copiedSuccessfully) throw new Error('Clipboard is unavailable');
-  }, []);
-
   const handleCopyId = useCallback(async () => {
-    try {
-      await copyText(orderId);
-      setCopied(true);
-      showToast(t('order.summary.copySuccess'), 'success');
-      window.setTimeout(() => setCopied(false), 2_000);
-    } catch {
-      showToast(t('order.summary.copyError'), 'error');
-    }
-  }, [copyText, orderId, showToast, t]);
+    await navigator.clipboard.writeText(orderId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [orderId]);
 
   const handleDownloadZip = useCallback(async () => {
-    if (!orderId || !orderCreatedAt || isGeneratingArchive) return;
-    setIsGeneratingArchive(true);
-    setArchiveProgress(0);
-
-    try {
-      const { blob, filename } = await buildOrderArchive({
-        id: orderId,
-        createdAt: orderCreatedAt,
-        language,
-        form,
-        files,
-        onProgress: setArchiveProgress,
-      });
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = filename;
-      document.body.append(anchor);
-      anchor.click();
-      anchor.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
-      setArchiveProgress(100);
-      setArchiveFilename(filename);
-      setHasDownloadedArchive(true);
-      showToast(t('order.summary.downloadSuccess'), 'success');
-    } catch {
-      showToast(t('order.summary.downloadError'), 'error');
-    } finally {
-      setIsGeneratingArchive(false);
-    }
-  }, [files, form, isGeneratingArchive, language, orderCreatedAt, orderId, showToast, t]);
+    const zip = new JSZip();
+    const payload: OrderPayload = {
+      id: orderId,
+      createdAt: new Date().toISOString(),
+      ...form,
+    };
+    zip.file(`zamowienie-${orderId}.json`, JSON.stringify(payload, null, 2));
+    files.forEach((file) => { zip.file(file.name, file); });
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'files_for_order.zip';
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [orderId, form, files]);
 
   const handleOpenMailClient = useCallback(() => {
-    const filename = archiveFilename || `verminew-order-${orderId}.zip`;
-    if (!hasDownloadedArchive) {
-      showToast(t('order.summary.downloadFirst'), 'info');
-      return;
-    }
     const subject = encodeURIComponent(t('order.summary.mailSubject', { id: orderId }));
     const body = encodeURIComponent(
-      t('order.summary.mailBody', {
-        id: orderId,
-        date: new Date(orderCreatedAt).toLocaleString(language),
-        filename,
-      }),
+      t('order.summary.mailBody', { id: orderId, date: new Date().toLocaleString() })
     );
     window.location.href = `mailto:${socialConfig.email.address}?subject=${subject}&body=${body}`;
-  }, [archiveFilename, hasDownloadedArchive, language, orderCreatedAt, orderId, showToast, t]);
-
-  const renderOptions = useCallback((field: OrderOptionField, translationKey: string) => {
-    const labels = asStringArray(t(translationKey, { returnObjects: true }) as unknown);
-    return ORDER_OPTION_IDS[field].map((value, index) => (
-      <option key={value} value={value}>{labels[index] ?? value}</option>
-    ));
-  }, [t]);
+  }, [orderId, t]);
 
   // ── Render ───────────────────────────────────────────────────────────────────
-  const isStrictDeadline = form.deadline !== '' && form.deadline !== 'flexible';
-  const fileErrorMessage = fileError
-    ? t(`order.form.attachmentErrors.${fileError}`)
-    : '';
+  const deadlineOptions = t('order.form.deadlineOptions', { returnObjects: true }) as string[];
+  const isStrictDeadline = form.deadline !== '' && form.deadline !== deadlineOptions[deadlineOptions.length - 1];
 
   return (
-    <Section id="order">
+    <SectionContainer id="order">
       <SectionTitle>{t('order.title')}</SectionTitle>
 
       <Wrapper
@@ -1133,13 +1076,46 @@ export const OrderSection: React.FC = () => {
           {t('order.description')}
         </Description>
 
-        <OrderPreview
+        {/* ── Preview card (always visible, triggers modal) ── */}
+        <PreviewCard
           ref={previewButtonRef}
-          isDark={isDark}
-          reducedMotion={reducedMotion}
-          itemVariants={itemVariants}
-          onOpen={openModal}
-        />
+          type="button"
+          $isDark={isDark}
+          variants={!reducedMotion ? itemVariants : undefined}
+          onClick={openModal}
+          aria-label={t('order.preview.cta')}
+        >
+          {/* Skeleton fields */}
+          <PreviewField>
+            <PreviewLabel $w="30%" />
+            <PreviewInput />
+          </PreviewField>
+          <PreviewRow>
+            <PreviewField>
+              <PreviewLabel $w="40%" />
+              <PreviewInput />
+            </PreviewField>
+            <PreviewField>
+              <PreviewLabel $w="35%" />
+              <PreviewInput />
+            </PreviewField>
+          </PreviewRow>
+          <PreviewField>
+            <PreviewLabel $w="45%" />
+            <PreviewInput />
+          </PreviewField>
+          <PreviewField>
+            <PreviewLabel $w="50%" />
+            <PreviewTextarea />
+          </PreviewField>
+
+          {/* CTA overlay */}
+          <PreviewOverlay data-overlay>
+            <MdEdit size={32} color="currentColor" style={{ opacity: 0.7 }} />
+            <PreviewCta>{t('order.preview.cta')}</PreviewCta>
+            <PreviewHint>{t('order.preview.hint')}</PreviewHint>
+          </PreviewOverlay>
+        </PreviewCard>
       </Wrapper>
 
       {/* ── Modal ── */}
@@ -1190,104 +1166,616 @@ export const OrderSection: React.FC = () => {
                 )}
               </ModalHeader>
 
-              {validationMessage && (
-                <ValidationSummary role="alert">{validationMessage}</ValidationSummary>
-              )}
-
               <AnimatePresence mode="wait" custom={slideDir}>
+                {/* ── Step 1: Basic info (name, email, phone) ── */}
                 {step === 'basics' && (
-                  <OrderBasicsStep
+                  <motion.div
                     key="basics"
-                    form={form}
-                    isDark={isDark}
-                    reducedMotion={reducedMotion}
-                    direction={slideDir}
-                    headingRef={stepHeadingRef}
-                    onChange={handleChange}
-                    nameMissing={isNameMissing}
-                    emailMissing={isEmailMissing}
-                    emailInvalid={isEmailError}
-                    onNext={handleNextToContact}
-                  />
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(100 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 1, total: TOTAL_STEPS })} — {t('order.form.stepBasic')}</StepLabel>
+                    </StepIndicator>
+
+                    <Field>
+                      <Label htmlFor="order-name" $required>{t('order.form.name')}</Label>
+                      <Input
+                        $isDark={isDark}
+                        id="order-name"
+                        name="name"
+                        type="text"
+                        required
+                        aria-invalid={isNameMissing || undefined}
+                        aria-describedby={isNameMissing ? NAME_ERROR_ID : undefined}
+                        placeholder={t('order.form.namePlaceholder')}
+                        value={form.name}
+                        onChange={handleChange}
+                      />
+                      {isNameMissing && (
+                        <FieldError
+                          id={NAME_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-email" $required>{t('order.form.email')}</Label>
+                      <Input
+                        $isDark={isDark}
+                        id="order-email"
+                        name="email"
+                        type="email"
+                        required
+                        aria-invalid={isEmailMissing || isEmailError || undefined}
+                        aria-describedby={
+                          isEmailMissing || isEmailError ? EMAIL_ERROR_ID : undefined
+                        }
+                        placeholder={t('order.form.emailPlaceholder')}
+                        value={form.email}
+                        onChange={handleChange}
+                      />
+                      {isEmailMissing && (
+                        <FieldError
+                          id={EMAIL_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                      {isEmailError && (
+                        <FieldError
+                          id={EMAIL_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.invalidEmail')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-phone">{t('order.form.phone')}</Label>
+                      <Input
+                        $isDark={isDark}
+                        id="order-phone"
+                        name="phone"
+                        type="tel"
+                        placeholder={t('order.form.phonePlaceholder')}
+                        value={form.phone}
+                        onChange={handleChange}
+                      />
+                    </Field>
+
+                    <FormNav>
+                      <div />
+                      <Button type="button" size="large" onClick={handleNextToContact} disabled={!isBasicsValid}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
                 )}
 
+                {/* ── Step 2: Contact (clientType, contactMethod, source) ── */}
                 {step === 'contact' && (
-                  <OrderContactStep
+                  <motion.div
                     key="contact"
-                    form={form}
-                    isDark={isDark}
-                    reducedMotion={reducedMotion}
-                    direction={slideDir}
-                    headingRef={stepHeadingRef}
-                    onChange={handleChange}
-                    clientTypeMissing={isClientTypeMissing}
-                    contactMethodMissing={isContactMethodMissing}
-                    renderOptions={renderOptions}
-                    onBack={() => goBack('basics')}
-                    onNext={handleNextToProject}
-                  />
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(200 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 2, total: TOTAL_STEPS })} — {t('order.form.stepContact')}</StepLabel>
+                    </StepIndicator>
+
+                    <Field>
+                      <Label htmlFor="order-clientType" $required>{t('order.form.clientType')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-clientType"
+                        name="clientType"
+                        required
+                        aria-invalid={isClientTypeMissing || undefined}
+                        aria-describedby={
+                          isClientTypeMissing ? CLIENT_TYPE_ERROR_ID : undefined
+                        }
+                        value={form.clientType}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.clientTypePlaceholder')}
+                        </option>
+                        {(t('order.form.clientTypeOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isClientTypeMissing && (
+                        <FieldError
+                          id={CLIENT_TYPE_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-contactMethod" $required>{t('order.form.contactMethod')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-contactMethod"
+                        name="contactMethod"
+                        required
+                        aria-invalid={isContactMethodMissing || undefined}
+                        aria-describedby={
+                          isContactMethodMissing ? CONTACT_METHOD_ERROR_ID : undefined
+                        }
+                        value={form.contactMethod}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.contactMethodPlaceholder')}
+                        </option>
+                        {(t('order.form.contactMethodOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isContactMethodMissing && (
+                        <FieldError
+                          id={CONTACT_METHOD_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-source">{t('order.form.source')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-source"
+                        name="source"
+                        value={form.source}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.sourcePlaceholder')}
+                        </option>
+                        {(t('order.form.sourceOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                    </Field>
+
+                    <FormNav>
+                      <Button type="button" size="medium" variant="outline" onClick={() => goBack('basics')}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.form.back')}
+                      </Button>
+                      <Button type="button" size="large" onClick={handleNextToProject} disabled={!isContactValid}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
                 )}
 
+                {/* ── Step 3: Project (type, existingProject, budget) ── */}
                 {step === 'project' && (
-                  <OrderProjectStep
+                  <motion.div
                     key="project"
-                    form={form}
-                    isDark={isDark}
-                    reducedMotion={reducedMotion}
-                    direction={slideDir}
-                    headingRef={stepHeadingRef}
-                    onChange={handleChange}
-                    typeMissing={isProjectTypeMissing}
-                    existingProjectMissing={isExistingProjectMissing}
-                    budgetMissing={isBudgetMissing}
-                    renderOptions={renderOptions}
-                    onBack={() => goBack('contact')}
-                    onNext={handleNextToDetails}
-                  />
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(300 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 3, total: TOTAL_STEPS })} — {t('order.form.stepProject')}</StepLabel>
+                    </StepIndicator>
+
+                    <Field>
+                      <Label htmlFor="order-type" $required>{t('order.form.type')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-type"
+                        name="type"
+                        required
+                        aria-invalid={isProjectTypeMissing || undefined}
+                        aria-describedby={
+                          isProjectTypeMissing ? PROJECT_TYPE_ERROR_ID : undefined
+                        }
+                        value={form.type}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.typePlaceholder')}
+                        </option>
+                        {(t('order.form.typeOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          )
+                        )}
+                      </Select>
+                      {isProjectTypeMissing && (
+                        <FieldError
+                          id={PROJECT_TYPE_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-existingProject" $required>{t('order.form.existingProject')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-existingProject"
+                        name="existingProject"
+                        required
+                        aria-invalid={isExistingProjectMissing || undefined}
+                        aria-describedby={
+                          isExistingProjectMissing ? EXISTING_PROJECT_ERROR_ID : undefined
+                        }
+                        value={form.existingProject}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.existingProjectPlaceholder')}
+                        </option>
+                        {(t('order.form.existingProjectOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isExistingProjectMissing && (
+                        <FieldError
+                          id={EXISTING_PROJECT_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-budget" $required>{t('order.form.budget')}</Label>
+                      <FieldHint>{t('order.form.budgetHint')}</FieldHint>
+                      <Select
+                        $isDark={isDark}
+                        id="order-budget"
+                        name="budget"
+                        required
+                        aria-invalid={isBudgetMissing || undefined}
+                        aria-describedby={isBudgetMissing ? BUDGET_ERROR_ID : undefined}
+                        value={form.budget}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.budgetPlaceholder')}
+                        </option>
+                        {(
+                          t('order.form.budgetOptions', { returnObjects: true }) as string[]
+                        ).map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </Select>
+                      {isBudgetMissing && (
+                        <FieldError
+                          id={BUDGET_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <FormNav>
+                      <Button type="button" size="medium" variant="outline" onClick={() => goBack('contact')}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.form.back')}
+                      </Button>
+                      <Button type="button" size="large" onClick={handleNextToDetails} disabled={!isProjectValid}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
                 )}
 
+                {/* ── Step 4: Details (deadline, description, contentReady) ── */}
                 {step === 'details' && (
-                  <OrderDetailsStep
+                  <motion.div
                     key="details"
-                    form={form}
-                    isDark={isDark}
-                    reducedMotion={reducedMotion}
-                    direction={slideDir}
-                    headingRef={stepHeadingRef}
-                    onChange={handleChange}
-                    deadlineMissing={isDeadlineMissing}
-                    descriptionMissing={isDescriptionMissing}
-                    contentReadyMissing={isContentReadyMissing}
-                    strictDeadline={isStrictDeadline}
-                    renderOptions={renderOptions}
-                    onBack={() => goBack('project')}
-                    onNext={handleNextToExtras}
-                  />
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={Math.round(400 / TOTAL_STEPS)} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 4, total: TOTAL_STEPS })} — {t('order.form.stepDetails')}</StepLabel>
+                    </StepIndicator>
+
+                    <Field>
+                      <Label htmlFor="order-deadline" $required>{t('order.form.deadline')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-deadline"
+                        name="deadline"
+                        required
+                        aria-invalid={isDeadlineMissing || undefined}
+                        aria-describedby={isDeadlineMissing ? DEADLINE_ERROR_ID : undefined}
+                        value={form.deadline}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.deadlinePlaceholder')}
+                        </option>
+                        {deadlineOptions.map((opt) => (
+                          <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                      </Select>
+                      {isDeadlineMissing && (
+                        <FieldError
+                          id={DEADLINE_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                      <AnimatePresence>
+                        {isStrictDeadline && (
+                          <DeadlineWarning
+                            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                            animate={{ opacity: 1, height: 'auto', marginTop: '0.5rem' }}
+                            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                            style={{ overflow: 'hidden' }}
+                          >
+                            <MdWarningAmber size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
+                            <span>{t('order.form.deadlineWarning')}</span>
+                          </DeadlineWarning>
+                        )}
+                      </AnimatePresence>
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-description" $required>
+                        {t('order.form.description')}
+                      </Label>
+                      <Textarea
+                        $isDark={isDark}
+                        id="order-description"
+                        name="description"
+                        required
+                        aria-invalid={isDescriptionMissing || undefined}
+                        aria-describedby={
+                          isDescriptionMissing ? DESCRIPTION_ERROR_ID : undefined
+                        }
+                        placeholder={t('order.form.descriptionPlaceholder')}
+                        value={form.description}
+                        onChange={handleChange}
+                      />
+                      {isDescriptionMissing && (
+                        <FieldError
+                          id={DESCRIPTION_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <Field>
+                      <Label htmlFor="order-contentReady" $required>{t('order.form.contentReady')}</Label>
+                      <Select
+                        $isDark={isDark}
+                        id="order-contentReady"
+                        name="contentReady"
+                        required
+                        aria-invalid={isContentReadyMissing || undefined}
+                        aria-describedby={
+                          isContentReadyMissing ? CONTENT_READY_ERROR_ID : undefined
+                        }
+                        value={form.contentReady}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          {t('order.form.contentReadyPlaceholder')}
+                        </option>
+                        {(t('order.form.contentReadyOptions', { returnObjects: true }) as string[]).map(
+                          (opt) => <option key={opt} value={opt}>{opt}</option>
+                        )}
+                      </Select>
+                      {isContentReadyMissing && (
+                        <FieldError
+                          id={CONTENT_READY_ERROR_ID}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        >
+                          {t('order.form.requiredField')}
+                        </FieldError>
+                      )}
+                    </Field>
+
+                    <FormNav>
+                      <Button type="button" size="medium" variant="outline" onClick={() => goBack('project')}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.form.back')}
+                      </Button>
+                      <Button type="button" size="large" onClick={handleNextToExtras} disabled={!isDetailsValid}>
+                        {t('order.form.next')}
+                        <MdChevronRight style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }} />
+                      </Button>
+                    </FormNav>
+                  </motion.div>
                 )}
 
+                {/* ── Step 5: Extras (hasDomain, references, attachments + rodo) ── */}
                 {step === 'extras' && (
-                  <OrderExtrasStep
+                  <motion.div
                     key="extras"
-                    form={form}
-                    isDark={isDark}
-                    reducedMotion={reducedMotion}
-                    direction={slideDir}
-                    headingRef={stepHeadingRef}
-                    onChange={handleChange}
-                    domainMissing={isFieldMissing('hasDomain')}
-                    fileInputRef={fileInputRef}
-                    fileCount={files.length}
-                    fileError={fileError}
-                    fileErrorMessage={fileErrorMessage}
-                    consent={rodoConsent}
-                    consentTouched={touched.has('rodoConsent')}
-                    renderOptions={renderOptions}
-                    onFilesChange={handleFiles}
-                    onConsentChange={handleConsentChange}
-                    onOpenPrivacy={() => setPrivacyOpen(true)}
-                    onBack={() => goBack('details')}
-                    onSubmit={handleGenerate}
-                  />
+                    variants={!reducedMotion ? slideVariants : undefined}
+                    custom={slideDir}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <StepIndicator>
+                      <ProgressBarTrack>
+                        <ProgressBarFill $progress={100} />
+                      </ProgressBarTrack>
+                      <StepLabel>{t('order.form.stepLabel', { current: 5, total: TOTAL_STEPS })} — {t('order.form.stepExtras')}</StepLabel>
+                    </StepIndicator>
+
+                    <form onSubmit={handleGenerate} noValidate>
+                      <Field>
+                        <Label htmlFor="order-hasDomain" $required>{t('order.form.hasDomain')}</Label>
+                        <Select
+                          $isDark={isDark}
+                          id="order-hasDomain"
+                          name="hasDomain"
+                          required
+                          value={form.hasDomain}
+                          onChange={handleChange}
+                          aria-invalid={isFieldMissing('hasDomain') || undefined}
+                          aria-describedby={isFieldMissing('hasDomain') ? DOMAIN_ERROR_ID : undefined}
+                        >
+                          <option value="" disabled>
+                            {t('order.form.hasDomainPlaceholder')}
+                          </option>
+                          {(t('order.form.hasDomainOptions', { returnObjects: true }) as string[]).map(
+                            (opt) => <option key={opt} value={opt}>{opt}</option>
+                          )}
+                        </Select>
+                        {isFieldMissing('hasDomain') && (
+                          <FieldError id={DOMAIN_ERROR_ID} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            {t('order.form.requiredField')}
+                          </FieldError>
+                        )}
+                      </Field>
+
+                      <Field>
+                        <Label htmlFor="order-references">{t('order.form.references')}</Label>
+                        <Textarea
+                          $isDark={isDark}
+                          id="order-references"
+                          name="references"
+                          placeholder={t('order.form.referencesPlaceholder')}
+                          value={form.references}
+                          onChange={handleChange}
+                          style={{ minHeight: '80px' }}
+                        />
+                      </Field>
+
+                      <Field>
+                        <Label>{t('order.form.attachments')}</Label>
+                        <FieldHint>{t('order.form.attachmentsHint')}</FieldHint>
+                        <FileInputWrapper
+                          $isDark={isDark}
+                          $hasError={fileSizeError}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <MdAttachFile size={20} style={{ flexShrink: 0, opacity: 0.6 }} />
+                          <FileCount $hasError={fileSizeError}>
+                            {fileSizeError
+                              ? t('order.form.attachmentsTooBig')
+                              : files.length === 0
+                                ? t('order.form.attachmentsCount_zero')
+                                : files.length === 1
+                                  ? t('order.form.attachmentsCount_one')
+                                  : t('order.form.attachmentsCount_few', { count: files.length })}
+                          </FileCount>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            multiple
+                            accept={ACCEPTED_TYPES}
+                            onChange={handleFiles}
+                          />
+                        </FileInputWrapper>
+                      </Field>
+
+                      <Field>
+                        <CheckboxRow>
+                          <CheckboxInput
+                            id="order-rodo-consent"
+                            type="checkbox"
+                            checked={rodoConsent}
+                            onChange={(event) => setRodoConsent(event.target.checked)}
+                            required
+                          />
+                          <CheckboxText>
+                            <label htmlFor="order-rodo-consent">
+                              {t('order.form.rodoConsentBefore')}
+                            </label>
+                            <InlineLinkButton
+                              type="button"
+                              onClick={() => setPrivacyOpen(true)}
+                            >
+                              {t('order.form.rodoConsentLink')}
+                            </InlineLinkButton>
+                            <label htmlFor="order-rodo-consent">
+                              {t('order.form.rodoConsentAfter')}
+                            </label>
+                          </CheckboxText>
+                        </CheckboxRow>
+                        {!rodoConsent && touched.has('hasDomain') && (
+                          <FieldError initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            {t('order.form.rodoRequired')}
+                          </FieldError>
+                        )}
+                      </Field>
+
+                      <FormNav>
+                        <Button type="button" size="medium" variant="outline" onClick={() => goBack('details')}>
+                          <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                          {t('order.form.back')}
+                        </Button>
+                        <Button type="submit" size="large" disabled={!isExtrasValid}>
+                          {t('order.form.generate')}
+                          <MdChevronRight
+                            style={{ marginLeft: '0.25rem', verticalAlign: 'middle' }}
+                          />
+                        </Button>
+                      </FormNav>
+                    </form>
+                  </motion.div>
                 )}
 
                 {step === 'summary' && (
@@ -1299,23 +1787,87 @@ export const OrderSection: React.FC = () => {
                     animate="animate"
                     exit="exit"
                   >
-                    <OrderSummary
-                      isDark={isDark}
-                      reducedMotion={reducedMotion}
-                      copied={copied}
-                      orderId={orderId}
-                      archiveFilename={archiveFilename}
-                      archiveProgress={archiveProgress}
-                      hasDownloadedArchive={hasDownloadedArchive}
-                      isGeneratingArchive={isGeneratingArchive}
-                      manualOpen={manualOpen}
-                      headingRef={summaryHeadingRef}
-                      onCopyId={handleCopyId}
-                      onDownloadZip={handleDownloadZip}
-                      onOpenMailClient={handleOpenMailClient}
-                      onToggleManual={() => setManualOpen((value) => !value)}
-                      onBack={handleBack}
-                    />
+                    <SummaryTitle>{t('order.summary.title')}</SummaryTitle>
+                    <SummarySubtitle>{t('order.summary.subtitle')}</SummarySubtitle>
+
+                    <IdBox $isDark={isDark} $copied={copied} onClick={handleCopyId} type="button">
+                      <div>
+                        <IdLabel>{t('order.summary.idLabel')}</IdLabel>
+                        <IdValue>{orderId}</IdValue>
+                      </div>
+                      <IdCopyHint>
+                        {copied ? <MdCheck color="currentColor" /> : <MdContentCopy color="currentColor" />}
+                      </IdCopyHint>
+                    </IdBox>
+
+                    <DownloadRow>
+                      <Button
+                        size="large"
+                        onClick={handleDownloadZip}
+                        style={{ width: '100%' }}
+                      >
+                        <MdDownload style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                        {t('order.summary.downloadZip')}
+                      </Button>
+                    </DownloadRow>
+
+                    <ActionGrid>
+                      <Button size="medium" onClick={handleOpenMailClient}>
+                        <MdEmail style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                        {t('order.summary.sendEmail')}
+                      </Button>
+                      <Button
+                        size="medium"
+                        variant="outline"
+                        onClick={() => setManualOpen((v) => !v)}
+                      >
+                        {t('order.summary.manual')}
+                        <MdChevronRight
+                          style={{
+                            marginLeft: '0.25rem',
+                            verticalAlign: 'middle',
+                            transform: manualOpen ? 'rotate(90deg)' : 'none',
+                            transition: 'transform 0.2s',
+                          }}
+                        />
+                      </Button>
+                    </ActionGrid>
+
+                    <AnimatePresence>
+                      {manualOpen && (
+                        <ManualSection
+                          $isDark={isDark}
+                          key="manual"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <ManualTitle>{t('order.summary.manualTitle')}</ManualTitle>
+                          <ManualRow>
+                            <ManualRowLabel>{t('order.summary.manualTo')}</ManualRowLabel>
+                            <ManualRowValue>{socialConfig.email.address}</ManualRowValue>
+                          </ManualRow>
+                          <ManualRow>
+                            <ManualRowLabel>{t('order.summary.manualSubject')}</ManualRowLabel>
+                            <ManualRowValue>
+                              {t('order.summary.mailSubject', { id: orderId })}
+                            </ManualRowValue>
+                          </ManualRow>
+                          <ManualRow>
+                            <ManualRowLabel>{t('order.summary.manualAttach')}</ManualRowLabel>
+                            <ManualRowValue>files_for_order.zip</ManualRowValue>
+                          </ManualRow>
+                        </ManualSection>
+                      )}
+                    </AnimatePresence>
+
+                    <BackRow>
+                      <Button size="medium" variant="outline" onClick={handleBack}>
+                        <MdArrowBack style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                        {t('order.summary.back')}
+                      </Button>
+                    </BackRow>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1325,16 +1877,66 @@ export const OrderSection: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <OrderConfirmDialog
-        action={confirmAction}
-        isDark={isDark}
-        reducedMotion={reducedMotion}
-        boxRef={confirmBoxRef}
-        onCancel={handleConfirmNo}
-        onConfirm={handleConfirmYes}
-      />
+      {/* ── Confirm dialog ── */}
+      <AnimatePresence>
+        {confirmAction && (
+          <ConfirmBackdrop
+            key="confirm-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+            exit={{ opacity: 0, transition: { duration: 0.12 } }}
+            onClick={handleConfirmNo}
+          >
+            <FocusTrap
+              focusTrapOptions={{
+                initialFocus: () => confirmBoxRef.current?.querySelector('button') ?? false,
+                returnFocusOnDeactivate: true,
+                escapeDeactivates: false,
+                allowOutsideClick: true,
+              }}
+            >
+              <ConfirmBox
+                ref={confirmBoxRef}
+                $isDark={isDark}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } }}
+                exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.15 } }}
+                onClick={(e) => e.stopPropagation()}
+                role="alertdialog"
+                aria-modal="true"
+                aria-labelledby={CONFIRM_MESSAGE_ID}
+                aria-describedby={confirmAction === 'close' ? CONFIRM_HINT_ID : undefined}
+              >
+                <ConfirmIcon aria-hidden="true">
+                  <MdWarningAmber />
+                </ConfirmIcon>
+                <ConfirmMessage id={CONFIRM_MESSAGE_ID}>
+                  {confirmAction === 'close'
+                    ? t('order.modal.confirmClose')
+                    : t('order.modal.confirmClear')}
+                </ConfirmMessage>
+                {confirmAction === 'close' && (
+                  <ConfirmHint id={CONFIRM_HINT_ID}>
+                    {t('order.modal.confirmCloseHint')}
+                  </ConfirmHint>
+                )}
+                <ConfirmActions>
+                  <Button size="medium" variant="outline" onClick={handleConfirmNo}>
+                    {t('order.modal.confirmNo')}
+                  </Button>
+                  <Button size="medium" onClick={handleConfirmYes}>
+                    {confirmAction === 'close'
+                      ? t('order.modal.confirmYesClose')
+                      : t('order.modal.confirmYesClear')}
+                  </Button>
+                </ConfirmActions>
+              </ConfirmBox>
+            </FocusTrap>
+          </ConfirmBackdrop>
+        )}
+      </AnimatePresence>
 
       <PrivacyPolicyModal isOpen={privacyOpen} onClose={() => setPrivacyOpen(false)} />
-    </Section>
+    </SectionContainer>
   );
 };

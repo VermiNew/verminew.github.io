@@ -9,7 +9,7 @@ import { ProjectCard } from '@/components/ui/ProjectCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Repo } from '@/types/repo';
-import { useAnimation } from '@/context/AnimationContext';
+import { useAnimation } from '@/context/hooks/useAnimation';
 
 const Content = styled.div`
   max-width: 1200px;
@@ -241,7 +241,7 @@ export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
   const [showAllActive, setShowAllActive] = useState(false);
-  const { data, isLoading, error } = useRepos();
+  const { data, isLoading, error, warning, retry } = useRepos();
   const { reducedMotion } = useAnimation();
 
   const availableTechnologies = useMemo(() => {
