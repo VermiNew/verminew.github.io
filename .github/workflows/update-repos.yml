@@ -51,27 +51,20 @@ jobs:
           path: |
             node_modules
             ~/.npm
-          key: ${{ runner.os }}-update-deps-${{ hashFiles('.github/scripts/package*.json') }}
+          key: ${{ runner.os }}-update-deps-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-update-deps-
 
       - name: 📦 Install dependencies
-        working-directory: .github/scripts
-        run: |
-          if [ -f package.json ]; then
-            npm ci
-          else
-            npm install @octokit/rest
-          fi
+        run: npm ci
 
       - name: 📡 Fetch repository data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
-        working-directory: .github/scripts
         run: |
           echo "📊 Starting repository data fetch..."
-          node fetch-repos.js
+          node .github/scripts/fetch-repos.js
           echo "✅ Fetch complete!"
 
       - name: 🔍 Check for changes
