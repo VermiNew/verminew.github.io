@@ -26,7 +26,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "eyebrow": "VermiNew · uczeń technikum programistycznego",
+    "eyebrow": "VermiNew · student informatyki",
     "title": "Michał Oślizło",
     "description": "Buduję strony i aplikacje webowe. Uczę się przez robienie, używam AI jako narzędzia i nie udaję, że wiem wszystko.",
     "highlights": [
@@ -42,7 +42,7 @@
   "about": {
     "title": "O mnie",
     "name": "Michał Oślizło",
-    "intro": "Jestem Michał, programista-amator z Podkarpacia. Urodziłem się w październiku 2006 roku i uczę się w technikum na kierunku programistycznym.",
+    "intro": "Jestem Michał, student informatyki i programista-amator z Podkarpacia. Urodziłem się w październiku 2006 roku.",
     "focus": "Skupiam się na stronach internetowych i aplikacjach webowych. Zdałem kwalifikacje INF.03 i INF.04. Używam AI jako narzędzia pracy — nie po to żeby zastąpiło myślenie, ale żeby robić więcej rzeczy szybciej. Właśnie tak powstało to portfolio.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
@@ -60,7 +60,7 @@
       "title": "O sobie",
       "education": {
         "title": "Edukacja",
-        "current": "Technikum, kierunek: technik-programista",
+        "current": "Studia informatyczne",
         "achievements": "Kwalifikacja INF.03 zdana, INF.04 zdana (egzamin praktyczny i teoretyczny)"
       },
       "languages": {
@@ -586,7 +586,7 @@
       "availability": "Otwarty na zlecenia i ciekawe projekty",
       "response_time": "Odpowiadam zazwyczaj w ciągu 24–48 godzin",
       "preferred_hours": "Preferowane godziny kontaktu: 16:00–20:00 (dni robocze)",
-      "student_note": "Jestem uczniem — dostępność może być ograniczona w sesjach i przed egzaminami"
+      "student_note": "Jestem studentem — dostępność może być ograniczona w sesjach i przed egzaminami"
     },
     "email": "E-mail",
     "discord": "Discord",
@@ -671,7 +671,7 @@
       },
       {
         "question": "Czy przyjmujesz komercyjne zlecenia?",
-        "answer": "Tak. Jako uczeń mam ograniczoną dostępność czasową, jednak zlecenia komercyjne przyjmuję i traktuję z pełną powagą. Każde zgłoszenie oceniam pod kątem realności wykonania w ustalonym terminie."
+        "answer": "Tak. Jako student mam ograniczoną dostępność czasową, jednak zlecenia komercyjne przyjmuję i traktuję z pełną powagą. Każde zgłoszenie oceniam pod kątem realności wykonania w ustalonym terminie."
       },
       {
         "question": "Co z poprawkami po zakończeniu projektu?",

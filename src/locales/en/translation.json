@@ -26,7 +26,7 @@
     "name": "VermiNew"
   },
   "hero": {
-    "eyebrow": "VermiNew · software development student",
+    "eyebrow": "VermiNew · computer science student",
     "title": "Michał Oślizło",
     "description": "I build websites and web apps. I learn by making things, use AI as a tool, and don't pretend I know everything.",
     "highlights": [
@@ -42,7 +42,7 @@
   "about": {
     "title": "About Me",
     "name": "Michael Oslizlo",
-    "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying at a technical school in the programming field.",
+    "intro": "I'm Michael, a programming enthusiast from Podkarpacie, Poland. Born in October 2006, I'm currently studying computer science.",
     "focus": "I focus on web and application development, constantly expanding my knowledge and skills. I have passed both INF.03 and INF.04 qualifications (practical and theoretical exams). I find the greatest satisfaction in seeing the results of my work. I actively use AI tools as part of my workflow — it lets me deliver projects faster and more effectively, and this portfolio is exactly the proof of that.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
@@ -60,7 +60,7 @@
       "title": "About Me",
       "education": {
         "title": "Education",
-        "current": "Technical school student, specialization: IT technician-programmer",
+        "current": "Computer science studies",
         "achievements": "INF.03 qualification passed, INF.04 qualification passed (both practical and theoretical)"
       },
       "languages": {
