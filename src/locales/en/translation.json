@@ -252,6 +252,8 @@
   },
   "projects": {
     "title": "Projects",
+    "description": "The projects that best show how I work come first. The rest of my repositories are still below — I'm not hiding anything.",
+    "descriptionFallback": "Repository description in progress — the code and commit history are available on GitHub.",
     "filters": {
       "all": "All",
       "label": "Project filters"
@@ -259,9 +261,11 @@
     "resultsCount_one": "1 project",
     "resultsCount_other": "{{count}} projects",
     "featured": "Featured",
-    "featuredTitle": "Featured Projects",
-    "otherTitle": "Active Projects",
-    "plannedTitle": "Planned Projects",
+    "featuredTitle": "Selected projects",
+    "otherTitle": "More from GitHub",
+    "plannedTitle": "Planned",
+    "showMore": "Show more ({{count}})",
+    "showLess": "Show less",
     "tags": {
       "archived": "Archived",
       "visibility": {
@@ -270,7 +274,7 @@
       }
     },
     "viewGithub": "View on GitHub",
-    "visitLive": "Visit Live",
+    "visitLive": "Live demo",
     "categories": {
       "frontend": "Frontend",
       "backend": "Backend",

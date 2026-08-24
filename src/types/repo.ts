@@ -14,8 +14,8 @@ export interface Repo {
   visibility: string;
   createdAt: string;
   updatedAt: string;
-  stars: number;
-  forks: number;
+  stars?: number;
+  forks?: number;
   category?: ProjectCategory;
   priority?: 1 | 2 | 3;
   featuredReason?: string;
@@ -25,4 +25,4 @@ export interface Repo {
 export interface ReposData {
   lastUpdated: string;
   repos: Repo[];
-} 
+}

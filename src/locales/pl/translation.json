@@ -258,6 +258,8 @@
   },
   "projects": {
     "title": "Projekty",
+    "description": "Najpierw rzeczy, które najlepiej pokazują jak pracuję. Reszta repozytoriów nadal jest niżej — niczego nie chowam.",
+    "descriptionFallback": "Repozytorium w trakcie opisywania — kod i historia zmian są dostępne na GitHubie.",
     "filters": {
       "all": "Wszystkie",
       "label": "Filtry projektów"
@@ -266,8 +268,8 @@
     "resultsCount_few": "{{count}} projekty",
     "resultsCount_many": "{{count}} projektów",
     "featured": "Wyróżniony",
-    "featuredTitle": "Wyróżnione",
-    "otherTitle": "Pozostałe projekty",
+    "featuredTitle": "Wybrane projekty",
+    "otherTitle": "Więcej z GitHuba",
     "plannedTitle": "Planowane",
     "showMore": "Pokaż więcej ({{count}})",
     "showLess": "Zwiń",

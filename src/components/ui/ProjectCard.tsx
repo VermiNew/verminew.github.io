@@ -195,6 +195,8 @@ const Link = styled.a`
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const { t } = useTranslation();
   const hasBadges = Boolean(project.featured || project.category);
+  const description = project.description.trim() || project.featuredReason || t('projects.descriptionFallback');
+  const hasStats = (project.stars ?? 0) > 0 || (project.forks ?? 0) > 0;
 
   return (
     <Card
@@ -216,8 +218,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       <Content $hasBadges={hasBadges}>
         <TopContent>
           <Title>{project.title}</Title>
-          <Description>{project.description}</Description>
-          {project.featured && project.featuredReason && (
+          <Description>{description}</Description>
+          {project.featured && project.description.trim() && project.featuredReason && (
             <FeaturedReason>{project.featuredReason}</FeaturedReason>
           )}
         </TopContent>
@@ -236,10 +238,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             ))}
           </TechStack>
 
-          <Stats>
-            <span aria-label={`${project.stars} stars`}>★ {project.stars}</span>
-            <span aria-label={`${project.forks} forks`}>⎇ {project.forks}</span>
-          </Stats>
+          {hasStats && (
+            <Stats>
+              <span aria-label={`${project.stars ?? 0} stars`}>★ {project.stars ?? 0}</span>
+              <span aria-label={`${project.forks ?? 0} forks`}>⎇ {project.forks ?? 0}</span>
+            </Stats>
+          )}
 
           <Links>
             <Link 
@@ -267,4 +271,4 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       </Content>
     </Card>
   );
-}; 
+};
