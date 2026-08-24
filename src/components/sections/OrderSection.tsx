@@ -89,10 +89,14 @@ const Wrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
-  max-width: 800px;
+  gap: 2rem;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem 2rem 0;
+
+  @media (max-width: 768px) {
+    padding: 1rem 1.5rem 0;
+  }
 `;
 
 const Description = styled(motion.p)`
@@ -107,7 +111,7 @@ const Description = styled(motion.p)`
 const PreviewCard = styled(motion.button) <{ $isDark: boolean }>`
   appearance: none;
   width: 100%;
-  padding: 2.5rem;
+  padding: 1.75rem;
   font: inherit;
   color: inherit;
   text-align: inherit;
@@ -138,6 +142,10 @@ const PreviewCard = styled(motion.button) <{ $isDark: boolean }>`
   }
 
   transition: border-color 0.25s, box-shadow 0.25s;
+
+  @media (max-width: 768px) {
+    padding: 1.4rem;
+  }
 `;
 
 const PreviewOverlay = styled.div`
@@ -168,7 +176,7 @@ const PreviewHint = styled.span`
 
 // Skeleton field for the preview
 const PreviewField = styled.div`
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
 `;
 
 const PreviewLabel = styled.div<{ $w?: string }>`
@@ -180,14 +188,14 @@ const PreviewLabel = styled.div<{ $w?: string }>`
 `;
 
 const PreviewInput = styled.div`
-  height: 2.75rem;
+  height: 2.35rem;
   border-radius: 10px;
   background: ${({ theme }) => `${theme.colors.textSecondary}10`};
   border: 1.5px solid ${({ theme }) => `${theme.colors.primary}15`};
 `;
 
 const PreviewTextarea = styled(PreviewInput)`
-  height: 7rem;
+  height: 4.5rem;
 `;
 
 const PreviewRow = styled.div`
