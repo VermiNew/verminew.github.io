@@ -87,12 +87,21 @@ const Paragraph = styled(motion.p)`
 `;
 
 const NameOrigin = styled(motion.div)`
-  margin-top: 1rem;
   padding: 1.5rem;
   border-radius: 16px;
   background: ${({ theme }) => `${theme.colors.surface}80`};
   backdrop-filter: blur(8px);
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+`;
+
+const PersonalMeta = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+  gap: 1rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const NameOriginTitle = styled.h3`
@@ -180,9 +189,13 @@ const ProfileLink = styled.a`
 `;
 
 const Background = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const BackgroundSection = styled(motion.div)`
@@ -194,9 +207,21 @@ const BackgroundSection = styled(motion.div)`
 `;
 
 const HighlightedSection = styled(BackgroundSection)`
+  grid-column: 1 / -1;
   border: 2px solid ${({ theme }) => theme.colors.primary};
   background: ${({ theme }) => `${theme.colors.surface}90`};
   box-shadow: 0 0 15px ${({ theme }) => `${theme.colors.primary}30`};
+`;
+
+const AvailabilityColumns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 `;
 
 const OrderButtonWrapper = styled.div`
@@ -326,18 +351,20 @@ export const AboutSection: React.FC = () => {
                 {t('about.focus')}
               </Paragraph>
 
-              <NameOrigin variants={!reducedMotion ? itemVariants : undefined}>
-                <NameOriginTitle>
-                  <MdLabel />
-                  {t('about.nameOrigin.title')}
-                </NameOriginTitle>
-                <p>{t('about.nameOrigin.description')}</p>
-              </NameOrigin>
+              <PersonalMeta>
+                <NameOrigin variants={!reducedMotion ? itemVariants : undefined}>
+                  <NameOriginTitle>
+                    <MdLabel />
+                    {t('about.nameOrigin.title')}
+                  </NameOriginTitle>
+                  <p>{t('about.nameOrigin.description')}</p>
+                </NameOrigin>
 
-              <BirthInfoSection variants={!reducedMotion ? itemVariants : undefined}>
-                <MdCake />
-                <BirthInfoText>{t('about.birthInfo')}</BirthInfoText>
-              </BirthInfoSection>
+                <BirthInfoSection variants={!reducedMotion ? itemVariants : undefined}>
+                  <MdCake />
+                  <BirthInfoText>{t('about.birthInfo')}</BirthInfoText>
+                </BirthInfoSection>
+              </PersonalMeta>
 
               <Background variants={!reducedMotion ? itemVariants : undefined}>
                 <BackgroundSection>
@@ -388,38 +415,42 @@ export const AboutSection: React.FC = () => {
                     <MdWork />
                     {t('about.background.availability.title')}
                   </BackgroundTitle>
-                  <Paragraph>
-                    {t('about.background.availability.description')}
-                  </Paragraph>
-                  
-                  <List>
-                    {(t('about.background.availability.workConditions', { returnObjects: true }) as string[])
-                      .map((condition, index) => (
-                        <ListItem key={index}>{condition}</ListItem>
-                      ))}
-                  </List>
+                  <AvailabilityColumns>
+                    <div>
+                      <Paragraph>
+                        {t('about.background.availability.description')}
+                      </Paragraph>
+                      <List>
+                        {(t('about.background.availability.workConditions', { returnObjects: true }) as string[])
+                          .map((condition, index) => (
+                            <ListItem key={index}>{condition}</ListItem>
+                          ))}
+                      </List>
+                    </div>
 
-                  <BackgroundTitle style={{ marginTop: '1.5rem' }}>
-                    <MdWork />
-                    {t('about.background.availability.freelance.title')}
-                  </BackgroundTitle>
-                  <Paragraph>
-                    {t('about.background.availability.freelance.description')}
-                  </Paragraph>
-                  
-                  <List>
-                    {(t('about.background.availability.freelance.highlights', { returnObjects: true }) as string[])
-                      .map((highlight, index) => (
-                        <ListItem key={index}>{highlight}</ListItem>
-                      ))}
-                  </List>
+                    <div>
+                      <BackgroundTitle>
+                        <MdWork />
+                        {t('about.background.availability.freelance.title')}
+                      </BackgroundTitle>
+                      <Paragraph>
+                        {t('about.background.availability.freelance.description')}
+                      </Paragraph>
+                      <List>
+                        {(t('about.background.availability.freelance.highlights', { returnObjects: true }) as string[])
+                          .map((highlight, index) => (
+                            <ListItem key={index}>{highlight}</ListItem>
+                          ))}
+                      </List>
+                    </div>
+                  </AvailabilityColumns>
 
                   <OrderButtonWrapper>
                     <Button variant="outline" onClick={scrollToOrder}>
                       {t('about.order.button')}
                     </Button>
                   </OrderButtonWrapper>
-                  </HighlightedSection>
+                </HighlightedSection>
               </Background>
 
               <Profiles variants={!reducedMotion ? itemVariants : undefined}>
