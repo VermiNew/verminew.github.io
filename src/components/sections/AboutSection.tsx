@@ -263,12 +263,12 @@ const itemVariants = {
 export const AboutSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
-  const { reducedMotion } = useAnimation();
+  const { reducedMotion, smoothScroll } = useAnimation();
 
   const scrollToOrder = () => {
     const element = document.querySelector('#order');
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: reducedMotion || !smoothScroll ? 'auto' : 'smooth' });
     }
   };
 

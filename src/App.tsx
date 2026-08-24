@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GlobalStyle } from '@/styles/GlobalStyle';
 import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
-import { AnimationProvider } from '@/context/AnimationContext';
+import { AnimationProvider, AnimationContext } from '@/context/AnimationContext';
 import { ToastProvider } from '@/context/ToastContext';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
@@ -17,7 +17,7 @@ import { OrderSection } from '@/components/sections/OrderSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FaqSection } from '@/components/sections/FaqSection';
 import { SectionTransition } from '@/components/layout/SectionTransition';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { ReloadPopup } from '@/components/ui/ReloadPopup';
 import { LanguageNotification } from '@/components/ui/LanguageNotification';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -47,43 +47,43 @@ const AppContent: React.FC = () => {
           </ErrorBoundary>
           
           <ErrorBoundary section="about">
-            <SectionTransition delay={0.2}>
+            <SectionTransition>
               <AboutSection />
             </SectionTransition>
           </ErrorBoundary>
 
           <ErrorBoundary section="services">
-            <SectionTransition delay={0.25}>
+            <SectionTransition>
               <ServicesSection />
             </SectionTransition>
           </ErrorBoundary>
           
           <ErrorBoundary section="skills">
-            <SectionTransition delay={0.3}>
+            <SectionTransition>
               <SkillsSection />
             </SectionTransition>
           </ErrorBoundary>
           
           <ErrorBoundary section="projects">
-            <SectionTransition delay={0.4}>
+            <SectionTransition>
               <ProjectsSection />
             </SectionTransition>
           </ErrorBoundary>
 
           <ErrorBoundary section="order">
-            <SectionTransition delay={0.5}>
+            <SectionTransition>
               <OrderSection />
             </SectionTransition>
           </ErrorBoundary>
 
           <ErrorBoundary section="faq">
-            <SectionTransition delay={0.6}>
+            <SectionTransition>
               <FaqSection />
             </SectionTransition>
           </ErrorBoundary>
 
           <ErrorBoundary section="contact">
-            <SectionTransition delay={0.7}>
+            <SectionTransition>
               <ContactSection />
             </SectionTransition>
           </ErrorBoundary>
@@ -97,17 +97,28 @@ const AppContent: React.FC = () => {
   );
 };
 
+const MotionWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const ctx = useContext(AnimationContext);
+  return (
+    <MotionConfig reducedMotion={ctx?.reducedMotion ? 'always' : 'never'}>
+      {children}
+    </MotionConfig>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <CustomThemeProvider>
       <AnimationProvider>
-        <ToastProvider>
-          <SettingsProvider>
-            <Suspense fallback={<LoadingSpinner />}>
-              <AppContent />
-            </Suspense>
-          </SettingsProvider>
-        </ToastProvider>
+        <MotionWrapper>
+          <ToastProvider>
+            <SettingsProvider>
+              <Suspense fallback={<LoadingSpinner />}>
+                <AppContent />
+              </Suspense>
+            </SettingsProvider>
+          </ToastProvider>
+        </MotionWrapper>
       </AnimationProvider>
     </CustomThemeProvider>
   );

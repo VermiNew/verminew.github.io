@@ -18,6 +18,10 @@ export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   useEffect(() => {
     localStorage.setItem('reducedMotion', reducedMotion.toString());
+    document.documentElement.setAttribute(
+      'data-reduced-motion',
+      reducedMotion ? 'true' : 'false'
+    );
   }, [reducedMotion]);
 
   useEffect(() => {
@@ -35,4 +39,4 @@ export const AnimationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   );
 };
 
-export { useAnimation } from './hooks/useAnimationHook'; 
+export { useAnimation } from './hooks/useAnimationHook';

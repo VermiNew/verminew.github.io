@@ -7,4 +7,6 @@ export interface ToastContextType {
 export interface AnimationContextType {
   reducedMotion: boolean;
   setReducedMotion: (value: boolean) => void;
-} 
+  smoothScroll: boolean;
+  setSmoothScroll: (value: boolean) => void;
+}

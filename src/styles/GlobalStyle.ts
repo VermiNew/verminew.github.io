@@ -10,11 +10,15 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 
   html {
     font-size: 16px;
+    scroll-behavior: auto;
+  }
+
+  html[data-smooth-scroll='true'][data-reduced-motion='false'] {
     scroll-behavior: smooth;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
+    html[data-smooth-scroll='true'] {
       scroll-behavior: auto;
     }
   }

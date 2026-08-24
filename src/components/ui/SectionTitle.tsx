@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useInView, useAnimation, HTMLMotionProps } from 'framer-motion';
+import { motion, useInView, useAnimation as useAnimationControls, HTMLMotionProps } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import { useAnimation as useAnimationPreferences } from '@/context/AnimationContext';
 import { isDarkTheme } from '@/utils/themeUtils';
 
 interface SectionTitleProps extends HTMLMotionProps<"h2"> {
@@ -46,15 +47,16 @@ const Cursor = styled(motion.span)<{ $isDark: boolean }>`
 export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitleProps>(
   ({ children, className, ...props }, ref) => {
     const { themeMode } = useTheme();
+    const { reducedMotion } = useAnimationPreferences();
     const isDark = isDarkTheme(themeMode);
     const internalRef = useRef(null);
     const resolvedRef = (ref || internalRef) as React.RefObject<HTMLHeadingElement>;
     const isInView = useInView(resolvedRef, { once: true });
-    const controls = useAnimation();
-    const cursorControls = useAnimation();
+    const controls = useAnimationControls();
+    const cursorControls = useAnimationControls();
 
     useEffect(() => {
-      if (!isInView) return;
+      if (!isInView || reducedMotion) return;
 
       controls.start(i => ({
         opacity: 1,
@@ -62,8 +64,7 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
       }));
 
       const textLength = typeof children === 'string' ? children.length : 0;
-      // wait for typing to finish, then blink 3 times (3 × 0.8s × 2 = 4.8s), then hide
-      const stopDelay = textLength * 50 + 4800;
+      const stopDelay = textLength * 50 + 1600;
 
       cursorControls.start({
         opacity: [1, 0],
@@ -76,7 +77,7 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
       }, stopDelay);
 
       return () => clearTimeout(timer);
-    }, [isInView, controls, cursorControls, children]);
+    }, [isInView, reducedMotion, controls, cursorControls, children]);
 
     return (
       <StyledTitle
@@ -91,17 +92,19 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
               <motion.span
                 key={i}
                 custom={i}
-                animate={controls}
-                initial={{ opacity: 0 }}
+                animate={reducedMotion ? { opacity: 1 } : controls}
+                initial={{ opacity: reducedMotion ? 1 : 0 }}
               >
                 {char}
               </motion.span>
             ))}
-            <Cursor 
-              $isDark={isDark}
-              animate={cursorControls} 
-              initial={{ opacity: 0 }} 
-            />
+            {!reducedMotion && (
+              <Cursor
+                $isDark={isDark}
+                animate={cursorControls}
+                initial={{ opacity: 0 }}
+              />
+            )}
           </>
         ) : (
           children
@@ -123,4 +126,4 @@ export const SectionTitleStyled = styled(motion.h2)<{ $isDark: boolean }>`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: 2rem;
   }
-`; 
+`;

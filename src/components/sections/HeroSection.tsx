@@ -134,7 +134,8 @@ export const HeroSection: React.FC = () => {
   const { themeMode } = useTheme();
   const isDark = isDarkTheme(themeMode);
   const { t } = useTranslation();
-  const { reducedMotion } = useReducedMotion();
+  const { reducedMotion, smoothScroll } = useReducedMotion();
+  const scrollBehavior = reducedMotion || !smoothScroll ? 'auto' : 'smooth';
 
   return (
     <Section fullWidth id="home">
@@ -173,13 +174,13 @@ export const HeroSection: React.FC = () => {
           
           <ButtonContainer variants={!reducedMotion ? itemVariants : undefined}>
             <Button 
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: scrollBehavior })}
             >
               {t('hero.cta.about')}
             </Button>
             <Button 
               variant="outline"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: scrollBehavior })}
             >
               {t('hero.cta.projects')}
             </Button>
@@ -188,4 +189,4 @@ export const HeroSection: React.FC = () => {
       </HeroContainer>
     </Section>
   );
-}; 
+};

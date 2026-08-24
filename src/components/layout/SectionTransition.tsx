@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { useAnimation } from '@/context/AnimationContext';
 
 interface SectionTransitionProps {
   children: React.ReactNode;
-  delay?: number;
 }
 
 const TransitionContainer = styled(motion.div)`
@@ -12,44 +12,17 @@ const TransitionContainer = styled(motion.div)`
   position: relative;
 `;
 
-const transitionVariants = {
-  hidden: { 
-    opacity: 0,
-    y: 30
-  },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.6, -0.05, 0.01, 0.99],
-      delay: delay
-    }
-  }),
-  exit: {
-    opacity: 0,
-    y: -30,
-    transition: {
-      duration: 0.4,
-      ease: [0.6, -0.05, 0.01, 0.99]
-    }
-  }
-};
+export const SectionTransition: React.FC<SectionTransitionProps> = ({ children }) => {
+  const { reducedMotion } = useAnimation();
 
-export const SectionTransition: React.FC<SectionTransitionProps> = ({ 
-  children,
-  delay = 0
-}) => {
   return (
     <TransitionContainer
-      variants={transitionVariants}
-      initial="hidden"
-      whileInView="visible"
-      exit="exit"
-      viewport={{ once: true, margin: "-100px" }}
-      custom={delay}
+      initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={reducedMotion ? undefined : { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {children}
     </TransitionContainer>
   );
-}; 
+};
