@@ -497,7 +497,7 @@
           "Phone number (optional)",
           "Inquiry content / project description",
           "Attached files (if you choose to attach them)",
-          "IP address and technical request data processed by GitHub Pages hosting"
+          "IP address and technical request data processed by GitHub Pages hosting and the font provider"
         ]
       },
       {
@@ -507,6 +507,7 @@
         ],
         "list": [
           "GitHub, Inc. — GitHub Pages hosting provider; logs visitor IP addresses for security purposes.",
+          "Google LLC — provider of the Google Fonts files used by the website interface.",
           "Proton AG — the controller's email provider, based in Switzerland."
         ]
       },
@@ -514,7 +515,7 @@
         "title": "Retention period",
         "paragraphs": [
           "Correspondence data is stored for up to 12 months from last contact, then deleted.",
-          "The retention period for technical hosting data is defined by GitHub's privacy statement.",
+          "Retention of technical data by external services is governed by the privacy statements of GitHub and Google.",
           "If a contract is concluded, data necessary for accounting and tax purposes is stored for 5 years from the end of the calendar year in which the tax obligation arose (in accordance with the Polish Tax Ordinance)."
         ]
       },

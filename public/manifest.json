@@ -1,6 +1,9 @@
 {
   "short_name": "VermiNew",
-  "name": "VermiNew Portfolio",
+  "name": "Michał Oślizło — VermiNew",
+  "description": "Portfolio programistyczne Michała Oślizło: projekty, umiejętności i kontakt.",
+  "lang": "pl",
+  "id": "/",
   "icons": [
     {
       "src": "/assets/favicons/logo64.png",
@@ -30,4 +33,4 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
-} 
+}

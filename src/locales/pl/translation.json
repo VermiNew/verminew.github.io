@@ -501,7 +501,7 @@
           "Numer telefonu (opcjonalnie)",
           "Treść zapytania / opis projektu",
           "Załączone pliki (jeśli zdecydujesz się je dołączyć)",
-          "Adres IP i techniczne dane żądania przetwarzane przez hosting GitHub Pages"
+          "Adres IP i techniczne dane żądania przetwarzane przez hosting GitHub Pages oraz dostawcę fontów"
         ]
       },
       {
@@ -511,6 +511,7 @@
         ],
         "list": [
           "GitHub, Inc. — dostawca hostingu GitHub Pages; zapisuje adres IP odwiedzającego w celach bezpieczeństwa.",
+          "Google LLC — dostawca plików Google Fonts używanych przez interfejs strony.",
           "Proton AG — dostawca skrzynki pocztowej administratora, z siedzibą w Szwajcarii."
         ]
       },
@@ -518,7 +519,7 @@
         "title": "Okres przechowywania",
         "paragraphs": [
           "Dane z korespondencji przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
-          "Okres przechowywania technicznych danych hostingu określa polityka prywatności GitHub.",
+          "Okres przechowywania danych technicznych przez usługi zewnętrzne określają polityki prywatności GitHub i Google.",
           "W przypadku zawarcia umowy — dane niezbędne do celów księgowych i podatkowych przechowywane są przez 5 lat od końca roku kalendarzowego, w którym powstał obowiązek podatkowy."
         ]
       },
