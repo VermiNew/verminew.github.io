@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation, useInView, type HTMLMotionProps } from 'framer-motion';
-import { useAnimation as useAnimationSettings } from '@/context/hooks/useAnimation';
+import { motion, useInView, useAnimation as useAnimationControls, HTMLMotionProps } from 'framer-motion';
+import { useTheme } from '@/context/ThemeContext';
+import { useAnimation as useAnimationPreferences } from '@/context/AnimationContext';
+import { isDarkTheme } from '@/utils/themeUtils';
 
 interface SectionTitleProps extends HTMLMotionProps<'h2'> {
   children: React.ReactNode;
@@ -43,24 +45,29 @@ const Cursor = styled(motion.span)`
 `;
 
 export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitleProps>(
-  ({ children, className, ...props }, forwardedRef) => {
-    const internalRef = useRef<HTMLHeadingElement>(null);
-    const resolvedRef = (forwardedRef ?? internalRef) as React.RefObject<HTMLHeadingElement>;
+  ({ children, className, ...props }, ref) => {
+    const { themeMode } = useTheme();
+    const { reducedMotion } = useAnimationPreferences();
+    const isDark = isDarkTheme(themeMode);
+    const internalRef = useRef(null);
+    const resolvedRef = (ref || internalRef) as React.RefObject<HTMLHeadingElement>;
     const isInView = useInView(resolvedRef, { once: true });
-    const letterControls = useAnimation();
-    const cursorControls = useAnimation();
-    const { reducedMotion } = useAnimationSettings();
-    const text = typeof children === 'string' ? children : null;
+    const controls = useAnimationControls();
+    const cursorControls = useAnimationControls();
 
     useEffect(() => {
-      if (!isInView || reducedMotion || !text) return;
+      if (!isInView || reducedMotion) return;
 
       void letterControls.start((index: number) => ({
         opacity: 1,
         y: 0,
         transition: { delay: index * 0.04, duration: 0.18 },
       }));
-      void cursorControls.start({
+
+      const textLength = typeof children === 'string' ? children.length : 0;
+      const stopDelay = textLength * 50 + 1600;
+
+      cursorControls.start({
         opacity: [1, 0],
         transition: { duration: 0.65, repeat: Infinity, repeatType: 'reverse' },
       });
@@ -70,8 +77,8 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
         void cursorControls.start({ opacity: 0, transition: { duration: 0.2 } });
       }, text.length * 40 + 3_000);
 
-      return () => window.clearTimeout(timer);
-    }, [cursorControls, isInView, letterControls, reducedMotion, text]);
+      return () => clearTimeout(timer);
+    }, [isInView, reducedMotion, controls, cursorControls, children]);
 
     return (
       <StyledTitle
@@ -82,21 +89,23 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
       >
         {text ? (
           <>
-            <span aria-hidden="true">
-              {text.split('').map((character, index) => (
-                <motion.span
-                  key={`${character}-${index}`}
-                  custom={index}
-                  animate={reducedMotion ? undefined : letterControls}
-                  initial={reducedMotion ? false : { opacity: 0, y: 4 }}
-                >
-                  {character}
-                </motion.span>
-              ))}
-              {!reducedMotion && (
-                <Cursor aria-hidden="true" animate={cursorControls} initial={{ opacity: 0 }} />
-              )}
-            </span>
+            {children.split('').map((char, i) => (
+              <motion.span
+                key={i}
+                custom={i}
+                animate={reducedMotion ? { opacity: 1 } : controls}
+                initial={{ opacity: reducedMotion ? 1 : 0 }}
+              >
+                {char}
+              </motion.span>
+            ))}
+            {!reducedMotion && (
+              <Cursor
+                $isDark={isDark}
+                animate={cursorControls}
+                initial={{ opacity: 0 }}
+              />
+            )}
           </>
         ) : children}
       </StyledTitle>

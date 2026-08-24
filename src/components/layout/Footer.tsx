@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MdEmail } from 'react-icons/md';
+import { MdEmail, MdPrivacyTip } from 'react-icons/md';
 import { SiGithub } from 'react-icons/si';
 import { socialConfig } from '@/config/social';
 import { useTranslation } from 'react-i18next';
+import { PrivacyPolicyModal } from '@/components/legal/PrivacyPolicyModal';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -40,9 +41,14 @@ const FooterLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  font: inherit;
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   text-decoration: none;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
   transition: color ${({ theme }) => theme.transitions.fast};
 
   &:hover {
@@ -70,30 +76,38 @@ const Meta = styled.p`
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   return (
-    <FooterWrapper>
-      <Inner>
-        <Copyright>
-          © {CURRENT_YEAR} Michał Oślizło / VermiNew
-        </Copyright>
-        <Links>
-          <FooterLink href={socialConfig.email.url} aria-label={t('footer.sendEmail')}>
-            <MdEmail aria-hidden="true" />
-            {socialConfig.email.address}
-          </FooterLink>
-          <FooterLink
-            href={socialConfig.github.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('footer.githubProfile')}
-          >
-            <SiGithub aria-hidden="true" />
-            {socialConfig.github.username}
-          </FooterLink>
-        </Links>
-        <Meta>v{__APP_VERSION__} · {CURRENT_YEAR}</Meta>
-      </Inner>
-    </FooterWrapper>
+    <>
+      <FooterWrapper>
+        <Inner>
+          <Copyright>
+            © {CURRENT_YEAR} Michał Oślizło / VermiNew
+          </Copyright>
+          <Links>
+            <FooterLink href={socialConfig.email.url} aria-label={t('footer.sendEmail')}>
+              <MdEmail aria-hidden="true" />
+              {socialConfig.email.address}
+            </FooterLink>
+            <FooterLink
+              href={socialConfig.github.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('footer.githubProfile')}
+            >
+              <SiGithub aria-hidden="true" />
+              {socialConfig.github.username}
+            </FooterLink>
+            <FooterLink as="button" type="button" onClick={() => setPrivacyOpen(true)}>
+              <MdPrivacyTip aria-hidden="true" />
+              {t('privacy.openLink')}
+            </FooterLink>
+          </Links>
+          <Meta>v{__APP_VERSION__} · {CURRENT_YEAR}</Meta>
+        </Inner>
+      </FooterWrapper>
+      <PrivacyPolicyModal isOpen={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+    </>
   );
 };

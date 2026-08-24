@@ -10,6 +10,7 @@ export interface AnimationContextType {
   motionPreference: MotionPreference;
   setMotionPreference: (value: MotionPreference) => void;
   reducedMotion: boolean;
+  setReducedMotion: (value: boolean) => void;
   smoothScroll: boolean;
   setSmoothScroll: (value: boolean) => void;
 }

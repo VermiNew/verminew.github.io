@@ -26,9 +26,16 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Buduję działające strony i aplikacje\nszybko, z AI, konkretnie",
+    "eyebrow": "VermiNew · student informatyki",
+    "title": "Michał Oślizło",
+    "description": "Buduję strony i aplikacje webowe. Uczę się przez robienie, używam AI jako narzędzia i nie udaję, że wiem wszystko.",
+    "highlights": [
+      "INF.03 + INF.04",
+      "React + TypeScript",
+      "Polska · zdalnie"
+    ],
     "cta": {
-      "about": "Poznaj mnie",
+      "about": "Więcej o mnie",
       "projects": "Zobacz projekty"
     }
   },
@@ -36,7 +43,7 @@
     "title": "O mnie",
     "imageAlt": "Portret Michała Oślizło (VermiNew)",
     "name": "Michał Oślizło",
-    "intro": "Jestem Michał, programista-amator z Podkarpacia. Urodziłem się w październiku 2006 roku i uczę się w technikum na kierunku programistycznym.",
+    "intro": "Jestem Michał, student informatyki i programista-amator z Podkarpacia. Urodziłem się w październiku 2006 roku.",
     "focus": "Skupiam się na stronach internetowych i aplikacjach webowych. Zdałem kwalifikacje INF.03 i INF.04. Używam AI jako narzędzia pracy — nie po to żeby zastąpiło myślenie, ale żeby robić więcej rzeczy szybciej. Właśnie tak powstało to portfolio.",
     "nameOrigin": {
       "title": "Skąd wzięła się nazwa VermiNew?",
@@ -55,7 +62,7 @@
       "title": "O sobie",
       "education": {
         "title": "Edukacja",
-        "current": "Technikum, kierunek: technik-programista",
+        "current": "Studia informatyczne",
         "achievements": "Kwalifikacja INF.03 zdana, INF.04 zdana (egzamin praktyczny i teoretyczny)"
       },
       "languages": {
@@ -253,6 +260,8 @@
   },
   "projects": {
     "title": "Projekty",
+    "description": "Najpierw rzeczy, które najlepiej pokazują jak pracuję. Reszta repozytoriów nadal jest niżej — niczego nie chowam.",
+    "descriptionFallback": "Repozytorium w trakcie opisywania — kod i historia zmian są dostępne na GitHubie.",
     "filters": {
       "all": "Wszystkie",
       "label": "Filtry projektów"
@@ -261,8 +270,8 @@
     "resultsCount_few": "{{count}} projekty",
     "resultsCount_many": "{{count}} projektów",
     "featured": "Wyróżniony",
-    "featuredTitle": "Wyróżnione",
-    "otherTitle": "Pozostałe projekty",
+    "featuredTitle": "Wybrane projekty",
+    "otherTitle": "Więcej z GitHuba",
     "plannedTitle": "Planowane",
     "showMore": "Pokaż więcej ({{count}})",
     "showLess": "Zwiń",
@@ -487,7 +496,7 @@
     "close": "Zamknij Politykę Prywatności",
     "openLink": "Polityka Prywatności",
     "lastUpdatedLabel": "Ostatnia aktualizacja",
-    "lastUpdated": "lipiec 2026",
+    "lastUpdated": "sierpień 2026",
     "intro": "Niniejsza Polityka opisuje zasady przetwarzania danych osobowych osób korzystających z formularza zamówienia oraz innych form kontaktu na stronie verminew.github.io.",
     "puodoNote": "Masz również prawo wniesienia skargi do organu nadzorczego — Prezesa Urzędu Ochrony Danych Osobowych (PUODO):",
     "sections": [
@@ -506,36 +515,40 @@
         "list": [
           "Realizacja zamówienia, przygotowanie wyceny i ewentualne zawarcie umowy o dzieło — podstawa: art. 6 ust. 1 lit. b RODO.",
           "Kontakt zwrotny i obsługa korespondencji — podstawa: art. 6 ust. 1 lit. f RODO.",
+          "Udostępnianie i zabezpieczenie strony — podstawa: art. 6 ust. 1 lit. f RODO.",
           "Wypełnienie obowiązków podatkowych i ewidencyjnych w przypadku zawarcia umowy — podstawa: art. 6 ust. 1 lit. c RODO."
         ]
       },
       {
         "title": "Zakres przetwarzanych danych",
         "paragraphs": [
-          "Przetwarzam wyłącznie dane, które samodzielnie podasz w formularzu lub korespondencji:"
+          "W związku z korzystaniem ze strony mogą być przetwarzane następujące dane:"
         ],
         "list": [
           "Imię i nazwisko (lub nazwa firmy)",
           "Adres e-mail",
           "Numer telefonu (opcjonalnie)",
           "Treść zapytania / opis projektu",
-          "Załączone pliki (jeśli zdecydujesz się je dołączyć)"
+          "Załączone pliki (jeśli zdecydujesz się je dołączyć)",
+          "Adres IP i techniczne dane żądania przetwarzane przez hosting GitHub Pages oraz dostawcę fontów"
         ]
       },
       {
         "title": "Odbiorcy danych",
         "paragraphs": [
-          "Dane pozostają w przeglądarce do chwili, gdy samodzielnie pobierzesz paczkę i wyślesz ją e-mailem. Po wysłaniu mogą być przetwarzane przez dostawcę Twojej poczty oraz Proton AG jako dostawcę skrzynki odbiorczej administratora."
+          "Formularz nie wysyła danych automatycznie. Dane kontaktowe i opis projektu trafiają do dostawcy poczty dopiero, gdy samodzielnie wyślesz wiadomość e-mail."
         ],
         "list": [
-          "Proton AG (Proton Mail) — dostawca skrzynki pocztowej administratora.",
-          "Dostawca poczty wybrany przez Ciebie — jeżeli użyjesz przycisku otwierającego klienta pocztowego."
+          "GitHub, Inc. — dostawca hostingu GitHub Pages; zapisuje adres IP odwiedzającego w celach bezpieczeństwa.",
+          "Google LLC — dostawca plików Google Fonts używanych przez interfejs strony.",
+          "Proton AG — dostawca skrzynki pocztowej administratora, z siedzibą w Szwajcarii."
         ]
       },
       {
         "title": "Okres przechowywania",
         "paragraphs": [
-          "Dane przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
+          "Dane z korespondencji przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
+          "Okres przechowywania danych technicznych przez usługi zewnętrzne określają polityki prywatności GitHub i Google.",
           "W przypadku zawarcia umowy — dane niezbędne do celów księgowych i podatkowych przechowywane są przez 5 lat od końca roku kalendarzowego, w którym powstał obowiązek podatkowy."
         ]
       },
@@ -557,9 +570,10 @@
       {
         "title": "Cookies i pamięć przeglądarki",
         "paragraphs": [
-          "Strona nie używa plików cookies do celów reklamowych ani analitycznych.",
+          "Aplikacja nie używa własnych plików cookies do celów reklamowych ani analitycznych.",
           "Pamięć przeglądarki (localStorage / sessionStorage) służy wyłącznie do zapisywania Twoich preferencji (motyw, język) i tymczasowego przechowywania wypełnionego formularza.",
-          "Dane te nigdy nie są wysyłane na serwer."
+          "Dane wpisane w formularzu pozostają w przeglądarce i nie są wysyłane automatycznie. Trafiają do mnie dopiero, gdy pobierzesz wygenerowaną paczkę i samodzielnie wyślesz ją e-mailem.",
+          "Hosting GitHub Pages może przetwarzać techniczne dane połączenia zgodnie z własną polityką prywatności."
         ]
       },
       {
@@ -601,10 +615,12 @@
       "availability": "Otwarty na zlecenia i ciekawe projekty",
       "response_time": "Odpowiadam zazwyczaj w ciągu 24–48 godzin",
       "preferred_hours": "Preferowane godziny kontaktu: 16:00–20:00 (dni robocze)",
-      "student_note": "Jestem uczniem — dostępność może być ograniczona w sesjach i przed egzaminami"
+      "student_note": "Jestem studentem — dostępność może być ograniczona w sesjach i przed egzaminami"
     },
     "email": "E-mail",
     "discord": "Discord",
+    "copyDiscord": "Skopiuj nazwę użytkownika Discord",
+    "copyDiscordHint": "Kliknij, aby skopiować nazwę",
     "linkedin": "LinkedIn",
     "github": "GitHub"
   },
@@ -653,6 +669,8 @@
     "languageChanged": "Zmieniono język na polski",
     "themeChanged": "Zmieniono motyw",
     "preferencesUpdated": "Zaktualizowano preferencje",
+    "discordCopied": "Skopiowano nazwę użytkownika Discord",
+    "copyFailed": "Nie udało się skopiować. Nazwa: {{username}}",
     "language": {
       "available": "Dostępna polska wersja językowa!",
       "detected": "Zauważyliśmy, że używasz przeglądarki z polskim językiem. Nasza strona jest dostępna również po polsku!",
@@ -684,7 +702,7 @@
       },
       {
         "question": "Czy przyjmujesz komercyjne zlecenia?",
-        "answer": "Tak. Jako uczeń mam ograniczoną dostępność czasową, jednak zlecenia komercyjne przyjmuję i traktuję z pełną powagą. Każde zgłoszenie oceniam pod kątem realności wykonania w ustalonym terminie."
+        "answer": "Tak. Jako student mam ograniczoną dostępność czasową, jednak zlecenia komercyjne przyjmuję i traktuję z pełną powagą. Każde zgłoszenie oceniam pod kątem realności wykonania w ustalonym terminie."
       },
       {
         "question": "Co z poprawkami po zakończeniu projektu?",

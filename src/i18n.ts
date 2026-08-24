@@ -23,8 +23,8 @@ const normalizeLanguage = (language: string | null | undefined): SupportedLangua
     : null;
 };
 
-const detectInitialLanguage = (): SupportedLanguage => {
-  if (typeof window === 'undefined') return 'en';
+const savedLanguage = localStorage.getItem('i18nextLng');
+const initialLanguage = normalizeLanguage(savedLanguage ?? navigator.language);
 
   const queryLanguage = normalizeLanguage(new URLSearchParams(window.location.search).get('lang'));
   const storedLanguage = normalizeLanguage(safeStorage.get('i18nextLng'));
@@ -40,11 +40,18 @@ void i18n
     resources,
     lng: detectInitialLanguage(),
     fallbackLng: 'en',
-    supportedLngs: SUPPORTED_LANGUAGES,
-    nonExplicitSupportedLngs: true,
-    load: 'languageOnly',
-    interpolation: { escapeValue: false },
-    react: { useSuspense: true },
+    lng: initialLanguage,
+    detection: {
+      order: ['localStorage', 'navigator'],
+      lookupLocalStorage: 'i18nextLng',
+      caches: ['localStorage']
+    },
+    interpolation: {
+      escapeValue: false
+    },
+    react: {
+      useSuspense: true
+    }
   });
 
 i18n.on('languageChanged', (language) => {
@@ -56,9 +63,12 @@ export const getBrowserLanguage = (): SupportedLanguage =>
   normalizeLanguage(typeof navigator === 'undefined' ? null : navigator.language) ?? 'en';
 
 export const shouldShowLanguageNotification = (): boolean => {
-  const browserLanguage = getBrowserLanguage();
-  const currentLanguage = normalizeLanguage(i18n.language) ?? 'en';
-  return browserLanguage !== currentLanguage && safeStorage.get('hasSeenLangNotification') !== 'true';
+  const browserLang = getBrowserLanguage();
+  const currentLang = normalizeLanguage(i18n.language);
+  const hasLanguagePreference = localStorage.getItem('i18nextLng') !== null;
+  const hasSeenNotification = localStorage.getItem('hasSeenLangNotification');
+
+  return browserLang !== currentLang && !hasLanguagePreference && !hasSeenNotification;
 };
 
 export default i18n;

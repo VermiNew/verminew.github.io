@@ -8,12 +8,22 @@ import { useRepos } from '@/hooks/useRepos';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
-import type { Repo } from '@/types/repo';
+import { Repo } from '@/types/repo';
+import { useAnimation } from '@/context/AnimationContext';
 
 const Content = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 0;
+`;
+
+const Description = styled.p`
+  max-width: 720px;
+  margin: -0.5rem auto 2rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 1.05rem;
+  line-height: 1.7;
+  text-align: center;
 `;
 
 const FilterContainer = styled.div`
@@ -208,7 +218,7 @@ const cardVariants = {
   }
 };
 
-const ACTIVE_REPO_LIMIT = 10;
+const ACTIVE_REPO_LIMIT = 6;
 
 const ALLOWED_FILTER_TECHNOLOGIES = [
   'javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'php', 'go', 'rust', 'ruby',
@@ -231,7 +241,8 @@ export const ProjectsSection: React.FC = () => {
   const { t } = useTranslation();
   const [activeFilters, setActiveFilters] = useState<string[]>(['all']);
   const [showAllActive, setShowAllActive] = useState(false);
-  const { data, isLoading, error, warning, retry } = useRepos();
+  const { data, isLoading, error } = useRepos();
+  const { reducedMotion } = useAnimation();
 
   const availableTechnologies = useMemo(() => {
     if (!data?.repos) return [];
@@ -302,6 +313,13 @@ export const ProjectsSection: React.FC = () => {
     }, { featured: [], active: [], planned: [] });
 
     all.featured = all.featured.slice(0, 3);
+    all.active.sort((first, second) => {
+      const firstQuality = Number(first.description.trim().length > 0) + Number(first.technologies.length > 0);
+      const secondQuality = Number(second.description.trim().length > 0) + Number(second.technologies.length > 0);
+
+      return secondQuality - firstQuality ||
+        new Date(second.updatedAt).getTime() - new Date(first.updatedAt).getTime();
+    });
     return all;
   }, [filteredProjects]);
 
@@ -316,6 +334,7 @@ export const ProjectsSection: React.FC = () => {
     <Section id="projects">
       <Content>
         <SectionTitle>{t('projects.title')}</SectionTitle>
+        <Description>{t('projects.description')}</Description>
 
         <FilterContainer
           role="group"
@@ -366,13 +385,13 @@ export const ProjectsSection: React.FC = () => {
               <ProjectsCategory>
                 <CategoryTitle>{t('projects.featuredTitle')}</CategoryTitle>
                 <ProjectsGrid
-                  variants={gridVariants}
-                  initial="hidden"
-                  animate="visible"
+                  variants={reducedMotion ? undefined : gridVariants}
+                  initial={reducedMotion ? false : 'hidden'}
+                  animate={reducedMotion ? undefined : 'visible'}
                 >
                   <AnimatePresence mode="popLayout">
                     {organizedProjects.featured.map((project) => (
-                      <motion.div key={project.id} variants={cardVariants} layout>
+                      <motion.div key={project.id} variants={reducedMotion ? undefined : cardVariants} layout>
                         <ProjectCard project={project} />
                       </motion.div>
                     ))}
@@ -385,13 +404,13 @@ export const ProjectsSection: React.FC = () => {
               <ProjectsCategory>
                 <CategoryTitle>{t('projects.otherTitle')}</CategoryTitle>
                 <ProjectsGrid
-                  variants={gridVariants}
-                  initial="hidden"
-                  animate="visible"
+                  variants={reducedMotion ? undefined : gridVariants}
+                  initial={reducedMotion ? false : 'hidden'}
+                  animate={reducedMotion ? undefined : 'visible'}
                 >
                   <AnimatePresence mode="popLayout">
                     {visibleActive.map((project) => (
-                      <motion.div key={project.id} variants={cardVariants} layout>
+                      <motion.div key={project.id} variants={reducedMotion ? undefined : cardVariants} layout>
                         <ProjectCard project={project} />
                       </motion.div>
                     ))}
@@ -420,13 +439,13 @@ export const ProjectsSection: React.FC = () => {
               <ProjectsCategory>
                 <CategoryTitle>{t('projects.plannedTitle')}</CategoryTitle>
                 <ProjectsGrid
-                  variants={gridVariants}
-                  initial="hidden"
-                  animate="visible"
+                  variants={reducedMotion ? undefined : gridVariants}
+                  initial={reducedMotion ? false : 'hidden'}
+                  animate={reducedMotion ? undefined : 'visible'}
                 >
                   <AnimatePresence mode="popLayout">
                     {organizedProjects.planned.map((project) => (
-                      <motion.div key={project.id} variants={cardVariants} layout>
+                      <motion.div key={project.id} variants={reducedMotion ? undefined : cardVariants} layout>
                         <ProjectCard project={project} />
                       </motion.div>
                     ))}
@@ -439,4 +458,4 @@ export const ProjectsSection: React.FC = () => {
       </Content>
     </Section>
   );
-}; 
+};

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
-import { useAnimation } from '@/context/hooks/useAnimation';
+import { useAnimation } from '@/context/AnimationContext';
 
 export type ToastType = 'success' | 'info' | 'error';
 
@@ -16,8 +16,10 @@ interface ToastProps {
 const ToastContainer = styled(motion.div)<{ $type: ToastType }>`
   position: fixed;
   bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 1rem;
+  right: 1rem;
+  width: max-content;
+  margin: 0 auto;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   background: ${({ theme, $type }) => {
@@ -30,13 +32,19 @@ const ToastContainer = styled(motion.div)<{ $type: ToastType }>`
     if ($type === 'error') return theme.colors.onError;
     return theme.colors.onInfo;
   }};
+  color: ${({ theme }) => theme.colors.background};
   display: flex;
   align-items: center;
   gap: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1100;
   min-width: 200px;
-  max-width: 90%;
+  max-width: calc(100% - 2rem);
+  box-sizing: border-box;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    bottom: 5.5rem;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -85,8 +93,6 @@ export const Toast: React.FC<ToastProps> = ({
     <AnimatePresence>
       <ToastContainer
         $type={type}
-        role={type === 'error' ? 'alert' : 'status'}
-        aria-live={type === 'error' ? 'assertive' : 'polite'}
         initial={reducedMotion ? false : { opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={reducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -96,7 +102,6 @@ export const Toast: React.FC<ToastProps> = ({
         <Message>{message}</Message>
         {!reducedMotion && (
           <ProgressBar
-            aria-hidden="true"
             initial={{ width: '100%' }}
             animate={{ width: '0%' }}
             transition={{ duration: duration / 1000, ease: 'linear' }}

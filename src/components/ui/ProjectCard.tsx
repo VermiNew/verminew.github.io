@@ -198,6 +198,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     featuredReason: project.featuredReason,
   });
   const hasBadges = Boolean(project.featured || project.category);
+  const description = project.description.trim() || project.featuredReason || t('projects.descriptionFallback');
+  const hasStats = (project.stars ?? 0) > 0 || (project.forks ?? 0) > 0;
 
   return (
     <Card
@@ -219,9 +221,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       <Content $hasBadges={hasBadges}>
         <TopContent>
           <Title>{project.title}</Title>
-          <Description>{copy.description}</Description>
-          {project.featured && copy.featuredReason && (
-            <FeaturedReason>{copy.featuredReason}</FeaturedReason>
+          <Description>{description}</Description>
+          {project.featured && project.description.trim() && project.featuredReason && (
+            <FeaturedReason>{project.featuredReason}</FeaturedReason>
           )}
         </TopContent>
         <BottomContent>
@@ -239,6 +241,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             ))}
           </TechStack>
 
+          {hasStats && (
+            <Stats>
+              <span aria-label={`${project.stars ?? 0} stars`}>★ {project.stars ?? 0}</span>
+              <span aria-label={`${project.forks ?? 0} forks`}>⎇ {project.forks ?? 0}</span>
+            </Stats>
+          )}
 
           <Links>
             <Link 
@@ -266,4 +274,4 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       </Content>
     </Card>
   );
-}; 
+};

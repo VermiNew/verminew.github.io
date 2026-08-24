@@ -1,14 +1,31 @@
-import React, { Suspense, lazy, useContext, useEffect } from 'react';
-import { AnimatePresence, MotionConfig } from 'framer-motion';
+import React, { Suspense, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AnimationProvider } from '@/context/AnimationContext';
-import { AnimationContext } from '@/context/AnimationContextValue';
+import { GlobalStyle } from '@/styles/GlobalStyle';
+import { ThemeProvider as CustomThemeProvider, useTheme } from '@/context/ThemeContext';
+import { AnimationProvider, AnimationContext } from '@/context/AnimationContext';
+import { ToastProvider } from '@/context/ToastContext';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { ThemeProvider as CustomThemeProvider } from '@/context/ThemeContext';
 import { useTheme } from '@/context/hooks/useTheme';
 import { ToastProvider } from '@/context/ToastContext';
 import { DeferredSection } from '@/components/layout/DeferredSection';
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
+import { Header } from '@/components/layout/Header';
+import Settings from '@/components/settings/Settings';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { AboutSection } from '@/components/sections/AboutSection';
+import { ServicesSection } from '@/components/sections/ServicesSection';
+import { SkillsSection } from '@/components/sections/SkillsSection';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import { OrderSection } from '@/components/sections/OrderSection';
+import { ContactSection } from '@/components/sections/ContactSection';
+import { FaqSection } from '@/components/sections/FaqSection';
+import { SectionTransition } from '@/components/layout/SectionTransition';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
+import { ReloadPopup } from '@/components/ui/ReloadPopup';
+import { LanguageNotification } from '@/components/ui/LanguageNotification';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { SkipLink } from '@/components/layout/SkipLink';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { SkipLink } from '@/components/layout/SkipLink';
@@ -78,30 +95,53 @@ const AppContent: React.FC = () => {
       <Header />
       <AnimatePresence mode="wait">
         <main id="main" tabIndex={-1}>
-          <AppSection name="hero" deferred={false}>
-            <HeroSection />
-          </AppSection>
-          <AppSection name="about" deferred={false}>
-            <AboutSection />
-          </AppSection>
-          <AppSection name="services">
-            <ServicesSection />
-          </AppSection>
-          <AppSection name="skills">
-            <SkillsSection />
-          </AppSection>
-          <AppSection name="projects">
-            <ProjectsSection />
-          </AppSection>
-          <AppSection name="order">
-            <OrderSection />
-          </AppSection>
-          <AppSection name="faq">
-            <FaqSection />
-          </AppSection>
-          <AppSection name="contact">
-            <ContactSection />
-          </AppSection>
+          <ErrorBoundary section="hero">
+            <SectionTransition>
+              <HeroSection />
+            </SectionTransition>
+          </ErrorBoundary>
+          
+          <ErrorBoundary section="about">
+            <SectionTransition>
+              <AboutSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="projects">
+            <SectionTransition>
+              <ProjectsSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="skills">
+            <SectionTransition>
+              <SkillsSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="services">
+            <SectionTransition>
+              <ServicesSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="order">
+            <SectionTransition>
+              <OrderSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="faq">
+            <SectionTransition>
+              <FaqSection />
+            </SectionTransition>
+          </ErrorBoundary>
+
+          <ErrorBoundary section="contact">
+            <SectionTransition>
+              <ContactSection />
+            </SectionTransition>
+          </ErrorBoundary>
         </main>
       </AnimatePresence>
       <Footer />
@@ -114,30 +154,30 @@ const AppContent: React.FC = () => {
 };
 
 const MotionWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const context = useContext(AnimationContext);
-  const reducedMotion = context?.motionPreference === 'system'
-    ? 'user'
-    : context?.reducedMotion
-      ? 'always'
-      : 'never';
-
-  return <MotionConfig reducedMotion={reducedMotion}>{children}</MotionConfig>;
+  const ctx = useContext(AnimationContext);
+  return (
+    <MotionConfig reducedMotion={ctx?.reducedMotion ? 'always' : 'never'}>
+      {children}
+    </MotionConfig>
+  );
 };
 
-const App: React.FC = () => (
-  <CustomThemeProvider>
-    <AnimationProvider>
-      <MotionWrapper>
-        <ToastProvider>
-          <SettingsProvider>
-            <Suspense fallback={<LoadingSpinner />}>
-              <AppContent />
-            </Suspense>
-          </SettingsProvider>
-        </ToastProvider>
-      </MotionWrapper>
-    </AnimationProvider>
-  </CustomThemeProvider>
-);
+const App: React.FC = () => {
+  return (
+    <CustomThemeProvider>
+      <AnimationProvider>
+        <MotionWrapper>
+          <ToastProvider>
+            <SettingsProvider>
+              <Suspense fallback={<LoadingSpinner />}>
+                <AppContent />
+              </Suspense>
+            </SettingsProvider>
+          </ToastProvider>
+        </MotionWrapper>
+      </AnimationProvider>
+    </CustomThemeProvider>
+  );
+};
 
 export default App;

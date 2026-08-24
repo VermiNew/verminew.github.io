@@ -16,6 +16,8 @@ export interface Repo {
   visibility: ProjectVisibility;
   createdAt: string;
   updatedAt: string;
+  stars?: number;
+  forks?: number;
   category?: ProjectCategory;
   priority?: ProjectPriority;
   featuredReason?: string;

@@ -8,7 +8,6 @@ export const socialConfig = {
     username: 'Michał Oślizło'
   },
   discord: {
-    url: 'https://discord.com/users/verminew',
     username: 'verminew'
   },
   email: {
@@ -17,5 +16,7 @@ export const socialConfig = {
   }
 } as const;
 
-export const getSocialUrl = (platform: keyof typeof socialConfig) =>
+type LinkedSocialPlatform = Exclude<keyof typeof socialConfig, 'discord'>;
+
+export const getSocialUrl = (platform: LinkedSocialPlatform) =>
   socialConfig[platform].url;

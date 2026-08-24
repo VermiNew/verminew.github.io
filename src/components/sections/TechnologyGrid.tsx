@@ -60,7 +60,7 @@ const FilterChip = styled.button<{ $isActive: boolean }>`
   background: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.primary : 'transparent'};
   color: ${({ theme, $isActive }) =>
-    $isActive ? theme.colors.onPrimary : theme.colors.text};
+    $isActive ? theme.colors.background : theme.colors.text};
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 500;
@@ -205,15 +205,16 @@ const CATEGORY_FILTERS: CategoryFilter[] = ['all', 'frontend', 'backend', 'langu
 export const TechnologyGrid: React.FC = () => {
   const { t } = useTranslation();
   const { reducedMotion } = useAnimation();
-  const [activeFilter, setActiveFilter] = useState<CategoryFilter>('all');
+  const [activeFilter, setActiveFilter] = useState<CategoryFilter>('frontend');
 
   const handleFilterClick = useCallback((f: CategoryFilter) => {
     setActiveFilter(f);
   }, []);
 
   const visibleCategories = useMemo(
-    () => (Object.entries(technologies) as Array<[keyof typeof technologies, typeof technologies[keyof typeof technologies]]>)
-      .filter(([category]) => activeFilter === 'all' || CATEGORY_FILTER_MAP[activeFilter].includes(category)),
+    () => Object.entries(technologies).filter(([category]) =>
+      activeFilter === 'all' || CATEGORY_FILTER_MAP[activeFilter].includes(category)
+    ),
     [activeFilter]
   );
 
@@ -234,8 +235,8 @@ export const TechnologyGrid: React.FC = () => {
       </FilterRow>
       <Container
         variants={!reducedMotion ? containerVariants : undefined}
-        initial="hidden"
-        whileInView="visible"
+        initial={reducedMotion ? false : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
         viewport={{ once: true, margin: "-50px" }}
       >
         {visibleCategories.map(([category, techs]) => (
@@ -266,4 +267,4 @@ export const TechnologyGrid: React.FC = () => {
       </Container>
     </>
   );
-}; 
+};

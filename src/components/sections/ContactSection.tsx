@@ -10,6 +10,7 @@ import { Section } from '@/components/layout/Section';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { useAnimation } from '@/context/hooks/useAnimation';
 import { socialConfig } from '@/config/social';
+import { useToast } from '@/context/ToastContext';
 
 const ContactContainer = styled(motion.div)`
   display: flex;
@@ -55,7 +56,11 @@ const ContactCard = styled(motion.a)<{ $isDark: boolean }>`
   };
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
   text-decoration: none;
+  width: 100%;
+  font: inherit;
+  text-align: left;
   color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.default};
   backdrop-filter: blur(5px);
 
@@ -105,6 +110,11 @@ const ContactValue = styled.p`
   font-size: 1rem;
   margin: 0;
   color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const ContactHint = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.8rem;
 `;
 
 const AdditionalInfo = styled(motion.div)`
@@ -174,6 +184,19 @@ export const ContactSection: React.FC = () => {
   const { themeMode } = useTheme();
   const isDark = useMemo(() => isDarkTheme(themeMode), [themeMode]);
   const { reducedMotion } = useAnimation();
+  const { showToast } = useToast();
+
+  const copyDiscordUsername = async () => {
+    try {
+      await navigator.clipboard.writeText(socialConfig.discord.username);
+      showToast(t('notifications.discordCopied'), 'success');
+    } catch {
+      showToast(
+        t('notifications.copyFailed', { username: socialConfig.discord.username }),
+        'error'
+      );
+    }
+  };
 
   const contacts = useMemo(() => [
     {
@@ -181,21 +204,22 @@ export const ContactSection: React.FC = () => {
       value: socialConfig.github.username,
       icon: <SiGithub />,
       link: socialConfig.github.url,
-      external: true,
+      newTab: true,
     },
     {
       title: t('contact.linkedin'),
       value: socialConfig.linkedin.username,
       icon: <SiLinkedin />,
       link: socialConfig.linkedin.url,
-      external: true,
+      newTab: true,
     },
     {
       title: t('contact.discord'),
       value: socialConfig.discord.username,
       icon: <SiDiscord />,
-      link: socialConfig.discord.url,
-      external: true,
+      link: undefined,
+      copiesDiscord: true,
+      hint: t('contact.copyDiscordHint'),
     },
     {
       title: t('contact.email'),
@@ -226,9 +250,13 @@ export const ContactSection: React.FC = () => {
           {contacts.map((contact, index) => (
             <ContactCard 
               key={contact.title}
+              as={contact.copiesDiscord ? 'button' : undefined}
+              type={contact.copiesDiscord ? 'button' : undefined}
               href={contact.link}
-              target={contact.external ? '_blank' : undefined}
-              rel={contact.external ? 'noopener noreferrer' : undefined}
+              target={contact.newTab ? '_blank' : undefined}
+              rel={contact.newTab ? 'noopener noreferrer' : undefined}
+              onClick={contact.copiesDiscord ? copyDiscordUsername : undefined}
+              aria-label={contact.copiesDiscord ? t('contact.copyDiscord') : undefined}
               $isDark={isDark}
               variants={!reducedMotion ? itemVariants : undefined}
               custom={index}
@@ -237,6 +265,7 @@ export const ContactSection: React.FC = () => {
               <ContactInfo>
                 <ContactTitle>{contact.title}</ContactTitle>
                 <ContactValue>{contact.value}</ContactValue>
+                {contact.hint && <ContactHint>{contact.hint}</ContactHint>}
               </ContactInfo>
             </ContactCard>
           ))}
@@ -264,4 +293,4 @@ export const ContactSection: React.FC = () => {
       </ContactContainer>
     </Section>
   );
-}; 
+};

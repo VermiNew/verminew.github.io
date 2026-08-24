@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/layout/Container';
-import { useAnimation } from '@/context/hooks/useAnimation';
+import { useAnimation } from '@/context/AnimationContext';
 
 interface SectionProps {
   children: React.ReactNode;
@@ -35,16 +35,15 @@ export const Section: React.FC<SectionProps> = ({
   animate = false,
 }) => {
   const { reducedMotion } = useAnimation();
-  const shouldAnimate = animate && !reducedMotion;
 
   return (
     <StyledSection
       id={id}
       className={className}
-      initial={shouldAnimate ? 'hidden' : false}
-      whileInView={shouldAnimate ? 'visible' : undefined}
-      viewport={{ once: true, margin: '-100px' }}
-      variants={shouldAnimate ? sectionVariants : undefined}
+      initial={reducedMotion ? false : 'hidden'}
+      whileInView={reducedMotion ? undefined : 'visible'}
+      viewport={{ once: true, margin: "-100px" }}
+      variants={reducedMotion ? undefined : sectionVariants}
     >
       <Container fullWidth={fullWidth}>{children}</Container>
     </StyledSection>

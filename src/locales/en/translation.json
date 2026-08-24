@@ -26,17 +26,23 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "I build websites and web apps — fast, with AI, no fluff",
+    "eyebrow": "VermiNew · computer science student",
+    "title": "Michał Oślizło",
+    "description": "I build websites and web apps. I learn by making things, use AI as a tool, and don't pretend I know everything.",
+    "highlights": [
+      "INF.03 + INF.04",
+      "React + TypeScript",
+      "Poland · remote"
+    ],
     "cta": {
-      "about": "About me",
+      "about": "More about me",
       "projects": "View projects"
     }
   },
   "about": {
     "title": "About Me",
-    "imageAlt": "Portrait of Michał Oślizło (VermiNew)",
     "name": "Michał Oślizło",
-    "intro": "I'm Michał, a self-taught developer from Poland. Born in October 2006, currently in technical school studying software development.",
+    "intro": "I'm Michał, a computer science student and self-taught developer from Poland. I was born in October 2006.",
     "focus": "I focus on websites and web applications. Passed INF.03 and INF.04 qualifications. I use AI as a tool — not to replace thinking, but to ship things faster. This portfolio is proof of that.",
     "nameOrigin": {
       "title": "What's behind the name VermiNew?",
@@ -55,7 +61,7 @@
       "title": "About Me",
       "education": {
         "title": "Education",
-        "current": "Technical school, specialization: IT technician-programmer",
+        "current": "Computer science studies",
         "achievements": "INF.03 qualification passed, INF.04 qualification passed (practical and theoretical)"
       },
       "languages": {
@@ -253,6 +259,8 @@
   },
   "projects": {
     "title": "Projects",
+    "description": "The projects that best show how I work come first. The rest of my repositories are still below — I'm not hiding anything.",
+    "descriptionFallback": "Repository description in progress — the code and commit history are available on GitHub.",
     "filters": {
       "all": "All",
       "label": "Project filters"
@@ -260,8 +268,8 @@
     "resultsCount_one": "1 project",
     "resultsCount_other": "{{count}} projects",
     "featured": "Featured",
-    "featuredTitle": "Featured",
-    "otherTitle": "Other projects",
+    "featuredTitle": "Selected projects",
+    "otherTitle": "More from GitHub",
     "plannedTitle": "Planned",
     "showMore": "Show more ({{count}})",
     "showLess": "Show less",
@@ -305,11 +313,7 @@
     },
     "preferences": {
       "reducedMotion": "Reduced Motion",
-      "smoothScroll": "Smooth Scrolling",
-      "motionPreference": "Animations",
-      "motionSystem": "System preference",
-      "motionFull": "Full",
-      "motionReduced": "Reduced"
+      "smoothScroll": "Smooth Scrolling"
     }
   },
   "order": {
@@ -345,7 +349,7 @@
         "Something else — describe below"
       ],
       "budget": "Rough budget",
-      "budgetPlaceholder": "Select a range",
+      "budgetPlaceholder": "Pick a range (optional)",
       "budgetHint": "I'll quote after reviewing. Payment: 50% upfront · 50% on acceptance",
       "budgetOptions": [
         "Under €120 (small page, landing, minor fixes)",
@@ -441,15 +445,7 @@
       "rodoConsentBefore": "I have read the ",
       "rodoConsentLink": "Privacy Policy",
       "rodoConsentAfter": " and consent to the processing of my personal data for order fulfilment (GDPR).",
-      "rodoRequired": "Consent is required",
-      "draftRestored": "Your saved draft from this browser session has been restored.",
-      "fixErrors": "Review the highlighted fields and complete the required information.",
-      "attachmentErrors": {
-        "total-size": "The selected files were not added: the combined attachment size exceeds 20 MB.",
-        "file-size": "The selected file was not added: a single file cannot exceed 10 MB.",
-        "type": "The selected file was not added: its format is not supported.",
-        "duplicate": "The selected file was not added: an attachment with that name already exists."
-      }
+      "rodoRequired": "Consent is required"
     },
     "summary": {
       "title": "Order ready!",
@@ -468,16 +464,7 @@
       "manualBody": "Body: (contents of the JSON file from the package)",
       "back": "Back to edit",
       "mailSubject": "Order {{id}}",
-      "mailBody": "Order ID: {{id}}\n\nAttach {{filename}}\n\nThe request was not sent automatically.\n\nGenerated: {{date}}",
-      "notSent": "The request has not been sent yet. Download the package first, then attach it to your email.",
-      "packageDownloaded": "The package has been downloaded. Open your mail app, attach the ZIP file and send the message.",
-      "preparingZip": "Preparing package… {{progress}}%",
-      "copySuccess": "The order ID has been copied.",
-      "copyError": "The order ID could not be copied.",
-      "downloadSuccess": "The order package is ready.",
-      "downloadError": "The package could not be created. Please try again.",
-      "downloadFirst": "Download the ZIP package first and attach it to the email.",
-      "copyId": "Copy order ID {{id}}"
+      "mailBody": "Order ID: {{id}}\n\nPlease attach files_for_order.zip\n\nGenerated: {{date}}"
     }
   },
   "privacy": {
@@ -485,7 +472,7 @@
     "close": "Close Privacy Policy",
     "openLink": "Privacy Policy",
     "lastUpdatedLabel": "Last updated",
-    "lastUpdated": "July 2026",
+    "lastUpdated": "August 2026",
     "intro": "This Policy describes the rules for processing personal data of persons using the order form and other forms of contact on the verminew.github.io website.",
     "puodoNote": "You also have the right to lodge a complaint with the Polish supervisory authority — the President of the Personal Data Protection Office (PUODO):",
     "sections": [
@@ -504,36 +491,40 @@
         "list": [
           "Order fulfilment, preparing a quote and possibly concluding a contract — basis: art. 6(1)(b) GDPR.",
           "Reply and correspondence — basis: art. 6(1)(f) GDPR.",
+          "Providing and securing the website — basis: art. 6(1)(f) GDPR.",
           "Tax and record-keeping obligations if a contract is concluded — basis: art. 6(1)(c) GDPR."
         ]
       },
       {
         "title": "Data collected",
         "paragraphs": [
-          "Only data you provide yourself in the form or correspondence:"
+          "The following data may be processed when you use the website:"
         ],
         "list": [
           "Name (or company name)",
           "Email address",
           "Phone number (optional)",
           "Project description",
-          "Attached files (if provided)"
+          "Attached files (if provided)",
+          "IP address and technical request data processed by GitHub Pages hosting and the font provider"
         ]
       },
       {
         "title": "Recipients",
         "paragraphs": [
-          "The data stays in your browser until you download the package and send it by email yourself. After sending, it may be processed by your email provider and by Proton AG as the controller’s receiving email provider."
+          "The form does not submit data automatically. Contact details and the project description reach an email provider only after you send the email yourself."
         ],
         "list": [
-          "Proton AG (Proton Mail) — the controller’s receiving email provider.",
-          "The email provider selected by you — if you use the button that opens your mail client."
+          "GitHub, Inc. — GitHub Pages hosting provider; logs visitor IP addresses for security purposes.",
+          "Google LLC — provider of the Google Fonts files used by the website interface.",
+          "Proton AG — the controller's email provider, based in Switzerland."
         ]
       },
       {
         "title": "Retention",
         "paragraphs": [
-          "Data is stored for up to 12 months from last contact, then deleted.",
+          "Correspondence data is stored for up to 12 months from last contact, then deleted.",
+          "Retention of technical data by external services is governed by the privacy statements of GitHub and Google.",
           "If a contract is concluded, accounting data is stored for 5 years per Polish tax law."
         ]
       },
@@ -555,9 +546,10 @@
       {
         "title": "Cookies and browser storage",
         "paragraphs": [
-          "No advertising or analytics cookies are used.",
+          "The app does not use its own advertising or analytics cookies.",
           "Browser storage (localStorage / sessionStorage) is used only to save your preferences (theme, language) and temporarily hold the order form.",
-          "This data is never sent to a server."
+          "Data entered in the form stays in your browser and is not submitted automatically. It reaches me only after you download the generated package and send it yourself by email.",
+          "GitHub Pages hosting may process technical connection data under its own privacy statement."
         ]
       },
       {
@@ -603,6 +595,8 @@
     },
     "email": "Email",
     "discord": "Discord",
+    "copyDiscord": "Copy Discord username",
+    "copyDiscordHint": "Click to copy username",
     "linkedin": "LinkedIn",
     "github": "GitHub"
   },
@@ -651,15 +645,15 @@
     "languageChanged": "Language changed to English",
     "themeChanged": "Theme changed",
     "preferencesUpdated": "Preferences updated",
+    "discordCopied": "Discord username copied",
+    "copyFailed": "Couldn't copy. Username: {{username}}",
     "language": {
       "available": "Polish language version available!",
       "detected": "We noticed your browser uses Polish. This site is also available in Polish!",
       "settingsHint": "Click the settings icon in the bottom right to switch to Polish.",
       "dontShowAgain": "Don't show again",
-      "understand": "Got it",
-      "close": "Close notification"
-    },
-    "regionLabel": "Notifications"
+      "understand": "Got it"
+    }
   },
   "faq": {
     "title": "Frequently Asked Questions",

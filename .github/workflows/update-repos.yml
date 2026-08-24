@@ -48,15 +48,28 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+      - name: 💾 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-update-deps-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-update-deps-
 
-      - name: Fetch repository data
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 📡 Fetch repository data
         env:
           FORCE_UPDATE: ${{ inputs.force_update || false }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
-        run: node .github/scripts/fetch-repos.js
+        run: |
+          echo "📊 Starting repository data fetch..."
+          node .github/scripts/fetch-repos.js
+          echo "✅ Fetch complete!"
 
       - name: Validate generated data
         run: npm run validate
@@ -105,7 +118,9 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "### Update result" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Changed: ${{ steps.changes.outputs.changed || 'unknown' }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dry run: ${{ inputs.dry_run || false }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Trigger: ${{ github.event_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "### ℹ️  No Changes Detected" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Repository data is already up to date." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Checked at**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY

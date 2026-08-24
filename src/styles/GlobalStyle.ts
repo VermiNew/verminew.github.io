@@ -13,7 +13,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
     scroll-behavior: auto;
   }
 
-  html[data-smooth-scroll='true'] {
+  html[data-smooth-scroll='true'][data-reduced-motion='false'] {
     scroll-behavior: smooth;
   }
 

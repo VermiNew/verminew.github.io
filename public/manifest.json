@@ -1,14 +1,10 @@
 {
   "id": "/",
   "short_name": "VermiNew",
-  "name": "VermiNew Portfolio",
-  "description": "Bilingual portfolio of VermiNew showcasing web development projects, skills and services.",
-  "lang": "en",
-  "categories": [
-    "portfolio",
-    "developer",
-    "productivity"
-  ],
+  "name": "Michał Oślizło — VermiNew",
+  "description": "Portfolio programistyczne Michała Oślizło: projekty, umiejętności i kontakt.",
+  "lang": "pl",
+  "id": "/",
   "icons": [
     {
       "src": "/assets/favicons/logo64.png",

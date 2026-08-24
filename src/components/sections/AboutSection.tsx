@@ -10,8 +10,10 @@ import { asStringArray } from '@/utils/translationValues';
 import { SiGithub, SiDiscord, SiLinkedin } from 'react-icons/si';
 import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdWork, MdLabel } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/context/hooks/useTheme';
-import { getSocialUrl } from '@/config/social';
+import { useTheme } from '@/context/ThemeContext';
+import { useAnimation } from '@/context/AnimationContext';
+import { getSocialUrl, socialConfig } from '@/config/social';
+import { useToast } from '@/context/ToastContext';
 import { isDarkTheme } from '@/utils/themeUtils';
 
 const Content = styled.div`
@@ -88,12 +90,21 @@ const Paragraph = styled(motion.p)`
 `;
 
 const NameOrigin = styled(motion.div)`
-  margin-top: 1rem;
   padding: 1.5rem;
   border-radius: 16px;
   background: ${({ theme }) => `${theme.colors.surface}80`};
   backdrop-filter: blur(8px);
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
+`;
+
+const PersonalMeta = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+  gap: 1rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const NameOriginTitle = styled.h3`
@@ -158,7 +169,9 @@ const ProfileLink = styled.a`
   background: ${({ theme }) => `${theme.colors.surface}80`};
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
+  font: inherit;
   font-size: 0.9rem;
+  cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.default};
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
 
@@ -168,15 +181,24 @@ const ProfileLink = styled.a`
     border-color: ${({ theme }) => `${theme.colors.primary}40`};
   }
 
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
   svg {
     font-size: 1.2rem;
   }
 `;
 
 const Background = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const BackgroundSection = styled(motion.div)`
@@ -188,9 +210,21 @@ const BackgroundSection = styled(motion.div)`
 `;
 
 const HighlightedSection = styled(BackgroundSection)`
+  grid-column: 1 / -1;
   border: 2px solid ${({ theme }) => theme.colors.primary};
   background: ${({ theme }) => `${theme.colors.surface}90`};
   box-shadow: 0 0 15px ${({ theme }) => `${theme.colors.primary}30`};
+`;
+
+const AvailabilityColumns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 `;
 
 const OrderButtonWrapper = styled.div`
@@ -266,8 +300,27 @@ export const AboutSection: React.FC = () => {
   const { reducedMotion, smoothScroll } = useAnimation();
   const { t } = useTranslation();
   const { themeMode } = useTheme();
+  const { reducedMotion, smoothScroll } = useAnimation();
+  const { showToast } = useToast();
 
-  const scrollToOrder = () => scrollToSection('order', smoothScroll && !reducedMotion);
+  const scrollToOrder = () => {
+    const element = document.querySelector('#order');
+    if (element) {
+      element.scrollIntoView({ behavior: reducedMotion || !smoothScroll ? 'auto' : 'smooth' });
+    }
+  };
+
+  const copyDiscordUsername = async () => {
+    try {
+      await navigator.clipboard.writeText(socialConfig.discord.username);
+      showToast(t('notifications.discordCopied'), 'success');
+    } catch {
+      showToast(
+        t('notifications.copyFailed', { username: socialConfig.discord.username }),
+        'error'
+      );
+    }
+  };
 
   return (
     <Section id="about">
@@ -302,18 +355,20 @@ export const AboutSection: React.FC = () => {
                 {t('about.focus')}
               </Paragraph>
 
-              <NameOrigin variants={!reducedMotion ? itemVariants : undefined}>
-                <NameOriginTitle>
-                  <MdLabel />
-                  {t('about.nameOrigin.title')}
-                </NameOriginTitle>
-                <p>{t('about.nameOrigin.description')}</p>
-              </NameOrigin>
+              <PersonalMeta>
+                <NameOrigin variants={!reducedMotion ? itemVariants : undefined}>
+                  <NameOriginTitle>
+                    <MdLabel />
+                    {t('about.nameOrigin.title')}
+                  </NameOriginTitle>
+                  <p>{t('about.nameOrigin.description')}</p>
+                </NameOrigin>
 
-              <BirthInfoSection variants={!reducedMotion ? itemVariants : undefined}>
-                <MdCake />
-                <BirthInfoText>{t('about.birthInfo')}</BirthInfoText>
-              </BirthInfoSection>
+                <BirthInfoSection variants={!reducedMotion ? itemVariants : undefined}>
+                  <MdCake />
+                  <BirthInfoText>{t('about.birthInfo')}</BirthInfoText>
+                </BirthInfoSection>
+              </PersonalMeta>
 
               <Background variants={!reducedMotion ? itemVariants : undefined}>
                 <BackgroundSection>
@@ -364,38 +419,42 @@ export const AboutSection: React.FC = () => {
                     <MdWork />
                     {t('about.background.availability.title')}
                   </BackgroundTitle>
-                  <Paragraph>
-                    {t('about.background.availability.description')}
-                  </Paragraph>
-                  
-                  <List>
-                    {asStringArray(t('about.background.availability.workConditions', { returnObjects: true }) as unknown)
-                      .map((condition, index) => (
-                        <ListItem key={index}>{condition}</ListItem>
-                      ))}
-                  </List>
+                  <AvailabilityColumns>
+                    <div>
+                      <Paragraph>
+                        {t('about.background.availability.description')}
+                      </Paragraph>
+                      <List>
+                        {(t('about.background.availability.workConditions', { returnObjects: true }) as string[])
+                          .map((condition, index) => (
+                            <ListItem key={index}>{condition}</ListItem>
+                          ))}
+                      </List>
+                    </div>
 
-                  <BackgroundTitle style={{ marginTop: '1.5rem' }}>
-                    <MdWork />
-                    {t('about.background.availability.freelance.title')}
-                  </BackgroundTitle>
-                  <Paragraph>
-                    {t('about.background.availability.freelance.description')}
-                  </Paragraph>
-                  
-                  <List>
-                    {asStringArray(t('about.background.availability.freelance.highlights', { returnObjects: true }) as unknown)
-                      .map((highlight, index) => (
-                        <ListItem key={index}>{highlight}</ListItem>
-                      ))}
-                  </List>
+                    <div>
+                      <BackgroundTitle>
+                        <MdWork />
+                        {t('about.background.availability.freelance.title')}
+                      </BackgroundTitle>
+                      <Paragraph>
+                        {t('about.background.availability.freelance.description')}
+                      </Paragraph>
+                      <List>
+                        {(t('about.background.availability.freelance.highlights', { returnObjects: true }) as string[])
+                          .map((highlight, index) => (
+                            <ListItem key={index}>{highlight}</ListItem>
+                          ))}
+                      </List>
+                    </div>
+                  </AvailabilityColumns>
 
                   <OrderButtonWrapper>
                     <Button variant="outline" onClick={scrollToOrder}>
                       {t('about.order.button')}
                     </Button>
                   </OrderButtonWrapper>
-                  </HighlightedSection>
+                </HighlightedSection>
               </Background>
 
               <Profiles variants={!reducedMotion ? itemVariants : undefined}>
@@ -411,10 +470,10 @@ export const AboutSection: React.FC = () => {
                     {t('about.profiles.github')}
                   </ProfileLink>
                   <ProfileLink
-                    href={getSocialUrl('discord')}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={t('about.profiles.externalLabel', { profile: t('about.profiles.discord') })}
+                    as="button"
+                    type="button"
+                    onClick={copyDiscordUsername}
+                    aria-label={t('contact.copyDiscord')}
                   >
                     <SiDiscord aria-hidden="true" />
                     {t('about.profiles.discord')}
