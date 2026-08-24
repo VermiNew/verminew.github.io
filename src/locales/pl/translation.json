@@ -88,7 +88,7 @@
       },
       "availability": {
         "title": "Dostępność",
-        "description": "Jestem uczniem, więc mogę pracować kilka godzin dziennie — nie pełny etat. Wyłącznie zdalnie.",
+        "description": "Jestem studentem, więc mogę pracować kilka godzin dziennie — nie pełny etat. Wyłącznie zdalnie.",
         "workConditions": [
           "Elastyczne godziny",
           "Tylko zdalnie",
@@ -448,11 +448,11 @@
         "Mam tylko hosting",
         "Nie mam — mogę pomóc to ogarnąć"
       ],
-      "rodoConsent": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji zamówienia zgodnie z RODO.",
+      "rodoConsent": "Zapoznałem/-am się z zasadami prywatności formularza.",
       "rodoConsentBefore": "Zapoznałem/-am się z ",
       "rodoConsentLink": "Polityką Prywatności",
-      "rodoConsentAfter": " i wyrażam zgodę na przetwarzanie moich danych w celu realizacji zamówienia (RODO).",
-      "rodoRequired": "Zgoda jest wymagana",
+      "rodoConsentAfter": " i rozumiem, że dane z formularza nie są wysyłane automatycznie.",
+      "rodoRequired": "Potwierdzenie zapoznania się z zasadami jest wymagane",
       "draftRestored": "Przywrócono szkic formularza zapisany w tej sesji.",
       "fixErrors": "Sprawdź oznaczone pola i uzupełnij wymagane informacje.",
       "attachmentErrors": {
@@ -496,84 +496,79 @@
     "close": "Zamknij Politykę Prywatności",
     "openLink": "Polityka Prywatności",
     "lastUpdatedLabel": "Ostatnia aktualizacja",
-    "lastUpdated": "sierpień 2026",
-    "intro": "Niniejsza Polityka opisuje zasady przetwarzania danych osobowych osób korzystających z formularza zamówienia oraz innych form kontaktu na stronie verminew.github.io.",
-    "puodoNote": "Masz również prawo wniesienia skargi do organu nadzorczego — Prezesa Urzędu Ochrony Danych Osobowych (PUODO):",
+    "lastUpdated": "24 sierpnia 2026",
+    "intro": "Ta Polityka Prywatności opisuje, co dzieje się z danymi osób korzystających ze strony verminew.github.io oraz formularza zlecenia.",
+    "puodoNote": "Możesz również wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych:",
     "sections": [
       {
         "title": "Administrator danych",
         "paragraphs": [
-          "Administratorem Twoich danych osobowych jest Michał Oślizło — osoba fizyczna prowadząca działalność nierejestrowaną w rozumieniu art. 5 ust. 1 ustawy z dnia 6 marca 2018 r. Prawo przedsiębiorców.",
-          "Kontakt z administratorem: {{adminEmail}}. Adres do korespondencji udostępniany jest na żądanie po zawarciu umowy."
+          "Administratorem Twoich danych osobowych jest Michał Oślizło.",
+          "W sprawach dotyczących prywatności lub Twoich danych napisz na: {{adminEmail}}."
         ]
       },
       {
-        "title": "Cel i podstawa prawna przetwarzania",
+        "title": "Jak działa formularz zlecenia",
         "paragraphs": [
-          "Twoje dane przetwarzam w następujących celach:"
+          "Formularz działa lokalnie w Twojej przeglądarce. Wpisane dane nie są automatycznie przesyłane na serwer ani do mnie.",
+          "Po wybraniu pobrania paczki ZIP jest ona tworzona na Twoim urządzeniu. Jej wysłanie e-mailem jest Twoją samodzielną i dobrowolną decyzją."
         ],
         "list": [
-          "Realizacja zamówienia, przygotowanie wyceny i ewentualne zawarcie umowy o dzieło — podstawa: art. 6 ust. 1 lit. b RODO.",
-          "Kontakt zwrotny i obsługa korespondencji — podstawa: art. 6 ust. 1 lit. f RODO.",
-          "Udostępnianie i zabezpieczenie strony — podstawa: art. 6 ust. 1 lit. f RODO.",
-          "Wypełnienie obowiązków podatkowych i ewidencyjnych w przypadku zawarcia umowy — podstawa: art. 6 ust. 1 lit. c RODO."
+          "Preferencje strony, takie jak motyw, język i ustawienia animacji, mogą być zapisane w localStorage.",
+          "Szkic formularza może być zapisany w sessionStorage tylko w bieżącej sesji przeglądarki.",
+          "Możesz usunąć te dane w każdej chwili, czyszcząc dane strony w ustawieniach przeglądarki."
         ]
       },
       {
-        "title": "Zakres przetwarzanych danych",
+        "title": "Gdy napiszesz do mnie",
         "paragraphs": [
-          "W związku z korzystaniem ze strony mogą być przetwarzane następujące dane:"
+          "Jeżeli dobrowolnie wyślesz wiadomość e-mail, otrzymam wyłącznie dane, które samodzielnie w niej podasz lub dołączysz.",
+          "Dane wykorzystuję, aby odpowiedzieć na wiadomość, prowadzić korespondencję i — jeżeli o to poprosisz — omówić możliwą współpracę."
         ],
         "list": [
-          "Imię i nazwisko (lub nazwa firmy)",
-          "Adres e-mail",
-          "Numer telefonu (opcjonalnie)",
-          "Treść zapytania / opis projektu",
-          "Załączone pliki (jeśli zdecydujesz się je dołączyć)",
-          "Adres IP i techniczne dane żądania przetwarzane przez hosting GitHub Pages oraz dostawcę fontów"
+          "Podstawą przetwarzania jest art. 6 ust. 1 lit. b RODO, gdy wiadomość dotyczy działań przed możliwym zawarciem umowy na Twoje żądanie.",
+          "W pozostałym zakresie podstawą jest art. 6 ust. 1 lit. f RODO — mój uzasadniony interes polegający na udzieleniu odpowiedzi i prowadzeniu korespondencji.",
+          "Podanie danych jest dobrowolne, ale bez danych kontaktowych nie będę w stanie odpowiedzieć."
         ]
       },
       {
-        "title": "Odbiorcy danych",
+        "title": "Hosting i usługi zewnętrzne",
         "paragraphs": [
-          "Formularz nie wysyła danych automatycznie. Dane kontaktowe i opis projektu trafiają do dostawcy poczty dopiero, gdy samodzielnie wyślesz wiadomość e-mail."
+          "Strona jest hostowana w GitHub Pages i korzysta z fontów ładowanych z Google Fonts. Przeglądarka łączy się z tymi usługami podczas otwierania strony.",
+          "Usługi zewnętrzne przetwarzają dane zgodnie z własnymi zasadami prywatności. Nie wykorzystuję ich do reklamy ani własnej analityki."
         ],
         "list": [
-          "GitHub, Inc. — dostawca hostingu GitHub Pages; zapisuje adres IP odwiedzającego w celach bezpieczeństwa.",
-          "Google LLC — dostawca plików Google Fonts używanych przez interfejs strony.",
-          "Proton AG — dostawca skrzynki pocztowej administratora, z siedzibą w Szwajcarii."
+          "GitHub Pages — hosting strony; GitHub może przetwarzać techniczne dane połączenia, w tym adres IP, dla bezpieczeństwa usługi.",
+          "Google Fonts — dostawca fontów; żądanie fontu może obejmować adres IP i techniczne dane przeglądarki.",
+          "Proton Mail — dostawca skrzynki e-mail; przetwarza treść wiadomości dopiero po jej wysłaniu na {{adminEmail}}."
         ]
       },
       {
         "title": "Okres przechowywania",
         "paragraphs": [
-          "Dane z korespondencji przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
-          "Okres przechowywania danych technicznych przez usługi zewnętrzne określają polityki prywatności GitHub i Google.",
-          "W przypadku zawarcia umowy — dane niezbędne do celów księgowych i podatkowych przechowywane są przez 5 lat od końca roku kalendarzowego, w którym powstał obowiązek podatkowy."
+          "Strona nie przechowuje na serwerze danych wpisanych do formularza.",
+          "Wiadomości e-mail przechowuję tylko przez czas potrzebny do udzielenia odpowiedzi i zakończenia kontaktu, co do zasady nie dłużej niż 12 miesięcy od ostatniej wiadomości, chyba że dalsze przechowywanie jest konieczne do ochrony przed roszczeniami."
         ]
       },
       {
         "title": "Twoje prawa",
         "paragraphs": [
-          "Przysługują Ci następujące prawa:"
+          "W zależności od podstawy przetwarzania możesz skorzystać z następujących praw:"
         ],
         "list": [
           "Prawo dostępu do danych (art. 15 RODO)",
           "Prawo do sprostowania danych (art. 16 RODO)",
           "Prawo do usunięcia danych (art. 17 RODO)",
           "Prawo do ograniczenia przetwarzania (art. 18 RODO)",
-          "Prawo do przenoszenia danych (art. 20 RODO)",
-          "Prawo do wniesienia sprzeciwu (art. 21 RODO)",
-          "Prawo do cofnięcia zgody w dowolnym momencie"
+          "Prawo do wniesienia sprzeciwu wobec przetwarzania opartego na uzasadnionym interesie (art. 21 RODO)",
+          "Prawo do przenoszenia danych, jeśli są spełnione warunki z art. 20 RODO"
         ]
       },
       {
         "title": "Cookies i pamięć przeglądarki",
         "paragraphs": [
-          "Aplikacja nie używa własnych plików cookies do celów reklamowych ani analitycznych.",
-          "Pamięć przeglądarki (localStorage / sessionStorage) służy wyłącznie do zapisywania Twoich preferencji (motyw, język) i tymczasowego przechowywania wypełnionego formularza.",
-          "Dane wpisane w formularzu pozostają w przeglądarce i nie są wysyłane automatycznie. Trafiają do mnie dopiero, gdy pobierzesz wygenerowaną paczkę i samodzielnie wyślesz ją e-mailem.",
-          "Hosting GitHub Pages może przetwarzać techniczne dane połączenia zgodnie z własną polityką prywatności."
+          "Strona nie używa własnych plików cookies do celów reklamowych ani analitycznych.",
+          "GitHub Pages i Google Fonts mogą stosować własne mechanizmy techniczne zgodnie z własnymi politykami prywatności."
         ]
       },
       {

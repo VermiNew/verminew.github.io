@@ -446,11 +446,11 @@
         "Hosting only",
         "No — I can help sort that out"
       ],
-      "rodoConsent": "I consent to the processing of my personal data for order fulfilment in accordance with GDPR.",
+      "rodoConsent": "I have read the form privacy information.",
       "rodoConsentBefore": "I have read the ",
       "rodoConsentLink": "Privacy Policy",
-      "rodoConsentAfter": " and consent to the processing of my personal data for order fulfilment (GDPR).",
-      "rodoRequired": "Consent is required",
+      "rodoConsentAfter": " and understand that form data is not sent automatically.",
+      "rodoRequired": "Please confirm that you have read the privacy information",
       "draftRestored": "A form draft saved in this session has been restored.",
       "fixErrors": "Check the highlighted fields and complete the required information.",
       "attachmentErrors": {
@@ -494,84 +494,79 @@
     "close": "Close Privacy Policy",
     "openLink": "Privacy Policy",
     "lastUpdatedLabel": "Last updated",
-    "lastUpdated": "August 2026",
-    "intro": "This Policy describes the rules for processing personal data of persons using the order form and other forms of contact on the verminew.github.io website.",
-    "puodoNote": "You also have the right to lodge a complaint with the Polish supervisory authority — the President of the Personal Data Protection Office (PUODO):",
+    "lastUpdated": "24 August 2026",
+    "intro": "This Privacy Policy explains what happens to the data of people using verminew.github.io and its order form.",
+    "puodoNote": "You may also lodge a complaint with the President of the Polish Personal Data Protection Office:",
     "sections": [
       {
         "title": "Data controller",
         "paragraphs": [
-          "The controller of your personal data is Michał Oślizło — a natural person conducting unregistered economic activity within the meaning of art. 5 sec. 1 of the Polish Act of 6 March 2018 — Entrepreneurs' Law.",
-          "Contact: {{adminEmail}}. Correspondence address provided on request after a contract is concluded."
+          "The controller of your personal data is Michał Oślizło.",
+          "For privacy or personal-data matters, email: {{adminEmail}}."
         ]
       },
       {
-        "title": "Purpose and legal basis",
+        "title": "How the order form works",
         "paragraphs": [
-          "Your data is processed for the following purposes:"
+          "The form runs locally in your browser. The data you enter is not automatically sent to a server or to me.",
+          "When you download the ZIP package, it is created on your device. Sending it by email is your separate and voluntary decision."
         ],
         "list": [
-          "Order fulfilment, preparing a quote and possibly concluding a contract — basis: art. 6(1)(b) GDPR.",
-          "Reply and correspondence — basis: art. 6(1)(f) GDPR.",
-          "Providing and securing the website — basis: art. 6(1)(f) GDPR.",
-          "Tax and record-keeping obligations if a contract is concluded — basis: art. 6(1)(c) GDPR."
+          "Site preferences such as theme, language and animation settings may be saved in localStorage.",
+          "A form draft may be saved in sessionStorage only for the current browser session.",
+          "You can remove this data at any time by clearing the website data in your browser settings."
         ]
       },
       {
-        "title": "Data collected",
+        "title": "When you contact me",
         "paragraphs": [
-          "The following data may be processed when you use the website:"
+          "If you voluntarily send an email, I receive only the data and attachments that you choose to include.",
+          "I use this data to reply, continue correspondence and, if you ask, discuss potential collaboration."
         ],
         "list": [
-          "Name (or company name)",
-          "Email address",
-          "Phone number (optional)",
-          "Project description",
-          "Attached files (if provided)",
-          "IP address and technical request data processed by GitHub Pages hosting and the font provider"
+          "The legal basis is art. 6(1)(b) GDPR when your message concerns steps before a possible contract at your request.",
+          "Otherwise, the legal basis is art. 6(1)(f) GDPR: my legitimate interest in replying and handling correspondence.",
+          "Providing data is voluntary, but I cannot reply without contact details."
         ]
       },
       {
-        "title": "Recipients",
+        "title": "Hosting and external services",
         "paragraphs": [
-          "The form does not submit data automatically. Contact details and the project description reach an email provider only after you send the email yourself."
+          "The site is hosted on GitHub Pages and loads fonts from Google Fonts. Your browser connects to these services when you open the site.",
+          "External services process data under their own privacy policies. I do not use them for advertising or my own analytics."
         ],
         "list": [
-          "GitHub, Inc. — GitHub Pages hosting provider; logs visitor IP addresses for security purposes.",
-          "Google LLC — provider of the Google Fonts files used by the website interface.",
-          "Proton AG — the controller's email provider, based in Switzerland."
+          "GitHub Pages — website hosting; GitHub may process technical connection data, including IP address, for service security.",
+          "Google Fonts — font provider; a font request may include IP address and technical browser data.",
+          "Proton Mail — email provider; it processes message content only after an email is sent to {{adminEmail}}."
         ]
       },
       {
         "title": "Retention",
         "paragraphs": [
-          "Correspondence data is stored for up to 12 months from last contact, then deleted.",
-          "Retention of technical data by external services is governed by the privacy statements of GitHub and Google.",
-          "If a contract is concluded, accounting data is stored for 5 years per Polish tax law."
+          "The website does not store form data on a server.",
+          "I keep emails only for as long as needed to reply and finish contact, normally no longer than 12 months from the last message, unless further retention is necessary to defend against claims."
         ]
       },
       {
         "title": "Your rights",
         "paragraphs": [
-          "You have the following rights:"
+          "Depending on the legal basis, you may have the following rights:"
         ],
         "list": [
           "Right of access (art. 15 GDPR)",
           "Right to rectification (art. 16 GDPR)",
           "Right to erasure (art. 17 GDPR)",
           "Right to restriction (art. 18 GDPR)",
-          "Right to data portability (art. 20 GDPR)",
-          "Right to object (art. 21 GDPR)",
-          "Right to withdraw consent at any time"
+          "Right to object to processing based on legitimate interests (art. 21 GDPR)",
+          "Right to data portability where the conditions of art. 20 GDPR are met"
         ]
       },
       {
         "title": "Cookies and browser storage",
         "paragraphs": [
-          "The app does not use its own advertising or analytics cookies.",
-          "Browser storage (localStorage / sessionStorage) is used only to save your preferences (theme, language) and temporarily hold the order form.",
-          "Data entered in the form stays in your browser and is not submitted automatically. It reaches me only after you download the generated package and send it yourself by email.",
-          "GitHub Pages hosting may process technical connection data under its own privacy statement."
+          "The site does not use its own advertising or analytics cookies.",
+          "GitHub Pages and Google Fonts may use their own technical mechanisms under their privacy policies."
         ]
       },
       {
