@@ -50,11 +50,14 @@ tsconfig.node.tsbuildinfo
 # Test and coverage
 coverage
 .nyc_output
+test-results/
 __snapshots__
 *.test.js.snap
 
 # Auto-generated files
 public/data/repos.json
+vite.config.js
+vite.config.d.ts
 
 # Agent directories
 .agents/
