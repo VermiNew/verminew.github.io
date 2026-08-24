@@ -1032,6 +1032,8 @@ export const OrderSection: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   }, [orderId]);
 
+  const orderArchiveName = `zamowienie-${orderId}.zip`;
+
   const handleDownloadZip = useCallback(async () => {
     const zip = new JSZip();
     const payload: OrderPayload = {
@@ -1045,18 +1047,18 @@ export const OrderSection: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'files_for_order.zip';
+    a.download = orderArchiveName;
     a.click();
     URL.revokeObjectURL(url);
-  }, [orderId, form, files]);
+  }, [orderId, form, files, orderArchiveName]);
 
   const handleOpenMailClient = useCallback(() => {
     const subject = encodeURIComponent(t('order.summary.mailSubject', { id: orderId }));
     const body = encodeURIComponent(
-      t('order.summary.mailBody', { id: orderId, date: new Date().toLocaleString() })
+      t('order.summary.mailBody', { id: orderId, filename: orderArchiveName, date: new Date().toLocaleString() })
     );
     window.location.href = `mailto:${socialConfig.email.address}?subject=${subject}&body=${body}`;
-  }, [orderId, t]);
+  }, [orderId, orderArchiveName, t]);
 
   // ── Render ───────────────────────────────────────────────────────────────────
   const deadlineOptions = t('order.form.deadlineOptions', { returnObjects: true }) as string[];
@@ -1856,7 +1858,7 @@ export const OrderSection: React.FC = () => {
                           </ManualRow>
                           <ManualRow>
                             <ManualRowLabel>{t('order.summary.manualAttach')}</ManualRowLabel>
-                            <ManualRowValue>files_for_order.zip</ManualRowValue>
+                            <ManualRowValue>{orderArchiveName}</ManualRowValue>
                           </ManualRow>
                         </ManualSection>
                       )}

@@ -41,6 +41,7 @@
   },
   "about": {
     "title": "About Me",
+    "imageAlt": "Portrait of Michał Oślizło (VermiNew)",
     "name": "Michał Oślizło",
     "intro": "I'm Michał, a computer science student and self-taught developer from Poland. I was born in October 2006.",
     "focus": "I focus on websites and web applications. Passed INF.03 and INF.04 qualifications. I use AI as a tool — not to replace thinking, but to ship things faster. This portfolio is proof of that.",
@@ -313,7 +314,11 @@
     },
     "preferences": {
       "reducedMotion": "Reduced Motion",
-      "smoothScroll": "Smooth Scrolling"
+      "smoothScroll": "Smooth Scrolling",
+      "motionPreference": "Animations",
+      "motionSystem": "System default",
+      "motionFull": "Full",
+      "motionReduced": "Reduced"
     }
   },
   "order": {
@@ -445,7 +450,15 @@
       "rodoConsentBefore": "I have read the ",
       "rodoConsentLink": "Privacy Policy",
       "rodoConsentAfter": " and consent to the processing of my personal data for order fulfilment (GDPR).",
-      "rodoRequired": "Consent is required"
+      "rodoRequired": "Consent is required",
+      "draftRestored": "A form draft saved in this session has been restored.",
+      "fixErrors": "Check the highlighted fields and complete the required information.",
+      "attachmentErrors": {
+        "total-size": "The selected files were not added: their total size exceeds 20 MB.",
+        "file-size": "The selected file was not added: a single file cannot exceed 10 MB.",
+        "type": "The selected file was not added: this format is not supported.",
+        "duplicate": "The selected file was not added: an attachment with this name already exists."
+      }
     },
     "summary": {
       "title": "Order ready!",
@@ -464,7 +477,16 @@
       "manualBody": "Body: (contents of the JSON file from the package)",
       "back": "Back to edit",
       "mailSubject": "Order {{id}}",
-      "mailBody": "Order ID: {{id}}\n\nPlease attach files_for_order.zip\n\nGenerated: {{date}}"
+      "mailBody": "Order ID: {{id}}\n\nPlease attach {{filename}}\n\nGenerated: {{date}}",
+      "notSent": "The request has not been sent yet. Download the package first, then attach it to your email.",
+      "packageDownloaded": "The package has been downloaded. Open your mail client, attach the ZIP file and send the message.",
+      "preparingZip": "Preparing package… {{progress}}%",
+      "copySuccess": "The order ID has been copied.",
+      "copyError": "The order ID could not be copied.",
+      "downloadSuccess": "The order package has been prepared.",
+      "downloadError": "The package could not be prepared. Please try again.",
+      "downloadFirst": "Download the ZIP package first and attach it to your message.",
+      "copyId": "Copy order ID {{id}}"
     }
   },
   "privacy": {
@@ -652,8 +674,10 @@
       "detected": "We noticed your browser uses Polish. This site is also available in Polish!",
       "settingsHint": "Click the settings icon in the bottom right to switch to Polish.",
       "dontShowAgain": "Don't show again",
-      "understand": "Got it"
-    }
+      "understand": "Got it",
+      "close": "Close notification"
+    },
+    "regionLabel": "Notifications"
   },
   "faq": {
     "title": "Frequently Asked Questions",

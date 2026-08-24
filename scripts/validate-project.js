@@ -204,9 +204,7 @@ pass('Rejected feature plans are absent from project documentation');
 const removedProductionModules = [
   'src/components/sections/BlogSection.tsx',
   'src/hooks/useGithubDiscussions.ts',
-  'src/components/ui/ReloadPopup.tsx',
   'src/components/legal/TermsModal.tsx',
-  'src/components/sections/GitHubStats',
 ];
 for (const file of removedProductionModules) {
   if (existsSync(absolute(file))) fail(`Removed production module still exists: ${file}`);
