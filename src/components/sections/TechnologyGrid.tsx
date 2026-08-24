@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { TechnologyIcon } from '@/components/ui/TechnologyIcon';
@@ -32,6 +32,51 @@ import {
 } from 'react-icons/si';
 import { IoTerminal } from "react-icons/io5";
 import { FaJava } from "react-icons/fa";
+
+type CategoryFilter = 'all' | 'frontend' | 'backend' | 'languages' | 'tools' | 'planned';
+
+const CATEGORY_FILTER_MAP: Record<CategoryFilter, string[]> = {
+  all: [],
+  frontend: ['frontendCore', 'frontendFrameworks'],
+  backend: ['backendDb'],
+  languages: ['programming'],
+  tools: ['devTools', 'systemDevops'],
+  planned: ['plannedSkills'],
+};
+
+const FilterRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+`;
+
+const FilterChip = styled.button<{ $isActive: boolean }>`
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.primary : `${theme.colors.primary}30`};
+  background: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.primary : 'transparent'};
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.background : theme.colors.text};
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all ${({ theme }) => theme.transitions.default};
+
+  &:hover {
+    background: ${({ theme, $isActive }) =>
+      $isActive ? theme.colors.primary : `${theme.colors.primary}15`};
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+`;
 
 const Container = styled(motion.div)`
   display: grid;
@@ -155,42 +200,71 @@ const technologies = {
   ]
 };
 
+const CATEGORY_FILTERS: CategoryFilter[] = ['all', 'frontend', 'backend', 'languages', 'tools', 'planned'];
+
 export const TechnologyGrid: React.FC = () => {
   const { t } = useTranslation();
   const { reducedMotion } = useAnimation();
+  const [activeFilter, setActiveFilter] = useState<CategoryFilter>('frontend');
+
+  const handleFilterClick = useCallback((f: CategoryFilter) => {
+    setActiveFilter(f);
+  }, []);
+
+  const visibleCategories = useMemo(
+    () => Object.entries(technologies).filter(([category]) =>
+      activeFilter === 'all' || CATEGORY_FILTER_MAP[activeFilter].includes(category)
+    ),
+    [activeFilter]
+  );
 
   return (
-    <Container
-      variants={!reducedMotion ? containerVariants : undefined}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-    >
-      {Object.entries(technologies).map(([category, techs]) => (
-        <CategorySection
-          key={category}
-          variants={!reducedMotion ? categoryVariants : undefined}
-          $isPlanned={category === 'plannedSkills'}
-        >
-          <CategoryTitle>
-            {t(`about.skills.categories.${category}.title`)}
-          </CategoryTitle>
-          <CategoryDescription>
-            {t(`about.skills.categories.${category}.description`)}
-          </CategoryDescription>
-          <Grid variants={!reducedMotion ? gridVariants : undefined}>
-            {techs.map((tech) => (
-              <TechnologyIcon
-                key={tech.id}
-                name={t(`about.skills.categories.${category}.skills.${tech.id}.name`)}
-                description={t(`about.skills.categories.${category}.skills.${tech.id}.description`)}
-                icon={tech.icon}
-                level={tech.level}
-              />
-            ))}
-          </Grid>
-        </CategorySection>
-      ))}
-    </Container>
+    <>
+      <FilterRow role="group" aria-label={t('about.skills.title')}>
+        {CATEGORY_FILTERS.map((f) => (
+          <FilterChip
+            key={f}
+            type="button"
+            $isActive={activeFilter === f}
+            onClick={() => handleFilterClick(f)}
+            aria-pressed={activeFilter === f}
+          >
+            {t(`about.skills.filter${f.charAt(0).toUpperCase()}${f.slice(1)}`)}
+          </FilterChip>
+        ))}
+      </FilterRow>
+      <Container
+        variants={!reducedMotion ? containerVariants : undefined}
+        initial={reducedMotion ? false : 'hidden'}
+        whileInView={reducedMotion ? undefined : 'visible'}
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        {visibleCategories.map(([category, techs]) => (
+          <CategorySection
+            key={category}
+            variants={!reducedMotion ? categoryVariants : undefined}
+            $isPlanned={category === 'plannedSkills'}
+          >
+            <CategoryTitle>
+              {t(`about.skills.categories.${category}.title`)}
+            </CategoryTitle>
+            <CategoryDescription>
+              {t(`about.skills.categories.${category}.description`)}
+            </CategoryDescription>
+            <Grid variants={!reducedMotion ? gridVariants : undefined}>
+              {techs.map((tech) => (
+                <TechnologyIcon
+                  key={tech.id}
+                  name={t(`about.skills.categories.${category}.skills.${tech.id}.name`)}
+                  description={t(`about.skills.categories.${category}.skills.${tech.id}.description`)}
+                  icon={tech.icon}
+                  level={tech.level}
+                />
+              ))}
+            </Grid>
+          </CategorySection>
+        ))}
+      </Container>
+    </>
   );
-}; 
+};

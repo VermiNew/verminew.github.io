@@ -113,6 +113,12 @@
       "title": "Skills",
       "description": "My technical skills cover a wide range of technologies and tools",
       "aiNote": "I actively develop my skills by working with AI tools. This allows me to deliver projects beyond my current experience while learning new technologies in practice.",
+      "filterAll": "All",
+      "filterFrontend": "Frontend",
+      "filterBackend": "Backend",
+      "filterLanguages": "Languages",
+      "filterTools": "Tools",
+      "filterPlanned": "Planned",
       "levels": {
         "planned": "Planned",
         "beginner": "Beginner",
