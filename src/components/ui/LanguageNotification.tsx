@@ -172,9 +172,10 @@ export const LanguageNotification: React.FC = () => {
       const browserLang = navigator.language.toLowerCase().startsWith('pl');
       const isEnglish = i18n.language === 'en';
       const viewCount = parseInt(localStorage.getItem('langNotificationViews') || '0');
+      const hasLanguagePreference = localStorage.getItem('i18nextLng') !== null;
       const hasSeenNotification = localStorage.getItem('hasSeenLangNotification');
 
-      if (browserLang && isEnglish && !hasSeenNotification && viewCount < 3) {
+      if (browserLang && isEnglish && !hasLanguagePreference && !hasSeenNotification && viewCount < 3) {
         setTimeout(() => {
           setIsVisible(true);
           localStorage.setItem('langNotificationViews', (viewCount + 1).toString());
@@ -258,4 +259,4 @@ export const LanguageNotification: React.FC = () => {
       )}
     </AnimatePresence>
   );
-}; 
+};

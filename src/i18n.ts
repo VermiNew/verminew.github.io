@@ -27,7 +27,7 @@ const normalizeLanguage = (lang: string): SupportedLanguage => {
 };
 
 const savedLanguage = localStorage.getItem('i18nextLng');
-const normalizedLanguage = savedLanguage ? normalizeLanguage(savedLanguage) : 'en';
+const initialLanguage = normalizeLanguage(savedLanguage ?? navigator.language);
 
 i18n
   .use(LanguageDetector)
@@ -35,7 +35,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    lng: normalizedLanguage,
+    lng: initialLanguage,
     detection: {
       order: ['localStorage', 'navigator'],
       lookupLocalStorage: 'i18nextLng',
@@ -57,9 +57,10 @@ export const getBrowserLanguage = (): SupportedLanguage => {
 export const shouldShowLanguageNotification = (): boolean => {
   const browserLang = getBrowserLanguage();
   const currentLang = normalizeLanguage(i18n.language);
+  const hasLanguagePreference = localStorage.getItem('i18nextLng') !== null;
   const hasSeenNotification = localStorage.getItem('hasSeenLangNotification');
-  
-  return browserLang !== currentLang && !hasSeenNotification;
+
+  return browserLang !== currentLang && !hasLanguagePreference && !hasSeenNotification;
 };
 
-export default i18n; 
+export default i18n;
