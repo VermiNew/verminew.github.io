@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
 import { useAnimation } from '@/context/hooks/useAnimation';
 
@@ -90,24 +90,22 @@ export const Toast: React.FC<ToastProps> = ({
       : <FiInfo aria-hidden="true" />;
 
   return (
-    <AnimatePresence>
-      <ToastContainer
-        $type={type}
-        initial={reducedMotion ? false : { opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={reducedMotion ? undefined : { opacity: 0, y: 20 }}
-        transition={reducedMotion ? { duration: 0 } : { type: 'spring', damping: 20 }}
-      >
-        <IconWrapper>{icon}</IconWrapper>
-        <Message>{message}</Message>
-        {!reducedMotion && (
-          <ProgressBar
-            initial={{ width: '100%' }}
-            animate={{ width: '0%' }}
-            transition={{ duration: duration / 1000, ease: 'linear' }}
-          />
-        )}
-      </ToastContainer>
-    </AnimatePresence>
+    <ToastContainer
+      $type={type}
+      initial={reducedMotion ? false : { opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={reducedMotion ? undefined : { opacity: 0, y: 20 }}
+      transition={reducedMotion ? { duration: 0 } : { type: 'spring', damping: 20 }}
+    >
+      <IconWrapper>{icon}</IconWrapper>
+      <Message>{message}</Message>
+      {!reducedMotion && (
+        <ProgressBar
+          initial={{ width: '100%' }}
+          animate={{ width: '0%' }}
+          transition={{ duration: duration / 1000, ease: 'linear' }}
+        />
+      )}
+    </ToastContainer>
   );
 };

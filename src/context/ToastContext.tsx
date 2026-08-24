@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Toast } from '@/components/ui/Toast';
 import type { ToastType } from './types';
 import { ToastContext } from './ToastContextValue';
@@ -34,14 +35,16 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         aria-atomic="false"
         style={{ position: 'fixed', bottom: 0, left: 0, right: 0, pointerEvents: 'none', zIndex: 2000 }}
       >
-        {toasts.map((toast) => (
-          <Toast
-            key={toast.id}
-            message={toast.message}
-            type={toast.type}
-            onClose={() => handleClose(toast.id)}
-          />
-        ))}
+        <AnimatePresence>
+          {toasts.map((toast) => (
+            <Toast
+              key={toast.id}
+              message={toast.message}
+              type={toast.type}
+              onClose={() => handleClose(toast.id)}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </ToastContext.Provider>
   );
