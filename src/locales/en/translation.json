@@ -26,9 +26,16 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "I build working web products — fast, with AI, deliberately",
+    "eyebrow": "VermiNew · software development student",
+    "title": "Michał Oślizło",
+    "description": "I build websites and web apps. I learn by making things, use AI as a tool, and don't pretend I know everything.",
+    "highlights": [
+      "INF.03 + INF.04",
+      "React + TypeScript",
+      "Poland · remote"
+    ],
     "cta": {
-      "about": "Get to know me",
+      "about": "More about me",
       "projects": "View projects"
     }
   },

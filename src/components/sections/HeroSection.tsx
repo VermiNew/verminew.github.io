@@ -10,30 +10,50 @@ import { useTranslation } from 'react-i18next';
 import { useAnimation as useReducedMotion } from '@/context/AnimationContext';
 
 const HeroContainer = styled(motion.div)`
-  min-height: 100vh;
+  min-height: calc(100vh - 8rem);
+  min-height: calc(100svh - 8rem);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   position: relative;
   padding: 2rem 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    min-height: calc(100vh - 6rem);
+    min-height: calc(100svh - 6rem);
+  }
 `;
 
 const Content = styled(motion.div)<{ $isDark: boolean }>`
   z-index: 1;
   backdrop-filter: blur(5px);
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 20px;
   background: ${({ theme, $isDark }) => $isDark 
     ? `${theme.colors.surface}40`
     : `${theme.colors.background}40`
   };
   max-width: 90%;
-  width: 600px;
+  width: 760px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 2rem 1.25rem;
+    max-width: 94%;
+  }
+`;
+
+const Eyebrow = styled(motion.p)`
+  color: ${({ theme }) => theme.colors.accent};
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
 `;
 
 const Title = styled(motion.h1)`
-  font-size: 3.5rem;
+  font-size: clamp(2.6rem, 7vw, 4.5rem);
   font-weight: 700;
   margin-bottom: 1rem;
   color: ${({ theme }) => theme.colors.primary};
@@ -44,7 +64,8 @@ const Title = styled(motion.h1)`
 `;
 
 const Subtitle = styled(motion.p)`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.7;
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 2rem;
   max-width: 600px;
@@ -53,8 +74,28 @@ const Subtitle = styled(motion.p)`
   white-space: pre-line;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
   }
+`;
+
+const Highlights = styled(motion.ul)`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+
+const Highlight = styled.li`
+  padding: 0.45rem 0.8rem;
+  border: 1px solid ${({ theme }) => `${theme.colors.primary}30`};
+  border-radius: 999px;
+  background: ${({ theme }) => `${theme.colors.surface}80`};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.85rem;
+  font-weight: 600;
 `;
 
 const ButtonContainer = styled(motion.div)`
@@ -70,9 +111,9 @@ const ButtonContainer = styled(motion.div)`
 `;
 
 const LogoContainer = styled(motion.div)`
-  width: 150px;
-  height: 150px;
-  margin: 0 auto 2rem;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,6 +177,7 @@ export const HeroSection: React.FC = () => {
   const { t } = useTranslation();
   const { reducedMotion, smoothScroll } = useReducedMotion();
   const scrollBehavior = reducedMotion || !smoothScroll ? 'auto' : 'smooth';
+  const highlights = t('hero.highlights', { returnObjects: true }) as string[];
 
   return (
     <Section fullWidth id="home">
@@ -164,25 +206,35 @@ export const HeroSection: React.FC = () => {
             />
           </LogoContainer>
           
+          <Eyebrow variants={!reducedMotion ? itemVariants : undefined}>
+            {t('hero.eyebrow')}
+          </Eyebrow>
+
           <Title variants={!reducedMotion ? itemVariants : undefined}>
-            {t('brand.name')}
+            {t('hero.title')}
           </Title>
           
           <Subtitle variants={!reducedMotion ? itemVariants : undefined}>
-            {t('hero.title')}
+            {t('hero.description')}
           </Subtitle>
+
+          <Highlights variants={!reducedMotion ? itemVariants : undefined}>
+            {highlights.map((highlight) => (
+              <Highlight key={highlight}>{highlight}</Highlight>
+            ))}
+          </Highlights>
           
           <ButtonContainer variants={!reducedMotion ? itemVariants : undefined}>
-            <Button 
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: scrollBehavior })}
-            >
-              {t('hero.cta.about')}
-            </Button>
-            <Button 
-              variant="outline"
+            <Button
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: scrollBehavior })}
             >
               {t('hero.cta.projects')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: scrollBehavior })}
+            >
+              {t('hero.cta.about')}
             </Button>
           </ButtonContainer>
         </Content>

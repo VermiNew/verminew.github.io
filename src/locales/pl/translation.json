@@ -26,9 +26,16 @@
     "name": "VermiNew"
   },
   "hero": {
-    "title": "Buduję działające strony i aplikacje\nszybko, z AI, konkretnie",
+    "eyebrow": "VermiNew · uczeń technikum programistycznego",
+    "title": "Michał Oślizło",
+    "description": "Buduję strony i aplikacje webowe. Uczę się przez robienie, używam AI jako narzędzia i nie udaję, że wiem wszystko.",
+    "highlights": [
+      "INF.03 + INF.04",
+      "React + TypeScript",
+      "Polska · zdalnie"
+    ],
     "cta": {
-      "about": "Poznaj mnie",
+      "about": "Więcej o mnie",
       "projects": "Zobacz projekty"
     }
   },

@@ -52,21 +52,21 @@ const AppContent: React.FC = () => {
             </SectionTransition>
           </ErrorBoundary>
 
-          <ErrorBoundary section="services">
+          <ErrorBoundary section="projects">
             <SectionTransition>
-              <ServicesSection />
+              <ProjectsSection />
             </SectionTransition>
           </ErrorBoundary>
-          
+
           <ErrorBoundary section="skills">
             <SectionTransition>
               <SkillsSection />
             </SectionTransition>
           </ErrorBoundary>
-          
-          <ErrorBoundary section="projects">
+
+          <ErrorBoundary section="services">
             <SectionTransition>
-              <ProjectsSection />
+              <ServicesSection />
             </SectionTransition>
           </ErrorBoundary>
 
