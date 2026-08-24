@@ -458,7 +458,7 @@
     "close": "Zamknij Politykę Prywatności",
     "openLink": "Polityka Prywatności",
     "lastUpdatedLabel": "Ostatnia aktualizacja",
-    "lastUpdated": "kwiecień 2026",
+    "lastUpdated": "sierpień 2026",
     "intro": "Niniejsza Polityka opisuje zasady przetwarzania danych osobowych osób korzystających z formularza zamówienia oraz innych form kontaktu na stronie verminew.github.io.",
     "puodoNote": "Masz również prawo wniesienia skargi do organu nadzorczego — Prezesa Urzędu Ochrony Danych Osobowych (PUODO):",
     "sections": [
@@ -477,36 +477,39 @@
         "list": [
           "Realizacja zamówienia, przygotowanie wyceny i ewentualne zawarcie umowy o dzieło — podstawa: art. 6 ust. 1 lit. b RODO.",
           "Kontakt zwrotny i obsługa korespondencji — podstawa: art. 6 ust. 1 lit. f RODO.",
+          "Udostępnianie i zabezpieczenie strony — podstawa: art. 6 ust. 1 lit. f RODO.",
           "Wypełnienie obowiązków podatkowych i ewidencyjnych w przypadku zawarcia umowy — podstawa: art. 6 ust. 1 lit. c RODO."
         ]
       },
       {
         "title": "Zakres przetwarzanych danych",
         "paragraphs": [
-          "Przetwarzam wyłącznie dane, które samodzielnie podasz w formularzu lub korespondencji:"
+          "W związku z korzystaniem ze strony mogą być przetwarzane następujące dane:"
         ],
         "list": [
           "Imię i nazwisko (lub nazwa firmy)",
           "Adres e-mail",
           "Numer telefonu (opcjonalnie)",
           "Treść zapytania / opis projektu",
-          "Załączone pliki (jeśli zdecydujesz się je dołączyć)"
+          "Załączone pliki (jeśli zdecydujesz się je dołączyć)",
+          "Adres IP i techniczne dane żądania przetwarzane przez hosting GitHub Pages"
         ]
       },
       {
         "title": "Odbiorcy danych",
         "paragraphs": [
-          "Twoje dane mogą zostać udostępnione następującym podmiotom przetwarzającym:"
+          "Formularz nie wysyła danych automatycznie. Dane kontaktowe i opis projektu trafiają do dostawcy poczty dopiero, gdy samodzielnie wyślesz wiadomość e-mail."
         ],
         "list": [
-          "FormSubmit.co — dostawca usługi przekazywania formularzy. Serwis ma siedzibę poza EOG; transfer odbywa się na podstawie standardowych klauzul umownych KE.",
-          "Google LLC (Gmail) — dostawca poczty elektronicznej."
+          "GitHub, Inc. — dostawca hostingu GitHub Pages; zapisuje adres IP odwiedzającego w celach bezpieczeństwa.",
+          "Proton AG — dostawca skrzynki pocztowej administratora, z siedzibą w Szwajcarii."
         ]
       },
       {
         "title": "Okres przechowywania",
         "paragraphs": [
-          "Dane przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
+          "Dane z korespondencji przechowywane są przez okres do 12 miesięcy od ostatniego kontaktu, po czym są usuwane.",
+          "Okres przechowywania technicznych danych hostingu określa polityka prywatności GitHub.",
           "W przypadku zawarcia umowy — dane niezbędne do celów księgowych i podatkowych przechowywane są przez 5 lat od końca roku kalendarzowego, w którym powstał obowiązek podatkowy."
         ]
       },
@@ -528,9 +531,10 @@
       {
         "title": "Cookies i pamięć przeglądarki",
         "paragraphs": [
-          "Strona nie używa plików cookies do celów reklamowych ani analitycznych.",
+          "Aplikacja nie używa własnych plików cookies do celów reklamowych ani analitycznych.",
           "Pamięć przeglądarki (localStorage / sessionStorage) służy wyłącznie do zapisywania Twoich preferencji (motyw, język) i tymczasowego przechowywania wypełnionego formularza.",
-          "Dane te nigdy nie są wysyłane na serwer."
+          "Dane wpisane w formularzu pozostają w przeglądarce i nie są wysyłane automatycznie. Trafiają do mnie dopiero, gdy pobierzesz wygenerowaną paczkę i samodzielnie wyślesz ją e-mailem.",
+          "Hosting GitHub Pages może przetwarzać techniczne dane połączenia zgodnie z własną polityką prywatności."
         ]
       },
       {
