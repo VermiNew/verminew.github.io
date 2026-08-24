@@ -56,7 +56,7 @@ jobs:
 
       - name: Rebuild assets and verify project
         run: |
-          npm run assets:check
+          npm run assets
           npm run verify
 
       - name: Create source archive

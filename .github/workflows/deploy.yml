@@ -42,7 +42,7 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: 🖼️ Generate optimized assets
-        run: npm run assets:check
+        run: npm run assets
 
       - name: ✅ Verify and build
         env:
