@@ -568,6 +568,8 @@
     },
     "email": "Email",
     "discord": "Discord",
+    "copyDiscord": "Copy Discord username",
+    "copyDiscordHint": "Click to copy username",
     "linkedin": "LinkedIn",
     "github": "GitHub"
   },
@@ -616,6 +618,8 @@
     "languageChanged": "Language changed to English",
     "themeChanged": "Theme changed",
     "preferencesUpdated": "Preferences updated",
+    "discordCopied": "Discord username copied",
+    "copyFailed": "Couldn't copy. Username: {{username}}",
     "language": {
       "available": "Polish language version available!",
       "detected": "We noticed you're using a browser with Polish language. Our site is also available in Polish!",

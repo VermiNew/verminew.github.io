@@ -9,7 +9,8 @@ import { MdEmail, MdCake, MdSchool, MdTranslate, MdInterests, MdStars, MdWork, M
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/context/ThemeContext';
 import { useAnimation } from '@/context/AnimationContext';
-import { getSocialUrl } from '@/config/social';
+import { getSocialUrl, socialConfig } from '@/config/social';
+import { useToast } from '@/context/ToastContext';
 import { isDarkTheme } from '@/utils/themeUtils';
 
 const Content = styled.div`
@@ -156,7 +157,9 @@ const ProfileLink = styled.a`
   background: ${({ theme }) => `${theme.colors.surface}80`};
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
+  font: inherit;
   font-size: 0.9rem;
+  cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.default};
   border: 1px solid ${({ theme }) => `${theme.colors.primary}20`};
 
@@ -164,6 +167,11 @@ const ProfileLink = styled.a`
     background: ${({ theme }) => theme.colors.surface};
     transform: translateY(-2px);
     border-color: ${({ theme }) => `${theme.colors.primary}40`};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
   }
 
   svg {
@@ -264,11 +272,24 @@ export const AboutSection: React.FC = () => {
   const { t } = useTranslation();
   const { themeMode } = useTheme();
   const { reducedMotion, smoothScroll } = useAnimation();
+  const { showToast } = useToast();
 
   const scrollToOrder = () => {
     const element = document.querySelector('#order');
     if (element) {
       element.scrollIntoView({ behavior: reducedMotion || !smoothScroll ? 'auto' : 'smooth' });
+    }
+  };
+
+  const copyDiscordUsername = async () => {
+    try {
+      await navigator.clipboard.writeText(socialConfig.discord.username);
+      showToast(t('notifications.discordCopied'), 'success');
+    } catch {
+      showToast(
+        t('notifications.copyFailed', { username: socialConfig.discord.username }),
+        'error'
+      );
     }
   };
 
@@ -414,10 +435,10 @@ export const AboutSection: React.FC = () => {
                     {t('about.profiles.github')}
                   </ProfileLink>
                   <ProfileLink
-                    href={getSocialUrl('discord')}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${t('about.profiles.discord')} (opens in new tab)`}
+                    as="button"
+                    type="button"
+                    onClick={copyDiscordUsername}
+                    aria-label={t('contact.copyDiscord')}
                   >
                     <SiDiscord aria-hidden="true" />
                     {t('about.profiles.discord')}

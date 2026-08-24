@@ -580,6 +580,8 @@
     },
     "email": "E-mail",
     "discord": "Discord",
+    "copyDiscord": "Skopiuj nazwę użytkownika Discord",
+    "copyDiscordHint": "Kliknij, aby skopiować nazwę",
     "linkedin": "LinkedIn",
     "github": "GitHub"
   },
@@ -628,6 +630,8 @@
     "languageChanged": "Zmieniono język na polski",
     "themeChanged": "Zmieniono motyw",
     "preferencesUpdated": "Zaktualizowano preferencje",
+    "discordCopied": "Skopiowano nazwę użytkownika Discord",
+    "copyFailed": "Nie udało się skopiować. Nazwa: {{username}}",
     "language": {
       "available": "Dostępna polska wersja językowa!",
       "detected": "Zauważyliśmy, że używasz przeglądarki z polskim językiem. Nasza strona jest dostępna również po polsku!",

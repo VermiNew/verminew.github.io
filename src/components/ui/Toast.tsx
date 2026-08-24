@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
+import { useAnimation } from '@/context/AnimationContext';
 
 type ToastType = 'success' | 'info' | 'error';
 
@@ -15,8 +16,10 @@ interface ToastProps {
 const ToastContainer = styled(motion.div)<{ $type: ToastType }>`
   position: fixed;
   bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 1rem;
+  right: 1rem;
+  width: max-content;
+  margin: 0 auto;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   background: ${({ theme, $type }) => {
@@ -29,14 +32,19 @@ const ToastContainer = styled(motion.div)<{ $type: ToastType }>`
         return theme.colors.primary;
     }
   }};
-  color: white;
+  color: ${({ theme }) => theme.colors.background};
   display: flex;
   align-items: center;
   gap: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   min-width: 200px;
-  max-width: 90%;
+  max-width: calc(100% - 2rem);
+  box-sizing: border-box;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    bottom: 5.5rem;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -67,6 +75,8 @@ export const Toast: React.FC<ToastProps> = ({
   duration = 3000,
   onClose
 }) => {
+  const { reducedMotion } = useAnimation();
+
   useEffect(() => {
     const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
@@ -87,19 +97,21 @@ export const Toast: React.FC<ToastProps> = ({
     <AnimatePresence>
       <ToastContainer
         $type={type}
-        initial={{ opacity: 0, y: 50 }}
+        initial={reducedMotion ? false : { opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ type: 'spring', damping: 20 }}
+        exit={reducedMotion ? undefined : { opacity: 0, y: 20 }}
+        transition={reducedMotion ? { duration: 0 } : { type: 'spring', damping: 20 }}
       >
         <IconWrapper>{getIcon()}</IconWrapper>
         <Message>{message}</Message>
-        <ProgressBar
-          initial={{ width: '100%' }}
-          animate={{ width: '0%' }}
-          transition={{ duration: duration / 1000, ease: 'linear' }}
-        />
+        {!reducedMotion && (
+          <ProgressBar
+            initial={{ width: '100%' }}
+            animate={{ width: '0%' }}
+            transition={{ duration: duration / 1000, ease: 'linear' }}
+          />
+        )}
       </ToastContainer>
     </AnimatePresence>
   );
-}; 
+};
