@@ -1,29 +1,7 @@
 {
-  "lastUpdated": "2026-08-24T14:46:51.254Z",
+  "lastUpdated": "2026-08-26T02:57:26.854Z",
   "username": "VermiNew",
   "repos": [
-    {
-      "id": "verminew.github.io",
-      "title": "Verminew.github.io",
-      "description": "My first full-fledged website.",
-      "technologies": [
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/verminew.github.io",
-      "liveUrl": "https://verminew.github.io/",
-      "featured": true,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2023-02-12T14:30:29.000Z",
-      "updatedAt": "2026-08-24T13:36:54.000Z",
-      "priority": 1,
-      "status": "active",
-      "category": "frontend",
-      "featuredReason": "Portfolio website built with React, TypeScript and styled-components"
-    },
     {
       "id": "w-chrystusie",
       "title": "W Chrystusie",
@@ -41,11 +19,33 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2026-03-04T20:09:23.000Z",
-      "updatedAt": "2026-08-23T14:19:08.000Z",
+      "updatedAt": "2026-08-25T12:26:24.000Z",
       "priority": 1,
       "status": "active",
       "category": "frontend",
       "featuredReason": "Catholic web app with prayers, rosary and hymns"
+    },
+    {
+      "id": "verminew.github.io",
+      "title": "Verminew.github.io",
+      "description": "My first full-fledged website.",
+      "technologies": [
+        "HTML",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "language": "TypeScript",
+      "githubUrl": "https://github.com/VermiNew/verminew.github.io",
+      "liveUrl": "https://verminew.github.io/",
+      "featured": true,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2023-02-12T14:30:29.000Z",
+      "updatedAt": "2026-08-25T10:27:02.000Z",
+      "priority": 1,
+      "status": "active",
+      "category": "frontend",
+      "featuredReason": "Portfolio website built with React, TypeScript and styled-components"
     },
     {
       "id": "energy-monitoring-system",
