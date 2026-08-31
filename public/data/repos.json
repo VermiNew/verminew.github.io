@@ -1,7 +1,29 @@
 {
-  "lastUpdated": "2026-08-30T07:41:09.230Z",
+  "lastUpdated": "2026-08-31T07:54:45.771Z",
   "username": "VermiNew",
   "repos": [
+    {
+      "id": "verminew.github.io",
+      "title": "Verminew.github.io",
+      "description": "My first full-fledged website.",
+      "technologies": [
+        "HTML",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "language": "TypeScript",
+      "githubUrl": "https://github.com/VermiNew/verminew.github.io",
+      "liveUrl": "https://verminew.github.io/",
+      "featured": true,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2023-02-12T14:30:29.000Z",
+      "updatedAt": "2026-08-30T07:41:24.000Z",
+      "priority": 1,
+      "status": "active",
+      "category": "frontend",
+      "featuredReason": "Portfolio website built with React, TypeScript and styled-components"
+    },
     {
       "id": "w-chrystusie",
       "title": "W Chrystusie",
@@ -24,28 +46,6 @@
       "status": "active",
       "category": "frontend",
       "featuredReason": "Catholic web app with prayers, rosary and hymns"
-    },
-    {
-      "id": "verminew.github.io",
-      "title": "Verminew.github.io",
-      "description": "My first full-fledged website.",
-      "technologies": [
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/verminew.github.io",
-      "liveUrl": "https://verminew.github.io/",
-      "featured": true,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2023-02-12T14:30:29.000Z",
-      "updatedAt": "2026-08-29T08:27:07.000Z",
-      "priority": 1,
-      "status": "active",
-      "category": "frontend",
-      "featuredReason": "Portfolio website built with React, TypeScript and styled-components"
     },
     {
       "id": "energy-monitoring-system",
