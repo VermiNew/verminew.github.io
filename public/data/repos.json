@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-28T08:00:00.095Z",
+  "lastUpdated": "2026-09-29T07:41:22.509Z",
   "username": "VermiNew",
   "repos": [
     {
@@ -18,7 +18,7 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2023-02-12T14:30:29.000Z",
-      "updatedAt": "2026-09-27T07:22:05.000Z",
+      "updatedAt": "2026-09-28T08:00:05.000Z",
       "priority": 1,
       "status": "active",
       "category": "frontend",
@@ -71,6 +71,27 @@
       "status": "active",
       "category": "frontend",
       "featuredReason": "Smart-home energy monitoring dashboard built with React and TypeScript"
+    },
+    {
+      "id": "hand-sabers",
+      "title": "Hand Sabers",
+      "description": "A Beat Saber-inspired rhythm game you play with your hands through a webcam - no VR headset required. TypeScript + Vite + Three.js frontend with camera hand-tracking, and an Express backend for maps, audio and scores.",
+      "technologies": [
+        "CSS",
+        "HTML",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "language": "TypeScript",
+      "githubUrl": "https://github.com/VermiNew/hand-sabers",
+      "liveUrl": "",
+      "featured": false,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2026-06-17T08:56:11.000Z",
+      "updatedAt": "2026-09-28T19:07:52.000Z",
+      "priority": 3,
+      "status": "active"
     },
     {
       "id": "pwt",
@@ -132,27 +153,6 @@
       "visibility": "public",
       "createdAt": "2026-07-26T11:05:05.000Z",
       "updatedAt": "2026-07-26T12:11:33.000Z",
-      "priority": 3,
-      "status": "active"
-    },
-    {
-      "id": "hand-sabers",
-      "title": "Hand Sabers",
-      "description": "A Beat Saber-inspired rhythm game you play with your hands through a webcam - no VR headset required. TypeScript + Vite + Three.js frontend with camera hand-tracking, and an Express backend for maps, audio and scores.",
-      "technologies": [
-        "CSS",
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/hand-sabers",
-      "liveUrl": "",
-      "featured": false,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2026-06-17T08:56:11.000Z",
-      "updatedAt": "2026-07-26T11:03:32.000Z",
       "priority": 3,
       "status": "active"
     },
