@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16T06:36:00.749Z",
+  "lastUpdated": "2026-10-17T06:25:42.767Z",
   "username": "VermiNew",
   "repos": [
     {
@@ -18,7 +18,7 @@
       "archived": false,
       "visibility": "public",
       "createdAt": "2023-02-12T14:30:29.000Z",
-      "updatedAt": "2026-10-15T06:45:59.000Z",
+      "updatedAt": "2026-10-16T06:36:05.000Z",
       "priority": 1,
       "status": "active",
       "category": "frontend",
@@ -71,27 +71,6 @@
       "status": "active",
       "category": "frontend",
       "featuredReason": "Smart-home energy monitoring dashboard built with React and TypeScript"
-    },
-    {
-      "id": "hand-sabers",
-      "title": "Hand Sabers",
-      "description": "A Beat Saber-inspired rhythm game you play with your hands through a webcam - no VR headset required. TypeScript + Vite + Three.js frontend with camera hand-tracking, and an Express backend for maps, audio and scores.",
-      "technologies": [
-        "CSS",
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/hand-sabers",
-      "liveUrl": "",
-      "featured": false,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2026-06-17T08:56:11.000Z",
-      "updatedAt": "2026-10-09T11:06:10.000Z",
-      "priority": 3,
-      "status": "active"
     },
     {
       "id": "pwt",
