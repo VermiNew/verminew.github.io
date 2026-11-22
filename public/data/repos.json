@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-13T08:55:43.872Z",
+  "lastUpdated": "2026-11-22T09:06:18.592Z",
   "username": "VermiNew",
   "repos": [
     {
@@ -71,6 +71,27 @@
       "status": "active",
       "category": "frontend",
       "featuredReason": "Smart-home energy monitoring dashboard built with React and TypeScript"
+    },
+    {
+      "id": "rose",
+      "title": "Rose",
+      "description": "An AI assistant where one model thinks and delegates to specialists it trusts most - no single model does everything. TypeScript + Vite + React, orchestrator-led routing with a capability registry.",
+      "technologies": [
+        "CSS",
+        "HTML",
+        "JavaScript",
+        "TypeScript"
+      ],
+      "language": "TypeScript",
+      "githubUrl": "https://github.com/VermiNew/rose",
+      "liveUrl": "",
+      "featured": false,
+      "archived": false,
+      "visibility": "public",
+      "createdAt": "2026-07-01T11:50:53.000Z",
+      "updatedAt": "2026-11-21T22:15:01.000Z",
+      "priority": 3,
+      "status": "active"
     },
     {
       "id": "pwt",
@@ -174,27 +195,6 @@
       "visibility": "public",
       "createdAt": "2026-06-13T11:29:18.000Z",
       "updatedAt": "2026-07-22T13:41:54.000Z",
-      "priority": 3,
-      "status": "active"
-    },
-    {
-      "id": "rose",
-      "title": "Rose",
-      "description": "An AI assistant where one model thinks and delegates to specialists it trusts most - no single model does everything. TypeScript + Vite + React, orchestrator-led routing with a capability registry.",
-      "technologies": [
-        "CSS",
-        "HTML",
-        "JavaScript",
-        "TypeScript"
-      ],
-      "language": "TypeScript",
-      "githubUrl": "https://github.com/VermiNew/rose",
-      "liveUrl": "",
-      "featured": false,
-      "archived": false,
-      "visibility": "public",
-      "createdAt": "2026-07-01T11:50:53.000Z",
-      "updatedAt": "2026-07-04T12:18:34.000Z",
       "priority": 3,
       "status": "active"
     },
